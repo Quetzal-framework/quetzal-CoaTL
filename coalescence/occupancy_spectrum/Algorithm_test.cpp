@@ -25,7 +25,7 @@ int main(){
     std::cout << "\n";
   };
 
-  Algorithm::generate(10,10, spectrum_handler);
+  Algorithm::generate(5,10, spectrum_handler);
 
   return 0;
 }
