@@ -8,8 +8,16 @@
 *                                                                      *
 ***************************************************************************/
 
-// compiles with g++ -o test memoize.cpp -std=c++14 -Wall
-
+/**
+ * \file memoize_test.cpp
+ * \brief Program for unit testing
+ * \author Arnaud Becheler <Arnaud.Becheler@egce.cnrs-gif.fr>
+ *
+ * Test program for memoization function.
+ * Compiles with g++ -o test memoize_test.cpp -std=c++14 -Wall
+ *
+ */
+ 
 #include "memoize.h"
 #include <random>
 

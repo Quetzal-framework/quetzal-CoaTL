@@ -46,8 +46,7 @@ public:
 	Tree(CellT&& cell) noexcept;
 
 	//! \remark CellT must be copy constructible.
-	//! \todo enable copy construction if needed, for now delete it for efficiency sake
-	Tree(const SelfType& other) = delete;
+	Tree(const SelfType& other);
 
 	//! \remark CellT must be move constructible.
 	Tree(SelfType&& other) noexcept;
@@ -56,8 +55,7 @@ public:
 	Tree(CellT&& cell, std::vector<SelfType>&& children) noexcept;
 
 	//! \remark CellT must be copy constructible and move assignable.
-	//! \todo enable copy assignment if needed, for now delete it for efficiency sake
-	SelfType& operator=(const SelfType& other) = delete;
+	SelfType& operator=(const SelfType& other);
 
 	//! \remark CellT must be move assignable.
 	SelfType& operator=(SelfType&& other) noexcept;
@@ -107,8 +105,7 @@ Tree<CellT>::Tree(CellT&& cell) noexcept :
 	m_parent(nullptr), m_cell(std::move(cell)), m_children()
 {}
 
-/*
- * \remark implementation of deleted Copy constructor
+
 template<class CellT>
 Tree<CellT>::Tree(const SelfType& other) :
 	m_parent(nullptr), m_cell(other.m_cell), m_children(other.m_children)
@@ -116,7 +113,7 @@ Tree<CellT>::Tree(const SelfType& other) :
 	for(Tree<CellT>& child : m_children)
 		child.m_parent = this;
 }
- */
+
 
 template<class CellT>
 Tree<CellT>::Tree(SelfType&& other) noexcept :
@@ -126,6 +123,7 @@ Tree<CellT>::Tree(SelfType&& other) noexcept :
 		child.m_parent = this;
 }
 
+
 template<class CellT>
 Tree<CellT>::Tree(CellT&& cell, std::vector<SelfType>&& children) noexcept :
 	m_parent(nullptr), m_cell(std::move(cell)), m_children(std::move(children))
@@ -134,8 +132,7 @@ Tree<CellT>::Tree(CellT&& cell, std::vector<SelfType>&& children) noexcept :
 		child.m_parent = this;
 }
 
-/*
- * \remark implementation of deleted copy assignment
+
 template<class CellT>
 Tree<CellT>& Tree<CellT>::operator=(const SelfType& other)
 {
@@ -143,7 +140,7 @@ Tree<CellT>& Tree<CellT>::operator=(const SelfType& other)
 	*this = std::move(otherCopy);
 	return *this;
 }
- */
+
 
 template<class CellT>
 Tree<CellT>& Tree<CellT>::operator=(SelfType&& other) noexcept

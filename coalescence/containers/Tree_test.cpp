@@ -9,10 +9,13 @@
 ************************************************************************/
 
 /**
- * Program for unit testing
+ * \file Tree_test.cpp
+ * \brief Program for unit testing
+ * \author Arnaud Becheler <Arnaud.Becheler@egce.cnrs-gif.fr>
  *
  * Test program for interface of Tree class using basic parameters type for illustration.
  * Compiles with g++ -o test Tree_test.cpp -std=c++14 -Wall
+ *
  */
 
 #include "Tree.h"

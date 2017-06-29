@@ -8,7 +8,15 @@
 *                                                                      *
 ***************************************************************************/
 
-// compiles with g++ -o test merger_test.cpp -std=c++14 -Wall
+/**
+ * \file merger_test.cpp
+ * \brief Program for unit testing
+ * \author Arnaud Becheler <Arnaud.Becheler@egce.cnrs-gif.fr>
+ *
+ * Test program for merger policies.
+ * Compiles with g++ -o test merger_test.cpp -std=c++14 -Wall
+ *
+ */
 
 #include "merger.h"
 

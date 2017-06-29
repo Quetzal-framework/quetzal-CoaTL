@@ -11,8 +11,8 @@
 #ifndef __COALESCENCE_MERGERS_H_INCLUDED__
 #define __COALESCENCE_MERGERS_H_INCLUDED__
 
-#include "merge_algorithm.h"
-#include "occupancy_spectrum/spectrum_creation_policy.h" // default policies
+#include "../algorithms/merge.h"
+#include "../occupancy_spectrum/spectrum_creation_policy.h" // default policies
 
 #include <iterator> // std::distance
 

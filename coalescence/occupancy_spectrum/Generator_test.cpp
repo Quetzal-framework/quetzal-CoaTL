@@ -8,7 +8,15 @@
 *                                                                      *
 ***************************************************************************/
 
-// compiles with g++ -o test generative_algorithm_test.cpp -std=c++14 -Wall
+/**
+ * \file Generator_test.cpp
+ * \brief Program for unit testing
+ * \author Arnaud Becheler <Arnaud.Becheler@egce.cnrs-gif.fr>
+ *
+ * Test program for interface of occupancy spectrum generative algorithm.
+ * Compiles with g++ -o test Generator_test.cpp -std=c++14 -Wall
+ *
+ */
 
 #include "Generator.h"
 

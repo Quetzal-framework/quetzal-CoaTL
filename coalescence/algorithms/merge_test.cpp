@@ -8,9 +8,17 @@
 *                                                                      *
 ***************************************************************************/
 
-// compiles with g++ -o test merge_algorithm_test.cpp -std=c++14 -Wall
+/**
+ * \file merge_test.cpp
+ * \brief Program for unit testing
+ * \author Arnaud Becheler <Arnaud.Becheler@egce.cnrs-gif.fr>
+ *
+ * Test program for interface of coalescence merge algorithms.
+ * Compiles with g++ -o test merge_test.cpp -std=c++14 -Wall
+ *
+ */
 
-#include "merge_algorithm.h"
+#include "merge.h"
 
 #include <vector>
 #include <list>

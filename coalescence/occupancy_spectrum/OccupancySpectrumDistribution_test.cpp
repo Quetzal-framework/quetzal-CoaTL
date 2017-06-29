@@ -8,7 +8,15 @@
 *                                                                      *
 ***************************************************************************/
 
-// compiles with g++ -o test occupancy_spectrum_distribution_test.cpp -std=c++14 -Wall
+/**
+ * \file OccupancySpectrumDistribution_test.cpp
+ * \brief Program for unit testing
+ * \author Arnaud Becheler <Arnaud.Becheler@egce.cnrs-gif.fr>
+ *
+ * Test program for occupancy spectrum probability distribution.
+ * Compiles with g++ -o test OccupancySpectrumDistribution_test.cpp -std=c++14 -Wall
+ *
+ */
 
 #include "OccupancySpectrumDistribution.h"
 #include <random>    // std::mt19937

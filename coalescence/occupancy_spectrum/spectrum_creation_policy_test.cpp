@@ -8,7 +8,15 @@
 *                                                                      *
 ***************************************************************************/
 
-// compiles with g++ -o test occupancy_spectrum_sampler_test.cpp -std=c++14 -Wall
+/**
+ * \file spectrum_creation_policy_test.cpp
+ * \brief Program for unit testing
+ * \author Arnaud Becheler <Arnaud.Becheler@egce.cnrs-gif.fr>
+ *
+ * Test program for interface of occupancy spectrum sampling.
+ * Compiles with g++ -o test Generator_test.cpp -std=c++14 -Wall
+ *
+ */
 
 #include "spectrum_creation_policy.h"
 #include <random>
@@ -24,7 +32,7 @@ int main(){
   }
 
   std::cout << std::endl;
-  
+
   auto b = quetzal::coalescence::occupancy_spectrum::in_memoized_distribution<>::sample(10,10,g);
   for(auto const& it : b){
     std::cout << it << " ";
