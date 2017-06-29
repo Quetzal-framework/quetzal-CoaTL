@@ -28,7 +28,7 @@ int main(){
 	// \remark These are very basic types sufficient for testing, but have little to see with coalescence.
 	using position_type = int;
 	using tree_type = std::string;
-	using forest_type = quetzal::coalescence::utils::Forest<position_type, tree_type>;
+	using forest_type = quetzal::coalescence::Forest<position_type, tree_type>;
 
 	/**
 	 * Initialization

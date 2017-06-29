@@ -15,7 +15,6 @@
 
 namespace quetzal{
 namespace coalescence{
-namespace utils {
 
 /*!
  * \brief Defines a class for implementating a N-ary tree with each node containing a data field.
@@ -225,7 +224,6 @@ void Tree<CellT>::access_leaves_by_DFS(Treatment const& fun) const {
 	}
 }
 
-} // namespace utils
 } // namespace coalescence
 } // namespace quetzal
 

@@ -22,7 +22,7 @@
 #include <iostream>
 int main(){
 
-	using quetzal::coalescence::utils::Tree;
+	using quetzal::coalescence::Tree;
 	using std::string;
 
 	/**

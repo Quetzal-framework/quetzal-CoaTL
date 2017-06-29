@@ -18,7 +18,6 @@
 
 namespace quetzal{
 namespace coalescence{
-namespace utils{
 
 /*!
  * \brief Defines a class for implementating a collection of geo-localized coalescents.
@@ -224,7 +223,6 @@ std::set<Position> Forest<Position, Tree>::positions() const {
 	return s;
 }
 
-} // namespace utils
 } // namespace coalescence
 } // namespace quetzal
 
