@@ -2,16 +2,16 @@
 
 echo -e "UTest_occupancy_spectrum\n|"
 
-echo -e "|--\t Algorithm_test..................................."
-g++ -o Algorithm_test -Wall -std=c++14 Algorithm_test.cpp
-./Algorithm_test
-rm Algorithm_test
+echo -e "|--\t Generator_test..................................."
+g++ -o Utest -Wall -std=c++14 Generator_test.cpp
+./Utest
+rm Utest
 echo -e "|--\t DONE \n|"
 
-echo -e "|--\t occupancy_spectrum_distribution_test..................................."
-g++ -o occupancy_spectrum_distribution_test -Wall -std=c++14 occupancy_spectrum_distribution_test.cpp
-./occupancy_spectrum_distribution_test
-rm occupancy_spectrum_distribution_test
+echo -e "|--\t OccupancySpectrumDistribution_test..................................."
+g++ -o Utest -Wall -std=c++14 OccupancySpectrumDistribution_test.cpp
+./Utest
+rm Utest
 echo -e "|--\t DONE \n|"
 
 echo -e "|--\t memoize_test..................................."

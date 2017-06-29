@@ -38,7 +38,7 @@ void coalesce(Container nodes){
   auto binary_operator = [](T parent, T child){ return parent + child;};
 
   // Binary merger
-  auto last = coalescence::binary_merge(nodes.begin(), nodes.end(), init, binary_operator, g);
+  auto last = quetzal::coalescence::binary_merge(nodes.begin(), nodes.end(), init, binary_operator, g);
 
   std::cout << "\nAfter one binary merge generation:\n";
   for(auto it = nodes.begin(); it != last; ++it){
@@ -48,7 +48,7 @@ void coalesce(Container nodes){
   // Simultaneous multiple merger
   assert(std::distance(nodes.begin(), last) == 3);
   std::vector<unsigned int> M_j = {99,0,0,1};
-  last = coalescence::simultaneous_multiple_merge(nodes.begin(), last, init, M_j, binary_operator, g);
+  last = quetzal::coalescence::simultaneous_multiple_merge(nodes.begin(), last, init, M_j, binary_operator, g);
 
   std::cout << "\nAfter one simultaneous multiple merge generation:\n";
   for(auto it = nodes.begin(); it != last; ++it){

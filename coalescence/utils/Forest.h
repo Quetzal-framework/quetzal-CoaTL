@@ -16,6 +16,7 @@
 #include <vector>
 #include "assert.h"
 
+namespace quetzal{
 namespace coalescence{
 namespace utils{
 
@@ -44,13 +45,13 @@ public:
 
 	//! \remark Tree must be copy constructible.
 	Forest(const SelfType& other);
- 
+
 	//! \remark Tree must be move constructible.
 	Forest(SelfType&& other) noexcept;
 
 	//! \remark Tree must be copy constructible and move assignable.
 	SelfType& operator=(const SelfType& other);
- 
+
 	//! \remark Tree must be move assignable.
 	SelfType& operator=(SelfType&& other) noexcept;
 
@@ -75,7 +76,7 @@ public:
 	//! \remark Return the number of trees in the forest
 	unsigned int nb_trees() const;
 
-	//! \remark Return the number of trees in the forest at a given position 
+	//! \remark Return the number of trees in the forest at a given position
 	unsigned int nb_trees(Position const& position);
 
 	std::pair<const_iterator,const_iterator> trees_at_same_position (const Position& position) const;
@@ -102,17 +103,17 @@ public:
 };
 
 template<typename Position, typename Tree>
-Forest<Position, Tree>::Forest() : 
+Forest<Position, Tree>::Forest() :
 	m_data()
 {}
 
 template<typename Position, typename Tree>
-Forest<Position, Tree>::Forest(const SelfType& other) : 
+Forest<Position, Tree>::Forest(const SelfType& other) :
 	m_data(other.m_data)
 {}
 
 template<typename Position, typename Tree>
-Forest<Position, Tree>::Forest(SelfType&& other) noexcept : 
+Forest<Position, Tree>::Forest(SelfType&& other) noexcept :
 	m_data(std::move(other.m_data))
 {}
 
@@ -225,5 +226,6 @@ std::set<Position> Forest<Position, Tree>::positions() const {
 
 } // namespace utils
 } // namespace coalescence
+} // namespace quetzal
 
 #endif

@@ -17,11 +17,11 @@ int main(){
   std::mt19937 g;
 
   // build and copy sample
-  auto spectrum_a = coalescence::occupancy_spectrum::utils::memoize_OSD<>(10,10)(g);
+  auto spectrum_a = quetzal::coalescence::occupancy_spectrum::utils::memoize_OSD<>(10,10)(g);
 
   // no need to build, sample directly in the memoized distribution, no copy
-  auto const& spectrum_b = coalescence::occupancy_spectrum::utils::memoize_OSD<>(10,10)(g);
+  auto const& spectrum_b = quetzal::coalescence::occupancy_spectrum::utils::memoize_OSD<>(10,10)(g);
   (void)spectrum_b;
-  
+
   return 0;
 }

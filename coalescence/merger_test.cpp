@@ -24,8 +24,8 @@
 template<typename Container>
 void coalesce(Container nodes, unsigned int N){
 
-  using coalescence::SimultaneousMultipleMerger;
-  using coalescence::BinaryMerger;
+  using quetzal::coalescence::SimultaneousMultipleMerger;
+  using quetzal::coalescence::BinaryMerger;
   using T = typename Container::value_type;
 
   std::mt19937 g;
@@ -50,7 +50,7 @@ void coalesce(Container nodes, unsigned int N){
 
   // Simultaneous multiple merger
   assert(std::distance(nodes.begin(), last) == 3);
-  using spectrum_creation_policy = coalescence::occupancy_spectrum::on_the_fly;
+  using spectrum_creation_policy = quetzal::coalescence::occupancy_spectrum::on_the_fly;
   last = SimultaneousMultipleMerger<spectrum_creation_policy>::merge(nodes.begin(), last, N, init, binary_operator, g);
 
   std::cout << "\nAfter one simultaneous multiple merge generation:\n";

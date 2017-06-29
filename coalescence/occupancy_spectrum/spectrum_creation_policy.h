@@ -12,7 +12,7 @@
 #define __OCCUPANCY_SPECTRUM_SAMPLER_H_INCLUDED__
 
 
-#include "occupancy_spectrum_distribution.h"
+#include "OccupancySpectrumDistribution.h"
 #include "memoize.h"
 #include <boost/multiprecision/cpp_int.hpp>
 #include <boost/multiprecision/cpp_dec_float.hpp>
@@ -20,8 +20,8 @@
 #include <vector>
 #include <random>
 
+namespace quetzal{
 namespace coalescence {
-
 namespace occupancy_spectrum{
 
 template<class Spectrum>
@@ -70,7 +70,7 @@ struct on_the_fly {
 template
 <
 class UnaryPredicate = ReturnAlwaysTrue,
-class SpectrumHandler = HandleIdentity,
+class SpectrumHandler = Identity,
 class Int = cpp_int,
 class Float = cpp_dec_float_50
 >
@@ -83,5 +83,6 @@ struct in_memoized_distribution{
 
 } // namespace occupancy_spectrum
 } //namespace coalescence
+} //namespace quetzal
 
 #endif

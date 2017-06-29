@@ -10,22 +10,22 @@
 
 // compiles with g++ -o test generative_algorithm_test.cpp -std=c++14 -Wall
 
-#include "Algorithm.h"
+#include "Generator.h"
 
 #include <iostream>
 #include <algorithm> // for copy
 #include <iterator> // for ostream_iterator
 
 int main(){
-  using namespace coalescence::occupancy_spectrum;
-  using spectrum_type = Algorithm::occupancy_spectrum_type;
+  using generator_type = quetzal::coalescence::occupancy_spectrum::Generator;
+  using spectrum_type = generator_type::occupancy_spectrum_type;
 
   auto spectrum_handler = [](spectrum_type const& M_j){
     std::copy(M_j.begin(), M_j.end(), std::ostream_iterator<spectrum_type::value_type>(std::cout, " "));
     std::cout << "\n";
   };
 
-  Algorithm::generate(5,10, spectrum_handler);
+  generator_type::generate(5,10, spectrum_handler);
 
   return 0;
 }

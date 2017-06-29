@@ -14,34 +14,57 @@
 #include <algorithm> // std::shuffle
 #include <iterator> // std::advance
 
+namespace quetzal{
 namespace coalescence {
 
-  //! \remark Return value : Output iterator to the element past the last element transformed.
-  //! \remark It pointed value should be swappable
+  /**
+   * \brief merge 2 randomly selected elements in a range (function template).
+   * \param first iterator at the begin of the range
+   * \param last iterator to the past-the-end element.
+   * \param init the value at which parent is initialized
+   * \param op binary operation function object that will be applied for branching a
+               child to its parent. The binary operator takes the parent value a
+               (initialized to init) and the value of the child b. The signature
+               of the function should be equivalent to the following:
+               Ret fun(const Type1 &parent, const Type2 &child);
+   * \return Past-the-end iterator for the new range of values
+   */
   template<class BidirectionalIterator, class T, class BinaryOperation, class Generator>
-  auto binary_merge(BidirectionalIterator first, BidirectionalIterator last, T init, BinaryOperation const& binary_op, Generator& g) {
+  auto binary_merge(BidirectionalIterator first, BidirectionalIterator last, T init, BinaryOperation op, Generator& g) {
       std::shuffle(first, last, g);
-      *first = binary_op(init, *first);
-      *first = binary_op(*first, *(--last));
+      *first = op(init, *first);
+      *first = op(*first, *(--last));
     return last;
   }
 
-  //! \remark Return value : Output iterator to the element past the last element transformed.
-  //! \remark It pointed value should be swappable
-  template<class BidirectionalIterator, class T, class BinaryOperation, class Generator>
-  auto simultaneous_multiple_merge(BidirectionalIterator first, BidirectionalIterator last, T init, std::vector<unsigned int> const& M_j, BinaryOperation const& binary_op, Generator& g) {
+  /**
+   * \brief merge randomly selected elements in a range according to a given configuration (function template).
+   * \param first iterator at the begin of the range
+   * \param last iterator to the past-the-end element.
+   * \param sp occupancy spectrum giving the merging configuration
+   * \param init the value at which parent is initialized
+   * \param op binary operation function object that will be applied for branching a
+               child to its parent. The binary operator takes the parent value a
+               (initialized to init) and the value of the child b. The signature
+               of the function should be equivalent to the following:
+               Ret fun(const Type1 &parent, const Type2 &child);
+   * \return Past-the-end iterator for the new range of values
+   */
+  template<class BidirectionalIterator, class T, class BinaryOperation, class OccupancySpectrum, class Generator>
+  auto simultaneous_multiple_merge(BidirectionalIterator first, BidirectionalIterator last,
+                                   T init, OccupancySpectrum const& sp, BinaryOperation op, Generator& g) {
       std::shuffle(first, last, g);
 
        // directly go to binary merge.
-      auto m_it = M_j.cbegin();
+      auto m_it = sp.cbegin();
       std::advance(m_it, 2);
       int j = 2;
 
-      while(m_it != M_j.cend()){
+      while(m_it != sp.cend()){
         for(unsigned int i = 1; i <= *m_it; ++i){ // loop on the m_j parents
-          *first = binary_op(init, *first);
+          *first = op(init, *first);
           for(int k = 1; k < j; ++k){ // loop on the others children
-            *first = binary_op(*first, *(--last));
+            *first = op(*first, *(--last));
           }
           ++first;
         }
@@ -52,5 +75,6 @@ namespace coalescence {
   }
 
 } // namespace coalescence
+} // namespace quetzal
 
 #endif

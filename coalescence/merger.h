@@ -16,6 +16,7 @@
 
 #include <iterator> // std::distance
 
+namespace quetzal{
 namespace coalescence {
 
   struct BinaryMerger{
@@ -44,5 +45,6 @@ namespace coalescence {
   };
 
 } // namespace coalescence
+} // namespace quetzal
 
 #endif

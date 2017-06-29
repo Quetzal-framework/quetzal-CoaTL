@@ -11,7 +11,7 @@
 #ifndef __OCCUPANCY_SPECTRUM_DISTRIBUTION_H_INCLUDED__
 #define __OCCUPANCY_SPECTRUM_DISTRIBUTION_H_INCLUDED__
 
-#include "Algorithm.h"
+#include "Generator.h"
 
 #include <random> // discrete_distribution
 #include <utility> // std::forward, std::move
@@ -24,6 +24,7 @@
 #include <boost/multiprecision/cpp_dec_float.hpp>
 #include <boost/multiprecision/random.hpp> // boost::multiprecision::pow
 
+namespace quetzal{
 namespace coalescence{
 namespace occupancy_spectrum {
 
@@ -37,16 +38,16 @@ namespace occupancy_spectrum {
       }
   };
 
-  struct HandleIdentity {
-      using spectrum_type = Algorithm::occupancy_spectrum_type;
+  struct Identity {
+      using spectrum_type = Generator::occupancy_spectrum_type;
       static spectrum_type handle(spectrum_type&& M_j)
       {
           return std::move(M_j);
       }
   };
 
-  struct HandleRetrieveLastEmptyUrns {
-    using spectrum_type = Algorithm::occupancy_spectrum_type;
+  struct RetrieveLastEmptyUrns {
+    using spectrum_type = Generator::occupancy_spectrum_type;
     static spectrum_type handle(spectrum_type&& M_j)
     {
       auto first = --(M_j.end());
@@ -62,14 +63,14 @@ namespace occupancy_spectrum {
   template
   <
   class UnaryPredicate = ReturnAlwaysTrue,
-  class SpectrumHandler = HandleIdentity,
+  class SpectrumHandler = Identity,
   class Int = cpp_int,
   class Float = cpp_dec_float_50
   >
   class OccupancySpectrumDistribution {
 
     using SelfType = OccupancySpectrumDistribution<UnaryPredicate, SpectrumHandler, Int, Float>;
-    using spectrum_type = typename Algorithm::occupancy_spectrum_type;
+    using spectrum_type = typename Generator::occupancy_spectrum_type;
     using support_type = std::vector<spectrum_type>;
     using probabilities_type = std::vector<double>;
 
@@ -100,7 +101,7 @@ namespace occupancy_spectrum {
     //! \remark heavy constructor for large k
     OccupancySpectrumDistribution(unsigned int k, unsigned int N, UnaryPredicate pred = UnaryPredicate()) : m_k(k), m_N(N), m_pred(pred) {
       auto callback = make_callback(k, N, pred);
-      Algorithm::generate(k, N, callback);
+      Generator::generate(k, N, callback);
       m_dist = std::discrete_distribution<size_t>( m_probas.cbegin(), m_probas.cend() );
       assert(m_support.size() == m_probas.size());
     }
@@ -172,5 +173,6 @@ namespace occupancy_spectrum {
 
 } // namespace occupancy_spectrum
 } // namespace coalescence
+} // namespace quetzal
 
 #endif

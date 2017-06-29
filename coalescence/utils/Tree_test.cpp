@@ -6,7 +6,7 @@
 * the Free Software Foundation; either version 2 of the License, or    *
 * (at your option) any later version.                                  *
 *                                                                      *
-************************************************************************/ 
+************************************************************************/
 
 /**
  * Program for unit testing
@@ -22,7 +22,7 @@
 #include <iostream>
 int main(){
 
-	using coalescence::utils::Tree;
+	using quetzal::coalescence::utils::Tree;
 	using std::string;
 
 	/**
@@ -49,7 +49,7 @@ int main(){
 
 	/* Expected topology :
 	 *            a
-	 *           /\ \ 
+	 *           /\ \
 	 *          b  d e
 	 *         /      \\
 	 *        c       f g
@@ -77,7 +77,7 @@ int main(){
 	children.push_back(std::move(g));
 
 	Tree<string> e("e", std::move(children));
-	
+
 	// Rebranching subtree
 	root.add_child(std::move(e));
 
@@ -92,7 +92,7 @@ int main(){
 	auto treatment = [&v](string s){ v.push_back(s); };
 
 	root.pre_order_DFS(treatment);
-	
+
 	assert(v == expected_data);
 	v.clear();
 

@@ -14,11 +14,13 @@
 #include <vector>
 #include <utility>
 
+namespace quetzal{
+
 namespace coalescence{
 
 namespace occupancy_spectrum{
 
-struct Algorithm{
+struct Generator{
   using occupancy_spectrum_type = std::vector<unsigned int>;
   // n balls, m urns, Policy handles occupancy_spectrum_type
   template<class Callback>
@@ -84,5 +86,6 @@ private:
 
 } // namespace occupancy_spectrum
 } // namespace coalescence
+} // namespace quetzal
 
 #endif

@@ -6,13 +6,14 @@
 * the Free Software Foundation; either version 2 of the License, or    *
 * (at your option) any later version.                                  *
 *                                                                      *
-************************************************************************/ 
+************************************************************************/
 
 #ifndef TREE_H_INCLUDED
 #define TREE_H_INCLUDED
 
 #include <vector>
 
+namespace quetzal{
 namespace coalescence{
 namespace utils {
 
@@ -29,13 +30,13 @@ class Tree
 {
 private:
 	typedef Tree<CellT> SelfType;
- 
+
 	SelfType*             m_parent;
 	CellT                 m_cell;
 	std::vector<SelfType> m_children;
- 
+
 public:
-	
+
 	//! \remark CellT must be default constructible
 	Tree();
 
@@ -48,23 +49,23 @@ public:
 	//! \remark CellT must be copy constructible.
 	//! \todo enable copy construction if needed, for now delete it for efficiency sake
 	Tree(const SelfType& other) = delete;
- 
+
 	//! \remark CellT must be move constructible.
 	Tree(SelfType&& other) noexcept;
 
 	//! \remark CellT must be move constructible.
 	Tree(CellT&& cell, std::vector<SelfType>&& children) noexcept;
- 
+
 	//! \remark CellT must be copy constructible and move assignable.
 	//! \todo enable copy assignment if needed, for now delete it for efficiency sake
 	SelfType& operator=(const SelfType& other) = delete;
- 
+
 	//! \remark CellT must be move assignable.
 	SelfType& operator=(SelfType&& other) noexcept;
- 
+
  	//! \remark Read-only data access
  	const CellT& cell() const;
- 
+
  	//! \remark Read-and-write data access
  	CellT& cell();
 
@@ -99,7 +100,7 @@ Tree<CellT>::Tree() :
 
 template<typename CellT>
 Tree<CellT>::Tree(const CellT& cell) :
-	m_parent(nullptr), m_cell(cell), m_children() 
+	m_parent(nullptr), m_cell(cell), m_children()
 {}
 
 template<typename CellT>
@@ -160,7 +161,7 @@ const CellT& Tree<CellT>::cell() const
 {
 	return m_cell;
 }
- 
+
 template<class CellT>
 CellT& Tree<CellT>::cell()
 {
@@ -226,5 +227,6 @@ void Tree<CellT>::access_leaves_by_DFS(Treatment const& fun) const {
 
 } // namespace utils
 } // namespace coalescence
+} // namespace quetzal
 
 #endif

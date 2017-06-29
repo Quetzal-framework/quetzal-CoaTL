@@ -6,7 +6,7 @@
 * the Free Software Foundation; either version 2 of the License, or    *
 * (at your option) any later version.                                  *
 *                                                                      *
-************************************************************************/ 
+************************************************************************/
 
 /**
  * \file Forest_test.cpp
@@ -28,7 +28,7 @@ int main(){
 	// \remark These are very basic types sufficient for testing, but have little to see with coalescence.
 	using position_type = int;
 	using tree_type = std::string;
-	using forest_type = coalescence::utils::Forest<position_type, tree_type>;
+	using forest_type = quetzal::coalescence::utils::Forest<position_type, tree_type>;
 
 	/**
 	 * Initialization
@@ -44,7 +44,7 @@ int main(){
 	forest_type third = first;
 
 	// assignment by copy assignment operator
-	second = third;           
+	second = third;
 
 	// assignment by move assignment operator
 	second = std::move(third);
@@ -66,7 +66,7 @@ int main(){
 	// Number of trees in the forest at place 1
 	assert(forest.nb_trees(1) == 2);
 
-	
+
 	std::set<position_type> space;
 	std::set<tree_type> species;
 	for(auto const& it : forest){
