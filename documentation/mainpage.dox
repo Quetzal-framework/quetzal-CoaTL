@@ -1,0 +1,93 @@
+/**
+\mainpage Quetzal
+
+\section Introduction
+
+QuetzalCoaTL (COALescence Template Library), or Quetzal for shorter use, is a
+C++ template library for simulating coalescence processes in spatially explicit
+landscapes with complex demography.
+
+If you are a scientist interested in studying how populations grow and spread
+in complex environments using Approximate Bayesian Computation (ABC), this library
+ can offer you some usefull tools for building complex generative models of genetic data.
+
+  - Because of ABC is computationally intensive, we wanted Quetzal to be <B>fast</B>
+enough to run millions of simulations in a minimal amount of time.
+
+  - Because the set of all possible simulation models is infinite, we wanted
+Quetzal to be <B>modular</B>, so you could feel free to recombine the tools we
+offer in the way which is most desirable for your own purpose.
+
+  - Because you will surely come with your own project bringing many specificities
+which would be impossible for us to foresee, we wanted Quetzal to be <B>extensible</B>,
+so you can develop your own tools and combine them with minimal cost with Quetzal interfaces.
+
+And because this project is still in development, it is naturally modest and still
+focused on our specific needs. This is why Quetzal lacks of what could seem to you as
+basics : please feel free to contact us for feedbacks or collaboration !
+
+\section Organisation
+
+The library is divided in various modules : \ref coalescence
+
+\subsection ss_coal Coalescence module
+
+\ref coalescence
+
+Contains various tools for simulating coalescents.
+
+Sub-module                              | Description
+----------------------------------------| -------------
+\ref coal_algorithms "Algorithms"       | Template algorithms for operating coalescence operations on data sequences.
+\ref coal_containers "Containers"       | Template containers for coalescent reconstruction involving non-trivial data manipulation.
+\ref coal_spectrum "Occupancy spectrum" | Random experience of simultaneous multiple collisions.
+\ref coal_policies "Policies"           | Components for policy-based designed algorithms or models.
+
+- Define your own concept of coalescence with \ref coal_algorithms : template
+algorithms let you free to define the data implementation that will
+be the most suitable to your special case study.
+
+- Use \ref coal_containers for efficient manipulation of customized genealogies
+when confronting non-trivial cases for which no simple data representation holds
+(for example when studying space-and-time distribution of coalescence events).
+
+- Use \ref coal_spectrum to boost your simulations ! Under some hypothesis,
+coalescence with simultaneous multiple collisions can lead to study what we
+called the occupancy spectrum (loosely a coalescence configuration).
+Occupancy spectrum is used as an interface in algorithms: its simulation is highly
+customizable and involves trade-offs between speed and memory consumption.
+Choose the most appropriate set of behaviors !
+
+- Some algorithms make use of policies for customization. Feel free to re-use them
+if you need their interface in your own implementation of coalescence models.
+
+*/
+
+/**
+  * \defgroup coalescence Coalescence
+  * \brief Template algorithms for operating coalescence operations on data sequences.
+  * @{
+  */
+
+/**
+  * \defgroup coal_algorithms Algorithms
+  * \brief Template algorithms for operating coalescence operations on data sequences.
+  */
+
+/**
+  * \defgroup coal_containers Containers
+  * \brief Template containers for coalescent reconstruction involving non-trivial data manipulation.
+  */
+
+/**
+  * \defgroup coal_policies Policies
+  *
+  * \brief Policies with common interface, made to be used when designing coalescence algorithms or models.
+  */
+
+/**
+  * \defgroup coal_spectrum Occupancy Spectrum
+  * \biref Occupancy spectrum simulation for coalescence with simultaneous multiple collisions.
+  */
+
+/** @}*/

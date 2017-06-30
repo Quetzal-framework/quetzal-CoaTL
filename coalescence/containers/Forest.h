@@ -20,6 +20,7 @@ namespace quetzal{
 namespace coalescence{
 
 /*!
+ * \ingroup coal_containers
  * \brief Defines a class for implementating a collection of geo-localized coalescents.
  * \tparam Position Type of the geographic coordinate of the associated tree.
  * \tparam Tree Type of the coalescence tree.

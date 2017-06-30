@@ -17,7 +17,8 @@ namespace quetzal{
 namespace coalescence{
 
 /*!
- * \brief Defines a class for implementating a N-ary tree with each node containing a data field.
+ * \ingroup coal_containers
+ * \brief Tree topology where each node contains a data field.
  * \tparam CellT Cell type, ie the value of the node. The requirements that are imposed on CellT
  *               depend on the actual operations performed on Tree<CellT>.
  */
@@ -28,66 +29,134 @@ template<class CellT>
 class Tree
 {
 private:
-	typedef Tree<CellT> SelfType;
 
-	SelfType*             m_parent;
+	Tree<CellT>*             m_parent;
 	CellT                 m_cell;
-	std::vector<SelfType> m_children;
+	std::vector<Tree<CellT>> m_children;
 
 public:
 
-	//! \remark CellT must be default constructible
+  /**
+	  * \brief Default constructor
+	  * \remark CellT must be default constructible
+		*/
 	Tree();
 
-	//! \remark CellT must be copy constructible.
+	/**
+	  * \brief Constructor with data copy
+		* \param cell the value of the tree cell
+	  * \remark CellT must be copy constructible.
+		*/
 	Tree(const CellT& cell);
 
-	//! \remark CellT must be move constructible.
+	/**
+	  * \brief Constructor with data move
+		* \param cell the value of the tree cell
+	  * \remark CellT must be move constructible.
+		*/
 	Tree(CellT&& cell) noexcept;
 
-	//! \remark CellT must be copy constructible.
-	Tree(const SelfType& other);
+	/**
+	  * \brief Copy constructor
+		* \param other the tree to be constructed from
+	  * \remark CellT must be copy constructible.
+	  */
+	Tree(const Tree<CellT>& other);
 
-	//! \remark CellT must be move constructible.
-	Tree(SelfType&& other) noexcept;
+	/**
+	  * \brief Move constructor
+		* \param other the tree to be constructed from
+	  * \remark CellT must be move constructible.
+	  */
+	Tree(Tree<CellT>&& other) noexcept;
 
-	//! \remark CellT must be move constructible.
-	Tree(CellT&& cell, std::vector<SelfType>&& children) noexcept;
+	/**
+	  * \brief Constructor
+		* \param cell the value of the tree cell
+		* \param children a vector of subtrees
+	  * \remark CellT must be move constructible.
+	  */
+	Tree(CellT&& cell, std::vector<Tree<CellT>>&& children) noexcept;
 
-	//! \remark CellT must be copy constructible and move assignable.
-	SelfType& operator=(const SelfType& other);
+	/**
+	  * \brief Copy assignment operator
+	  * \remark CellT must be copy constructible and move assignable.
+	  */
+	Tree<CellT>& operator=(const Tree<CellT>& other);
 
-	//! \remark CellT must be move assignable.
-	SelfType& operator=(SelfType&& other) noexcept;
+	/**
+	  * \brief Move assignment operator
+	  * \remark CellT must be move assignable.
+	  */
+	Tree<CellT>& operator=(Tree<CellT>&& other) noexcept;
 
- 	//! \remark Read-only data access
- 	const CellT& cell() const;
+	/**
+	  * \brief Cell accessor
+		* \return a const-reference to the tree cell
+	  * \remark Read-only data access
+	  */
+	const CellT& cell() const;
 
- 	//! \remark Read-and-write data access
+	/**
+	  * \brief  Cell accessor
+		* \return a reference to the tree cell
+	  * \remark Read-and-write data access
+	  */
  	CellT& cell();
 
- 	//! \remark Returns reference on the copied subtree
- 	Tree<CellT>& add_child(const SelfType& subtree);
+	/**
+	  * \brief Add a subtree to the children list of the tree
+		* \param subtree the subtree to be added
+		* \return a reference on the new subtree
+	  */
+ 	Tree<CellT>& add_child(const Tree<CellT>& subtree);
 
- 	//! \remark Returns reference on the moved subtree
- 	Tree<CellT>& add_child(SelfType&& subtree) noexcept;
+	/**
+		* \brief Add a subtree to the children list of the tree
+		* \param subtree the subtree to be added
+		* \return a reference on the new subtree
+		*/
+ 	Tree<CellT>& add_child(Tree<CellT>&& subtree) noexcept;
 
- 	//! \remark Returns reference on the emplaced new child with moved data
+	/**
+		* \brief Add a subtree to the children list of the tree, initialize the tree
+		* \param cell the cell value of the subtree to be added
+		* \return a reference on the new subtree
+		*/
  	Tree<CellT>& add_child(CellT&& cell) noexcept;
 
- 	//! Checks whether the tree has a parent
+	/**
+	  * \brief Checks whether the tree has a parent
+		* \return Returns true if the tree has a parent, else returns false.
+	  */
  	bool has_parent() const;
 
- 	//! Checks whether the tree has one or more child
+	/**
+	  * \brief Checks whether the tree has one or more child
+		* \return Returns false if the tree has no child, else returns true.
+	  */
  	bool has_children() const;
 
- 	//! \remark Treament must be callable with CellT argument
- 	template<typename Treatment>
-	void pre_order_DFS(Treatment const& fun) const ;
+	/**
+	  * \brief Applies a function object to each node encountered in a depth first search algorithm
+		* \param op unary operation function object that will be applied to the data member
+		            of the tree. The unary operator takes the cell as argument. The signature
+								of the function should be equivalent to the following:
+								`void op(const CellT & cell);`.
+	  */
+ 	template<typename UnaryOperation>
+	void pre_order_DFS(UnaryOperation op) const ;
 
- 	//! \remark Treament must be callable with CellT argument
-	template<typename Treatment>
-	void access_leaves_by_DFS(Treatment const& fun) const ;
+	/**
+	  * \brief Applies a function object to each leave encountered in a depth first search algorithm
+		* \param op unary operation function object that will be applied to the data member
+		            of the tree. The unary operator takes the cell as argument. The signature
+								of the function should be equivalent to the following:
+								`void op(const CellT & cell);`.
+	  */
+	template<typename UnaryOperation>
+	void access_leaves_by_DFS(UnaryOperation op) const ;
+
 };
 
 template<typename CellT>
@@ -107,7 +176,7 @@ Tree<CellT>::Tree(CellT&& cell) noexcept :
 
 
 template<class CellT>
-Tree<CellT>::Tree(const SelfType& other) :
+Tree<CellT>::Tree(const Tree<CellT>& other) :
 	m_parent(nullptr), m_cell(other.m_cell), m_children(other.m_children)
 {
 	for(Tree<CellT>& child : m_children)
@@ -116,7 +185,7 @@ Tree<CellT>::Tree(const SelfType& other) :
 
 
 template<class CellT>
-Tree<CellT>::Tree(SelfType&& other) noexcept :
+Tree<CellT>::Tree(Tree<CellT>&& other) noexcept :
 	m_parent(nullptr), m_cell(std::move(other.m_cell)), m_children(std::move(other.m_children))
 {
 	for(Tree<CellT>& child : m_children)
@@ -125,7 +194,7 @@ Tree<CellT>::Tree(SelfType&& other) noexcept :
 
 
 template<class CellT>
-Tree<CellT>::Tree(CellT&& cell, std::vector<SelfType>&& children) noexcept :
+Tree<CellT>::Tree(CellT&& cell, std::vector<Tree<CellT>>&& children) noexcept :
 	m_parent(nullptr), m_cell(std::move(cell)), m_children(std::move(children))
 {
 	for(Tree<CellT>& child : m_children)
@@ -134,7 +203,7 @@ Tree<CellT>::Tree(CellT&& cell, std::vector<SelfType>&& children) noexcept :
 
 
 template<class CellT>
-Tree<CellT>& Tree<CellT>::operator=(const SelfType& other)
+Tree<CellT>& Tree<CellT>::operator=(const Tree<CellT>& other)
 {
 	Tree<CellT> otherCopy(other);
 	*this = std::move(otherCopy);
@@ -143,7 +212,7 @@ Tree<CellT>& Tree<CellT>::operator=(const SelfType& other)
 
 
 template<class CellT>
-Tree<CellT>& Tree<CellT>::operator=(SelfType&& other) noexcept
+Tree<CellT>& Tree<CellT>::operator=(Tree<CellT>&& other) noexcept
 {
 	m_cell     = std::move(other.m_cell);
 	m_children = std::move(other.m_children);
@@ -165,7 +234,7 @@ CellT& Tree<CellT>::cell()
 }
 
 template<class CellT>
-Tree<CellT>& Tree<CellT>::add_child(const SelfType& subtree)
+Tree<CellT>& Tree<CellT>::add_child(const Tree<CellT>& subtree)
 {
 	Tree<CellT> otherCopy(subtree);
 	otherCopy.m_parent = this;
@@ -174,7 +243,7 @@ Tree<CellT>& Tree<CellT>::add_child(const SelfType& subtree)
 }
 
 template<class CellT>
-Tree<CellT>& Tree<CellT>::add_child(SelfType&& subtree) noexcept
+Tree<CellT>& Tree<CellT>::add_child(Tree<CellT>&& subtree) noexcept
 {
 	subtree.m_parent = this;
 	m_children.push_back(std::move(subtree));
@@ -201,23 +270,23 @@ bool Tree<CellT>::has_children() const {
 }
 
 template<class CellT>
-template<class Treatment>
-void Tree<CellT>::pre_order_DFS(Treatment const& fun) const {
-	fun(this->cell());
+template<class UnaryOperation>
+void Tree<CellT>::pre_order_DFS(UnaryOperation op) const {
+	op(this->cell());
 	for(auto const& child : this->m_children){
-		child.pre_order_DFS(fun);
+		child.pre_order_DFS(op);
 	}
 }
 
 template<class CellT>
-template<class Treatment>
-void Tree<CellT>::access_leaves_by_DFS(Treatment const& fun) const {
+template<class UnaryOperation>
+void Tree<CellT>::access_leaves_by_DFS(UnaryOperation op) const {
 	if(has_children()){
 		for(auto const& child : this->m_children){
-			child.access_leaves_by_DFS(fun);
+			child.access_leaves_by_DFS(op);
 		}
 	}else{
-		fun(this->cell());
+		op(this->cell());
 	}
 }
 

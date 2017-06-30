@@ -11,6 +11,8 @@
 #ifndef __COALESCENCE_MERGE_ALGORITHM_H_INCLUDED__
 #define __COALESCENCE_MERGE_ALGORITHM_H_INCLUDED__
 
+/** @file */
+
 #include <algorithm> // std::shuffle
 #include <iterator> // std::advance
 
@@ -18,7 +20,8 @@ namespace quetzal{
 namespace coalescence {
 
   /**
-   * \brief merge 2 randomly selected elements in a range (function template).
+   * \ingroup coal_algorithms
+   * \brief merges 2 randomly selected elements in a range.
    * \param first iterator at the begin of the range
    * \param last iterator to the past-the-end element.
    * \param init the value at which parent is initialized
@@ -26,11 +29,21 @@ namespace coalescence {
                child to its parent. The binary operator takes the parent value a
                (initialized to init) and the value of the child b. The signature
                of the function should be equivalent to the following:
-               Ret fun(const Type1 &parent, const Type2 &child);
-   * \return Past-the-end iterator for the new range of values
+               `Ret fun(const Type1 &parent, const Type2 &child);`
+   * \return An iterator to the element that follows the last element of the nodes remaining after coalescence.
+             The function cannot alter the properties of the object containing the range of elements
+             (i.e., it cannot alter the size of an array or a container):
+             signaling the new size of the shortened range is done by returning an iterator to the element
+             that should be considered its new past-the-end element. The range between first and
+             this iterator includes all the remaining nodes in the sequence.
+   * \section Example
+   * \snippet coalescence/algorithms/test/binary_merge_test.cpp Example
+   * \section Output
+   * \include coalescence/algorithms/test/binary_merge_test.output
    */
   template<class BidirectionalIterator, class T, class BinaryOperation, class Generator>
-  auto binary_merge(BidirectionalIterator first, BidirectionalIterator last, T init, BinaryOperation op, Generator& g) {
+  BidirectionalIterator binary_merge(BidirectionalIterator first, BidirectionalIterator last,
+                                     T init, BinaryOperation op, Generator& g) {
       std::shuffle(first, last, g);
       *first = op(init, *first);
       *first = op(*first, *(--last));
@@ -38,20 +51,30 @@ namespace coalescence {
   }
 
   /**
-   * \brief merge randomly selected elements in a range according to a given configuration (function template).
+   * \ingroup coal_algorithms
+   * \brief merges randomly selected elements in a range according to an occupancy spectrum.
    * \param first iterator at the begin of the range
    * \param last iterator to the past-the-end element.
-   * \param sp occupancy spectrum giving the merging configuration
    * \param init the value at which parent is initialized
+   * \param sp occupancy spectrum giving the merging configuration
    * \param op binary operation function object that will be applied for branching a
                child to its parent. The binary operator takes the parent value a
                (initialized to init) and the value of the child b. The signature
                of the function should be equivalent to the following:
-               Ret fun(const Type1 &parent, const Type2 &child);
-   * \return Past-the-end iterator for the new range of values
+               `Ret fun(const Type1 &parent, const Type2 &child);`
+   * \return An iterator to the element that follows the last element of the nodes remaining after coalescence.
+             The function cannot alter the properties of the object containing the range of elements
+             (i.e., it cannot alter the size of an array or a container):
+             signaling the new size of the shortened range is done by returning an iterator to the element
+             that should be considered its new past-the-end element. The range between first and
+             this iterator includes all the remaining nodes in the sequence.
+   * \section Example
+   * \snippet coalescence/algorithms/test/simultaneous_multiple_merge_test.cpp Example
+   * \section Output
+   * \include coalescence/algorithms/test/simultaneous_multiple_merge_test.output
    */
   template<class BidirectionalIterator, class T, class BinaryOperation, class OccupancySpectrum, class Generator>
-  auto simultaneous_multiple_merge(BidirectionalIterator first, BidirectionalIterator last,
+  BidirectionalIterator simultaneous_multiple_merge(BidirectionalIterator first, BidirectionalIterator last,
                                    T init, OccupancySpectrum const& sp, BinaryOperation op, Generator& g) {
       std::shuffle(first, last, g);
 
