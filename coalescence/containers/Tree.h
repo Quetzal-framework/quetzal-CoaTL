@@ -39,6 +39,10 @@ public:
   /**
 	  * \brief Default constructor
 	  * \remark CellT must be default constructible
+		* \section Example
+		* \snippet coalescence/containers/test/Tree/initialization_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Tree/initialization_test.output
 		*/
 	Tree();
 
@@ -46,6 +50,10 @@ public:
 	  * \brief Constructor with data copy
 		* \param cell the value of the tree cell
 	  * \remark CellT must be copy constructible.
+		* \section Example
+		* \snippet coalescence/containers/test/Tree/initialization_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Tree/initialization_test.output
 		*/
 	Tree(const CellT& cell);
 
@@ -53,6 +61,10 @@ public:
 	  * \brief Constructor with data move
 		* \param cell the value of the tree cell
 	  * \remark CellT must be move constructible.
+		* \section Example
+		* \snippet coalescence/containers/test/Tree/initialization_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Tree/initialization_test.output
 		*/
 	Tree(CellT&& cell) noexcept;
 
@@ -60,6 +72,10 @@ public:
 	  * \brief Copy constructor
 		* \param other the tree to be constructed from
 	  * \remark CellT must be copy constructible.
+		* \section Example
+		* \snippet coalescence/containers/test/Tree/initialization_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Tree/initialization_test.output
 	  */
 	Tree(const Tree<CellT>& other);
 
@@ -67,6 +83,10 @@ public:
 	  * \brief Move constructor
 		* \param other the tree to be constructed from
 	  * \remark CellT must be move constructible.
+		* \section Example
+		* \snippet coalescence/containers/test/Tree/initialization_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Tree/initialization_test.output
 	  */
 	Tree(Tree<CellT>&& other) noexcept;
 
@@ -75,18 +95,30 @@ public:
 		* \param cell the value of the tree cell
 		* \param children a vector of subtrees
 	  * \remark CellT must be move constructible.
+		* \section Example
+		* \snippet coalescence/containers/test/Tree/initialization_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Tree/initialization_test.output
 	  */
 	Tree(CellT&& cell, std::vector<Tree<CellT>>&& children) noexcept;
 
 	/**
 	  * \brief Copy assignment operator
 	  * \remark CellT must be copy constructible and move assignable.
+		* \section Example
+		* \snippet coalescence/containers/test/Tree/initialization_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Tree/initialization_test.output
 	  */
 	Tree<CellT>& operator=(const Tree<CellT>& other);
 
 	/**
 	  * \brief Move assignment operator
 	  * \remark CellT must be move assignable.
+		* \section Example
+		* \snippet coalescence/containers/test/Tree/initialization_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Tree/initialization_test.output
 	  */
 	Tree<CellT>& operator=(Tree<CellT>&& other) noexcept;
 
@@ -94,6 +126,10 @@ public:
 	  * \brief Cell accessor
 		* \return a const-reference to the tree cell
 	  * \remark Read-only data access
+		* \section Example
+		* \snippet coalescence/containers/test/Tree/basics_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Tree/basics_test.output
 	  */
 	const CellT& cell() const;
 
@@ -101,6 +137,10 @@ public:
 	  * \brief  Cell accessor
 		* \return a reference to the tree cell
 	  * \remark Read-and-write data access
+		* \section Example
+		* \snippet coalescence/containers/test/Tree/basics_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Tree/basics_test.output
 	  */
  	CellT& cell();
 
@@ -108,6 +148,10 @@ public:
 	  * \brief Add a subtree to the children list of the tree
 		* \param subtree the subtree to be added
 		* \return a reference on the new subtree
+		* \section Example
+		* \snippet coalescence/containers/test/Tree/basics_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Tree/basics_test.output
 	  */
  	Tree<CellT>& add_child(const Tree<CellT>& subtree);
 
@@ -115,6 +159,10 @@ public:
 		* \brief Add a subtree to the children list of the tree
 		* \param subtree the subtree to be added
 		* \return a reference on the new subtree
+		* \section Example
+		* \snippet coalescence/containers/test/Tree/basics_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Tree/basics_test.output
 		*/
  	Tree<CellT>& add_child(Tree<CellT>&& subtree) noexcept;
 
@@ -122,18 +170,30 @@ public:
 		* \brief Add a subtree to the children list of the tree, initialize the tree
 		* \param cell the cell value of the subtree to be added
 		* \return a reference on the new subtree
+		* \section Example
+		* \snippet coalescence/containers/test/Tree/basics_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Tree/basics_test.output
 		*/
  	Tree<CellT>& add_child(CellT&& cell) noexcept;
 
 	/**
 	  * \brief Checks whether the tree has a parent
 		* \return Returns true if the tree has a parent, else returns false.
+		* \section Example
+		* \snippet coalescence/containers/test/Tree/basics_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Tree/basics_test.output
 	  */
  	bool has_parent() const;
 
 	/**
 	  * \brief Checks whether the tree has one or more child
 		* \return Returns false if the tree has no child, else returns true.
+		* \section Example
+		* \snippet coalescence/containers/test/Tree/basics_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Tree/basics_test.output
 	  */
  	bool has_children() const;
 
@@ -143,6 +203,10 @@ public:
 		            of the tree. The unary operator takes the cell as argument. The signature
 								of the function should be equivalent to the following:
 								`void op(const CellT & cell);`.
+		* \section Example
+	  * \snippet coalescence/containers/test/Tree/pre_order_DFS_test.cpp Example
+		* \section Output
+		* \include coalescence/algorithms/test/binary_merge_test.output
 	  */
  	template<typename UnaryOperation>
 	void pre_order_DFS(UnaryOperation op) const ;
@@ -153,11 +217,23 @@ public:
 		            of the tree. The unary operator takes the cell as argument. The signature
 								of the function should be equivalent to the following:
 								`void op(const CellT & cell);`.
+		* \section Example
+	  * \snippet coalescence/containers/test/Tree/access_leaves_by_DFS_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Tree/access_leaves_by_DFS_test.output
 	  */
 	template<typename UnaryOperation>
 	void access_leaves_by_DFS(UnaryOperation op) const ;
 
 };
+
+
+
+
+
+
+
+
 
 template<typename CellT>
 Tree<CellT>::Tree() :
