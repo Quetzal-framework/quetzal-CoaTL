@@ -8,45 +8,39 @@
 *                                                                      *
 ************************************************************************/
 
-#include "../../Tree.h"
+
+#include "../../Forest.h"
 
 //! [Example]
 
-#include <string>
-#include "assert.h"
 #include <iostream>
 
 int main(){
 
-	using quetzal::coalescence::Tree;
-	using std::string;
+	using position_type = int;
+	using tree_type =int;
+	using forest_type = quetzal::coalescence::Forest<position_type, tree_type>;
 
-	/* Topology :
-	 *            a
-	 *           / \
-	 *          b   c
-	 */
+	// initialization by default constructor
+	forest_type a;
 
-	Tree<string> a("a");
+	// initialization by copy constructor
+	forest_type b(a);
 
-	assert( ! a.has_parent() );
-	assert( ! a.has_children() );
+	// initialization by move constructor
+	forest_type c(std::move(b)); // b should not be used again
 
-	auto& b = a.add_child("b");
+	// Also initialization by copy constructor
+	forest_type d = a;
 
-	assert( b.has_parent() );
-	assert( a.has_children() );
+	// assignment by copy assignment operator
+	d = c;
 
-	auto& c = a.add_child("c");
-
-	assert(c.cell() == "c");
-
-	c.cell() = "d";
-
-	assert(c.cell() != "c");
+	// assignment by move assignment operator
+	d = std::move(c);
 
 	std::cout << "done" << std::endl;
-
+	
 	return 0;
 }
 

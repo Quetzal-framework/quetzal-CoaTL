@@ -21,7 +21,7 @@ namespace coalescence{
 
 /*!
  * \ingroup coal_containers
- * \brief Defines a class for implementating a collection of geo-localized coalescents.
+ * \brief Collection of geo-localized coalescents.
  * \tparam Position Type of the geographic coordinate of the associated tree.
  * \tparam Tree Type of the coalescence tree.
  */
@@ -36,71 +36,224 @@ using size_type = typename data_type::size_type;
 data_type m_data;
 
 public:
+
 	using position_type = Position;
 	using iterator = typename data_type::iterator;
 	using const_iterator = typename data_type::const_iterator;
 
-	//! \remark Tree must be default constructible
+	/**
+	  * \brief Default constructor
+	  * \remark Position and Tree must be default constructible
+		* \section Example
+		* \snippet coalescence/containers/test/Forest/initialization_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Forest/initialization_test.output
+		*/
 	Forest();
 
-	//! \remark Tree must be copy constructible.
-	Forest(const SelfType& other);
+	/**
+	  * \brief Copy constructor
+		* \param other the Forest to be constructed from
+	  * \remark Position and Tree must be copy constructible.
+		* \section Example
+		* \snippet coalescence/containers/test/Forest/initialization_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Forest/initialization_test.output
+	  */
+	Forest(const Forest<Position, Tree>& other);
 
-	//! \remark Tree must be move constructible.
-	Forest(SelfType&& other) noexcept;
+	/**
+	  * \brief Move constructor
+		* \param other the Forest to be constructed from
+	  * \remark Position and Tree must be copy constructible.
+		* \section Example
+		* \snippet coalescence/containers/test/Tree/initialization_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Tree/initialization_test.output
+	  */
+	Forest(Forest<Position, Tree>&& other) noexcept;
 
-	//! \remark Tree must be copy constructible and move assignable.
-	SelfType& operator=(const SelfType& other);
+	/**
+	  * \brief Copy assignment operator
+	  * \remark Position and Tree must be copy constructible and move assignable.
+		* \section Example
+		* \snippet coalescence/containers/test/Forest/initialization_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Forest/initialization_test.output
+	  */
+	Forest<Position, Tree>& operator=(const Forest<Position, Tree>& other);
 
-	//! \remark Tree must be move assignable.
-	SelfType& operator=(SelfType&& other) noexcept;
+	/**
+	  * \brief Move assignment operator
+	  * \remark CellT must be move assignable.
+		* \section Example
+		* \snippet coalescence/containers/test/Forest/initialization_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Forest/initialization_test.output
+	  */
+	Forest<Position, Tree>& operator=(Forest<Position, Tree>&& other) noexcept;
 
-	//! \remark Return iterator to beginning
+	/**
+	  * \brief returns iterator to the begin
+		* \section Example
+		* \snippet coalescence/containers/test/Forest/basics_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Forest/basics_test.output
+	  */
 	iterator begin();
 
-	//! \remark Return iterator to end
+	/**
+	  * \brief returns iterator to the end
+		* \section Example
+		* \snippet coalescence/containers/test/Forest/basics_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Forest/basics_test.output
+	  */
 	iterator end();
 
-	//! \remark Return iterator to beginning
+	/**
+	  * \brief returns iterator to the begin
+		* \section Example
+		* \snippet coalescence/containers/test/Forest/basics_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Forest/basics_test.output
+	  */
 	const_iterator begin() const;
 
-	//! \remark Return iterator to end
+	/**
+	  * \brief returns iterator to the begin
+		* \section Example
+		* \snippet coalescence/containers/test/Forest/basics_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Forest/basics_test.output
+	  */
 	const_iterator end() const;
 
-	//! \remark Return const_iterator to beginning
+	/**
+	  * \brief returns iterator to the begin
+		* \section Example
+		* \snippet coalescence/containers/test/Forest/basics_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Forest/basics_test.output
+	  */
 	const_iterator cbegin() const;
 
-	//! \remark Return const_iterator to end
+	/**
+	  * \brief returns iterator to the begin
+		* \section Example
+		* \snippet coalescence/containers/test/Forest/basics_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Forest/basics_test.output
+	  */
 	const_iterator cend() const;
 
-	//! \remark Return the number of trees in the forest
+	/**
+	  * \brief number of trees in the forest
+		* \section Example
+		* \snippet coalescence/containers/test/Forest/basics_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Forest/basics_test.output
+	  */
 	unsigned int nb_trees() const;
 
-	//! \remark Return the number of trees in the forest at a given position
+	/**
+	  * \brief number of trees in the forest at a given position
+		* \section Example
+		* \snippet coalescence/containers/test/Forest/basics_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Forest/basics_test.output
+	  */
 	unsigned int nb_trees(Position const& position);
 
+	/**
+	  * \brief non-modifying access to trees in the forest at a given position
+		* \return a range [first, last) given by a pair of const iterators. The second member
+		          of the pair is the past-the-end iterator
+		* \section Example
+		* \snippet coalescence/containers/test/Forest/basics_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Forest/basics_test.output
+	  */
 	std::pair<const_iterator,const_iterator> trees_at_same_position (const Position& position) const;
 
+	/**
+	  * \brief access to trees in the forest at a given position
+		* \return a range [first, last) given by a pair of iterators. The second member
+		          of the pair is the past-the-end iterator
+		* \section Example
+		* \snippet coalescence/containers/test/Forest/basics_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Forest/basics_test.output
+	  */
 	std::pair<iterator,iterator> trees_at_same_position (const Position& position);
 
-	//! \remark Tree must be copy constructible.
+	/**
+	  * \brief insert a new tree at a given position
+		* \return an iterator to the inserted tree
+		* \remark Position and Tree should be copy constructible.
+		* \section Example
+		* \snippet coalescence/containers/test/Forest/basics_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Forest/basics_test.output
+	  */
 	iterator insert(Position const& position, Tree const& tree);
 
-	//! \remark Tree must be move constructible.
+	/**
+	  * \brief insert a new tree at a given position
+		* \return an iterator to the inserted tree
+		* \remark Position and Tree should be move constructible.
+		* \section Example
+		* \snippet coalescence/containers/test/Forest/basics_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Forest/basics_test.output
+	  */
 	iterator insert(Position const& position, Tree&& tree) noexcept;
 
-	//! \remark Tree must be copy constructible.
-	SelfType& insert(Position const& position, std::vector<Tree> const& trees);
+	/**
+	  * \brief insert a vector of trees at a given position
+		* \return a reference to the Forest
+		* \remark Position and Tree should be copy constructible.
+		* \section Example
+		* \snippet coalescence/containers/test/Forest/basics_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Forest/basics_test.output
+	  */
+	Forest<Position, Tree>& insert(Position const& position, std::vector<Tree> const& trees);
 
-	//! \remark Tree must be move constructible.
-	SelfType& insert(Position const& position, std::vector<Tree>&& trees) noexcept;
+	/**
+	  * \brief insert a vector of trees at a given position
+		* \return a reference to the Forest
+		* \remark Position should be copy constructible.
+		* \section Example
+		* \snippet coalescence/containers/test/Forest/basics_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Forest/basics_test.output
+	  */
+	Forest<Position, Tree>& insert(Position const& position, std::vector<Tree>&& trees) noexcept;
 
-	//! \remark return the number of deleted trees
+	/**
+	  * \brief erase a position from the Forest.
+		* \return the number of deleted trees.
+		* \section Example
+		* \snippet coalescence/containers/test/Forest/basics_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Forest/basics_test.output
+	  */
 	size_type erase(Position const& x);
 
+	/**
+	  * \brief positions in the forest
+		* \return a set of coordinates giving the spatial occupancy of the forest.
+		* \section Example
+		* \snippet coalescence/containers/test/Forest/basics_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Forest/basics_test.output
+	  */
 	std::set<Position> positions() const;
 
 };
+
+
 
 template<typename Position, typename Tree>
 Forest<Position, Tree>::Forest() :
