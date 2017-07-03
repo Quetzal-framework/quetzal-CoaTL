@@ -10,10 +10,8 @@
 
 // Header file including all coalescence module
 
-#include "merger.h"
+#include "coalescence/merger.h"
 
-#include "utils/Tree.h"
+#include "coalescence/utils/Tree.h"
 
-#include "utils/tree_creation_policies.h"
-
-#include "utils/Forest.h"
+#include "coalescence/utils/Forest.h"

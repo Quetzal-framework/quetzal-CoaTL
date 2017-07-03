@@ -8,9 +8,17 @@
 *                                                                      *
 ***************************************************************************/
 
-// compiles with g++ -o test merge_algorithm_test.cpp -std=c++14 -Wall
+/**
+ * \file merger_test.cpp
+ * \brief Program for unit testing
+ * \author Arnaud Becheler <Arnaud.Becheler@egce.cnrs-gif.fr>
+ *
+ * Test program for merger policies.
+ * Compiles with g++ -o test merger_test.cpp -std=c++14 -Wall
+ *
+ */
 
-#include "merge_algorithm.h"
+#include "merger.h"
 
 #include <vector>
 #include <list>
@@ -22,7 +30,10 @@
 #include <assert.h>
 
 template<typename Container>
-void coalesce(Container nodes){
+void coalesce(Container nodes, unsigned int N){
+
+  using quetzal::coalescence::SimultaneousMultipleMerger;
+  using quetzal::coalescence::BinaryMerger;
   using T = typename Container::value_type;
 
   std::mt19937 g;
@@ -38,7 +49,7 @@ void coalesce(Container nodes){
   auto binary_operator = [](T parent, T child){ return parent + child;};
 
   // Binary merger
-  auto last = coalescence::binary_merge(nodes.begin(), nodes.end(), init, binary_operator, g);
+  auto last = BinaryMerger::merge(nodes.begin(), nodes.end(), N, init, binary_operator, g);
 
   std::cout << "\nAfter one binary merge generation:\n";
   for(auto it = nodes.begin(); it != last; ++it){
@@ -47,8 +58,8 @@ void coalesce(Container nodes){
 
   // Simultaneous multiple merger
   assert(std::distance(nodes.begin(), last) == 3);
-  std::vector<unsigned int> M_j = {99,0,0,1};
-  last = coalescence::simultaneous_multiple_merge(nodes.begin(), last, init, M_j, binary_operator, g);
+  using spectrum_creation_policy = quetzal::coalescence::occupancy_spectrum::on_the_fly;
+  last = SimultaneousMultipleMerger<spectrum_creation_policy>::merge(nodes.begin(), last, N, init, binary_operator, g);
 
   std::cout << "\nAfter one simultaneous multiple merge generation:\n";
   for(auto it = nodes.begin(); it != last; ++it){
@@ -60,9 +71,9 @@ int main () {
 
   std::vector<std::string> str_nodes = {"a", "b", "c", "d"};
   std::vector<int> int_nodes = {1,1,1,1};
-
-  coalesce(str_nodes);
-  coalesce(int_nodes);
+  unsigned int N = 3;
+  coalesce(str_nodes, N);
+  coalesce(int_nodes, N);
 
   return 0;
 }

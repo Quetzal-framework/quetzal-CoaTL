@@ -12,11 +12,12 @@
 #ifndef __OCCUPANCY_SPECTRUM_UTILS_H_INCLUDED__
 #define __OCCUPANCY_SPECTRUM_UTILS_H_INCLUDED__
 
-#include "occupancy_spectrum_distribution.h"
+#include "OccupancySpectrumDistribution.h"
 
 #include <unordered_map>
 #include <functional> // std::hash
 
+namespace quetzal{
 namespace coalescence {
 namespace occupancy_spectrum {
 namespace utils{
@@ -35,7 +36,7 @@ namespace utils{
   template
   <
   class UnaryPredicate = ReturnAlwaysTrue,
-  class SpectrumHandler = HandleIdentity,
+  class SpectrumHandler = Identity,
   class Int = cpp_int,
   class Float = cpp_dec_float_50
   >
@@ -58,6 +59,7 @@ namespace utils{
 } // namespace utils
 } // namespace occupancy_spectrum
 } // namespace coalescence
+} // namespace quetzal
 
 
 #endif
