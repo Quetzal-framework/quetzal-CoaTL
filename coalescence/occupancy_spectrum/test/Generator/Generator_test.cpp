@@ -8,32 +8,27 @@
 *                                                                      *
 ***************************************************************************/
 
-/**
- * \file Generator_test.cpp
- * \brief Program for unit testing
- * \author Arnaud Becheler <Arnaud.Becheler@egce.cnrs-gif.fr>
- *
- * Test program for interface of occupancy spectrum generative algorithm.
- * Compiles with g++ -o test Generator_test.cpp -std=c++14 -Wall
- *
- */
 
-#include "Generator.h"
+#include "../../Generator.h"
+
+//! [Example]
 
 #include <iostream>
-#include <algorithm> // for copy
-#include <iterator> // for ostream_iterator
+#include <algorithm> // std::copy
+#include <iterator>  // std::ostream_iterator
 
 int main(){
-  using generator_type = quetzal::coalescence::occupancy_spectrum::Generator;
-  using spectrum_type = generator_type::occupancy_spectrum_type;
+  using quetzal::coalescence::occupancy_spectrum::Generator;
+  using spectrum_type = Generator::occupancy_spectrum_type;
 
-  auto spectrum_handler = [](spectrum_type const& M_j){
+  auto spectrum_handler = [](spectrum_type && M_j){
     std::copy(M_j.begin(), M_j.end(), std::ostream_iterator<spectrum_type::value_type>(std::cout, " "));
     std::cout << "\n";
   };
 
-  generator_type::generate(5,10, spectrum_handler);
+  Generator::generate(5, 10, spectrum_handler);
 
   return 0;
 }
+
+//! [Example]
