@@ -24,6 +24,10 @@ namespace coalescence{
  * \brief Collection of geo-localized coalescents.
  * \tparam Position Type of the geographic coordinate of the associated tree.
  * \tparam Tree Type of the coalescence tree.
+ * \section Example
+ * \snippet coalescence/containers/test/Forest/Forest_test.cpp Example
+ * \section Output
+ * \include coalescence/containers/test/Forest/Forest_test.output
  */
 template<typename Position, typename Tree>
 class Forest{
