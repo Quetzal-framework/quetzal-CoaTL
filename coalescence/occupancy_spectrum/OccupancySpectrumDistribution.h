@@ -89,6 +89,10 @@ namespace occupancy_spectrum {
    *         empty, making later iteration over a spectrum faster.
    * \tparam Int A big integer class for probability computation
    * \tparam FLoat A big float class for probability computation
+   * \section Example
+   * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.cpp Example
+   * \section Output
+   * \include coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.output
    */
   template
   <
@@ -119,7 +123,7 @@ namespace occupancy_spectrum {
       * \section Example
   		* \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.cpp Example
   		* \section Output
-      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.output Example
+      * \include coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.output
   		*/
     OccupancySpectrumDistribution() = default;
 
@@ -132,7 +136,7 @@ namespace occupancy_spectrum {
       * \section Example
   		* \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.cpp Example
   		* \section Output
-      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.output Example
+      * \include coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.output
   		*/
     OccupancySpectrumDistribution(unsigned int n, unsigned int m, UnaryPredicate pred = UnaryPredicate()) :
     m_k(n),
@@ -151,7 +155,7 @@ namespace occupancy_spectrum {
       * \section Example
   		* \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.cpp Example
   		* \section Output
-      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.output Example
+      * \include coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.output
   		*/
     OccupancySpectrumDistribution(const SelfType&) = delete;
 
@@ -161,7 +165,7 @@ namespace occupancy_spectrum {
       * \section Example
   		* \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.cpp Example
   		* \section Output
-      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.output Example
+      * \include coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.output
   		*/
     OccupancySpectrumDistribution(SelfType&&) = default;
 
@@ -170,7 +174,7 @@ namespace occupancy_spectrum {
   		* \section Example
   		* \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.cpp Example
   		* \section Output
-      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.output Example
+      * \include coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.output
   		*/
     SelfType & operator= (SelfType&& ) = default;
 
@@ -180,7 +184,7 @@ namespace occupancy_spectrum {
   		* \section Example
   		* \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.cpp Example
   		* \section Output
-      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.output Example
+      * \include coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.output
   		*/
     SelfType & operator= (const SelfType& ) = delete;
 
@@ -191,7 +195,7 @@ namespace occupancy_spectrum {
     * \section Example
     * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.cpp Example
     * \section Output
-    * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.output Example
+    * \include coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.output
     */
     template<typename Generator>
     const spectrum_type & operator()(Generator& g) const {
@@ -203,7 +207,7 @@ namespace occupancy_spectrum {
       * \section Example
       * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.cpp Example
       * \section Output
-      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.output Example
+      * \include coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.output
       */
     unsigned int n() const {return m_k; }
 
@@ -212,7 +216,7 @@ namespace occupancy_spectrum {
       * \section Example
       * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.cpp Example
       * \section Output
-      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.output Example
+      * \include coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.output
       */
     unsigned int m() const {return m_N; }
 
@@ -221,7 +225,7 @@ namespace occupancy_spectrum {
       * \section Example
       * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.cpp Example
       * \section Output
-      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.output Example
+      * \include coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.output
       */
     const support_type& support() const {return m_support; }
 
@@ -230,7 +234,7 @@ namespace occupancy_spectrum {
       * \section Example
       * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.cpp Example
       * \section Output
-      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.output Example
+      * \include coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.output
       */
     const probabilities_type & weights() const {return m_probas; }
 

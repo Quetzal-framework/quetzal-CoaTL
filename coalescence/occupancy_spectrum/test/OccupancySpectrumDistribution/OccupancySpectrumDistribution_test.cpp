@@ -9,8 +9,11 @@
 ***************************************************************************/
 
 #include "../../OccupancySpectrumDistribution.h"
-#include <random>    // std::mt19937
 
+//! [Example]
+
+#include <random>    // std::mt19937
+#include <algorithm> // std::accumulate
 int main(){
 
   using quetzal::coalescence::occupancy_spectrum::OccupancySpectrumDistribution;
@@ -18,7 +21,13 @@ int main(){
   unsigned int m = 10;
 
   OccupancySpectrumDistribution<> dist1(n, m);
-  std::cout << "Full distribution:\n" << dist1 << "\n" << std::endl;
+  std::cout << "Throwing " << dist1.n() << " balls in " << dist1.m() << " urns.\n";
+  std::cout << "Full distribution: "
+            << dist1.support().size() << " configurations and weights sum to "
+            << std::accumulate(dist1.weights().begin(), dist1.weights().end(), 0.0)
+            << std::endl;
+
+   std::cout << dist1 << "\n" << std::endl;
 
   // Sample from it :
   std::mt19937 g;
@@ -45,3 +54,5 @@ int main(){
 
   return 0;
 }
+
+//! [Example]
