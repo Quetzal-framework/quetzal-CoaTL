@@ -60,6 +60,36 @@ namespace occupancy_spectrum {
     }
   };
 
+  /*!
+   * \ingroup coal_spectrum
+   * \brief Generates random occupancy spectrum that are distributed according
+   *        to the associated probability function given by von Mises (1939).
+   *        The entropy is acquired by calling g.operator().
+   * \remark The probability of an occupancy spectrum is described in the book
+   *         "Urn models and their application: an approach
+   *         to modern discrete probability theory" (by John and Kotz, 1977, p.115).
+   * \tparam UnaryPredicate Function object class acting as a predicate, taking
+   *         the probability of the spectrum as argument and returning a boolean.
+   *         The signature should be `bool UnaryPredicate::operator()(double)``
+   *         The number of possible configurations grows very fast with n and m,
+   *         so memorizing all of them quickly becomes intractable.
+   *         As most of the configurations have extremely low output probability,
+   *         you can choose to filter the spectrum according to their sampling
+   *         probability, keeping only those which probability is superior to a
+   *         given threshold (or other criterion). If the predicate is evaluated
+   *         to true, the spectrum and its probability will be saved in the
+   *         distribution. If the predicate is evaluated to false, the spectrum
+   *         and its probability will be discarded. By default, ReturnAlwaysTrue
+   *         policy is used, so all spectra are kept.
+   * \tparam SpectrumHandler Function object class modifying the spectrum to optimize speed and
+   *         memory use. The signature should be
+   *         `OccupancySpectrum SpectrumHandler::operator()(OccupancySpectrum &&)`.
+   *         By default the Identity policy wil not modify the spectra.
+   *         The RetrieveLastEmptyUrns will retrieve all the last urns that are
+   *         empty, making later iteration over a spectrum faster.
+   * \tparam Int A big integer class for probability computation
+   * \tparam FLoat A big float class for probability computation
+   */
   template
   <
   class UnaryPredicate = ReturnAlwaysTrue,
@@ -83,40 +113,125 @@ namespace occupancy_spectrum {
 
   public:
 
-    //! \remark Copy constructor
-    OccupancySpectrumDistribution(const SelfType&) = delete;
-
-    //! \remark Move constructor
-    OccupancySpectrumDistribution(SelfType&&) = default;
-
-    //! \remark Default constructor
+    /**
+  	  * \brief Default constructor
+  	  * \remark Position and Tree must be default constructible
+      * \section Example
+  		* \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.cpp Example
+  		* \section Output
+      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.output Example
+  		*/
     OccupancySpectrumDistribution() = default;
 
-    //! \remark copy assignment operator
-    SelfType & operator= (const SelfType& ) = delete;
-
-    //! \remark move assignment operator
-    SelfType & operator= (SelfType&& ) = default;
-
-    //! \remark heavy constructor for large k
-    OccupancySpectrumDistribution(unsigned int k, unsigned int N, UnaryPredicate pred = UnaryPredicate()) : m_k(k), m_N(N), m_pred(pred) {
-      auto callback = make_callback(k, N, pred);
-      Generator::generate(k, N, callback);
+    /**
+  	  * \brief Construct the occupancy spectrum distribution resulting from throwing n balls into m urns
+  	  * \remark Object can be huge if large k
+      * \param n number of balls
+      * \param m number of urns
+      * \param pred UnaryPredicate
+      * \section Example
+  		* \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.cpp Example
+  		* \section Output
+      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.output Example
+  		*/
+    OccupancySpectrumDistribution(unsigned int n, unsigned int m, UnaryPredicate pred = UnaryPredicate()) :
+    m_k(n),
+    m_N(m),
+    m_pred(pred)
+    {
+      auto callback = make_callback(m_k, m_N, m_pred);
+      Generator::generate(m_k, m_N, callback);
       m_dist = std::discrete_distribution<size_t>( m_probas.cbegin(), m_probas.cend() );
       assert(m_support.size() == m_probas.size());
     }
 
+    /**
+  	  * \brief Copy constructor
+  	  * \remark Position and Tree must be default constructible
+      * \section Example
+  		* \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.cpp Example
+  		* \section Output
+      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.output Example
+  		*/
+    OccupancySpectrumDistribution(const SelfType&) = delete;
+
+    /**
+  	  * \brief Move constructor
+  	  * \remark Position and Tree must be default constructible
+      * \section Example
+  		* \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.cpp Example
+  		* \section Output
+      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.output Example
+  		*/
+    OccupancySpectrumDistribution(SelfType&&) = default;
+
+    /**
+  	  * \brief Move assignment operator
+  		* \section Example
+  		* \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.cpp Example
+  		* \section Output
+      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.output Example
+  		*/
+    SelfType & operator= (SelfType&& ) = default;
+
+    /**
+  	  * \brief Deleted copy assignment operator
+      * \remark Deleted for avoiding copying huge amount of data.
+  		* \section Example
+  		* \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.cpp Example
+  		* \section Output
+      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.output Example
+  		*/
+    SelfType & operator= (const SelfType& ) = delete;
+
+  /**
+    * \brief Generates random occupancy spectrum that are distributed according
+    *        to the associated probability function given by von Mises (1939).
+    *        The entropy is acquired by calling g.operator().
+    * \section Example
+    * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.cpp Example
+    * \section Output
+    * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.output Example
+    */
     template<typename Generator>
     const spectrum_type & operator()(Generator& g) const {
       return m_support[m_dist(g)];
     }
 
-    unsigned int k() const {return m_k; }
+    /**
+      * \brief Gives the number of balls that are thrown in the random experience
+      * \section Example
+      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.cpp Example
+      * \section Output
+      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.output Example
+      */
+    unsigned int n() const {return m_k; }
 
-    unsigned int N() const {return m_N; }
+    /**
+      * \brief Gives the number of urns used in the random experience
+      * \section Example
+      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.cpp Example
+      * \section Output
+      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.output Example
+      */
+    unsigned int m() const {return m_N; }
 
+    /**
+      * \brief Retrieve occupancy spectra constituting the support of the distribution
+      * \section Example
+      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.cpp Example
+      * \section Output
+      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.output Example
+      */
     const support_type& support() const {return m_support; }
 
+    /**
+      * \brief Retrieve the weights associated to the random experience. They do not necessarily sum to 1.
+      * \section Example
+      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.cpp Example
+      * \section Output
+      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.output Example
+      */
     const probabilities_type & weights() const {return m_probas; }
 
     friend std::ostream& operator<<(std::ostream& os, SelfType const& dist){

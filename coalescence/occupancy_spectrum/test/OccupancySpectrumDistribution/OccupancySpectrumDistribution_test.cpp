@@ -8,28 +8,17 @@
 *                                                                      *
 ***************************************************************************/
 
-/**
- * \file OccupancySpectrumDistribution_test.cpp
- * \brief Program for unit testing
- * \author Arnaud Becheler <Arnaud.Becheler@egce.cnrs-gif.fr>
- *
- * Test program for occupancy spectrum probability distribution.
- * Compiles with g++ -o test OccupancySpectrumDistribution_test.cpp -std=c++14 -Wall
- *
- */
-
-#include "OccupancySpectrumDistribution.h"
+#include "../../OccupancySpectrumDistribution.h"
 #include <random>    // std::mt19937
 
 int main(){
 
   using quetzal::coalescence::occupancy_spectrum::OccupancySpectrumDistribution;
-  unsigned int k = 5;
-  unsigned int N = 10;
+  unsigned int n = 5;
+  unsigned int m = 10;
 
-  // Default construction
-  OccupancySpectrumDistribution<> dist1(k, N);
-  std::cout << dist1 << std::endl;
+  OccupancySpectrumDistribution<> dist1(n, m);
+  std::cout << "Full distribution:\n" << dist1 << "\n" << std::endl;
 
   // Sample from it :
   std::mt19937 g;
@@ -38,8 +27,8 @@ int main(){
   // Truncate the empty spectrum for memory optimization
   using quetzal::coalescence::occupancy_spectrum::RetrieveLastEmptyUrns;
   using quetzal::coalescence::occupancy_spectrum::ReturnAlwaysTrue;
-  OccupancySpectrumDistribution<ReturnAlwaysTrue, RetrieveLastEmptyUrns> dist4(k, N);
-  std::cout << dist4 << std::endl;
+  OccupancySpectrumDistribution<ReturnAlwaysTrue, RetrieveLastEmptyUrns> dist2(n, m);
+  std::cout << "Shorten spectra:\n" << dist2 << "\n" << std::endl;
 
   // Filter the occupancy spectrum with small probability.
   auto pred = [](double p){
@@ -47,12 +36,12 @@ int main(){
     if(p > 0.01){ keep = true; }
     return keep;
   };
-  OccupancySpectrumDistribution<decltype(pred)> dist2(k, N, pred);
-  std::cout << dist2 << std::endl;
+  OccupancySpectrumDistribution<decltype(pred)> dist3(n, m, pred);
+  std::cout << "Truncated distribution:\n" << dist3 << "\n" << std::endl;
 
-  // Add a filter for truncating the empty spectrum extremity.
-  OccupancySpectrumDistribution<decltype(pred), RetrieveLastEmptyUrns> dist3(k, N, pred);
-  std::cout << dist3 << std::endl;
+  // Combine strategies
+  OccupancySpectrumDistribution<decltype(pred), RetrieveLastEmptyUrns> dist4(n, m, pred);
+  std::cout << "Combined strategies:\n" << dist4 << "\n" << std::endl;
 
   return 0;
 }
