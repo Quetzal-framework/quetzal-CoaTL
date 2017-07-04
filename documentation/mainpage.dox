@@ -87,7 +87,13 @@ if you need their interface in your own implementation of coalescence models.
 
 /**
   * \defgroup coal_spectrum Occupancy Spectrum
-  * \biref Occupancy spectrum simulation for coalescence with simultaneous multiple collisions.
+  * \brief Occupancy spectrum simulation for coalescence with simultaneous multiple collisions.
   */
 
 /** @}*/
+
+
+/**
+  * \defgroup demogrphy Demography
+  * \brief Template classes for building complex demographies for further conditional coalescence simulation.
+  */
