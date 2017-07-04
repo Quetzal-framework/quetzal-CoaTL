@@ -2,11 +2,10 @@
 
 echo -e "UTest_demography\n|"
 
+cd test/PopulationSize
 
 echo -e "|--\t PopulationSize_test....................................."
-g++ -o Utest PopulationSize_test.cpp -std=c++14 -Wall
-./Utest
-rm Utest
+./UTest.sh
 echo -e "|--\t DONE \n|"
 
 echo -e "DONE\n"

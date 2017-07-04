@@ -10,7 +10,7 @@
 
 // compiles with g++ -o test Populations_test.cpp -std=c++14 -Wall
 
-#include "PopulationSize.h"
+#include "../../PopulationSize.h"
 
 #include <iostream>   // std::cout
 #include <algorithm>  // std::copy
