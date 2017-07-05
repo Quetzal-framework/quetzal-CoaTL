@@ -8,13 +8,13 @@
 *                                                                      *
 ***************************************************************************/
 
-#include "../../PopulationSize.h"
+
+#include "../../PopulationFlux.h"
 
 //! [Example]
 
 #include <iostream>   // std::cout
 #include <algorithm>  // std::copy
-#include <iterator>   // std::ostream_iterator
 #include <string>
 
 #include "assert.h"
@@ -23,25 +23,25 @@ int main(){
 
 	using coord_type = std::string;
 	using time_type = unsigned int;
-	using size_type = int;
+	using value_type = int;
 
-	time_type t0 = 2017;
-	coord_type x0 = "Paris";
-	size_type N0 = 12;
+	time_type t = 2017;
+	coord_type i = "Paris";
+	coord_type j = "Bordeaux";
 
-	quetzal::demography::PopulationSize<coord_type, time_type, size_type> N;
-	assert(N.is_defined(x0, t0) == false );
+	quetzal::demography::PopulationFlux<coord_type, time_type, value_type> Phi;
 
-	N(x0,t0) = N0;
-	assert(N.is_defined(x0, t0) );
-	assert( N.get(x0,t0) == N0 );
+	assert( ! Phi.flux_to_is_defined(i, t) );
+	Phi(i,j,t) = 12;
+	Phi.flux_from_to(j,j,t) += 1;
+	assert(Phi.flux_to_is_defined(j, t));
 
-	assert( N.definition_space(t0).size() == 1 );
+	assert(Phi.flux_from_to(i,j,t) == 12);
+	assert(Phi(j,j,t) == 1);
 
-	N.set("Bordeaux", t0, 2*N0);
-
-	auto X = N.definition_space(t0);
-	std::copy(X.begin(), X.end(), std::ostream_iterator<coord_type>(std::cout, " "));
+	for(auto const& it : Phi.flux_to(j,t)){
+		std::cout << it.first << " \t->\t " << j << "\t=\t" << it.second << std::endl;
+	}
 
 	return 0;
 }

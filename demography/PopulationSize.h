@@ -15,6 +15,7 @@
 #include <unordered_set>
 #include "assert.h"
 
+namespace quetzal{
 namespace demography {
 
 /*!
@@ -245,5 +246,6 @@ std::unordered_set<Space> PopulationSize<Space, Time, Value>::definition_space(T
 }
 
 } // namespace demography
+} // namespace quetzal
 
 #endif

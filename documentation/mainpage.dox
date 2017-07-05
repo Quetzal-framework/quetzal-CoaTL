@@ -94,6 +94,6 @@ if you need their interface in your own implementation of coalescence models.
 
 
 /**
-  * \defgroup demogrphy Demography
+  * \defgroup demography Demography
   * \brief Template classes for building complex demographies for further conditional coalescence simulation.
   */
