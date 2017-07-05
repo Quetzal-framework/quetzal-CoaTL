@@ -30,7 +30,7 @@ namespace demography {
  * \section Output
  * \include demography/test/PopulationFlux/PopulationFlux_test.output
  */
-template<typename Space, typename Time, typename T>
+template<typename Space, typename Time, typename Value>
 class PopulationFlux
 {
 
@@ -43,7 +43,7 @@ public:
 	using coord_type = Space;
 
 	//! \typedef type of the population size variable
-	using value_type = T;
+	using value_type = Value;
 
 	/**
 	  * \brief Default constructor
