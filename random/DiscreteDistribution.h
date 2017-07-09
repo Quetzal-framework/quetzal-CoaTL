@@ -18,7 +18,7 @@
 namespace quetzal {
 
 /*!
- * \brief Sampling discrete probability distribution
+ * \brief Sampling (non) arithmetic values in discrete probability distribution.
  *
  * Produces random State objects, where the probability of each individual State
  * \f$i\f$ is defined as \f$w = i/S\f$, that is the weight of the ith integer
