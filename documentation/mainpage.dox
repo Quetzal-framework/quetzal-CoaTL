@@ -32,7 +32,7 @@ The library is divided in various modules : \ref coalescence
 
 \subsection ss_coal Coalescence module
 
-\ref coalescence
+See \ref coalescence .
 
 Contains various tools for simulating coalescents.
 
@@ -63,7 +63,7 @@ if you need their interface in your own implementation of coalescence models.
 
 \subsection ss_demo Demography module
 
-\ref demography
+See \ref demography .
 
 Defines template classes for storage and retrieval of demographic quantities of
 interest such as populations size distribution across space and time, or demographic
@@ -71,6 +71,18 @@ flux between demes at all times.
 
 These quantities are used in coalescence models for defining coalescence
 probability or backward migration probabilities of gene copies.
+
+\subsection ss_random Random module
+
+See \ref random .
+
+Defines template classes for building non-number discrete distribution and markovian
+transition kernels.
+
+These classes are usefull for building stochastic processes using simulated quantities
+as random distribution. For example, a simulated demographic flux can be converted to a
+markovian kernel to be used inside a spatialized coalescence algorithm as a backward
+transition kernel.
 
 */
 
@@ -107,4 +119,9 @@ probability or backward migration probabilities of gene copies.
 /**
   * \defgroup demography Demography
   * \brief Template classes for building complex demographies for further conditional coalescence simulation.
+  */
+
+/**
+  * \defgroup random Random
+  * \brief Template classes for building non-number discrete distribution and markovian transition kernels.
   */
