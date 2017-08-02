@@ -44,15 +44,7 @@ int main () {
 	// initialization moving cell
 	kernel_type B(1, std::move(d));
 
-	// Consctruct a predictible kernel
-	kernel_type kernel;
-  std::mt19937 gen;
-	distribution_type dirac_in_2({0, 0, 12, 0});
-	kernel.add(8, dirac_in_2);
-	for(int i = 0; i < 5; ++i){
-		std::cout << kernel(gen, 8) << std::endl;
-	}
-
+	std::cout << "done" << std::endl;
 	return 0;
 
 }

@@ -22,8 +22,11 @@ namespace quetzal{
 /*!
  * \brief Discrete markovian transition kernel for sampling the next state knowing the present state \f$x_0\f$.
  *
- * For each initial state \f$x_0\f$ of an initial state space \f$S_0\f$, defines the associated
- * discrete markovian probability \f$p( x_1 = X | x_0)\f$.
+ *
+ * Considering a Markov chain \f$(X_k)_{k\in Z_+}\f$ with discrete state space
+ * \f$S\f$, and given each initial state \f$x_0\f$ of \f$S\f$, defines the markovian probability
+ * distribution \f$P(X_1=\cdot|X_0=x_0)\f$, and samples the stochastic value \f$X_1\f$,
+ * according to this probability law.
  *
  * \ingroup random
  * \tparam Distribution type of the transition kernels.
@@ -116,7 +119,7 @@ public:
 	TransitionKernel<Distribution>& operator=(TransitionKernel<Distribution>&&) = default;
 
   /*!
-   * \brief Add or replace a departure state and its associated distribution to the kernel
+   * \brief Set a departure state and its associated distribution to the kernel
    * \param x the departure state
    * \param d the probability distribution on the arrival state
    * \section Example
@@ -124,13 +127,13 @@ public:
    * \section Output
    * \include random/test/TransitionKernel/TransitionKernel_test.output
    */
-	TransitionKernel<Distribution>& add(state_type const& x, Distribution const& d){
+	TransitionKernel<Distribution>& set(state_type const& x, Distribution const& d){
 		m_distributions[x] = d;
 		return *this;
 	}
 
   /*!
-   * \brief Add or replace a departure state and its associated distribution to the kernel
+   * \brief Set a departure state and its associated distribution to the kernel
    * \param x the departure state
    * \param d the probability distribution on the arrival state
    * \section Example
@@ -138,7 +141,7 @@ public:
    * \section Output
    * \include random/test/TransitionKernel/TransitionKernel_test.output
    */
-	TransitionKernel<Distribution>& add(state_type const& x, Distribution&& d){
+	TransitionKernel<Distribution>& set(state_type const& x, Distribution&& d){
 		m_distributions[x] = std::move(d);
 		return *this;
 	}
@@ -177,9 +180,10 @@ public:
 /*!
  * \brief Time-variable discrete markovian transition kernel for sampling the next state knowing the present state \f$x_0\f$.
  *
- * For a given departure state \f$x_0\f$, defines the associated
- * discrete markovian probability \f$p( x_1 = X | x_0)\f$. Transition probabilities
- * vary in time.
+ * Considering a Markov chain \f$(X_k)_{k\in Z_+}\f$ with discrete state space
+ * \f$S\f$, and given each initial state \f$x_0\f$ of \f$S\f$, defines the markovian probability
+ * distribution at time \f$t\f$ : \f$P_t(X_1=\cdot|X_0=x_0)\f$, and samples the stochastic value \f$X_1\f$,
+ * according to this probability law.
  *
  * \ingroup random
  * \tparam Distribution type of the transition kernels.
@@ -275,7 +279,7 @@ public:
 	TransitionKernel<Time, Distribution>& operator=(TransitionKernel<Time, Distribution>&&) = default;
 
   /*!
-   * \brief Add a probability distribution for a departure state and time.
+   * \brief Set a probability distribution for a departure state and time.
    * \param x the departure state
    * \param t the departure time
    * \param d the associated probability distribution.
@@ -284,13 +288,13 @@ public:
    * \section Output
    * \include random/test/TimeTransitionKernel/TimeTransitionKernel_test.output
    */
-	TransitionKernel<Time, Distribution>& add(state_type const& x, Time const& t, Distribution const& d){
+	TransitionKernel<Time, Distribution>& set(state_type const& x, Time const& t, Distribution const& d){
 		m_kernels[t] = InsiderType(x, d);
 		return *this;
 	}
 
   /*!
-   * \brief Add a probability distribution for a departure state and time.
+   * \brief Set a probability distribution for a departure state and time.
    * \param x the departure state.
    * \param t the departure time.
    * \param d the associated probability distribution.
@@ -299,7 +303,7 @@ public:
    * \section Output
    * \include random/test/TimeTransitionKernel/TimeTransitionKernel_test.output
    */
-	TransitionKernel<Time, Distribution>& add(state_type const& x, Time const& t, Distribution&& d){
+	TransitionKernel<Time, Distribution>& set(state_type const& x, Time const& t, Distribution&& d){
 		m_kernels[t] = InsiderType(x, std::move(d));
 		return *this;
 	}

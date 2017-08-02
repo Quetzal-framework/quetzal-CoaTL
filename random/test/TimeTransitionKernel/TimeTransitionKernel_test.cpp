@@ -12,29 +12,32 @@
 
 //! [Example]
 
-#include <random>
+#include <algorithm> // std::generate
+#include <random>    // std::mt19937
 #include <iostream>
+#include <iterator>   // std::ostream_iterator
 #include <string>
 
 int main () {
 
+	using deme_ID_type = int;
+	using time_type = int;
+	using law_type = std::discrete_distribution<deme_ID_type>;
+	using kernel_type = quetzal::TransitionKernel<time_type, law_type>;
+
 	std::mt19937 gen;
-	using state_space = int;
-	using time_type = std::string;
-	using D = std::poisson_distribution<state_space>;
-	using kernel_type = quetzal::TransitionKernel<time_type, D>;
-
+	law_type d({0.5,0.5});
 	kernel_type kernel;
-	kernel.add(0, "2014", D(5));
-	kernel.add(1, "2015", D(10));
 
-	if(kernel.has_distribution(2, "2014")){
-		std::cout <<"kernel defined for x=2, t=2014." << std::endl;
-	}
-
-	kernel.add(2, "2014", D(3));
-	for(int i = 0; i < 10; ++i){
-		std::cout << kernel(gen,2, "2014") << std::endl;
+	// Random walk
+	deme_ID_type x0 = {0};
+	std::cout << x0;
+	for(time_type t = 0; t < 10; ++t){
+		std::cout << " -> " << x0 ;
+		if( ! kernel.has_distribution(x0, t)){
+			kernel.set(x0, t, d);
+		}
+		x0 = kernel(gen, x0, t); // sample new state
 	}
 
 	return 0;
