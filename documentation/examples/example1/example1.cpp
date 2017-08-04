@@ -16,7 +16,7 @@ private:
     unsigned int m_r;
     double m_sigma;
     double m_mu;
-  }
+  };
 
 public:
 
@@ -27,17 +27,18 @@ public:
       params.sigma(std::uniform_real_distribution<double>(1.,50.)(gen));
       params.mu(std::uniform_real_distribution<double>(1.,10.)(gen));
       return params;
-    }
+    };
     return prior;
   }
 
-  auto operator()(Generator& gen, Param const& param) const {
+  template<typename Generator>
+  auto operator()(Generator& gen, Params const& param) const {
       return generateRandomDemography(gen, param);
   }
 
 
   template<typename Generator>
-  auto generateRandomDemography(Generator& gen, Param const& param) const {
+  auto generateRandomDemography(Generator& gen, Params const& param) const {
 
     Env E = read_env({"temperature.tif", "rainfall.tif"});
 

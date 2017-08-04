@@ -6,12 +6,19 @@
 * the Free Software Foundation; either version 2 of the License, or    *
 * (at your option) any later version.                                  *
 *                                                                      *
-***************************************************************************/
+***************************************************************************/ 
 
-// Header file including all coalescence module
+#ifndef __CUSTOMGDALDATASETDELETER_H_INCLUDED__
+#define __CUSTOMGDALDATASETDELETER_H_INCLUDED__
 
-#include "modules/coalescence/policies/merger.h"
+#include <gdal.h>
 
-#include "modules/coalescence/containers/Tree.h"
+class CustomGDALDatasetDeleter
+{
+public:
+    void operator()(GDALDatasetH res) const {
+        ::GDALClose(res);
+    };
+};
 
-#include "modules/coalescence/containers/Forest.h"
+#endif
