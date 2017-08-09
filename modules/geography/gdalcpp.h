@@ -236,6 +236,11 @@ namespace gdalcpp {
 
         }; // struct gdal_dataset_deleter
 
+        GDALDataset* raster_read_only(const std::string& dataset_name){
+          GDALAllRegister();
+          return static_cast<GDALDataset*>(GDALOpen(dataset_name.c_str(), GA_ReadOnly ));
+        }
+
         std::string m_driver_name;
         std::string m_dataset_name;
         detail::Options m_options;
@@ -246,7 +251,7 @@ namespace gdalcpp {
 
     public:
 
-      // Vector constructor ?
+        //! Vector constructor
         Dataset(const std::string& driver_name, const std::string& dataset_name, const SRS& srs = SRS{}, const std::vector<std::string>& options = {}) :
             m_driver_name(driver_name),
             m_dataset_name(dataset_name),
@@ -262,22 +267,17 @@ namespace gdalcpp {
             }
         }
 
-        // Raster constructor
+        //! Raster constructor
         Dataset(const std::string& dataset_name, const SRS& srs = SRS{}, const std::vector<std::string>& options = {}):
         m_driver_name(),
         m_dataset_name(dataset_name),
         m_options(options),
         m_srs(srs),
-        m_dataset(read_only(dataset_name)){
+        m_dataset(raster_read_only(dataset_name)){
           if (!m_dataset) {
               throw gdal_error(std::string("failed to create dataset '") + dataset_name + "'", OGRERR_NONE, m_driver_name, dataset_name);
           }
           m_driver_name = std::string(m_dataset->GetDriverName());
-        }
-
-        GDALDataset* read_only(const std::string& dataset_name){
-          GDALAllRegister();
-          return static_cast<GDALDataset*>(GDALOpen(dataset_name.c_str(), GA_ReadOnly ));
         }
 
         ~Dataset() {
