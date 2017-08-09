@@ -246,6 +246,7 @@ namespace gdalcpp {
 
     public:
 
+      // Vector constructor ?
         Dataset(const std::string& driver_name, const std::string& dataset_name, const SRS& srs = SRS{}, const std::vector<std::string>& options = {}) :
             m_driver_name(driver_name),
             m_dataset_name(dataset_name),
@@ -259,6 +260,24 @@ namespace gdalcpp {
             if (!m_dataset) {
                 throw gdal_error(std::string("failed to create dataset '") + dataset_name + "'", OGRERR_NONE, driver_name, dataset_name);
             }
+        }
+
+        // Raster constructor
+        Dataset(const std::string& dataset_name, const SRS& srs = SRS{}, const std::vector<std::string>& options = {}):
+        m_driver_name(),
+        m_dataset_name(dataset_name),
+        m_options(options),
+        m_srs(srs),
+        m_dataset(read_only(dataset_name)){
+          if (!m_dataset) {
+              throw gdal_error(std::string("failed to create dataset '") + dataset_name + "'", OGRERR_NONE, m_driver_name, dataset_name);
+          }
+          m_driver_name = std::string(m_dataset->GetDriverName());
+        }
+
+        GDALDataset* read_only(const std::string& dataset_name){
+          GDALAllRegister();
+          return static_cast<GDALDataset*>(GDALOpen(dataset_name.c_str(), GA_ReadOnly ));
         }
 
         ~Dataset() {

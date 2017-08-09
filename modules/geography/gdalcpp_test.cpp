@@ -12,7 +12,22 @@
 
 #include <assert.h>
 #include <iostream>
+#include <string>
 
 #include "gdalcpp.h"
 
-int main(){}
+int main(){
+	std::string file_name("/home/becheler/dev/quetzal/modules/geography/test_data/wc2.0_10m_tavg/wc2.0_10m_tavg_01.tif");
+	gdalcpp::Dataset geo(file_name);
+/*
+	GDALDataset  *poDataset;
+	GDALAllRegister();
+	poDataset = static_cast<GDALDataset*>(GDALOpen( file_name.c_str(), GA_ReadOnly ));
+	if( poDataset == NULL )
+	{
+			std::cout << "oops" << std::endl;
+	}
+	*/
+	std::cout << geo.driver_name() << std::endl;
+
+}
