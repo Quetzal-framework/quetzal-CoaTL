@@ -310,16 +310,6 @@ namespace gdalcpp {
           return *(m_dataset->GetRasterBand(i+1));
         }
 
-        //! Read value at col x row y, band i zeroth-based numbering
-        auto read(unsigned int x, unsigned int y, unsigned int i){
-          int nXSize = 1;
-					auto line = (float *) CPLMalloc(sizeof(float)*nXSize);
-					m_dataset->GetRasterBand(i+1)->RasterIO( GF_Read, x, y, 1, 1, line, nXSize, 1, GDT_Float32, 0, 0 );
-					double val = double(*line);
-					CPLFree(line);
-					return(val);
-        }
-
         //! Fetch the affine transformation coefficients.
         auto affine_transformation_coefficients(){
           std::vector<double> v;
