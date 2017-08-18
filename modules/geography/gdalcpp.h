@@ -305,7 +305,7 @@ namespace gdalcpp {
         }
 
         //! Fetch a band object for a dataset, zeroth-based numbering.
-        auto const& band(unsigned int i) const {
+        auto & band(unsigned int i) {
           assert(i < depth());
           return *(m_dataset->GetRasterBand(i+1));
         }
