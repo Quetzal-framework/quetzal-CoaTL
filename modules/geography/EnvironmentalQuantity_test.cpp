@@ -43,8 +43,9 @@ int main()
 	coord_type c1 = space.at(7);
 
 	std::cout << c0.lat() << "/" << c0.lon() << std::endl;
-	//double some_value = bio1(v_space.front(), times.front());
-	//assert( some_value != 0 );
+
+	double some_value = bio1(space.front(), times.front());
+	assert( some_value != 0 );
 
 
 /* Expected dataSet structure

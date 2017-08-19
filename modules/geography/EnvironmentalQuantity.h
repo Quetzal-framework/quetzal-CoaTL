@@ -125,9 +125,12 @@ private:
 
 
   struct XY{
+
     XY(unsigned int col, unsigned int row) : x(col), y(row){}
+
     unsigned int x;
     unsigned int y;
+
     bool operator==(const XY& other) const {
         if(x == other.x && y == other.y) return true;
         return false;
@@ -139,6 +142,11 @@ private:
       Resolution(decimal_degree x_res, decimal_degree y_res) : x(x_res), y(y_res){}
       decimal_degree x;
       decimal_degree y;
+
+      bool operator==(const Resolution& other) const {
+          if(x == other.x && y == other.y) return true;
+          return false;
+        }
   };
 
 
@@ -153,6 +161,13 @@ private:
       decimal_degree x_max;
       decimal_degree y_min;
       decimal_degree y_max;
+
+      bool operator==(const Extent& other) const {
+          if(x_min == other.x_min && x_max == other.x_max &&
+             y_min == other.y_min && y_max == other.y_max){ return true; }
+             
+          return false;
+        }
   };
 
 

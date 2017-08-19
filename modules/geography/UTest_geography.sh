@@ -21,6 +21,10 @@ g++ -o EnvironmentalQuantity_test EnvironmentalQuantity_test.cpp -std=c++1y -Wal
 rm EnvironmentalQuantity_test
 echo -e "|--\t DONE \n|"
 
-
+echo -e "|--\t DiscreteLandscape_test..................................."
+g++ -o DiscreteLandscape_test DiscreteLandscape_test.cpp -std=c++1y -Wall -I/usr/include/gdal  -L/usr/lib/ -lgdal
+./DiscreteLandscape_test
+rm DiscreteLandscape_test
+echo -e "|--\t DONE \n|"
 
 echo -e "|--\t DONE \n|"
