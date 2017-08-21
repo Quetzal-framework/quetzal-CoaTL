@@ -117,7 +117,7 @@ int main(){
   std::mt19937 gen;
   GenerativeModel model;
   auto abc = abc::make_ABC(model, model.prior());
-  //auto table = abc.sample_prior_predictive_distribution(30, gen);
+  auto table = abc.sample_prior_predictive_distribution(30, gen);
 
   return 0;
 }
