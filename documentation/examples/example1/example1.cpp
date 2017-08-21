@@ -76,56 +76,36 @@ public:
       std::poisson_distribution<N_type> poisson(g(x,t));
       return poisson(gen);
     };
-/*
+
     // Dispersal expressions
-    auto gaussian  = [&param](auto x){
+    auto gaussian  = [&param](auto d){
       auto sigma = param.sigma();
       auto mu = param.mu();
       double pi = 3.14159265358979323846;
-      return ( 1./(sigma * sqrt(2. * pi)) * exp( - pow(x-mu,2.)/(2. * pow(sigma, 2.))));
+      return ( 1./(sigma*sqrt(2.*pi))*exp(-pow(d-mu,2.)/(2.*pow(sigma, 2.))));
     };
 
     auto distance = [](coord_type const& x, coord_type const& y){
-      return x.distance_to(y);
+      return x.great_circle_distance_to(y);
     };
 
-    auto m = compose(gaussian, distance);
-    auto kernel = make_kernel<memoize>(X, m);
-    auto kernel2 = make_dispersal_kernel<>(X, m);
+    // Dispersal law
+    auto m = quetzal::expressive::compose(gaussian, distance);
+    auto kernel = quetzal::random::make_transition_kernel(X, m);
 
-    auto weights = [m](coord_type const& x, auto const& space){
-      std::vector<double> w;
-      w.reserve(space.size());
-      for(auto const& y : space){
-        w.push_back(m(x,y));
-      }
-      return w;
-    };
-
-    auto source = [weights](coord_type const& x, auto const& space){
-      return std::discrete_distribution<size_t>(weights(x, space));
-    };
-
-    ExpandingTransitionKernel<coord_type, DiscreteDistribution, decltype(source)>
-    auto kernel = [](coord_type const& x, auto& gen){
-      DiscreteDistribution<coord_type> dis()
-    };
     // Demographic process
     for(auto t : T){
-      for(auto x : N.definition_space(t)){
+      for(auto x : X){
         auto N_tilde = sim_N_tilde(x,t);
         for(auto i = 1; i <= N_tilde; ++i){
           auto y = kernel(x,gen);
           Phi(x,y,t) += 1;
-          t2 = t; ++t2;
+          time_type t2 = t; ++t2;
           N(y,t2) += 1;
         }
       }
     }
-    */
-
     return std::make_pair(N,Phi);
-
   }
 
 };

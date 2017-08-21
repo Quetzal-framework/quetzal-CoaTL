@@ -16,7 +16,7 @@
 #include <random>
 
 namespace quetzal {
-
+namespace random {
 /*!
  * \brief Sampling (non) arithmetic values in discrete probability distribution.
  *
@@ -199,6 +199,7 @@ public:
 
 };
 
+} // namespace random
 } // namespace quetzal
 
 #endif

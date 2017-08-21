@@ -52,7 +52,7 @@ int main()
 	Coords paris(48.856614, 2.3522219000000177);
 	Coords moscow(55.7522200, 37.6155600 );
 
-	Coords::km computed = paris.distance_to(moscow);
+	Coords::km computed = paris.great_circle_distance_to(moscow);
 	Coords::km expected = 2486.22;
 
 	Coords::km EPSILON = 1.; // a 1-km error is acceptable.
@@ -61,7 +61,7 @@ int main()
 
 	Coords a(44.13, 0.35);
 	Coords b(50.3333, -3.33333);
-	a.distance_to(b);
+	a.great_circle_distance_to(b);
 
     return 0;
 }

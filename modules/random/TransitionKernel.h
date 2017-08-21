@@ -15,6 +15,7 @@
 #include <unordered_map>
 
 namespace quetzal{
+namespace random {
 
  template<class...T>
  class TransitionKernel;
@@ -346,6 +347,29 @@ public:
 };
 
 
+template<typename StateSpace,typename BinaryOperation>
+auto make_transition_kernel(StateSpace const& s, BinaryOperation binop){
+  using state_type = typename StateSpace::value_type;
+  using law_type = DiscreteDistribution<state_type>;
+  using kernel_type = TransitionKernel<law_type>;
+
+  auto compute_weights = [binop](state_type const& x, auto const& s){
+    std::vector<double> w;
+    w.reserve(s.size());
+    for(auto const& it : s){
+      w.push_back(m(x,it));
+    }
+    return w;
+  };
+
+  kernel_type kernel;
+  for(auto const& it : s){
+    kernel.set(it, law_type(compute_weights(it,s)));
+  }
+  return kernel;
+}
+
+} // namespace random
 } // namespace quetzal
 
 #endif

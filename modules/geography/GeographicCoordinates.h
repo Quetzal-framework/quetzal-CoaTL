@@ -34,7 +34,7 @@ public:
 			throw std::string("invalid coordinates" );
 	};
 
-	km distance_to(GeographicCoordinates const& other) const {
+	km great_circle_distance_to(GeographicCoordinates const& other) const {
 		km d = distanceEarth(this->m_lat, this->m_lon, other.m_lat, other.m_lon);
 		assert(d >= 0.);
 		return d;
