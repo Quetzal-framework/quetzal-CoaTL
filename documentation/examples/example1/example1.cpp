@@ -10,9 +10,14 @@ class GenerativeModel{
 private:
 
   struct Params{
-    auto r() const {return m_r;}
-    auto sigma() const {return m_sigma;}
-    auto mu() const {return m_mu;}
+    auto r() const { return m_r; }
+    void r(unsigned int value) { m_r = value; }
+
+    auto sigma() const { return m_sigma; }
+    void sigma(double value) { m_sigma = value; }
+
+    auto mu() const { return m_mu; }
+    void mu(double value) { m_mu = value; }
 
     unsigned int m_r;
     double m_sigma;
@@ -51,7 +56,7 @@ public:
   generateRandomDemography(generator_type& gen, Params const& param) const {
 
     // Real" environment
-  	env_type E( {{"bio1","test_data/bio1.tif"},{"bio12","test_data/bio12.tif"}},
+  	env_type E( {{"bio1","bio1.tif"},{"bio12","bio12.tif"}},
   	                    {2001,2002,2003,2004,2005,2006,2007,2008,2009,2010} );
 
     const auto& X = E.geographic_definition_space();
