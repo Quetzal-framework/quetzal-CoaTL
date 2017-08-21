@@ -67,12 +67,12 @@ public:
     using quetzal::expressive::literal_factory;
     using quetzal::expressive::use;
 
-    quetzal::expressive::literal_factory<coord_type, time_type> lit;
+    quetzal::expressive::literal_factory<const coord_type&, time_type> lit;
 
     // Growth expressions
     auto r = lit(param.r());
-    auto k = (use(std::cref(E["bio1"]))+use(std::cref(E["bio12"])))/lit(2);
-    auto N_expr = use(std::cref(N));
+    auto k = (use(E["bio1"]) + use(E["bio12"]))/lit(2);
+    auto N_expr = use([&N](coord_type const& x, time_type t){return N(x,t);});
     auto g = N_expr*(lit(1)+r)/ (lit(1)+((r * N_expr)/k));
 
     auto sim_N_tilde = [g](generator_type& gen, coord_type const& x, time_type t){
@@ -92,7 +92,6 @@ public:
       return x.great_circle_distance_to(y);
     };
 
-    // Dispersal law
     auto m = quetzal::expressive::compose(gaussian, distance);
     auto kernel = quetzal::random::make_transition_kernel(X, m);
 
@@ -117,7 +116,7 @@ int main(){
 
   std::mt19937 gen;
   GenerativeModel model;
-  //auto abc = abc::make_ABC(model, model.prior());
+  auto abc = abc::make_ABC(model, model.prior());
   //auto table = abc.sample_prior_predictive_distribution(30, gen);
 
   return 0;

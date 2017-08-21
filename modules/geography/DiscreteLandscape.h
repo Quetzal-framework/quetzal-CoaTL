@@ -17,6 +17,7 @@
 #include <stdexcept>
 #include <algorithm>
 #include <tuple>
+#include <functional> // std::cref
 
 #include "EnvironmentalQuantity.h"
 
@@ -111,9 +112,10 @@ public:
 	}
 
 	//! Ecological quantity as a function of space and time
-	const auto&  operator [](key_type const& k) const {
+	auto operator [](key_type const& k) const {
 		assert(m_quantities.find(k) != m_quantities.end());
-		return m_quantities.at(k);
+		auto c = std::cref(m_quantities.at(k));
+		return [c](coord_type const& x, time_type t){return c(x,t); };
 	}
 
 	//! Return the times for which all ecological quantities are defined.

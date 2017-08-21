@@ -199,7 +199,7 @@ constexpr auto literal(T t) {return literal_t<T, Args...>{t};}
 template <typename... Args>
 struct literal_factory {
 	template <typename T>
-	constexpr auto operator()(T t) {return literal<Args..., T>(t);}
+	constexpr auto operator()(T t) {return literal<Args...>(t);}
 };
 
 
