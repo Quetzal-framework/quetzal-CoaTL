@@ -357,14 +357,14 @@ auto make_transition_kernel(StateSpace const& s, BinaryOperation binop){
     std::vector<double> w;
     w.reserve(s.size());
     for(auto const& it : s){
-      w.push_back(m(x,it));
+      w.push_back(binop(x,it));
     }
     return w;
   };
 
   kernel_type kernel;
   for(auto const& it : s){
-    kernel.set(it, law_type(compute_weights(it,s)));
+    kernel.set(it, law_type(s, compute_weights(it,s)));
   }
   return kernel;
 }

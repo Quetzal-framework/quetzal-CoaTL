@@ -18,7 +18,7 @@
 int main () {
 	using deme_ID_type = int;
 	using law_type = std::discrete_distribution<deme_ID_type>;
-	using kernel_type = quetzal::TransitionKernel<law_type>;
+	using kernel_type = quetzal::random::TransitionKernel<law_type>;
 
 	law_type distribution({0.5,0.5}); // return deme 0 or deme 1 with same probability
 	kernel_type kernel;

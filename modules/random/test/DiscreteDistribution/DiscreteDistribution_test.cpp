@@ -18,7 +18,7 @@
 #include <map>
 
 int main () {
-  using quetzal::DiscreteDistribution;
+  using quetzal::random::DiscreteDistribution;
   std::mt19937 gen;
 	DiscreteDistribution<std::string> d({"Bordeaux", "Paris"}, {0.2,0.8});
   std::map<std::string, int> m;

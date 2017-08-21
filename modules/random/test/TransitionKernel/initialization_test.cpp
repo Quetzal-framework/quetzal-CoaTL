@@ -20,7 +20,7 @@ int main () {
 
 	using state_type = int;
 	using distribution_type = std::discrete_distribution<state_type>;
-	using kernel_type = quetzal::TransitionKernel<distribution_type>;
+	using kernel_type = quetzal::random::TransitionKernel<distribution_type>;
 
 	// initialization by default constructor
 	kernel_type first;

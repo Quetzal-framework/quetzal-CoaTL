@@ -17,7 +17,7 @@
 
 int main () {
   std::mt19937 gen;
-  using quetzal::DiscreteDistribution;
+  using quetzal::random::DiscreteDistribution;
 
 	// initialization by default constructor
 	DiscreteDistribution<int> first;
