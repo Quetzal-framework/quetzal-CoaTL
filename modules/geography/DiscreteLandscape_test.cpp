@@ -8,8 +8,6 @@
 *                                                                      *
 ***************************************************************************/
 
-// compiles with g++ -o Env_test Env_test.cpp -std=c++1y -Wall -I/usr/include/gdal  -L/usr/lib/ -lgdal
-
 #include <string>
 #include <iostream>
 #include <assert.h>
@@ -35,6 +33,9 @@ int main()
 	auto space = env.geographic_definition_space();
 
 	assert( space.size() == 9 );
+	assert( times.size() == 10 );
 
+	auto const & bio1 = env["bio1"];
+	std::cout << bio1(space.front(), times.front()) << std::endl;;
 	return 0;
 }

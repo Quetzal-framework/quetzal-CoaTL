@@ -15,3 +15,7 @@
 #include "random.h"
 
 #include "demography.h"
+
+#include "geography.h"
+
+#include "expressive.h"

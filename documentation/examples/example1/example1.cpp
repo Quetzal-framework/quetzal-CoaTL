@@ -1,4 +1,5 @@
 
+//  compiles with g++ -o example example1.cpp -std=c++14 -Wall -I/usr/include/gdal  -L/usr/lib/ -lgdal
 
 #include "../../../quetzal.h"
 
@@ -40,24 +41,34 @@ public:
   template<typename Generator>
   auto generateRandomDemography(Generator& gen, Params const& param) const {
 
-    Env E = read_env({"temperature.tif", "rainfall.tif"});
+    // Real" environment
+  	using time_type = unsigned int;
+    using key_type = std::string;
+  	using Env_type = quetzal::geography::DiscreteLandscape<key_type, time_type>;
+  	Env_type E( {{"bio1","test_data/bio1.tif"},{"bio12","test_data/bio12.tif"}},
+  	                    {2001,2002,2003,2004,2005,2006,2007,2008,2009,2010} );
 
-    using coord_type = typename Env::coord_type;
-    const auto& X = E.geographic_space();
+    using coord_type = typename Env_type::coord_type;
+    const auto& X = E.geographic_definition_space();
 
-    using time_type = typename Env::time_type;
-    const auto& T = E.temporal_space();
+    using time_type = typename Env_type::time_type;
+    const auto& T = E.temporal_definition_space();
 
     using N_type = unsigned int;
-    PopulationSize<coord_type, time_type, N_type> N;
+    quetzal::demography::PopulationSize<coord_type, time_type, N_type> N;
     N(X.begin(), T.begin()) = 10;
 
-    PopulationFlux<coord_type, time_type, N_type> Phi;
-/*
-    literal_factory<coord_type, time_type> lit;
+    quetzal::demography::PopulationFlux<coord_type, time_type, N_type> Phi;
 
+    // Building mathematical expressions of space and time
+    using quetzal::expressive::literal_factory;
+    using quetzal::expressive::use;
+
+    quetzal::expressive::literal_factory<coord_type, time_type> lit;
+
+    // Growth expressions
     auto r = lit(param.r());
-    auto k = (use(std::cref(E[1]))+use(std::cref(E[2])))/lit(2);
+    auto k = (use(std::cref(E["bio1"]))+use(std::cref(E["bio12"])))/lit(2);
     auto N_expr = use(std::cref(N));
     auto g = N_expr*(lit(1)+r)/ (lit(1)+((r * N_expr)/k));
 
@@ -65,7 +76,8 @@ public:
       std::poisson_distribution<N_type> poisson(g(x,t));
       return poisson(gen);
     };
-
+/*
+    // Dispersal expressions
     auto gaussian  = [&param](auto x){
       auto sigma = param.sigma();
       auto mu = param.mu();
@@ -98,7 +110,7 @@ public:
     auto kernel = [](coord_type const& x, auto& gen){
       DiscreteDistribution<coord_type> dis()
     };
-
+    // Demographic process
     for(auto t : T){
       for(auto x : N.definition_space(t)){
         auto N_tilde = sim_N_tilde(x,t);
@@ -110,7 +122,8 @@ public:
         }
       }
     }
-  */
+    */
+
     return std::make_pair(N,Phi);
 
   }
@@ -121,8 +134,8 @@ int main(){
 
   std::mt19937 gen;
   GenerativeModel model;
-  auto abc = abc::make_ABC(model, model.prior());
-  auto table = abc.sample_prior_predictive_distribution(30, gen);
+  //auto abc = abc::make_ABC(model, model.prior());
+  //auto table = abc.sample_prior_predictive_distribution(30, gen);
 
   return 0;
 }

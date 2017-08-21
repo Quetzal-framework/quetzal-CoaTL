@@ -9,6 +9,4 @@
 ***************************************************************************/
 
 
-#include "modules/demography/PopulationFlux.h"
-
-#include "modules/demography/PopulationSize.h"
+#include "modules/geography/DiscreteLandscape.h"

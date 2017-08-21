@@ -8,8 +8,6 @@
 *                                                                      *
 ***************************************************************************/
 
-// compiles with g++ -o Env_test Env_test.cpp -std=c++1y -Wall -I/usr/include/gdal  -L/usr/lib/ -lgdal
-
 #include <iostream>
 #include <assert.h>
 

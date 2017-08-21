@@ -75,7 +75,7 @@ public:
   }
 
 
-  double operator()(GeographicCoordinates const& c, Time const& t){
+  double operator()(GeographicCoordinates const& c, Time const& t) const {
     auto xy = to_xy(c);
     unsigned int pos = distance(m_times.begin(), find(m_times.begin(), m_times.end(), t));
     assert(pos < m_times.size());
@@ -165,7 +165,7 @@ private:
       bool operator==(const Extent& other) const {
           if(x_min == other.x_min && x_max == other.x_max &&
              y_min == other.y_min && y_max == other.y_max){ return true; }
-             
+
           return false;
         }
   };
@@ -218,11 +218,10 @@ private:
 
 
   // Read 1 value using GDAL API. To change if access is too slow
-  double read(unsigned int x, unsigned int y, unsigned int bandID) {
-    auto & b = band(bandID);
+  double read(unsigned int x, unsigned int y, unsigned int bandID) const {
     int nXSize = 1;
     auto line = (float *) CPLMalloc(sizeof(float)*nXSize);
-    auto err = b.RasterIO( GF_Read, x, y, 1, 1, line, nXSize, 1, GDT_Float32, 0, 0 );
+    auto err = band(bandID).RasterIO( GF_Read, x, y, 1, 1, line, nXSize, 1, GDT_Float32, 0, 0 );
     assert(err == CE_None);
     double val = double(*line);
     CPLFree(line);

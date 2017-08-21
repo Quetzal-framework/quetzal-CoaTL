@@ -113,7 +113,7 @@ public:
 	//! Ecological quantity as a function of space and time
 	const auto&  operator [](key_type const& k) const {
 		assert(m_quantities.find(k) != m_quantities.end());
-		return m_quantities[k];
+		return m_quantities.at(k);
 	}
 
 	//! Return the times for which all ecological quantities are defined.

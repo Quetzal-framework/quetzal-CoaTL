@@ -245,7 +245,7 @@ namespace gdalcpp {
         std::string m_dataset_name;
         detail::Options m_options;
         SRS m_srs;
-        std::unique_ptr<gdal_dataset_type, gdal_dataset_deleter> m_dataset;
+        mutable std::unique_ptr<gdal_dataset_type, gdal_dataset_deleter> m_dataset;
         uint64_t m_edit_count = 0;
         uint64_t m_max_edit_count = 0;
 
@@ -305,7 +305,7 @@ namespace gdalcpp {
         }
 
         //! Fetch a band object for a dataset, zeroth-based numbering.
-        auto & band(unsigned int i) {
+        auto & band(unsigned int i) const {
           assert(i < depth());
           return *(m_dataset->GetRasterBand(i+1));
         }
