@@ -8,8 +8,8 @@
 *                                                                      *
 ***************************************************************************/
 
-#ifndef __COORDS_H_INCLUDED__
-#define __COORDS_H_INCLUDED__
+#ifndef __GEOGRAPHIC_COORDINATES_H_INCLUDED__
+#define __GEOGRAPHIC_COORDINATES_H_INCLUDED__
 
 #include <assert.h>
 #include <cmath> // trigonometry
@@ -20,58 +20,56 @@ namespace quetzal {
 
 namespace geography {
 
-class Coords{
+class GeographicCoordinates{
 
-	using coord_type = double;
-	using distance_type = double;
 public:
-	using km = distance_type;
-	using degres = double;
+	using decimal_degree = double;
+	using km = double;
 
-	Coords() : lat(0.), lon(0.){};
+	GeographicCoordinates() = default;
 
 	// construct with decimal degrees
-	Coords(coord_type lat, coord_type lon) : lat(lat), lon(lon){
-		if( (lat > 90.) || (lat < -90.) || (lon < -180.) || (lon > 180.))
+	GeographicCoordinates(decimal_degree lat, decimal_degree lon) : m_lat(lat), m_lon(lon){
+		if( (m_lat > 90.) || (m_lat < -90.) || (m_lon < -180.) || (m_lon > 180.))
 			throw std::string("invalid coordinates" );
 	};
 
-	km distance_to(Coords const& other) const {
-		km d = distanceEarth(this->lat, this->lon, other.lat, other.lon);
+	km distance_to(GeographicCoordinates const& other) const {
+		km d = distanceEarth(this->m_lat, this->m_lon, other.m_lat, other.m_lon);
 		assert(d >= 0.);
 		return d;
 	}
 
-	coord_type get_lat() const {return lat;}
+	decimal_degree lat() const {return m_lat;}
 
-	coord_type get_lon() const {return lon;}
+	decimal_degree lon() const {return m_lon;}
 
 	// for using in map
-	bool operator<(const Coords& coord) const {
+	bool operator<(const GeographicCoordinates& other) const {
 
-    	if(lat < coord.lat) return true;
-  		if(lat > coord.lat) return false;
+    	if(m_lat < other.m_lat) return true;
+  		if(m_lat > other.m_lat) return false;
 
     	//lat == coord.lat
 
-    	if(lon < coord.lon) return true;
-    	if(lon > coord.lon) return false;
+    	if(m_lon < other.m_lon) return true;
+    	if(m_lon > other.m_lon) return false;
 
     	//lat == coord.lat && lon == coord.lon
 
     	return false;
 	}
 
-	bool operator==(const Coords& other) const {
-    	if(lat == other.lat && lon == other.lon) return true;
+	bool operator==(const GeographicCoordinates& other) const {
+    	if(m_lat == other.m_lat && m_lon == other.m_lon) return true;
     	return false;
     }
 
 
 private:
 
-	coord_type lat;
-	coord_type lon;
+	decimal_degree m_lat;
+	decimal_degree m_lon;
 
 	// Converts decimal degrees to radians
 	double deg2rad(double deg) const {
@@ -119,9 +117,9 @@ private:
 };
 
 
-std::ostream& operator <<(std::ostream& Stream, const Coords& coord)
+std::ostream& operator <<(std::ostream& Stream, GeographicCoordinates const& coord)
 {
-    Stream << "(" << coord.get_lat() << " " << coord.get_lon() << ")";
+    Stream << "(" << coord.lat() << " " << coord.lon() << ")";
     return Stream; // N'oubliez pas de renvoyer le flux, afin de pouvoir chaîner les appels
 }
 
@@ -138,13 +136,13 @@ inline void hash_combine(std::size_t & seed, const T & v)
 
 namespace std
 {
-  template<> struct hash<geography::Coords>
+  template<> struct hash<quetzal::geography::GeographicCoordinates>
   {
-    inline size_t operator()(const geography::Coords & v) const
+    inline size_t operator()(const quetzal::geography::GeographicCoordinates & v) const
     {
       size_t seed = 0;
-      geography::hash_combine(seed, v.get_lon());
-      geography::hash_combine(seed, v.get_lat());
+      quetzal::geography::hash_combine(seed, v.lon());
+      quetzal::geography::hash_combine(seed, v.lat());
       return seed;
     }
   };

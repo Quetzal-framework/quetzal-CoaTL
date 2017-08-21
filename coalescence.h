@@ -8,7 +8,6 @@
 *                                                                      *
 ***************************************************************************/
 
-// Header file including all coalescence module
 
 #include "modules/coalescence/policies/merger.h"
 

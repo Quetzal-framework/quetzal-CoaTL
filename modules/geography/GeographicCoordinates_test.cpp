@@ -6,17 +6,17 @@
 * the Free Software Foundation; either version 2 of the License, or    *
 * (at your option) any later version.                                  *
 *                                                                      *
-***************************************************************************/ 
+***************************************************************************/
 
-// compiles with g++ -o Coords_test Coords_test.cpp -std=c++1y -Wall 
+// compiles with g++ -o Coords_test Coords_test.cpp -std=c++1y -Wall
 
 #include <assert.h>
 
-#include "Coords.h"
+#include "GeographicCoordinates.h"
 
 int main()
 {
-	using geography::Coords;
+	using Coords = quetzal::geography::GeographicCoordinates;
 	/**********************
 	/ Construction
 	**********************/
@@ -30,8 +30,8 @@ int main()
 	/**********************
 	/ Getters
 	**********************/
-	assert(c1.get_lat() == 0.);
-	assert(c1.get_lon() == 1.);
+	assert(c1.lat() == 0.);
+	assert(c1.lon() == 1.);
 
 	/**********************
 	/ Comparison operators
@@ -65,4 +65,3 @@ int main()
 
     return 0;
 }
-
