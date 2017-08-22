@@ -24,9 +24,6 @@ private:
     double m_mu;
   };
 
-public:
-
-  using param_type = Params;
   using generator_type = std::mt19937;
   using time_type = unsigned int;
   using key_type = std::string;
@@ -35,8 +32,16 @@ public:
   using N_type = unsigned int;
   using pop_size_type = quetzal::demography::PopulationSize<coord_type, time_type, N_type>;
   using flux_type = quetzal::demography::PopulationFlux<coord_type, time_type, N_type>;
+  using marker_type = quetzal::genetics::microsatellite;
+	using individual_type = quetzal::genetics::DiploidIndividual<marker_type>;
+	using genet_type = quetzal::genetics::SpatialGeneticSample<coord_type, individual_type>;
+  using loader_type = quetzal::genetics::Loader<coord_type, marker_type>;
 
-  auto prior() const {
+public:
+
+  using param_type = Params;
+
+  auto make_prior() const {
     auto prior = [](auto& gen){
       Params params;
       params.r(std::uniform_real_distribution<double>(1.,5.)(gen));
@@ -47,22 +52,19 @@ public:
     return prior;
   }
 
-  std::pair<pop_size_type, flux_type>
+  auto
   operator()(generator_type& gen, Params const& param) const {
-      return generateRandomDemography(gen, param);
+    return simulate(gen, param);
   }
 
-  std::pair<pop_size_type, flux_type>
-  generateRandomDemography(generator_type& gen, Params const& param) const {
+  int simulate(generator_type& gen, Params const& param) const {
 
-    // Real" environment
-  	env_type E( {{"bio1","bio1.tif"},{"bio12","bio12.tif"}},
-  	                    {2001,2002,2003,2004,2005,2006,2007,2008,2009,2010} );
+    env_type E({{"bio1","bio1.tif"},{"bio12","bio12.tif"}},
+               {2001,2002,2003,2004,2005,2006,2007,2008,2009,2010});
 
     const auto& X = E.geographic_definition_space();
     const auto& T = E.temporal_definition_space();
 
-    using N_type = unsigned int;
     pop_size_type N;
     N(X.front(), T.front()) = 10;
 
@@ -112,8 +114,13 @@ public:
         }
       }
     }
-    return std::make_pair(N,Phi);
-  }
+
+    quetzal::genetics::Loader<coord_type, marker_type> reader;
+    auto D = reader.read("microsat_test.csv");
+
+    return 0;
+
+  } // simulate
 
 }; // GenerativeModel
 
@@ -121,7 +128,7 @@ int main(){
 
   std::mt19937 gen;
   GenerativeModel model;
-  auto abc = abc::make_ABC(model, model.prior());
+  auto abc = abc::make_ABC(model, model.make_prior());
   auto table = abc.sample_prior_predictive_distribution(30, gen);
 
   return 0;

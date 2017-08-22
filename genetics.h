@@ -8,18 +8,8 @@
 *                                                                      *
 ***************************************************************************/
 
-// Header file including all coalescence module
 
-#include "coalescence.h"
-
-#include "random.h"
-
-#include "demography.h"
-
-#include "geography.h"
-
-#include "expressive.h"
-
-#include "abc.h"
-
-#include "genetics.h"
+#include "modules/genetics/marker_traits.h"
+#include "modules/genetics/Allele.h"
+#include "modules/genetics/DiploidIndividual.h"
+#include "modules/genetics/SpatialGeneticSampleLoader.h"
