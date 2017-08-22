@@ -119,8 +119,17 @@ public:
     sample.reproject(E);
     auto S = sample.get_sampling_points();
 
-    
-
+/*
+    while(forest.size() != 1 | t != 2001 ){
+      for(auto const& it : forest){
+        quetzal::coalescence::BinaryMerger::merge(it.second.begin(),
+                                                  it.second.end(),
+                                                  N(it.first, t),
+                                                  inheritance,
+                                                  gen);
+      }
+    }
+*/
     return 0;
 
   } // simulate
