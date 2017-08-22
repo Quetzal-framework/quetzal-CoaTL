@@ -148,6 +148,10 @@ public:
 		return m_quantities.cbegin()->second.is_in_spatial_extent(c);
 	}
 
+	auto reproject_to_centroid(coord_type const& c) const {
+		return m_quantities.cbegin()->second.reproject_to_centroid(c);
+	}
+
 };
 
 } // geography

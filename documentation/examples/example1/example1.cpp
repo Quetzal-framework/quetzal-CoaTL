@@ -52,8 +52,7 @@ public:
     return prior;
   }
 
-  auto
-  operator()(generator_type& gen, Params const& param) const {
+  auto operator()(generator_type& gen, Params const& param) const {
     return simulate(gen, param);
   }
 
@@ -116,7 +115,11 @@ public:
     }
 
     quetzal::genetics::Loader<coord_type, marker_type> reader;
-    auto D = reader.read("microsat_test.csv");
+    auto sample = reader.read("microsat_test.csv");
+    sample.reproject(E);
+    auto S = sample.get_sampling_points();
+
+    
 
     return 0;
 
