@@ -70,7 +70,7 @@ namespace occupancy_spectrum {
    *         to modern discrete probability theory" (by John and Kotz, 1977, p.115).
    * \tparam UnaryPredicate Function object class acting as a predicate, taking
    *         the probability of the spectrum as argument and returning a boolean.
-   *         The signature should be `bool UnaryPredicate::operator()(double)``
+   *         The signature should be `bool UnaryPredicate::operator()(double)`
    *         The number of possible configurations grows very fast with n and m,
    *         so memorizing all of them quickly becomes intractable.
    *         As most of the configurations have extremely low output probability,

@@ -22,7 +22,7 @@ int main () {
   std::mt19937 g;
 
   // True data generation
-  auto true_lambda = param_type(5);
+  auto true_lambda = param_type(10);
   model_type model;
   auto obs_data = model(g, true_lambda);
 
@@ -30,7 +30,10 @@ int main () {
   auto abc = abc::make_ABC(model, prior_on_lambda);
 
   // Use Rubin algorithm
-  auto posterior_rubin = abc.rubin_rejection_sampler(30, obs_data, g);
+  auto posterior_rubin = abc.rubin_rejection_sampler(10000, 10, g);
+  for(auto const& it : posterior_rubin){
+    std::cout << it.mean() << std::endl;
+  }
 
   // Use Pritchard algorithm with distance and rejection threshold
   auto rho = [](data_type a, data_type b){return std::abs(static_cast<int>(a) - static_cast<int>(b) ); };
@@ -46,7 +49,7 @@ int main () {
   auto format = [](auto const& sample){
     std::cout << sample.param().mean() << "\t" << sample.data() << std::endl;
   };
-  
+
   (void)format;
 
   //activate for printing distances table

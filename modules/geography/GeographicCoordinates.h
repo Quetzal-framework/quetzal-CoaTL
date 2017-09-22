@@ -17,34 +17,104 @@
 #include <ostream>
 
 namespace quetzal {
-
 namespace geography {
 
+/*!
+ * \brief Geographic coordinates.
+ *
+ * Geographic coordinates (longitude and latitude) in decimal degree.
+ *
+ * \ingroup geography
+ * \section Example
+ * \snippet geography/test/GeographicCoordinates/GeographicCoordinates_test.cpp Example
+ * \section Output
+ * \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
+ */
 class GeographicCoordinates{
 
 public:
+
+	//! \typedef latitude and longitude value type
 	using decimal_degree = double;
+
+	//! \typedef the great circle distance value type
 	using km = double;
 
-	GeographicCoordinates() = default;
-
-	// construct with decimal degrees
-	GeographicCoordinates(decimal_degree lat, decimal_degree lon) : m_lat(lat), m_lon(lon){
+	/*!
+	 * \brief Constructor
+	 *
+	 * Default Construct a GeographicCoordinate with given longitude and latitude.
+	 *
+	 * \param lat the latitude value
+	 * \param lon the longitude value
+	 * \remark Exception will be thrown if the given values are aberrant.
+	 * \section Example
+	 * \snippet geography/test/GeographicCoordinates/GeographicCoordinates_test.cpp Example
+	 * \section Output
+	 * \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
+	 */
+	 GeographicCoordinates(decimal_degree lat, decimal_degree lon) : m_lat(lat), m_lon(lon){
 		if( (m_lat > 90.) || (m_lat < -90.) || (m_lon < -180.) || (m_lon > 180.))
 			throw std::string("invalid coordinates" );
 	};
 
+	/*!
+	 * \brief Compute great-circle distance between two points on the Earth.
+	 *
+	 * Compute great circle distance in kilometers to an other geographic coordinate.
+	 * Implementation follows a direct translation of
+	 * <a href="http://en.wikipedia.org/wiki/Haversine_formula">Haversine formula</a>.
+	 *
+	 * \param other the other coordinate
+	 * \return the distance in kilometers
+	 * \section Example
+	 * \snippet geography/test/GeographicCoordinates/GeographicCoordinates_test.cpp Example
+	 * \section Output
+	 * \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
+	 */
 	km great_circle_distance_to(GeographicCoordinates const& other) const {
 		km d = distanceEarth(this->m_lat, this->m_lon, other.m_lat, other.m_lon);
 		assert(d >= 0.);
 		return d;
 	}
 
+	/*!
+	 * \brief Gets latitude.
+	 *
+	 * Gets latitude value.
+	 *
+	 * \return the latitude value
+	 * \section Example
+	 * \snippet geography/test/GeographicCoordinates/GeographicCoordinates_test.cpp Example
+	 * \section Output
+	 * \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
+	 */
 	decimal_degree lat() const {return m_lat;}
 
+	/*!
+	 * \brief Gets longitude.
+	 *
+	 * Gets longitude value.
+	 *
+	 * \return the longitude value
+	 * \section Example
+	 * \snippet geography/test/GeographicCoordinates/GeographicCoordinates_test.cpp Example
+	 * \section Output
+	 * \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
+	 */
 	decimal_degree lon() const {return m_lon;}
 
-	// for using in map
+	/*!
+	 * \brief Comparison operator
+	 *
+	 * Establishes a strict total order relation between geographic coordinates.
+	 *
+	 * \remark allow GeographicCoordinates to be used in map
+	 * \section Example
+	 * \snippet geography/test/GeographicCoordinates/GeographicCoordinates_test.cpp Example
+	 * \section Output
+	 * \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
+	 */
 	bool operator<(const GeographicCoordinates& other) const {
 
     	if(m_lat < other.m_lat) return true;
@@ -60,6 +130,17 @@ public:
     	return false;
 	}
 
+	/*!
+	 * \brief Equality comparison operator
+	 *
+	 * Compares two coordinates by their latitude and longitude.
+	 *
+	 * \return true if longitude and latitude are equal, else returns false.
+	 * \section Example
+	 * \snippet geography/test/GeographicCoordinates/GeographicCoordinates_test.cpp Example
+	 * \section Output
+	 * \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
+	 */
 	bool operator==(const GeographicCoordinates& other) const {
     	if(m_lat == other.m_lat && m_lon == other.m_lon) return true;
     	return false;
@@ -117,10 +198,10 @@ private:
 };
 
 
-std::ostream& operator <<(std::ostream& Stream, GeographicCoordinates const& coord)
+std::ostream& operator <<(std::ostream& stream, GeographicCoordinates const& coord)
 {
-    Stream << "(" << coord.lat() << " " << coord.lon() << ")";
-    return Stream; // N'oubliez pas de renvoyer le flux, afin de pouvoir chaîner les appels
+    stream << "(" << coord.lat() << " " << coord.lon() << ")";
+    return stream;
 }
 
 template <class T>

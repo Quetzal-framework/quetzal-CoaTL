@@ -19,15 +19,151 @@
 namespace quetzal {
 namespace geography {
 
-// Functor of space and time, with discrete definition space
-template<typename Time>
-class EnvironmentalQuantity : public gdalcpp::Dataset {
 
-  struct Extent;
-  struct Resolution;
+/*!
+ * \brief %Resolution of a raster grid object
+ *
+ * \ingroup geography
+ * \section Example
+ * \snippet geography/test/Resolution/Resolution_test.cpp Example
+ * \section Output
+ * \include geography/test/Resolution/Resolution_test.output
+ */
+class Resolution{
+
+public:
+
+  //! \typedef decimal degree type
+	using decimal_degree = typename GeographicCoordinates::decimal_degree;
+
+  /**
+    * \brief Constructor
+    *
+    * \param lon_res the resolution of the spatial grid longitude, in decimal_degree
+    * \param lat_res the resolution of the spatial grid latitude, in decimal_degree
+    * \section Example
+    * \snippet geography/test/Resolution/Resolution_test.cpp Example
+    * \section Output
+    * \include geography/test/Resolution/Resolution_test.output
+    */
+  explicit Resolution(decimal_degree lon_res, decimal_degree lat_res) : m_lon(lon_res), m_lat(lat_res) {}
+
+  /**
+    * \brief Gets longitude resolution in decimal degrees
+    *
+    * \section Example
+    * \snippet geography/test/Resolution/Resolution_test.cpp Example
+    * \section Output
+    * \include geography/test/Resolution/Resolution_test.output
+    */
+  decimal_degree lon() const {
+    return m_lon;
+  }
+
+  /**
+    * \brief Gets latitude resolution in decimal degrees
+    *
+    * \section Example
+    * \snippet geography/test/Resolution/Resolution_test.cpp Example
+    * \section Output
+    * \include geography/test/Resolution/Resolution_test.output
+    */
+  decimal_degree lat() const {
+    return m_lat;
+  }
+
+  /**
+    * \brief EqualityComparable
+    *
+    * Checks if two resolutions objects are equals
+    * \return true if latitude and longitude have same resolution, else returns false.
+    * \section Example
+    * \snippet geography/test/Resolution/Resolution_test.cpp Example
+    * \section Output
+    * \include geography/test/Resolution/Resolution_test.output
+    */
+  bool operator==(const Resolution& other) const {
+      if(x == other.lon && y == other.y) return true;
+      return false;
+    }
+
+  private:
+
+      decimal_degree m_lon;
+      decimal_degree m_lat;
+
+  };
+}
+
+
+
+/*!
+ * \brief %Extent of a raster grid object
+ *
+ * \ingroup geography
+ * \section Example
+ * \snippet geography/test/Extent/Extent_test.cpp Example
+ * \section Output
+ * \include geography/test/Extent/Extent_test.output
+ */
+class Extent{
+
+	/**
+		* \brief Constructor
+		*
+		* \param lon_min the minimal longitude of the spatial grid in decimal_degree
+		* \param lon_max the mmaximal longitude of the spatial grid in decimal_degree
+		* \param lat_min the minimal latitude of the spatial grid in decimal_degree
+		* \param lat_max the minimal longitude of the spatial grid in decimal_degree
+		* \section Example
+		* \snippet geography/test/Extent/Extent_test.cpp Example
+		* \section Output
+		* \include geography/test/Extent/Extent_test.output
+		*/
+	Extent(decimal_degree lon_min, decimal_degree lon_max, decimal_degree lat_min, decimal_degree lat_max):
+	m_lon_min(lon_min),
+	m_lon_max(lon_max),
+	m_lat_min(lat_min),
+	m_lat_max(lat_max){}
+
+	decimal_degree m_lon_min;
+	decimal_degree m_lon_max;
+	decimal_degree m_lat_min;
+	decimal_degree m_lat_max;
+
+	bool operator==(const Extent& other) const {
+	    if(lon_min() == other.lon_min() &&
+			   lon_max() == other.lon_max() &&
+				 lat_min() == other.lat_min() &&
+				 lat_max() == other.lat_max() )
+			{
+				return true;
+			}
+	    return false;
+	  }
+  };
+
+
+/*!
+ * \brief Discretized representation of an ecological quantitiy that varies in space and time
+ *
+ * The values of an ecological quantity are represented in a geographic explicit context constructed from raster files and gives strong
+ * guarantees on data consistency.
+ *
+ * \tparam Time     Time type
+ * \ingroup geography
+ * \section Example
+ * \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
+ * \section Output
+ * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
+ */
+template<typename Time>
+class EnvironmentalQuantity : private gdalcpp::Dataset {
+
   struct XY;
 
 public:
+
   //! \typedef coordinate type
   using coord_type = GeographicCoordinates;
 
@@ -37,6 +173,22 @@ public:
   //! \typedef decimal degree type
   using decimal_degree = typename GeographicCoordinates::decimal_degree;
 
+	//! \typedef value type
+	using value_type = double;
+
+	/**
+		* \brief Constructor
+		*
+		* \param dataset_name the raster dataset file to read.
+		* \param times a sorted vector giving the times that represents each band of the dataset
+		* \remark the size of times argument should be equal to the depth of the given dataset
+		* \remark times vector should be sorted
+		* \remark values should be defined for same coordinates at all times"
+		* \section Example
+	  * \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
+	  * \section Output
+	  * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
+		*/
   EnvironmentalQuantity(const std::string& dataset_name, std::vector<time_type> const& times):
   gdalcpp::Dataset(dataset_name),
   m_times(times),
@@ -47,51 +199,112 @@ public:
   m_valid_XY(get_domain(0)),
   m_valid_LonLat(to_lat_lon(m_valid_XY))
   {
-    std::sort(m_times.begin(), m_times.end());
-    std::sort(m_valid_LonLat.begin(), m_valid_LonLat.end());
 
     if(times.size() != depth()){
-     throw std::runtime_error("Wrong number of times.");
+     throw std::runtime_error("the size of times argument should be equal to the depth of the given dataset");
     }
 
+		if( ! std::is_sorted(m_times)){
+     throw std::runtime_error("times vector should be sorted");
+    }
+
+    std::sort(m_valid_LonLat.begin(), m_valid_LonLat.end());
+
     if( !has_same_domain_at_all_times()){
-      throw std::runtime_error("All times should have same definition space");
+      throw std::runtime_error("Values should be defined for same coordinates at all times");
     }
   }
 
-
+	/**
+		* \brief Gets the origin of the spatial grid
+		*
+		* \section Example
+	  * \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
+	  * \section Output
+	  * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
+		*/
   const GeographicCoordinates & origin() const {
     return m_origin;
   }
 
-
+	/**
+		* \brief Gets the resolution of the spatial grid
+		*
+		* \section Example
+	  * \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
+	  * \section Output
+	  * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
+		*/
   const Resolution & resolution() const {
     return m_resolution;
   }
 
-
+	/**
+		* \brief Gets the extent of the spatial grid
+		*
+		* \section Example
+	  * \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
+	  * \section Output
+	  * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
+		*/
   const Extent& extent() const {
     return m_extent;
   }
 
-
-  double operator()(GeographicCoordinates const& c, Time const& t) const {
+	/**
+		* \brief read the value at position x and time t
+		*
+		* \remark possibly slow
+		* \remark checks if the given time is in the temporal extent
+		* \section Example
+	  * \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
+	  * \section Output
+	  * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
+		*/
+  value_type at(GeographicCoordinates const& c, Time const& t) const {
     auto xy = to_xy(c);
     unsigned int pos = distance(m_times.begin(), find(m_times.begin(), m_times.end(), t));
     assert(pos < m_times.size());
     return read(xy.x, xy.y, pos);
   }
 
+	/**
+		* \brief The geographic coordinates of the centroids of the demes for which values are defined at all times.
+		*
+		* Returns the geographic coordinates of the centroids of the demes for which values are defined at all times.
+		* Values can be read from other coordinates, but this function provides a natural
+		* way to construct the geographic support for a demic structure (for example for demographic simulations).
+		*
+		* \section Example
+	  * \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
+	  * \section Output
+	  * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
+		*/
   const std::vector<GeographicCoordinates>& geographic_definition_space() const {
     return m_valid_LonLat;
   }
 
+	/**
+		* \brief read the times at which quantity is defined.
+		*
+		* \section Example
+	  * \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
+	  * \section Output
+	  * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
+		*/
   const std::vector<time_type>& temporal_definition_space() const {
     return m_times;
   }
 
 
-  // Check if a given geographic coordinate is in the landscape spatial extent
+	/**
+		* \brief Checks if a given geographic coordinate is in the landscape spatial extent
+		*
+		* \section Example
+		* \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
+		* \section Output
+		* \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
+		*/
   bool is_in_spatial_extent(GeographicCoordinates const& c) const {
     bool is_in_spatial_extent = false;
     if( c.lon() >= m_extent.x_min && c.lon() < m_extent.x_max &&
@@ -102,7 +315,14 @@ public:
     return(is_in_spatial_extent);
   }
 
-  // Coordinate of the centroid of the landscape cell to which the given coordinate belongs
+	/**
+		* \brief Coordinate of the centroid of the deme to which the given coordinate belongs
+		*
+		* \section Example
+		* \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
+		* \section Output
+		* \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
+		*/
   GeographicCoordinates reproject_to_centroid(GeographicCoordinates const& c) const {
     if( ! is_in_spatial_extent(c)){
       throw std::runtime_error("Geographic coordinate should belong to spatial extent to be reprojected");
@@ -123,7 +343,6 @@ private:
   std::vector<XY> m_valid_XY;
   std::vector<GeographicCoordinates> m_valid_LonLat;
 
-
   struct XY{
 
     XY(unsigned int col, unsigned int row) : x(col), y(row){}
@@ -136,40 +355,6 @@ private:
         return false;
       }
   };
-
-
-  struct Resolution{
-      Resolution(decimal_degree x_res, decimal_degree y_res) : x(x_res), y(y_res){}
-      decimal_degree x;
-      decimal_degree y;
-
-      bool operator==(const Resolution& other) const {
-          if(x == other.x && y == other.y) return true;
-          return false;
-        }
-  };
-
-
-  struct Extent{
-      Extent(decimal_degree xmin, decimal_degree xmax, decimal_degree ymin, decimal_degree ymax):
-      x_min(xmin),
-      x_max(xmax),
-      y_min(ymin),
-      y_max(ymax){}
-
-      decimal_degree x_min;
-      decimal_degree x_max;
-      decimal_degree y_min;
-      decimal_degree y_max;
-
-      bool operator==(const Extent& other) const {
-          if(x_min == other.x_min && x_max == other.x_max &&
-             y_min == other.y_min && y_max == other.y_max){ return true; }
-
-          return false;
-        }
-  };
-
 
   // Geographic coordinates of the top left corner.
   GeographicCoordinates compute_origin(std::vector<double> const& gT) const {

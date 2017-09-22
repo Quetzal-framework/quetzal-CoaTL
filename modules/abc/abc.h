@@ -122,7 +122,6 @@ namespace abc {
 					sample.push_back(params);
 				}
 			}
-
 			return sample;
 		}
 

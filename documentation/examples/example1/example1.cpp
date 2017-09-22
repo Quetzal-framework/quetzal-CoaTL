@@ -13,11 +13,6 @@ private:
     auto r() const { return m_r; }
     void r(unsigned int value) { m_r = value; }
 
-    auto sigma() const { return m_sigma; }
-    void sigma(double value) { m_sigma = value; }
-
-    auto mu() const { return m_mu; }
-    void mu(double value) { m_mu = value; }
 
     unsigned int m_r;
     double m_sigma;
@@ -45,8 +40,8 @@ public:
     auto prior = [](auto& gen){
       Params params;
       params.r(std::uniform_real_distribution<double>(1.,5.)(gen));
-      params.sigma(std::uniform_real_distribution<double>(1.,50.)(gen));
-      params.mu(std::uniform_real_distribution<double>(1.,10.)(gen));
+      //params.sigma(std::uniform_real_distribution<double>(1.,50.)(gen));
+      //params.mu(std::uniform_real_distribution<double>(1.,10.)(gen));
       return params;
     };
     return prior;
@@ -119,17 +114,20 @@ public:
     sample.reproject(E);
     auto S = sample.get_sampling_points();
 
-/*
-    while(forest.size() != 1 | t != 2001 ){
-      for(auto const& it : forest){
-        quetzal::coalescence::BinaryMerger::merge(it.second.begin(),
-                                                  it.second.end(),
-                                                  N(it.first, t),
-                                                  inheritance,
-                                                  gen);
+    std::map<coord_type, std::vector<unsigned int>> forest;
+    for(auto const& x : S){
+      forest[x] = std::vector(sample.size(x), 1);
+    }
+
+    time_type reverse_time = 2010;
+    while(forest.size() != 1 | reverse_time != 2001 ){
+
+      for(auto & it : forest){
+        auto & v = it.second;
+        auto last = quetzal::coalescence::BinaryMerger::merge(v.begin(), v.end(), N(it.first, t), std::plus<unsigned int>, gen);
+        v.resize(std::distance(v.begin(), last));
       }
     }
-*/
     return 0;
 
   } // simulate
