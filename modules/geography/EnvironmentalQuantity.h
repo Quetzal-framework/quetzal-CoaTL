@@ -13,6 +13,8 @@
 
 #include "gdalcpp.h"
 #include "GeographicCoordinates.h"
+#include "Resolution.h"
+#include "Extent.h"
 
 #include <algorithm>
 
@@ -79,7 +81,7 @@ public:
      throw std::runtime_error("the size of times argument should be equal to the depth of the given dataset");
     }
 
-		if( ! std::is_sorted(m_times)){
+		if( ! std::is_sorted(m_times.cbegin(), m_times.cend())){
      throw std::runtime_error("times vector should be sorted");
     }
 
@@ -110,7 +112,7 @@ public:
 	  * \section Output
 	  * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
 		*/
-  const Resolution & resolution() const {
+  const Resolution<decimal_degree> & resolution() const {
     return m_resolution;
   }
 
@@ -122,7 +124,7 @@ public:
 	  * \section Output
 	  * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
 		*/
-  const Extent& extent() const {
+  const Extent<decimal_degree>& extent() const {
     return m_extent;
   }
 
@@ -182,8 +184,8 @@ public:
 		*/
   bool is_in_spatial_extent(GeographicCoordinates const& c) const {
     bool is_in_spatial_extent = false;
-    if( c.lon() >= m_extent.x_min && c.lon() < m_extent.x_max &&
-        c.lat() <= m_extent.y_min && c.lat() > m_extent.y_max      )
+    if( c.lon() >= m_extent.lon_min() && c.lon() < m_extent.lon_max() &&
+        c.lat() <= m_extent.lat_min() && c.lat() > m_extent.lat_max()     )
     {
       is_in_spatial_extent = true;
     }
@@ -213,8 +215,8 @@ private:
   std::vector<time_type> m_times;
   std::vector<double> m_gT;
   GeographicCoordinates m_origin;
-  Resolution m_resolution;
-  Extent m_extent;
+  Resolution<decimal_degree> m_resolution;
+  Extent<decimal_degree> m_extent;
   std::vector<XY> m_valid_XY;
   std::vector<GeographicCoordinates> m_valid_LonLat;
 
@@ -237,15 +239,15 @@ private:
   }
 
   // Pixel size in x and y
-  Resolution compute_resolution(std::vector<double> const& gT) const {
-      return Resolution(gT[1], gT[5]);
+  Resolution<decimal_degree> compute_resolution(std::vector<double> const& gT) const {
+      return Resolution<decimal_degree>(gT[5], gT[1]);
   }
 
   // Top left corner and bottom right corner geographic coordinates
-  Extent compute_extent(GeographicCoordinates const& o, Resolution const& r) const {
-    auto lon_max = o.lon() + width() * r.x;
-    auto lat_max = o.lat() + height() * r.y;
-    return Extent(o.lon(), lon_max, o.lat(), lat_max);
+  Extent<decimal_degree> compute_extent(GeographicCoordinates const& o, Resolution<decimal_degree> const& r) const {
+    auto lon_max = o.lon() + width() * r.lon();
+    auto lat_max = o.lat() + height() * r.lat();
+    return Extent<decimal_degree>(o.lat(), lat_max, o.lon(), lon_max);
   }
 
   std::vector<XY> get_domain(unsigned int bandID){

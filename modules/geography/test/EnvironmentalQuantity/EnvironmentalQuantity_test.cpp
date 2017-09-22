@@ -11,7 +11,7 @@
 #include <iostream>
 #include <assert.h>
 
-#include "EnvironmentalQuantity.h"
+#include "../../EnvironmentalQuantity.h"
 
 int main()
 {
@@ -20,13 +20,13 @@ int main()
 	using quantity_type = quetzal::geography::EnvironmentalQuantity<time_type>;
 	using coord_type = typename quantity_type::coord_type;
 
-	quantity_type bio1( "test_data/bio1.tif", {2001,2002,2003,2004,2005,2006,2007,2008,2009,2010} );
+	quantity_type bio1( "../test_data/bio1.tif", {2001,2002,2003,2004,2005,2006,2007,2008,2009,2010} );
 
 	auto times = bio1.temporal_definition_space();
 	auto space = bio1.geographic_definition_space();
 
 	assert( space.size() == 9 );
-	assert( times.size() == 10 && bio1.depth() == 10);
+	assert( times.size() == 10);
 	assert( bio1.origin() == coord_type(52. , -5.));
 
 	for(auto const& it : space){
@@ -42,7 +42,7 @@ int main()
 
 	std::cout << c0.lat() << "/" << c0.lon() << std::endl;
 
-	double some_value = bio1(space.front(), times.front());
+	double some_value = bio1.at(space.front(), times.front());
 	assert( some_value != 0 );
 
 
