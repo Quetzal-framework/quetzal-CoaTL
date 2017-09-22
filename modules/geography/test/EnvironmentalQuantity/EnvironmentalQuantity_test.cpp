@@ -29,6 +29,7 @@ int main()
 	assert( times.size() == 10);
 	assert( bio1.origin() == coord_type(52. , -5.));
 
+	std::cout << "Possible geographic support (demic structure) for demographic simulation" << std::endl;
 	for(auto const& it : space){
 		std::cout << it << std::endl;
 	}
@@ -39,8 +40,6 @@ int main()
 	coord_type c4 = space.at(4);
 	coord_type c0 = space.at(6);
 	coord_type c1 = space.at(7);
-
-	std::cout << c0.lat() << "/" << c0.lon() << std::endl;
 
 	double some_value = bio1.at(space.front(), times.front());
 	assert( some_value != 0 );
