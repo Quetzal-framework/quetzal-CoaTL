@@ -27,6 +27,8 @@ template<typename T>
 class Extent{
 
 public:
+
+	//! \typedef type used to represent the values of longitude and latitude
 	using value_type = T;
 
 	/**
@@ -109,45 +111,66 @@ public:
 			*/
 		value_type lon_max() const {return m_lon_max; }
 
+
 		/**
 			* \brief Set the minimal latitude of the spatial extent
+			*
+			* \return a reference on the Extent object
 			*
 			* \section Example
 			* \snippet geography/test/Extent/Extent_test.cpp Example
 			* \section Output
 			* \include geography/test/Extent/Extent_test.output
 			*/
-		void lat_min(value_type val) {m_lat_min = val ; }
+		Extent& lat_min(value_type val) {
+			m_lat_min = val;
+			return *this;
+		}
 
 		/**
 			* \brief Set the maximal longitude of the spatial extent
 			*
+			* \return a reference on the Extent object
+			*
 			* \section Example
 			* \snippet geography/test/Extent/Extent_test.cpp Example
 			* \section Output
 			* \include geography/test/Extent/Extent_test.output
 			*/
-		void lat_max(value_type val) {m_lat_max = val ; }
+		Extent& lat_max(value_type val) {
+			m_lat_max = val ;
+			return *this;
+		}
 
 		/**
 			* \brief Set the minimal longitude of the spatial extent
 			*
-			* \section Example
-			* \snippet geography/test/Extent/Extent_test.cpp Example
-			* \section Output
-			* \include geography/test/Extent/Extent_test.output
-			*/
-		void lon_min(value_type val) {m_lon_min = val ; }
-
-		/**
-			* \brief Set the maximal longitude of the spatial extent
+			* \return a reference on the Extent object
 			*
 			* \section Example
 			* \snippet geography/test/Extent/Extent_test.cpp Example
 			* \section Output
 			* \include geography/test/Extent/Extent_test.output
 			*/
-		void lon_max(value_type val) {m_lon_max = val ; }
+		Extent& lon_min(value_type val) {
+			m_lon_min = val ;
+			return *this;
+		}
+
+		/**
+			* \brief Set the maximal longitude of the spatial extent
+			*
+			* \return a reference on the Extent object
+			*
+			* \section Example
+			* \snippet geography/test/Extent/Extent_test.cpp Example
+			* \section Output
+			* \include geography/test/Extent/Extent_test.output
+			*/
+		Extent& lon_max(value_type val) {
+			m_lon_max = val ;
+			return *this;
+		}
 
 	private:
 		value_type m_lat_min;
