@@ -158,26 +158,32 @@ public:
 	}
 
 	/**
-		* \brief Accesses the times used to define the temporal definition space
+		* \brief read the times at which quantity is defined.
 		* \return the ordered times that have been specified at construction
 		* \section Example
 		* \snippet geography/test/DiscreteLandscape/DiscreteLandscape_test.cpp Example
 		* \section Output
 		* \include geography/test/DiscreteLandscape/DiscreteLandscape_test.output
 		*/
-		const auto & temporal_definition_space() const {
+		const std::vector<time_type>& temporal_definition_space() const {
 		return m_quantities.cbegin()->second.temporal_definition_space();
 	}
 
-	/**
-		* \brief Accesses the geographical definition space
-		* \return the geographic coordinates for which all ecological quantities are defined at all times
+		/**
+		* \brief The geographic coordinates of the centroids of the demes for which
+		* values are defined for all ecological quantities at all times.
+		*
+		* Returns the geographic coordinates of the centroids of the demes for which
+		* values are defined for all ecological quantities at all times.
+		* Values can be read from other coordinates, but this function provides a natural
+		* way to construct the geographic support for a demic structure (for example for demographic simulations).
+		*
 		* \section Example
 		* \snippet geography/test/DiscreteLandscape/DiscreteLandscape_test.cpp Example
 		* \section Output
 		* \include geography/test/DiscreteLandscape/DiscreteLandscape_test.output
 		*/
-	const auto & geographic_definition_space() const {
+	const std::vector<coord_type> & geographic_definition_space() const {
 		return m_quantities.cbegin()->second.geographic_definition_space();
 	}
 
@@ -189,7 +195,7 @@ public:
 		* \section Output
 		* \include geography/test/DiscreteLandscape/DiscreteLandscape_test.output
 		*/
-	const auto & origin() const {
+	const coord_type & origin() const {
 		return m_quantities.cbegin()->second.origin();
 	}
 
@@ -201,7 +207,7 @@ public:
 		* \section Output
 		* \include geography/test/DiscreteLandscape/DiscreteLandscape_test.output
 		*/
-	const auto & resolution() const {
+	const Resolution & resolution() const {
 		return m_quantities.cbegin()->second.resolution();
 	}
 
@@ -213,7 +219,7 @@ public:
 		* \section Output
 		* \include geography/test/DiscreteLandscape/DiscreteLandscape_test.output
 		*/
-	const auto & extent() const {
+	const Extent & extent() const {
 		return m_quantities.cbegin()->second.extent();
 	}
 
@@ -240,7 +246,7 @@ public:
 		* \section Output
 		* \include geography/test/DiscreteLandscape/DiscreteLandscape_test.output
 		*/
-	auto reproject_to_centroid(coord_type const& c) const {
+	coord_type reproject_to_centroid(coord_type const& c) const {
 		return m_quantities.cbegin()->second.reproject_to_centroid(c);
 	}
 
