@@ -8,10 +8,12 @@
 *                                                                      *
 ***************************************************************************/
 
+#include "../../EnvironmentalQuantity.h"
+
+//! [Example]
+
 #include <iostream>
 #include <assert.h>
-
-#include "../../EnvironmentalQuantity.h"
 
 int main()
 {
@@ -143,3 +145,5 @@ int main()
 
 	return 0;
 }
+
+//! [Example]
