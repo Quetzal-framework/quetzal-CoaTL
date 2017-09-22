@@ -27,7 +27,7 @@ int main () {
 	using State = int;
 	using Time = int;
 	using Distribution = std::discrete_distribution<State>;
-	using Kernel = quetzal::TransitionKernel<Time, Distribution>;
+	using Kernel = quetzal::random::TransitionKernel<Time, Distribution>;
 
 	// initialization by default constructor
 	Kernel first;

@@ -23,7 +23,7 @@ int main () {
 	using deme_ID_type = int;
 	using time_type = int;
 	using law_type = std::discrete_distribution<deme_ID_type>;
-	using kernel_type = quetzal::TransitionKernel<time_type, law_type>;
+	using kernel_type = quetzal::random::TransitionKernel<time_type, law_type>;
 
 	std::mt19937 gen;
 	law_type d({0.5,0.5});

@@ -48,6 +48,8 @@ DEALINGS IN THE SOFTWARE.
 #include <ogr_api.h>
 #include <ogrsf_frmts.h>
 
+#include "assert.h"
+
 namespace gdalcpp {
 
 #if GDAL_VERSION_MAJOR >= 2
