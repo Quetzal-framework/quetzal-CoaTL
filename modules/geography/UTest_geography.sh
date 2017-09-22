@@ -26,4 +26,10 @@ echo -e "|--\t EnvironmentalQuantity_test....................................."
 ./UTest.sh
 echo -e "|--\t DONE \n|"
 
+cd ../DiscreteLandscape
+
+echo -e "|--\t DiscreteLandscape_test....................................."
+./UTest.sh
+echo -e "|--\t DONE \n|"
+
 echo -e "DONE\n"

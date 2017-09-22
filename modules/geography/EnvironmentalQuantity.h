@@ -22,7 +22,7 @@ namespace quetzal {
 namespace geography {
 
 /*!
- * \brief Discretized representation of an ecological quantitiy that varies in space and time
+ * \brief Discretized representation of an ecological quantity that varies in space and time
  *
  * The values of an ecological quantity are represented in a geographic explicit context constructed from raster files and gives strong
  * guarantees on data consistency.
@@ -35,7 +35,7 @@ namespace geography {
  * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
  */
 template<typename Time>
-class EnvironmentalQuantity : private gdalcpp::Dataset {
+class EnvironmentalQuantity : public gdalcpp::Dataset {
 
   struct XY;
 

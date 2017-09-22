@@ -59,7 +59,7 @@ public:
 	using time_type = Time;
 
 	//! \typedef decimal degree type
-	using decimal_degree = typename GeographicCoordinates::decimal_degree;
+	using decimal_degree = typename geo_data_type::decimal_degree;
 
 private:
 
@@ -154,7 +154,7 @@ public:
 	auto operator [](key_type const& k) const {
 		assert(m_quantities.find(k) != m_quantities.end());
 		auto c = std::cref(m_quantities.at(k));
-		return [c](coord_type const& x, time_type t){return c(x,t); };
+		return [c](coord_type const& x, time_type t){return c.get().at(x,t); };
 	}
 
 	/**
@@ -207,7 +207,7 @@ public:
 		* \section Output
 		* \include geography/test/DiscreteLandscape/DiscreteLandscape_test.output
 		*/
-	const Resolution & resolution() const {
+	const Resolution<decimal_degree> & resolution() const {
 		return m_quantities.cbegin()->second.resolution();
 	}
 
@@ -219,7 +219,7 @@ public:
 		* \section Output
 		* \include geography/test/DiscreteLandscape/DiscreteLandscape_test.output
 		*/
-	const Extent & extent() const {
+	const Extent<decimal_degree> & extent() const {
 		return m_quantities.cbegin()->second.extent();
 	}
 
