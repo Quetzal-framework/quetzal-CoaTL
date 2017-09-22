@@ -1,0 +1,115 @@
+/**
+  * \defgroup geography geography
+  * \brief Template classes for building spatially explicit representations of spatio-temporal quantities
+  *
+  * ## Overview
+  * These classes are designed to handle the geographical aspects of the spatially explicit simulations.
+  *
+  * ![geography module overview](/resources/schema_geography_module.png)
+  *
+  * ## GDAL core
+  * Key features of [GDAL](http://www.gdal.org/) API are encapsulated in a mordern C++ wrapper class,
+  * the gdalcpp::Dataset class, allowing to read data from raster files and perform basic operations.
+  * Geolocalization syntax is pixel-oriented (data are accessed by row and columns indices), which can
+  * can be confusing when manipulating spatial landscapes along with dispersal kernels (where distances need to be computed) and
+  * spatial genetic samples (where sampling coordinates are typically defined in latitude/longitude).
+  *
+  * ## Geography-friendly interfaces
+  * For better harmonization with other features, GeographicCoordinates objects are used
+  * in classes interfaces to represent
+  * latitude and longitude in decimal degrees and to compute great-circle distances in kilometers between
+  * two points.
+  *
+  * ## Representing environmental quantities as functions of space and time.
+  * The EnvironmentalQuantity class adds a level of abstraction to gdalcpp::Dataset, in order to
+  * represent a discrete function of space and time based on geographic coordinates. It allows to
+  * retrieve the coordinates of the cells centroids for which the value is defined
+  * at all times. This set can be used to represent the demic structure and to perform
+  * secured mathematical composition of ecological functions
+  * (for example using the expressive module).
+  *
+  * The DiscreteLandscape class template represents an arbitrary number of ecological quantities
+  * on a discrete geographic space. It allows to retrieve lightweight function-objects representing
+  * the underlaying ecological quantities (candidates for function composition using expressive module).
+  * Similarly to the EnvironmentalQuantity class template, it allows to retrieve
+  * a geographic definition space suited to modeling: the coordinates
+  * of the cells centroids for which a value is defined at all times for all quantities.
+  *
+  * \defgroup expressive expressive
+  * \brief Compile-time mathematical expressions optimization.
+  *
+  * \defgroup demography demography
+  * \brief Template classes for building complex demographies for further
+  *        conditional coalescence simulation.
+  *
+  * Defines template classes for storage and retrieval of demographic quantities of
+  * interest such as populations size distribution across space and time, or demographic
+  * flux between demes at all times.
+  *
+  * These quantities are used in coalescence models for defining coalescence
+  * probability or backward migration probabilities of gene copies.
+  *
+  *
+  * \defgroup random random
+  * \brief Template classes for building non-number discrete distribution and markovian transition kernels.
+  *
+  * These classes are usefull for building stochastic processes using simulated quantities
+  * as random distribution. For example, a simulated demographic flux can be converted to a
+  * markovian kernel to be used inside a spatialized coalescence algorithm as a backward
+  * transition kernel.
+  *
+  * \defgroup coalescence coalescence
+  * \brief Template algorithms for operating coalescence operations on data sequences.
+  *
+  * Sub-module                              | Description
+  * ----------------------------------------| -------------
+  * \ref coal_algorithms "Algorithms"       | Template algorithms for operating coalescence operations on data sequences.
+  * \ref coal_containers "Containers"       | Template containers for coalescent reconstruction involving non-trivial data manipulation.
+  * \ref coal_spectrum "Occupancy spectrum" | Random experience of simultaneous multiple collisions.
+  * \ref coal_policies "Policies"           | Components for policy-based designed algorithms or models.
+  *
+  * - Define your own concept of coalescence with \ref coal_algorithms : template
+  * algorithms let you free to define the data implementation that will
+  * be the most suitable to your special case study.
+  *
+  * - Use \ref coal_containers for efficient manipulation of customized genealogies
+  * when confronting non-trivial cases for which no simple data representation holds
+  * (for example when studying space-and-time distribution of coalescence events).
+  *
+  * - Use \ref coal_spectrum to boost your simulations ! Under some hypothesis,
+  * coalescence with simultaneous multiple collisions can lead to study what we
+  * called the occupancy spectrum (loosely speaking a coalescence configuration).
+  * Occupancy spectrum is used as an interface in algorithms: its simulation is highly
+  * customizable and involves trade-offs between speed and memory consumption.
+  * Choose the most appropriate set of behaviors !
+  *
+  * - Some algorithms make use of policies for customization. Feel free to re-use them
+  * if you need their interface in your own implementation of coalescence models.
+  * @{
+  *
+  * \defgroup coal_algorithms Algorithms
+  * \brief Template algorithms for operating coalescence operations on data sequences.
+  *
+  * \defgroup coal_containers Containers
+  * \brief Template containers for coalescent reconstruction involving non-trivial data manipulation.
+  *
+  * \defgroup coal_policies Policies
+  * \brief Policies with common interface, made to be used when designing coalescence algorithms or models.
+  *
+  * \defgroup coal_spectrum Occupancy Spectrum
+  * \brief Occupancy spectrum simulation for coalescence with simultaneous multiple collisions.
+  *
+  * @}
+  *
+  * \defgroup abc abc
+  * \brief Template classes for embedding simulation model objects into an ABC framework.
+  *
+  * Defines template classes to embed simulation code into an ABC framework. It
+  * relies heavily on the C++ concept of GenerativeModel, which defines the set
+  * of constraints that a simulation model object must have to interact with the
+  * ABC module. For now, only basics are implemented (Rubin rejection sample,
+  * Pritchard rejection sampler, generation of the reference table). Nevertheless,
+  * this allows to perform an open-ended number of important inference tasks,
+  * as the user can inject almost any kind of distance or summary statistics
+  * in the analysis of the reference table.
+  */

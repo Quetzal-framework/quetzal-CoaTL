@@ -8,9 +8,4 @@
 *                                                                      *
 ***************************************************************************/
 
-
-#include "modules/coalescence/policies/merger.h"
-
-#include "modules/coalescence/containers/Tree.h"
-
-#include "modules/coalescence/containers/Forest.h"
+#include "modules/expressive/expressive.h"

@@ -1,4 +1,5 @@
 
+//  compiles with g++ -o example example1.cpp -std=c++14 -Wall -I/usr/include/gdal  -L/usr/lib/ -lgdal
 
 #include "../../../quetzal.h"
 
@@ -9,118 +10,135 @@ class GenerativeModel{
 private:
 
   struct Params{
-    auto r() const {return m_r;}
-    auto sigma() const {return m_sigma;}
-    auto mu() const {return m_mu;}
+    auto r() const { return m_r; }
+    void r(unsigned int value) { m_r = value; }
+
 
     unsigned int m_r;
     double m_sigma;
     double m_mu;
-  }
+  };
+
+  using generator_type = std::mt19937;
+  using time_type = unsigned int;
+  using key_type = std::string;
+  using env_type = quetzal::geography::DiscreteLandscape<key_type, time_type>;
+  using coord_type = typename env_type::coord_type;
+  using N_type = unsigned int;
+  using pop_size_type = quetzal::demography::PopulationSize<coord_type, time_type, N_type>;
+  using flux_type = quetzal::demography::PopulationFlux<coord_type, time_type, N_type>;
+  using marker_type = quetzal::genetics::microsatellite;
+	using individual_type = quetzal::genetics::DiploidIndividual<marker_type>;
+	using genet_type = quetzal::genetics::SpatialGeneticSample<coord_type, individual_type>;
+  using loader_type = quetzal::genetics::Loader<coord_type, marker_type>;
 
 public:
 
-  auto prior() const {
+  using param_type = Params;
+
+  auto make_prior() const {
     auto prior = [](auto& gen){
       Params params;
       params.r(std::uniform_real_distribution<double>(1.,5.)(gen));
-      params.sigma(std::uniform_real_distribution<double>(1.,50.)(gen));
-      params.mu(std::uniform_real_distribution<double>(1.,10.)(gen));
+      //params.sigma(std::uniform_real_distribution<double>(1.,50.)(gen));
+      //params.mu(std::uniform_real_distribution<double>(1.,10.)(gen));
       return params;
-    }
+    };
     return prior;
   }
 
-  auto operator()(Generator& gen, Param const& param) const {
-      return generateRandomDemography(gen, param);
+  auto operator()(generator_type& gen, Params const& param) const {
+    return simulate(gen, param);
   }
 
+  int simulate(generator_type& gen, Params const& param) const {
 
-  template<typename Generator>
-  auto generateRandomDemography(Generator& gen, Param const& param) const {
+    env_type E({{"bio1","bio1.tif"},{"bio12","bio12.tif"}},
+               {2001,2002,2003,2004,2005,2006,2007,2008,2009,2010});
 
-    Env E = read_env({"temperature.tif", "rainfall.tif"});
+    const auto& X = E.geographic_definition_space();
+    const auto& T = E.temporal_definition_space();
 
-    using space_type = typename Env::space_type;
-    const auto& X = E.geographic_space();
+    pop_size_type N;
+    N(X.front(), T.front()) = 10;
 
-    using time_type = typename Env::time_type;
-    const auto& T = E.temporal_space();
+    flux_type Phi;
 
-    using N_type = unsigned int;
-    PopulationSize<space_type, time_type, N_type> N;
-    N(X.begin(), T.begin()) = 10;
+    // Building mathematical expressions of space and time
+    using quetzal::expressive::literal_factory;
+    using quetzal::expressive::use;
 
-    PopulationFlux<space_type, time_type, N_type> Phi;
-/*
-    literal_factory<space_type, time_type> lit;
+    quetzal::expressive::literal_factory<const coord_type&, time_type> lit;
 
+    // Growth expressions
     auto r = lit(param.r());
-    auto k = (use(std::cref(E[1]))+use(std::cref(E[2])))/lit(2);
-    auto N_expr = use(std::cref(N));
+    auto k = (use(E["bio1"]) + use(E["bio12"]))/lit(2);
+    auto N_expr = use([&N](coord_type const& x, time_type t){return N(x,t);});
     auto g = N_expr*(lit(1)+r)/ (lit(1)+((r * N_expr)/k));
 
-    auto sim_N_tilde = [g](space_type const& x, time_type t, auto& gen){
+    auto sim_N_tilde = [g](generator_type& gen, coord_type const& x, time_type t){
       std::poisson_distribution<N_type> poisson(g(x,t));
       return poisson(gen);
     };
 
-    auto gaussian  = [&param](auto x){
+    // Dispersal expressions
+    auto gaussian  = [&param](coord_type::km d){
       auto sigma = param.sigma();
       auto mu = param.mu();
       double pi = 3.14159265358979323846;
-      return ( 1./(sigma * sqrt(2. * pi)) * exp( - pow(x-mu,2.)/(2. * pow(sigma, 2.))));
+      return ( 1./(sigma*sqrt(2.*pi))*exp(-pow(d-mu,2.)/(2.*pow(sigma, 2.))));
     };
 
-    auto distance = [](space_type const& x, space_type const& y){
-      return x.distance_to(y);
+    auto distance = [](coord_type const& x, coord_type const& y){
+      return x.great_circle_distance_to(y);
     };
 
-    auto m = compose(gaussian, distance);
-    auto kernel = make_kernel<memoize>(X, m);
-    auto kernel2 = make_dispersal_kernel<>(X, m);
+    auto m = quetzal::expressive::compose(gaussian, distance);
+    auto kernel = quetzal::random::make_transition_kernel(X, m);
 
-    auto weights = [m](space_type const& x, auto const& space){
-      std::vector<double> w;
-      w.reserve(space.size());
-      for(auto const& y : space){
-        w.push_back(m(x,y));
-      }
-      return w;
-    };
-
-    auto source = [weights](space_type const& x, auto const& space){
-      return std::discrete_distribution<size_t>(weights(x, space));
-    };
-
-    ExpandingTransitionKernel<space_type, DiscreteDistribution, decltype(source)>
-    auto kernel = [](space_type const& x, auto& gen){
-      DiscreteDistribution<space_type> dis()
-    };
-
+    // Demographic process
     for(auto t : T){
-      for(auto x : N.definition_space(t)){
-        auto N_tilde = sim_N_tilde(x,t);
-        for(auto i = 1; i <= N_tilde; ++i){
-          auto y = kernel(x,gen);
+      for(auto x : X){
+        auto N_tilde = sim_N_tilde(gen, x, t);
+        for(unsigned int i = 1; i <= N_tilde; ++i){
+          coord_type y = kernel(gen, x);
           Phi(x,y,t) += 1;
-          t2 = t; ++t2;
+          time_type t2 = t; ++t2;
           N(y,t2) += 1;
         }
       }
     }
-  */
-    return std::make_pair(N,Phi);
 
-  }
+    quetzal::genetics::Loader<coord_type, marker_type> reader;
+    auto sample = reader.read("microsat_test.csv");
+    sample.reproject(E);
+    auto S = sample.get_sampling_points();
 
-};
+    std::map<coord_type, std::vector<unsigned int>> forest;
+    for(auto const& x : S){
+      forest[x] = std::vector(sample.size(x), 1);
+    }
+
+    time_type reverse_time = 2010;
+    while(forest.size() != 1 | reverse_time != 2001 ){
+
+      for(auto & it : forest){
+        auto & v = it.second;
+        auto last = quetzal::coalescence::BinaryMerger::merge(v.begin(), v.end(), N(it.first, t), std::plus<unsigned int>, gen);
+        v.resize(std::distance(v.begin(), last));
+      }
+    }
+    return 0;
+
+  } // simulate
+
+}; // GenerativeModel
 
 int main(){
 
   std::mt19937 gen;
   GenerativeModel model;
-  auto abc = abc::make_ABC(model, model.prior());
+  auto abc = abc::make_ABC(model, model.make_prior());
   auto table = abc.sample_prior_predictive_distribution(30, gen);
 
   return 0;
