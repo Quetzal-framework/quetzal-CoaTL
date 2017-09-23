@@ -9,8 +9,7 @@
 ***************************************************************************/
 
 
-#include "modules/coalescence/policies/merger.h"
-
-#include "modules/coalescence/containers/Tree.h"
-
-#include "modules/coalescence/containers/Forest.h"
+#include "modules/genetics/marker_traits.h"
+#include "modules/genetics/Allele.h"
+#include "modules/genetics/DiploidIndividual.h"
+#include "modules/genetics/SpatialGeneticSampleLoader.h"
