@@ -175,6 +175,21 @@ struct make_expression_t: public composite_functor<F> {
 template <typename F>
 constexpr auto expression(F f) {return make_expression_t<F>(f);}
 
+/*!
+ * \brief Transforms functions into operator friendly classes
+ *
+ * Transforms a function object into operator friendly class, allowing it
+ * to be composed
+ * into a more complex expression using mathematical
+ * operators with others expressive objects having compatible callable interface.
+ *
+ * \param f a function object
+ * \ingroup expressive
+ * \section Example
+ * \snippet expressive/test/expressive_test.cpp Example
+ * \section Output
+ * \include expressive/test/expressive_test.output
+ */
 template <typename F>
 constexpr auto use(F f) {return make_expression_t<F>(f);}
 
@@ -190,12 +205,42 @@ struct literal_t {
 	constexpr T operator()(Args...) const {return value;}
 };
 
-//not very nice, but functional. Use literal_factory to reduce noise a bit
-template <typename... Args, typename T>
+/*!
+ * \brief Transforms <a href="https://stackoverflow.com/documentation/c%2b%2b/7836/literals#t=201709240552046831589">literals</a> into operator friendly classes
+ *
+ * Transforms a <a href="https://stackoverflow.com/documentation/c%2b%2b/7836/literals#t=201709240552046831589">literal</a>
+ * object into operator friendly class, allowing it
+ * to be composed into a more complex expression using mathematical
+ * operators with others expressive objects having compatible callable interface.
+ *
+ * \tparam T the literal type
+ * \tparam Args the callable interface arguments to which the literal should be transformed
+ * \ingroup expressive
+ * \section Example
+ * \snippet expressive/test/expressive_test.cpp Example
+ * \section Output
+ * \include expressive/test/expressive_test.output
+ */
+ template <typename... Args, typename T>
 constexpr auto literal(T t) {return literal_t<T, Args...>{t};}
 
 
-//Args sont les types des arguments des foncteurs générés.
+/*!
+ * \brief Transforms <a href="https://stackoverflow.com/documentation/c%2b%2b/7836/literals#t=201709240552046831589">literals</a> into operator friendly classes
+ *
+ * Transforms a <a href="https://stackoverflow.com/documentation/c%2b%2b/7836/literals#t=201709240552046831589">literal</a>
+ * object into operator friendly class, allowing it
+ * to be composed into a more complex expression using mathematical
+ * operators with others expressive objects having compatible callable interface.
+ *
+ * \tparam T the literal type
+ * \tparam Args the callable interface arguments to which the literal should be transformed
+ * \ingroup expressive
+ * \section Example
+ * \snippet expressive/test/expressive_test.cpp Example
+ * \section Output
+ * \include expressive/test/expressive_test.output
+ */
 template <typename... Args>
 struct literal_factory {
 	template <typename T>
@@ -455,7 +500,19 @@ struct compose_t<Outer>: public composite_functor<Outer> {
 };
 
 
-
+/*!
+ * \brief Mathematical <a href="https://en.wikipedia.org/wiki/Function_composition">function composition</a>
+ *
+ * Forms an expression in which the outputs of the inner functions become the input of the outer function.
+ *
+ * \param f the outer function
+ * \param fs the inner functions
+ * \ingroup expressive
+ * \section Example
+ * \snippet expressive/test/expressive_test.cpp Example
+ * \section Output
+ * \include expressive/test/expressive_test.output
+ */
 template<typename F, typename... Fs>
 constexpr auto compose(F f, Fs... fs) {return compose_t<F, Fs...>(f, fs...);}
 
@@ -464,12 +521,52 @@ constexpr auto compose(F f, Fs... fs) {return compose_t<F, Fs...>(f, fs...);}
 template<typename F>
 constexpr auto chain(F f) {return expression(f);}
 
+/*!
+ * \brief Mathematical <a href="https://en.wikipedia.org/wiki/Function_composition">function composition</a>
+ *
+ * Forms an expression in which the output of the inner function becomes the input of the outer function.
+ *
+ * \param inner the inner function
+ * \param outer the inner functions
+ * \ingroup expressive
+ * \section Example
+ * \snippet expressive/test/expressive_test.cpp Example
+ * \section Output
+ * \include expressive/test/expressive_test.output
+ */
 template<typename Inner, typename Outer>
 constexpr auto operator>>(Inner inner, Outer outer) {return compose(outer, inner);}
 
+/*!
+ * \brief Mathematical <a href="https://en.wikipedia.org/wiki/Function_composition">function composition</a>
+ *
+ * Forms an expression in which the output of the inner function becomes the input of the outer function.
+ *
+ * \param outer the outer function
+ * \param inner the inner function
+ * \ingroup expressive
+ * \section Example
+ * \snippet expressive/test/expressive_test.cpp Example
+ * \section Output
+ * \include expressive/test/expressive_test.output
+ */
 template<typename Inner, typename Outer>
 constexpr auto operator<<(Outer outer, Inner inner) {return compose(outer, inner);}
 
+/*!
+ * \brief Mathematical <a href="https://en.wikipedia.org/wiki/Function_composition">function composition</a>
+ *
+ * Forms an expression in which the outputs of the inner functions become the input of the outer function.
+ *
+ * \param f1 the outer function
+ * \param f2 the inner function: its output is the input of f1
+ * \param fs the inner functions: their output are the input of f2
+ * \ingroup expressive
+ * \section Example
+ * \snippet expressive/test/expressive_test.cpp Example
+ * \section Output
+ * \include expressive/test/expressive_test.output
+ */
 template<typename F1, typename F2, typename... Fs>
 constexpr auto chain(F1 f1, F2 f2, Fs... fs) {return f1 >> chain(f2, fs...);}
 

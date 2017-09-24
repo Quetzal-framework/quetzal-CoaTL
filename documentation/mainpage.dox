@@ -60,8 +60,11 @@
  * model of biological invasion developed during the PhD thesis of [Arnaud Becheler](https://becheler.github.io/) under
  * the direction of [Stephane Dupas](http://www.egce.cnrs-gif.fr/?p=3049) ([laboratoire d'Evolution, Génomes, Comportements
  * et Ecologie de Gif-sur-Yvette](http://www.egce.cnrs-gif.fr/?lang=en)) and [Camille Coron](https://www.math.u-psud.fr/~ccoron/)
- *  ([Laboratoire de Mathématiques d'Orsay](https://www.math.u-psud.fr/-Probabilites-et-Statistiques-?lang=fr)) and funded
- * by the [BASC labex](https://www6.inra.fr/basc/Presentation).
+ *  ([Laboratoire de Mathématiques d'Orsay](https://www.math.u-psud.fr/-Probabilites-et-Statistiques-?lang=fr)).
+ *
+ * Quetzal benefits from the constant support and feedbacks of Florence Jornod, who initially contributed to Quetzal as an intern.
+ *
+ * The PhD project was funded by the [BASC labex](https://www6.inra.fr/basc/Presentation).
  *
  * <A HRF="http://www6.inra.fr/basc"> <IMG SRC="../resources/basc_logo.png"> </A>
  */
