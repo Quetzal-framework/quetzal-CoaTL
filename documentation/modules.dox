@@ -21,6 +21,7 @@
   * two points.
   *
   * ## Representing environmental quantities as functions of space and time.
+  *
   * The EnvironmentalQuantity class adds a level of abstraction to gdalcpp::Dataset, in order to
   * represent a discrete function of space and time based on geographic coordinates. It allows to
   * retrieve the coordinates of the cells centroids for which the value is defined
@@ -28,15 +29,106 @@
   * secured mathematical composition of ecological functions
   * (for example using the expressive module).
   *
-  * The DiscreteLandscape class template represents an arbitrary number of ecological quantities
+  * For example, the DiscreteLandscape class template represents an arbitrary number of ecological quantities
   * on a discrete geographic space. It allows to retrieve lightweight function-objects representing
-  * the underlaying ecological quantities (candidates for function composition using expressive module).
+  * the underlying ecological quantities (candidates for function composition using expressive module).
   * Similarly to the EnvironmentalQuantity class template, it allows to retrieve
   * a geographic definition space suited to modeling: the coordinates
   * of the cells centroids for which a value is defined at all times for all quantities.
   *
+  *
+  *
+  *
   * \defgroup expressive expressive
   * \brief Compile-time mathematical expressions optimization.
+  *
+  * ## Motivations
+  * *************************************
+  *
+  * ### Better express user-defined mathematical models
+  *
+  * The impact of environmental factors or spatial structure on demographic processes can be assessed by
+  * setting up mathematical models linking environmental and demographic quantities
+  * together. Obviously, the details of the functions used depend on the biological context and the
+  * modeler intuition, so there is __no do-it-all function__ that could be implemented
+  * once an only once and used in all possible contexts.
+  *
+  * Inevitably, later or sooner the user would have to build its own modeling functions:
+  * all we can do is to propose __concise way to express them.__
+  *
+  * ### Favor code modularity.
+  *
+  * In the context of [ABC](https://en.wikipedia.org/wiki/Approximate_Bayesian_computation)
+  * it is expected that several of the function parameters change their values at runtime.
+  * One should prefer to pass around a whole expression with internally changing parameters
+  * values rather than passing multiples parameters everywhere in the code to propagate
+  * their new state (what would greatly hinder maintainability, especially
+  * since ABC approaches tend to favor models comparison thus code flexibility).
+  *
+  * Expressive features allow to __encapsulate models details in an efficient way.__
+  *
+  * ### Do it with minimal runtime cost
+  *
+  * To tackle both this multiplicity and the computational cost imposed by
+  * [ABC](https://en.wikipedia.org/wiki/Approximate_Bayesian_computation) approaches,
+  * we integrate [expressive](https://github.com/ambre-m/expressive), a library that
+  * allows to compose mathematical expressions at compile time. Compile-time expressions
+  * manipulation allows the compiler to apply intra-procedural optimization
+  * (dead code elimination, branch prediction,
+  * induction variable elimination). Finally, it allows the compiler to simplify
+  * the expressions, or even deduce the final result of the function. This comes
+  * along with the other known [benefits of eliminating a function call](https://en.wikipedia.org/wiki/Inline_expansion), namely:
+  * * It does not require function calling overhead.
+  * * It saves overhead of variables push/pop on the stack, while function calling.
+  * * It saves overhead of return call from a function.
+  * * It increases [locality of reference](https://en.wikipedia.org/wiki/Interprocedural_optimization).
+  *
+  * ## Examples of biological interests
+  * *************************************
+  *
+  * ### Representing dispersal kernels
+  *
+  * Representation of a dispersal kernel density involves some kind of mathematical
+  * composition. In the simple case where density is only a function of the geographic distance,
+  * the details of the distance computation can be separated from the details
+  * of the kernel used by composing two independently defined functions.
+  *
+  * The inner function \f$ g : X^2 \rightarrow R\f$ would be
+  * the distance computation function between two points of the geographic space \f$X\f$,
+  * and can be expressed in terms of a callable object having a
+  * `distance_type operator()(coord_type x, coord_type y)` interface.
+  *
+  * The outer function \f$f : R \rightarrow [0,1]\f$ could be any kind of density function defined on the distance metric
+  * space \f$R\f$ and taking value in \f$[0,1] \f$, and can be defined
+  * in terms of a callable object having a `double operator()(distance_type d)` interface.
+  *
+  * Without expressive, these two types could not be composed. With expressive, it becomes trivial:
+  * \code{.cpp}
+  * using coord_type = int;
+  * using distance_type = double;
+  *
+  * auto g = [](coord_type x, coord_type y){
+  *     distance_type d = // ...
+  *     return d;
+  *  }
+  *
+  * auto f = [](distance_type d){
+  *   // ...
+  *    return proba;
+  *  }
+  *
+  * auto kernel = quetzal::expressive::compose(f,g);
+  * \endcode
+  *
+  * ### Representing environmental quantities as functions of space and time.
+  *
+  * In the framework of complex coalescence processes, a major benefit of expressive
+  * is the possibility to express and compose quantities that are functions of space and time.
+  *
+  * The geography module, via the DiscreteLandscape class template,
+  * provides lightweight function objects of space and time which are callable with GeographicCoordinates
+  * and an user-defined time argument to access environmental values.
+  * These little objects can be composed into more complex expressions using expressive.
   *
   * \defgroup demography demography
   * \brief Template classes for building complex demographies for further
