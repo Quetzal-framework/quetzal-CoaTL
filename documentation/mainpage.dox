@@ -5,7 +5,7 @@
  *
  * # Introduction
  *
- * QuetzalCoaTL (COALescence Template Library), or Quetzal for shorter use, is a
+ * QuetzalCoaTL (Coalescence Template Library), or Quetzal for shorter use, is a
  * C++ template library for simulating coalescence processes in spatially explicit
  * landscapes with complex demography.
  *

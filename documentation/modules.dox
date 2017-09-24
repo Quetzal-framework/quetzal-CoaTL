@@ -51,7 +51,7 @@
   * setting up mathematical models linking environmental and demographic quantities
   * together. Obviously, the details of the functions used depend on the biological context and the
   * modeler intuition, so there is __no do-it-all function__ that could be implemented
-  * once an only once and used in all possible contexts.
+  * once and used in all possible contexts.
   *
   * Inevitably, later or sooner the user would have to build its own modeling functions:
   * all we can do is to propose __concise way to express them.__
