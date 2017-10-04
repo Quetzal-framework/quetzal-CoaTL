@@ -4,16 +4,24 @@
 #include "../../../quetzal.h"
 
 #include <random>
+#include <functional>  // std::plus
 
 class GenerativeModel{
 
 private:
 
-  struct Params{
+  class Params{
+  public:
     auto r() const { return m_r; }
     void r(unsigned int value) { m_r = value; }
 
+    auto mu() const { return m_mu; }
+    void mu(double value) { m_mu = value; }
 
+    auto sigma() const { return m_sigma; }
+    void sigma(double value) { m_sigma = value; }
+
+  private:
     unsigned int m_r;
     double m_sigma;
     double m_mu;
@@ -32,6 +40,8 @@ private:
 	using genet_type = quetzal::genetics::SpatialGeneticSample<coord_type, individual_type>;
   using loader_type = quetzal::genetics::Loader<coord_type, marker_type>;
 
+  using forest_type = quetzal::coalescence::Forest<coord_type, unsigned int>;
+
 public:
 
   using param_type = Params;
@@ -40,8 +50,8 @@ public:
     auto prior = [](auto& gen){
       Params params;
       params.r(std::uniform_real_distribution<double>(1.,5.)(gen));
-      //params.sigma(std::uniform_real_distribution<double>(1.,50.)(gen));
-      //params.mu(std::uniform_real_distribution<double>(1.,10.)(gen));
+      params.sigma(std::uniform_real_distribution<double>(1.,50.)(gen));
+      params.mu(std::uniform_real_distribution<double>(1.,10.)(gen));
       return params;
     };
     return prior;
@@ -51,7 +61,7 @@ public:
     return simulate(gen, param);
   }
 
-  int simulate(generator_type& gen, Params const& param) const {
+  forest_type simulate(generator_type& gen, Params const& param) const {
 
     env_type E({{"bio1","bio1.tif"},{"bio12","bio12.tif"}},
                {2001,2002,2003,2004,2005,2006,2007,2008,2009,2010});
@@ -94,14 +104,29 @@ public:
     };
 
     auto m = quetzal::expressive::compose(gaussian, distance);
-    auto kernel = quetzal::random::make_transition_kernel(X, m);
+
+    auto make_dispersal_distribution = [X, m](coord_type const& x){
+      std::vector<double> w;
+      w.reserve(X.size());
+      for(auto const& it : X){
+        w.push_back(m(x,it));
+      }
+      return quetzal::random::DiscreteDistribution<coord_type>(X,std::move(w));
+    };
+
+    using quetzal::random::TransitionKernel;
+    using quetzal::random::DiscreteDistribution;
+    TransitionKernel<DiscreteDistribution<coord_type>> dispersal_kernel;
 
     // Demographic process
     for(auto t : T){
       for(auto x : X){
         auto N_tilde = sim_N_tilde(gen, x, t);
         for(unsigned int i = 1; i <= N_tilde; ++i){
-          coord_type y = kernel(gen, x);
+          if( ! dispersal_kernel.has_distribution(x)){
+            dispersal_kernel.set(x, make_dispersal_distribution(x));
+          }
+          coord_type y = dispersal_kernel(gen, x);
           Phi(x,y,t) += 1;
           time_type t2 = t; ++t2;
           N(y,t2) += 1;
@@ -109,26 +134,72 @@ public:
       }
     }
 
-    quetzal::genetics::Loader<coord_type, marker_type> reader;
-    auto sample = reader.read("microsat_test.csv");
-    sample.reproject(E);
-    auto S = sample.get_sampling_points();
-
-    std::map<coord_type, std::vector<unsigned int>> forest;
-    for(auto const& x : S){
-      forest[x] = std::vector(sample.size(x), 1);
-    }
-
-    time_type reverse_time = 2010;
-    while(forest.size() != 1 | reverse_time != 2001 ){
-
-      for(auto & it : forest){
-        auto & v = it.second;
-        auto last = quetzal::coalescence::BinaryMerger::merge(v.begin(), v.end(), N(it.first, t), std::plus<unsigned int>, gen);
-        v.resize(std::distance(v.begin(), last));
+    auto make_backward_distribution = [&Phi](coord_type const& x, time_type t){
+      std::vector<double> w;
+      std::vector<coord_type> X;
+      auto const& flux_to = Phi.flux_to(x,t);
+      w.reserve(flux_to.size());
+      X.reserve(flux_to.size());
+      for(auto const& it : flux_to){
+        X.push_back(it.first);
+        w.push_back(static_cast<double>(it.second));
       }
+      return quetzal::random::DiscreteDistribution<coord_type>(std::move(X),std::move(w));
+    };
+
+    // Coalescence process, sampling time = 2010
+
+    forest_type forest;
+    coord_type Bordeaux(44.0,0.33);
+    coord_type origin(E.reproject_to_centroid(Bordeaux));
+    forest.insert(origin, std::vector<unsigned int>(1,50));
+    time_type reverse_time = 2009;
+
+    std::cout << N(origin,2010) << std::endl;
+    
+    while( (forest.nb_trees() != 1) | (reverse_time != 2000) ){
+      // Backward migration
+      TransitionKernel<time_type, DiscreteDistribution<coord_type>> backward_kernel;
+
+      forest_type new_forest;
+      for(auto const & x : forest.positions()){
+        auto range = forest.trees_at_same_position(x);
+        for(auto it = range.first; it != range.second; ++it){
+          if( ! backward_kernel.has_distribution(x, reverse_time)){
+            backward_kernel.set(x, reverse_time, make_backward_distribution(x, reverse_time));
+          }
+          coord_type y = backward_kernel(gen, x, reverse_time);
+          new_forest.insert(y, it->second);
+        }
+      }
+      forest = new_forest;
+
+      // Coalescence
+      using quetzal::coalescence::BinaryMerger;
+
+      for(auto const & x : forest.positions()){
+        auto range = forest.trees_at_same_position(x);
+        std::vector<unsigned int> v;
+        for(auto it = range.first; it != range.second; ++it){
+          v.push_back(it->second);
+        }
+        auto last = BinaryMerger::merge(
+          v.begin(),
+          v.end(),
+          N(x, reverse_time),
+          0,
+          std::plus<unsigned int>(),
+          gen
+        );
+        forest.erase(x);
+        for(auto it = v.begin(); it != last; ++it){
+          forest.insert(x, *it);
+        }
+      }
+      --reverse_time;
     }
-    return 0;
+
+    return forest;
 
   } // simulate
 

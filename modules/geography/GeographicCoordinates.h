@@ -40,6 +40,8 @@ public:
 	//! \typedef the great circle distance value type
 	using km = double;
 
+	GeographicCoordinates() = default;
+
 	/*!
 	 * \brief Constructor
 	 *

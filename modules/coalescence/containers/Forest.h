@@ -246,6 +246,18 @@ public:
 	size_type erase(Position const& x);
 
 	/**
+	  * \brief remove elements from the Forest.
+		* \return the number of deleted trees.
+		* \section Example
+		* \snippet coalescence/containers/test/Forest/basics_test.cpp Example
+		* \section Output
+		* \include coalescence/containers/test/Forest/basics_test.output
+	  */
+	void erase(iterator first, iterator last){
+		m_data.erase(first,last);
+	}
+
+	/**
 	  * \brief positions in the forest
 		* \return a set of coordinates giving the spatial occupancy of the forest.
 		* \section Example
