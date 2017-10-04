@@ -16,7 +16,9 @@
 #include <tuple>
 #include <vector>
 #include <type_traits> // result_of
+#include <stdexcept> // std::domain_error
 
+namespace quetzal {
 namespace abc {
 
 	template<typename T>
@@ -142,15 +144,22 @@ namespace abc {
 		//! Returns of ReferenceTable
 		template<class EtaType, typename Generator>
 		auto sample_prior_predictive_distribution(unsigned int N, Generator& g, EtaType const& eta) const {
-			using simulated_data_type = typename std::result_of<ModelType(Generator&, const param_type&)>::type;
-			using summary_stat_type = typename std::result_of<EtaType(simulated_data_type&&)>::type;
 
-			ReferenceTable<PriorPredictiveDistributionSample, param_type, summary_stat_type> table;
+			using simul_type = typename std::result_of_t<ModelType(Generator&, const param_type&)>;
+			using sumstat_type = typename std::result_of_t<EtaType(simul_type&&)>;
 
-			for(unsigned int i = 0; i < N; ++i)
+			ReferenceTable<PriorPredictiveDistributionSample, param_type, sumstat_type> table;
+			unsigned int i = 0;
+			while(i < N)
 			{
 				auto params = param_type(priors(g));
-				table.emplace_back(params, eta(generative_model(g, params)));
+				try{
+					table.emplace_back(params, eta(generative_model(g, params)));
+					++i;
+				}
+				catch (std::domain_error& e){
+					std::cerr << e.what() << std::endl;
+				}
 			}
 
 			return table;
@@ -175,5 +184,6 @@ namespace abc {
 	}
 
 } // namespace abc
+} // namespace quetzal
 
 #endif

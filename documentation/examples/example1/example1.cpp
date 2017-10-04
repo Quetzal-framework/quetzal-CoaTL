@@ -156,7 +156,10 @@ public:
     time_type reverse_time = 2009;
 
     std::cout << N(origin,2010) << std::endl;
-    
+    if(N(origin, 2010) < 50){
+      throw std::domain_error("Simulated population size inferior to sampling size");
+    }
+
     while( (forest.nb_trees() != 1) | (reverse_time != 2000) ){
       // Backward migration
       TransitionKernel<time_type, DiscreteDistribution<coord_type>> backward_kernel;
@@ -209,7 +212,7 @@ int main(){
 
   std::mt19937 gen;
   GenerativeModel model;
-  auto abc = abc::make_ABC(model, model.make_prior());
+  auto abc = quetzal::abc::make_ABC(model, model.make_prior());
   auto table = abc.sample_prior_predictive_distribution(30, gen);
 
   return 0;
