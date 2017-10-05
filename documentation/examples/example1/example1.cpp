@@ -117,7 +117,6 @@ public:
     TransitionKernel<DiscreteDistribution<coord_type>> dispersal_kernel;
 
     // Demographic process
-    std::cout << "Start Demographic process" << std::endl;
     for(auto t : T){
       for(auto x : X){
         auto N_tilde = sim_N_tilde(gen, x, t);
@@ -133,8 +132,6 @@ public:
       }
     }
 
-    std::cout << "End Demographic process" << std::endl;
-
     auto make_backward_distribution = [&Phi](coord_type const& x, time_type t){
       std::vector<double> w;
       std::vector<coord_type> X;
@@ -149,28 +146,24 @@ public:
     };
 
     // Coalescence process, sampling time = 2010
-    std::cout << "Start Coalescence process" << std::endl;
 
     forest_type forest;
     coord_type Paris(48.5,2.2);
     coord_type sample_deme = E.reproject_to_centroid(Paris);
 
     unsigned int sample_size = 5;
-    forest.insert(sample_deme, std::vector<unsigned int>(1,sample_size));
-    time_type reverse_time = 2009;
+    forest.insert(sample_deme, std::vector<unsigned int>(sample_size, 1));
 
-    std::cout << N(sample_deme,2010) << std::endl;
     if(N(origin, 2010) < sample_size){
       throw std::domain_error("Simulated population size inferior to sampling size");
     }
 
-    while( (forest.nb_trees() != 1) | (reverse_time != 2000) ){
-      // Backward migration
+    time_type reverse_time = 2009;
+    while( (forest.nb_trees() > 1) && (reverse_time > 2000) ){
       TransitionKernel<time_type, DiscreteDistribution<coord_type>> backward_kernel;
 
       forest_type new_forest;
       for(auto const & x : forest.positions()){
-        std::cout << "x:" << x << std::endl;
         auto range = forest.trees_at_same_position(x);
         for(auto it = range.first; it != range.second; ++it){
           if( ! backward_kernel.has_distribution(x, reverse_time)){
@@ -182,7 +175,6 @@ public:
       }
       forest = new_forest;
 
-      // Coalescence
       using quetzal::coalescence::BinaryMerger;
 
       for(auto const & x : forest.positions()){
@@ -206,7 +198,6 @@ public:
       }
       --reverse_time;
     }
-    std::cout << "End Coalescence process" << std::endl;
 
     return forest;
 
@@ -220,6 +211,20 @@ int main(){
   GenerativeModel model;
   auto abc = quetzal::abc::make_ABC(model, model.make_prior());
   auto table = abc.sample_prior_predictive_distribution(30, gen);
+
+  unsigned int id = 0;
+  for(auto const& it : table){
+    std::cout << "Sim " << id << "\t"
+              << "mu = " << it.param().mu() << "\t"
+              << "r = " << it.param().r() << "\t"
+              << "sigma = " << it.param().sigma() << "\nData:\n";
+    auto const& forest = it.data();
+    for(auto const& it2 : forest ){
+        std::cout << it2.first << " <----> " << it2.second << "\n";
+    }
+    std::cout << std::endl;
+    ++id;
+  }
 
   return 0;
 }
