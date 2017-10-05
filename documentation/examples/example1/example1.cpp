@@ -35,11 +35,6 @@ private:
   using N_type = unsigned int;
   using pop_size_type = quetzal::demography::PopulationSize<coord_type, time_type, N_type>;
   using flux_type = quetzal::demography::PopulationFlux<coord_type, time_type, N_type>;
-  using marker_type = quetzal::genetics::microsatellite;
-	using individual_type = quetzal::genetics::DiploidIndividual<marker_type>;
-	using genet_type = quetzal::genetics::SpatialGeneticSample<coord_type, individual_type>;
-  using loader_type = quetzal::genetics::Loader<coord_type, marker_type>;
-
   using forest_type = quetzal::coalescence::Forest<coord_type, unsigned int>;
 
 public:
@@ -49,9 +44,9 @@ public:
   auto make_prior() const {
     auto prior = [](auto& gen){
       Params params;
-      params.r(std::uniform_real_distribution<double>(1.,5.)(gen));
-      params.sigma(std::uniform_real_distribution<double>(1.,50.)(gen));
-      params.mu(std::uniform_real_distribution<double>(1.,10.)(gen));
+      params.r(std::uniform_real_distribution<double>(2.,10.)(gen));
+      params.sigma(std::uniform_real_distribution<double>(1000.,100000.)(gen));
+      params.mu(std::uniform_real_distribution<double>(0.,1000.)(gen));
       return params;
     };
     return prior;
@@ -70,7 +65,9 @@ public:
     const auto& T = E.temporal_definition_space();
 
     pop_size_type N;
-    N(X.front(), T.front()) = 10;
+    coord_type Bordeaux(44.0,0.33);
+    coord_type origin(E.reproject_to_centroid(Bordeaux));
+    N(origin, 2001) = 10;
 
     flux_type Phi;
 
@@ -82,7 +79,8 @@ public:
 
     // Growth expressions
     auto r = lit(param.r());
-    auto k = (use(E["bio1"]) + use(E["bio12"]))/lit(2);
+    //auto k = (use(E["bio1"]) + use(E["bio12"]))/lit(2);
+    auto k = lit(10);
     auto N_expr = use([&N](coord_type const& x, time_type t){return N(x,t);});
     auto g = N_expr*(lit(1)+r)/ (lit(1)+((r * N_expr)/k));
 
@@ -119,6 +117,7 @@ public:
     TransitionKernel<DiscreteDistribution<coord_type>> dispersal_kernel;
 
     // Demographic process
+    std::cout << "Start Demographic process" << std::endl;
     for(auto t : T){
       for(auto x : X){
         auto N_tilde = sim_N_tilde(gen, x, t);
@@ -134,6 +133,8 @@ public:
       }
     }
 
+    std::cout << "End Demographic process" << std::endl;
+
     auto make_backward_distribution = [&Phi](coord_type const& x, time_type t){
       std::vector<double> w;
       std::vector<coord_type> X;
@@ -148,15 +149,18 @@ public:
     };
 
     // Coalescence process, sampling time = 2010
+    std::cout << "Start Coalescence process" << std::endl;
 
     forest_type forest;
-    coord_type Bordeaux(44.0,0.33);
-    coord_type origin(E.reproject_to_centroid(Bordeaux));
-    forest.insert(origin, std::vector<unsigned int>(1,50));
+    coord_type Paris(48.5,2.2);
+    coord_type sample_deme = E.reproject_to_centroid(Paris);
+
+    unsigned int sample_size = 5;
+    forest.insert(sample_deme, std::vector<unsigned int>(1,sample_size));
     time_type reverse_time = 2009;
 
-    std::cout << N(origin,2010) << std::endl;
-    if(N(origin, 2010) < 50){
+    std::cout << N(sample_deme,2010) << std::endl;
+    if(N(origin, 2010) < sample_size){
       throw std::domain_error("Simulated population size inferior to sampling size");
     }
 
@@ -166,6 +170,7 @@ public:
 
       forest_type new_forest;
       for(auto const & x : forest.positions()){
+        std::cout << "x:" << x << std::endl;
         auto range = forest.trees_at_same_position(x);
         for(auto it = range.first; it != range.second; ++it){
           if( ! backward_kernel.has_distribution(x, reverse_time)){
@@ -201,6 +206,7 @@ public:
       }
       --reverse_time;
     }
+    std::cout << "End Coalescence process" << std::endl;
 
     return forest;
 
