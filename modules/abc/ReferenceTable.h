@@ -47,8 +47,8 @@ public:
 
   template<typename UnaryOperation>
   auto compute_summary_statistics(UnaryOperation const& eta) const {
-    using Ret = typename quetzal::expressive::return_type<UnaryOperation>;
-    ReferenceTable<Cont, ParamType, Ret> s;
+    using sumstat_type = typename std::result_of_t<UnaryOperation(const DataType &)>;
+    ReferenceTable<Cont, ParamType, sumstat_type> s;
     for(auto const& it : m_table){
       s.emplace_back(it.param(), eta(it.data()));
     }

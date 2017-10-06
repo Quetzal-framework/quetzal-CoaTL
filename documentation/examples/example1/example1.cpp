@@ -162,12 +162,6 @@ public:
     while( (forest.nb_trees() > 1) && (t > 2000) ){
       TransitionKernel<time_type, DiscreteDistribution<coord_type>> backward_kernel;
 
-      std::cout << "Forest before migration:" << std::endl;
-      for(auto const& it : forest){
-        std::cout << it.first << " " << it.second << "\n";
-      }
-      std::cout << std::endl;
-
       forest_type new_forest;
       for(auto const it : forest){
         coord_type x = it.first;
@@ -180,12 +174,6 @@ public:
 
       assert(forest.nb_trees() == new_forest.nb_trees());
       forest = new_forest;
-
-      std::cout << "Forest after migration:" << std::endl;
-      for(auto const& it : forest){
-        std::cout << it.first << " " << it.second << "\n";
-      }
-      std::cout << std::endl;
 
       using quetzal::coalescence::BinaryMerger;
 
@@ -229,20 +217,31 @@ int main(){
   std::mt19937 gen;
   GenerativeModel model;
   auto abc = quetzal::abc::make_ABC(model, model.make_prior());
-  auto table = abc.sample_prior_predictive_distribution(30, gen);
+  auto table = abc.sample_prior_predictive_distribution(10000, gen);
 
-  unsigned int id = 0;
-  for(auto const& it : table){
-    std::cout << "Sim " << id << "\t"
-              << "mu = " << it.param().mu() << "\t"
-              << "r = " << it.param().r() << "\t"
-              << "sigma = " << it.param().sigma() << "\nData:\n";
-    auto const& forest = it.data();
-    for(auto const& it2 : forest ){
-        std::cout << it2.first << " <----> " << it2.second << "\n";
+  auto eta = [](auto const& forest){
+    std::vector<unsigned int> v;
+    for(auto const& it: forest){
+      v.push_back(it.second);
     }
-    std::cout << std::endl;
-    ++id;
+    std::sort(v.begin(), v.end());
+    return v;
+  };
+
+  auto sum_stats = table.compute_summary_statistics(eta);
+
+  auto print = [](auto const& p){
+    std::cout << p.mu() << "\t" << p.sigma() << "\t" << p.r() << std::endl;
+  };
+
+  auto pod = sum_stats.begin()->data();
+  auto theta = sum_stats.begin()->param();
+  print(theta);
+
+  for(auto const& it : sum_stats){
+    if(it.data() == pod){
+      print(it.param());
+    }
   }
 
   return 0;
