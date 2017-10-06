@@ -5,7 +5,7 @@
 
 #include <random>
 #include <functional>  // std::plus
-
+#include <iterator> // iterator_traits
 class GenerativeModel{
 
 private:
@@ -158,45 +158,64 @@ public:
       throw std::domain_error("Simulated population size inferior to sampling size");
     }
 
-    time_type reverse_time = 2009;
-    while( (forest.nb_trees() > 1) && (reverse_time > 2000) ){
+    time_type t = 2009;
+    while( (forest.nb_trees() > 1) && (t > 2000) ){
       TransitionKernel<time_type, DiscreteDistribution<coord_type>> backward_kernel;
 
-      forest_type new_forest;
-      for(auto const & x : forest.positions()){
-        auto range = forest.trees_at_same_position(x);
-        for(auto it = range.first; it != range.second; ++it){
-          if( ! backward_kernel.has_distribution(x, reverse_time)){
-            backward_kernel.set(x, reverse_time, make_backward_distribution(x, reverse_time));
-          }
-          coord_type y = backward_kernel(gen, x, reverse_time);
-          new_forest.insert(y, it->second);
-        }
+      std::cout << "Forest before migration:" << std::endl;
+      for(auto const& it : forest){
+        std::cout << it.first << " " << it.second << "\n";
       }
+      std::cout << std::endl;
+
+      forest_type new_forest;
+      for(auto const it : forest){
+        coord_type x = it.first;
+        if( ! backward_kernel.has_distribution(x, t)){
+          backward_kernel.set(x, t, make_backward_distribution(x, t));
+        }
+        coord_type y = backward_kernel(gen, x, t);
+        new_forest.insert(y, it.second);
+      }
+
+      assert(forest.nb_trees() == new_forest.nb_trees());
       forest = new_forest;
+
+      std::cout << "Forest after migration:" << std::endl;
+      for(auto const& it : forest){
+        std::cout << it.first << " " << it.second << "\n";
+      }
+      std::cout << std::endl;
 
       using quetzal::coalescence::BinaryMerger;
 
       for(auto const & x : forest.positions()){
+
         auto range = forest.trees_at_same_position(x);
+
         std::vector<unsigned int> v;
         for(auto it = range.first; it != range.second; ++it){
           v.push_back(it->second);
         }
-        auto last = BinaryMerger::merge(
-          v.begin(),
-          v.end(),
-          N(x, reverse_time),
-          0,
-          std::plus<unsigned int>(),
-          gen
-        );
-        forest.erase(x);
-        for(auto it = v.begin(); it != last; ++it){
-          forest.insert(x, *it);
+
+        if(v.size() >= 2){
+          auto last = BinaryMerger::merge(
+            v.begin(),
+            v.end(),
+            N(x, t),
+            0,
+            std::plus<unsigned int>(),
+            gen
+          );
+
+          forest.erase(x);
+          for(auto it = v.begin(); it != last; ++it){
+            forest.insert(x, *it);
+          }
         }
-      }
-      --reverse_time;
+
+        }
+      --t;
     }
 
     return forest;
