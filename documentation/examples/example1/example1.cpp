@@ -3,6 +3,7 @@
 
 #include "../../../quetzal.h"
 
+#include <memory>
 #include <random>
 #include <functional>  // std::plus
 
@@ -41,7 +42,16 @@ private:
   using flux_type = quetzal::demography::PopulationFlux<coord_type, time_type, N_type>;
   using forest_type = quetzal::coalescence::Forest<coord_type, unsigned int>;
 
+  std::shared_ptr<env_type> m_env;
+
 public:
+
+  GenerativeModel(){
+    std::set<std::string> times = {"present"};
+    std::map<key_type, std::string> files = {{"prec","wc2.0_10m_prec_01_europe_agg_fact_10.tif"}};
+    m_env = std::make_shared<env_type>(files, times);
+  }
+
 
   using param_type = Params;
 
@@ -63,15 +73,12 @@ public:
 
   forest_type simulate(generator_type& gen, Params const& param) const {
 
-    env_type E({{"prec","/home/becheler/wc2.0_10m_prec_01_europe_agg_fact_10.tif"}},
-               {"present"});
-
-    const auto& X = E.geographic_definition_space();
+    const auto& X = m_env->geographic_definition_space();
     std::vector<time_type> T = {2001,2002,2003,2004,2005,2006,2007,2008,2009,2010};
 
     pop_size_type N;
     coord_type Bordeaux(44.0,0.33);
-    coord_type origin(E.reproject_to_centroid(Bordeaux));
+    coord_type origin(m_env->reproject_to_centroid(Bordeaux));
     N(origin, 2001) = 10;
 
     flux_type Phi;
@@ -161,7 +168,7 @@ public:
 
     forest_type forest;
     coord_type Paris(48.5,2.2);
-    coord_type sample_deme = E.reproject_to_centroid(Paris);
+    coord_type sample_deme = m_env->reproject_to_centroid(Paris);
 
     unsigned int sample_size = 20;
     forest.insert(sample_deme, std::vector<unsigned int>(sample_size, 1));
