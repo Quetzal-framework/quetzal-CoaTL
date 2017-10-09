@@ -5,13 +5,16 @@
 
 #include <random>
 #include <functional>  // std::plus
-#include <iterator> // iterator_traits
+
 class GenerativeModel{
 
 private:
 
   class Params{
   public:
+    auto k() const {return m_k; }
+    void k(unsigned int value) { m_k = value; }
+
     auto r() const { return m_r; }
     void r(unsigned int value) { m_r = value; }
 
@@ -22,6 +25,7 @@ private:
     void sigma(double value) { m_sigma = value; }
 
   private:
+    unsigned int m_k;
     unsigned int m_r;
     double m_sigma;
     double m_mu;
@@ -30,7 +34,7 @@ private:
   using generator_type = std::mt19937;
   using time_type = unsigned int;
   using key_type = std::string;
-  using env_type = quetzal::geography::DiscreteLandscape<key_type, time_type>;
+  using env_type = quetzal::geography::DiscreteLandscape<key_type, std::string>;
   using coord_type = typename env_type::coord_type;
   using N_type = unsigned int;
   using pop_size_type = quetzal::demography::PopulationSize<coord_type, time_type, N_type>;
@@ -44,9 +48,10 @@ public:
   auto make_prior() const {
     auto prior = [](auto& gen){
       Params params;
-      params.r(std::uniform_real_distribution<double>(2.,10.)(gen));
-      params.sigma(std::uniform_real_distribution<double>(1000.,100000.)(gen));
-      params.mu(std::uniform_real_distribution<double>(0.,1000.)(gen));
+      params.k(std::uniform_int_distribution<>(1,50)(gen));
+      params.r(2);
+      params.mu(0);
+      params.sigma(1000);
       return params;
     };
     return prior;
@@ -58,11 +63,11 @@ public:
 
   forest_type simulate(generator_type& gen, Params const& param) const {
 
-    env_type E({{"bio1","bio1.tif"},{"bio12","bio12.tif"}},
-               {2001,2002,2003,2004,2005,2006,2007,2008,2009,2010});
+    env_type E({{"prec","/home/becheler/wc2.0_10m_prec_01_europe_agg_fact_10.tif"}},
+               {"present"});
 
     const auto& X = E.geographic_definition_space();
-    const auto& T = E.temporal_definition_space();
+    std::vector<time_type> T = {2001,2002,2003,2004,2005,2006,2007,2008,2009,2010};
 
     pop_size_type N;
     coord_type Bordeaux(44.0,0.33);
@@ -79,10 +84,9 @@ public:
 
     // Growth expressions
     auto r = lit(param.r());
-    //auto k = (use(E["bio1"]) + use(E["bio12"]))/lit(2);
-    auto k = lit(10);
+    auto K = lit(param.k());
     auto N_expr = use([&N](coord_type const& x, time_type t){return N(x,t);});
-    auto g = N_expr*(lit(1)+r)/ (lit(1)+((r * N_expr)/k));
+    auto g = N_expr*(lit(1)+r)/ (lit(1)+((r * N_expr)/K));
 
     auto sim_N_tilde = [g](generator_type& gen, coord_type const& x, time_type t){
       std::poisson_distribution<N_type> poisson(g(x,t));
@@ -118,23 +122,31 @@ public:
 
     // Demographic process
     for(auto t : T){
+      unsigned int total_propagules = 0;
       for(auto x : X){
         auto N_tilde = sim_N_tilde(gen, x, t);
-        for(unsigned int i = 1; i <= N_tilde; ++i){
-          if( ! dispersal_kernel.has_distribution(x)){
-            dispersal_kernel.set(x, make_dispersal_distribution(x));
+        if(N_tilde >= 1){
+          total_propagules += N_tilde;
+          for(unsigned int i = 1; i <= N_tilde; ++i){
+            if( ! dispersal_kernel.has_distribution(x)){
+              dispersal_kernel.set(x, make_dispersal_distribution(x));
+            }
+            coord_type y = dispersal_kernel(gen, x);
+            Phi(x,y,t) += 1;
+            time_type t2 = t; ++t2;
+            N(y,t2) += 1;
           }
-          coord_type y = dispersal_kernel(gen, x);
-          Phi(x,y,t) += 1;
-          time_type t2 = t; ++t2;
-          N(y,t2) += 1;
         }
+      }
+      if(total_propagules == 0){
+        throw std::domain_error("Population went extinct before sampling");
       }
     }
 
     auto make_backward_distribution = [&Phi](coord_type const& x, time_type t){
       std::vector<double> w;
       std::vector<coord_type> X;
+      assert(Phi.flux_to_is_defined(x,t));
       auto const& flux_to = Phi.flux_to(x,t);
       w.reserve(flux_to.size());
       X.reserve(flux_to.size());
@@ -151,10 +163,10 @@ public:
     coord_type Paris(48.5,2.2);
     coord_type sample_deme = E.reproject_to_centroid(Paris);
 
-    unsigned int sample_size = 5;
+    unsigned int sample_size = 20;
     forest.insert(sample_deme, std::vector<unsigned int>(sample_size, 1));
 
-    if(N(origin, 2010) < sample_size){
+    if(N(sample_deme, 2010) < sample_size){
       throw std::domain_error("Simulated population size inferior to sampling size");
     }
 
@@ -217,7 +229,7 @@ int main(){
   std::mt19937 gen;
   GenerativeModel model;
   auto abc = quetzal::abc::make_ABC(model, model.make_prior());
-  auto table = abc.sample_prior_predictive_distribution(10000, gen);
+  auto table = abc.sample_prior_predictive_distribution(10, gen);
 
   auto eta = [](auto const& forest){
     std::vector<unsigned int> v;

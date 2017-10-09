@@ -114,8 +114,7 @@ public:
 	  * \include demography/test/PopulationFlux/PopulationFlux_test.output
 		*/
 	std::unordered_map<coord_type, value_type> const& flux_to(coord_type const& x, time_type t) const {
-		assert(m_flux.count(t) == 1);
-		assert(m_flux.at(t).count(x) == 1);
+		assert(flux_to_is_defined(x,t));
 		return m_flux.at(t).at(x);
 	}
 
