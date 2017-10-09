@@ -41,19 +41,21 @@ private:
   using pop_size_type = quetzal::demography::PopulationSize<coord_type, time_type, N_type>;
   using flux_type = quetzal::demography::PopulationFlux<coord_type, time_type, N_type>;
   using forest_type = quetzal::coalescence::Forest<coord_type, unsigned int>;
+  using quetzal::random::TransitionKernel;
+  using quetzal::random::DiscreteDistribution;
 
+  std::shared_ptr<TransitionKernel<DiscreteDistribution<coord_type>>> m_dispersal_kernel;
   std::shared_ptr<env_type> m_env;
 
 public:
+
+  using param_type = Params;
 
   GenerativeModel(){
     std::set<std::string> times = {"present"};
     std::map<key_type, std::string> files = {{"prec","wc2.0_10m_prec_01_europe_agg_fact_10.tif"}};
     m_env = std::make_shared<env_type>(files, times);
   }
-
-
-  using param_type = Params;
 
   auto make_prior() const {
     auto prior = [](auto& gen){
@@ -123,10 +125,6 @@ public:
       return quetzal::random::DiscreteDistribution<coord_type>(X,std::move(w));
     };
 
-    using quetzal::random::TransitionKernel;
-    using quetzal::random::DiscreteDistribution;
-    TransitionKernel<DiscreteDistribution<coord_type>> dispersal_kernel;
-
     // Demographic process
     for(auto t : T){
       unsigned int total_propagules = 0;
@@ -135,10 +133,10 @@ public:
         if(N_tilde >= 1){
           total_propagules += N_tilde;
           for(unsigned int i = 1; i <= N_tilde; ++i){
-            if( ! dispersal_kernel.has_distribution(x)){
-              dispersal_kernel.set(x, make_dispersal_distribution(x));
+            if( ! m_dispersal_kernel->has_distribution(x)){
+              dispersal_kernel->set(x, make_dispersal_distribution(x));
             }
-            coord_type y = dispersal_kernel(gen, x);
+            coord_type y = dispersal_kernel->operator()(gen, x);
             Phi(x,y,t) += 1;
             time_type t2 = t; ++t2;
             N(y,t2) += 1;
