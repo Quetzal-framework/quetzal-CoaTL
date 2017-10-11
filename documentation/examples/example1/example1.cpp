@@ -3,6 +3,7 @@
 
 #include "../../../quetzal.h"
 
+#include <memory>
 #include <random>
 #include <functional>  // std::plus
 
@@ -40,15 +41,25 @@ private:
   using pop_size_type = quetzal::demography::PopulationSize<coord_type, time_type, N_type>;
   using flux_type = quetzal::demography::PopulationFlux<coord_type, time_type, N_type>;
   using forest_type = quetzal::coalescence::Forest<coord_type, unsigned int>;
+  using dispersal_kernel_type = quetzal::random::TransitionKernel<quetzal::random::DiscreteDistribution<coord_type>>;
+  std::shared_ptr<dispersal_kernel_type> m_dispersal_kernel;
+  std::shared_ptr<env_type> m_env;
 
 public:
 
   using param_type = Params;
 
+  GenerativeModel(){
+    std::set<std::string> times = {"present"};
+    std::map<key_type, std::string> files = {{"prec","wc2.0_10m_prec_01_europe_agg_fact_10.tif"}};
+    m_env = std::make_shared<env_type>(files, times);
+    m_dispersal_kernel = std::make_shared<dispersal_kernel_type>();
+  }
+
   auto make_prior() const {
     auto prior = [](auto& gen){
       Params params;
-      params.k(std::uniform_int_distribution<>(1,50)(gen));
+      params.k(std::uniform_int_distribution<>(1,100)(gen));
       params.r(2);
       params.mu(0);
       params.sigma(1000);
@@ -63,15 +74,12 @@ public:
 
   forest_type simulate(generator_type& gen, Params const& param) const {
 
-    env_type E({{"prec","/home/becheler/wc2.0_10m_prec_01_europe_agg_fact_10.tif"}},
-               {"present"});
-
-    const auto& X = E.geographic_definition_space();
+    const auto& X = m_env->geographic_definition_space();
     std::vector<time_type> T = {2001,2002,2003,2004,2005,2006,2007,2008,2009,2010};
 
     pop_size_type N;
     coord_type Bordeaux(44.0,0.33);
-    coord_type origin(E.reproject_to_centroid(Bordeaux));
+    coord_type origin(m_env->reproject_to_centroid(Bordeaux));
     N(origin, 2001) = 10;
 
     flux_type Phi;
@@ -116,10 +124,6 @@ public:
       return quetzal::random::DiscreteDistribution<coord_type>(X,std::move(w));
     };
 
-    using quetzal::random::TransitionKernel;
-    using quetzal::random::DiscreteDistribution;
-    TransitionKernel<DiscreteDistribution<coord_type>> dispersal_kernel;
-
     // Demographic process
     for(auto t : T){
       unsigned int total_propagules = 0;
@@ -128,10 +132,10 @@ public:
         if(N_tilde >= 1){
           total_propagules += N_tilde;
           for(unsigned int i = 1; i <= N_tilde; ++i){
-            if( ! dispersal_kernel.has_distribution(x)){
-              dispersal_kernel.set(x, make_dispersal_distribution(x));
+            if( ! m_dispersal_kernel->has_distribution(x)){
+              m_dispersal_kernel->set(x, make_dispersal_distribution(x));
             }
-            coord_type y = dispersal_kernel(gen, x);
+            coord_type y = m_dispersal_kernel->operator()(gen, x);
             Phi(x,y,t) += 1;
             time_type t2 = t; ++t2;
             N(y,t2) += 1;
@@ -161,7 +165,7 @@ public:
 
     forest_type forest;
     coord_type Paris(48.5,2.2);
-    coord_type sample_deme = E.reproject_to_centroid(Paris);
+    coord_type sample_deme = m_env->reproject_to_centroid(Paris);
 
     unsigned int sample_size = 20;
     forest.insert(sample_deme, std::vector<unsigned int>(sample_size, 1));
@@ -172,7 +176,7 @@ public:
 
     time_type t = 2009;
     while( (forest.nb_trees() > 1) && (t > 2000) ){
-      TransitionKernel<time_type, DiscreteDistribution<coord_type>> backward_kernel;
+      quetzal::random::TransitionKernel<time_type, quetzal::random::DiscreteDistribution<coord_type>> backward_kernel;
 
       forest_type new_forest;
       for(auto const it : forest){
@@ -229,7 +233,7 @@ int main(){
   std::mt19937 gen;
   GenerativeModel model;
   auto abc = quetzal::abc::make_ABC(model, model.make_prior());
-  auto table = abc.sample_prior_predictive_distribution(10, gen);
+  auto table = abc.sample_prior_predictive_distribution(2000, gen);
 
   auto eta = [](auto const& forest){
     std::vector<unsigned int> v;
@@ -242,19 +246,25 @@ int main(){
 
   auto sum_stats = table.compute_summary_statistics(eta);
 
+
+  std::cout << "ABC_ID\tmu\tsigma\tr\tk" << std::endl;
   auto print = [](auto const& p){
-    std::cout << p.mu() << "\t" << p.sigma() << "\t" << p.r() << std::endl;
+    std::cout << p.mu() << "\t" << p.sigma() << "\t" << p.r() << "\t" << p.k() << std::endl;
   };
 
-  auto pod = sum_stats.begin()->data();
-  auto theta = sum_stats.begin()->param();
-  print(theta);
-
+  //multiple rejections
+  unsigned int pod_id = 0;
   for(auto const& it : sum_stats){
-    if(it.data() == pod){
-      print(it.param());
+    auto pod = it.data();
+    for(auto const& it : sum_stats){
+      if(it.data() == pod){
+        std::cout << pod_id << "\t";
+        print(it.param());
+      }
     }
+    pod_id += 1;
   }
+
 
   return 0;
 }
