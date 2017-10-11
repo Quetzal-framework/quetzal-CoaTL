@@ -246,20 +246,25 @@ int main(){
 
   auto sum_stats = table.compute_summary_statistics(eta);
 
+
+  std::cout << "ABC_ID\tmu\tsigma\tr\tk" << std::endl;
   auto print = [](auto const& p){
     std::cout << p.mu() << "\t" << p.sigma() << "\t" << p.r() << "\t" << p.k() << std::endl;
   };
 
-  auto pod = sum_stats.begin()->data();
-  auto theta = sum_stats.begin()->param();
-  std::cout << "mu\tsigma\tr\tk" << std::endl;
-  print(theta);
-
+  //multiple rejections
+  unsigned int pod_id = 0;
   for(auto const& it : sum_stats){
-    if(it.data() == pod){
-      print(it.param());
+    auto pod = it.data();
+    for(auto const& it : sum_stats){
+      if(it.data() == pod){
+        std::cout << pod_id << "\t";
+        print(it.param());
+      }
     }
+    pod_id += 1;
   }
+
 
   return 0;
 }
