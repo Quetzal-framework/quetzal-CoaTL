@@ -59,10 +59,10 @@ public:
   auto make_prior() const {
     auto prior = [](auto& gen){
       Params params;
-      params.k(std::uniform_int_distribution<>(1,100)(gen));
-      params.r(2);
+      params.k(std::uniform_int_distribution<>(1,50)(gen));
+      params.r(5);
       params.mu(0);
-      params.sigma(1000);
+      params.sigma(50);
       return params;
     };
     return prior;
@@ -167,7 +167,7 @@ public:
     coord_type Paris(48.5,2.2);
     coord_type sample_deme = m_env->reproject_to_centroid(Paris);
 
-    unsigned int sample_size = 20;
+    unsigned int sample_size = 10;
     forest.insert(sample_deme, std::vector<unsigned int>(sample_size, 1));
 
     if(N(sample_deme, 2010) < sample_size){
@@ -191,7 +191,7 @@ public:
       assert(forest.nb_trees() == new_forest.nb_trees());
       forest = new_forest;
 
-      using quetzal::coalescence::BinaryMerger;
+      using merger_type = quetzal::coalescence::SimultaneousMultipleMerger<quetzal::coalescence::occupancy_spectrum::on_the_fly>;
 
       for(auto const & x : forest.positions()){
 
@@ -203,7 +203,7 @@ public:
         }
 
         if(v.size() >= 2){
-          auto last = BinaryMerger::merge(
+          auto last = merger_type::merge(
             v.begin(),
             v.end(),
             N(x, t),
@@ -233,7 +233,7 @@ int main(){
   std::mt19937 gen;
   GenerativeModel model;
   auto abc = quetzal::abc::make_ABC(model, model.make_prior());
-  auto table = abc.sample_prior_predictive_distribution(2000, gen);
+  auto table = abc.sample_prior_predictive_distribution(1000, gen);
 
   auto eta = [](auto const& forest){
     std::vector<unsigned int> v;
@@ -246,25 +246,47 @@ int main(){
 
   auto sum_stats = table.compute_summary_statistics(eta);
 
-
-  std::cout << "ABC_ID\tmu\tsigma\tr\tk" << std::endl;
-  auto print = [](auto const& p){
-    std::cout << p.mu() << "\t" << p.sigma() << "\t" << p.r() << "\t" << p.k() << std::endl;
+  auto to_json_str = [](auto const& p){
+    return "{\"mu\":" + std::to_string(p.mu()) +
+           ",\"sigma\":" + std::to_string(p.sigma()) +
+           ",\"r\":"+ std::to_string(p.r()) +
+           ",\"k\":" + std::to_string(p.k()) + "}";
   };
 
   //multiple rejections
-  unsigned int pod_id = 0;
-  for(auto const& it : sum_stats){
-    auto pod = it.data();
-    for(auto const& it : sum_stats){
-      if(it.data() == pod){
-        std::cout << pod_id << "\t";
-        print(it.param());
-      }
+  auto true_param = model.make_prior()(gen);
+  true_param.k(20);
+  std::vector<std::vector<unsigned int>> pods;
+
+  for(int i = 0; i != 100; ++i){
+    try {
+      pods.push_back(eta(model(gen, true_param)));
+    }catch(...){
+      std::cerr << "one pod less" << std::endl;
     }
-    pod_id += 1;
   }
 
+  std::string buffer = "{";
+  unsigned int pod_id = 1;
+  for(auto const& it1 : pods){
+    buffer = buffer + "\"" + std::to_string(pod_id) + "\":[";
+    bool is_empty = true;
+    for(auto const& it2 : sum_stats){
+      if(it2.data() == it1){
+        buffer += to_json_str(it2.param());
+        buffer += ",";
+        is_empty = false;
+      }
+    }
+    if(!is_empty){
+        buffer.pop_back();
+    }
+    buffer += "],";
+    pod_id += 1;
+  }
+  buffer.pop_back();
+  buffer += "}";
 
+  std::cout << buffer << std::endl;
   return 0;
 }
