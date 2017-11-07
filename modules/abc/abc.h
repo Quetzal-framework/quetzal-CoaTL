@@ -22,21 +22,49 @@ namespace quetzal {
 namespace abc {
 
 	template<typename T>
-  struct Identity {
+  struct identity {
       T operator()(T&& a) const { return std::move(a); }
 			const T& operator()(T const& a) const { return a; }
   };
 
-	template<class ModelType, class ParametersJointDistributionType>
+
+	/*!
+	 * \brief ABC object for Approximate Bayesian Computations.
+	 *
+	 * Associates a generative (simulation) model with a possibly multidimensional
+	 * prior distribution.
+	 *
+	 * Simulation models are abstracted to the concept of \ref abc "GenerativeModel".
+	 * \tparam ModelType a type that meets the requirements of \ref abc "GenerativeModel".
+	 * \tparam PriorType a type that meets the requirements of \ref abc "PriorDistribution"
+	 * \remark ABC objects can be used with the helper function `make_ABC`
+	 *
+	 * \ingroup abc
+	 * \section Example
+	 * \snippet abc/test/ABC/test.cpp Example
+	 * \section Output
+	 * \include abc/test/ABC/test.output
+	 */
+	template<class ModelType, class PriorType>
 	class ABC{
+
+	public:
+
+		//! \typedef model type used for simulating data
+		using model_type = ModelType;
+
+		//! \typedef model parameter type
+		using param_type = typename model_type::param_type;
+
+		//! \typedef simulated data type
+		using simulated_data_type = typename model_type::return_type;
+
+		//! \typedef prior distribution type for sampling model parameters
+		using prior_type = PriorType;
 
 	private:
 
-		using model_type = ModelType;
-		using param_type = typename model_type::param_type;
-		using priors_type = ParametersJointDistributionType;
-
-		mutable priors_type priors;
+		mutable prior_type priors;
 		mutable model_type generative_model;
 
 		//! \remark Represent a couple {parameter, generated data}
@@ -76,23 +104,47 @@ namespace abc {
 
 	public:
 
-		ABC(model_type const& m, priors_type const& p)  :
+	 /**
+		 * \brief Constructor
+		 * \param m the model to be used
+		 * \param p the prior distribution
+		 * \section Example
+		 * \snippet abc/test/ABC/test.cpp Example
+	 	 * \section Output
+	 	 * \include abc/test/ABC/test.output
+		 */
+		ABC(model_type const& m, prior_type const& p)  :
 		priors(p),
 		generative_model(m)
 		{}
 
-		//! \remark Rubin(1984) likelyhood-free rejection sampler
-		//! \remark assume observed data takes values in a finite or countable set D
-		//! \remark ObservedDataType and simulated_data_type should be EqualityComparable
-		//! \remark see 'Approximate Bayesian Computations methods, Marin et al 2011, Algorithm 1)
-		template<class ObsType, typename Generator>
-		std::vector<param_type> rubin_rejection_sampler(unsigned int N, ObsType const& observed_data, Generator& g) const {
+		/**
+			* \brief Rubin(1984) likelyhood-free rejection sampler
+			*
+			* Performs rejection assuming observed data takes values in a finite or countable set \f$D\f$
+			* as defined in
+			* [Approximate Bayesian Computations methods, Marin et al 2011](https://link.springer.com/article/10.1007%2Fs11222-011-9288-2?LI=true),
+			* Algorithm 1.
+			*
+			* \param n the number of parameters to accept.
+			* \param y the observed data from which to draw inference.
+			* \return a vector of accepted parameter values.
+			*
+			* \remark ObservedDataType and simulated_data_type should be [EqualityComparable](http://en.cppreference.com/w/cpp/concept/EqualityComparable)
+			*
+			* \section Example
+			* \snippet abc/test/ABC/test.cpp Example
+			* \section Output
+			* \include abc/test/ABC/test.output
+			*/
+		template<class ObservedDataType, typename Generator>
+		std::vector<param_type> rubin_rejection_sampler(unsigned int n, ObservedDataType const& y, Generator& g) const {
 			std::vector<param_type> sample;
-			sample.reserve(N);
-			while(sample.size() != N)
+			sample.reserve(n);
+			while(sample.size() != n)
 			{
 				auto params = param_type(priors(g));
-				if( observed_data == generative_model(g, params))
+				if( y == generative_model(g, params))
 				{
 					sample.push_back(params);
 				}

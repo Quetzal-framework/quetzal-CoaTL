@@ -194,14 +194,55 @@
   * @}
   *
   * \defgroup abc abc
-  * \brief Template classes for embedding simulation model objects into an ABC framework.
+  * \brief Template classes for embedding simulation model objects into an Approximate Bayesian Computation framework.
   *
-  * Defines template classes to embed simulation code into an ABC framework. It
-  * relies heavily on the C++ concept of GenerativeModel, which defines the set
-  * of constraints that a simulation model object must have to interact with the
-  * ABC module. For now, only basics are implemented (Rubin rejection sample,
+  * Defines template classes to embed simulation code into an Approximate Bayesian Computation framework framework.
+  * For now, only basics are implemented (Rubin rejection sample,
   * Pritchard rejection sampler, generation of the reference table). Nevertheless,
   * this allows to perform an open-ended number of important inference tasks,
-  * as the user can inject almost any kind of distance or summary statistics
+  * as the user can for example inject almost any kind of distance or summary statistics
   * in the analysis of the reference table.
+  *
+  * ## C++ concept : GenerativeModel
+  *
+  * The abc module relies heavily on the C++ concept of GenerativeModel, which defines the set
+  * of constraints that a simulation model object must have to interact with the
+  * abc module.
+  *
+  * The type `D` satisfies GenerativeModel if
+  *
+  * * `D` satisfies [CopyConstructible](http://en.cppreference.com/w/cpp/concept/CopyConstructible)
+  * * `D` satisfies [CopyAssignable](http://en.cppreference.com/w/cpp/concept/CopyAssignable)
+  *
+  * Given
+  *
+  * * `T`, the type named by `M::return_type`
+  * * `P`, the type named by `M::param_type`, which:
+  *   * satisfies [CopyConstructible](http://en.cppreference.com/w/cpp/concept/CopyConstructible)
+  *   * satisfies [CopyAssignable](http://en.cppreference.com/w/cpp/concept/CopyAssignable)
+  *   * satisfies [EqualityComparable](http://en.cppreference.com/w/cpp/concept/EqualityComparable)
+  *   * has a constructor taking identical arguments as each of the constructors of
+  *    `D` that take arguments corresponding to the model parameters.
+  *   * has a member function with the identical name, type, and semantics,
+  *    as every member function of `D` that returns a parameter of the model
+  *   * declares a member typedef `using distribution_type = D`;
+  * * `d`, a value of type `D`
+  * * `x`, a (possibly `const`) value of type `D`
+  * *  p, a (possibly `const`) value of type `P`
+  * * `g`  a lvalue of a type satisfying the STL [UniformRandomBitGenerator](http://en.cppreference.com/w/cpp/concept/UniformRandomBitGenerator) concept
+  *
+  * The following expressions must be valid and have their specified effects :
+  *
+  * Expression          | Type | Notes
+  * --------------------|------|-------------------------------------|
+  * `D::result_type`    | `T`    | the type of the simulated data      |
+  * `D::param_type`     | `T`    |                                     |
+  * `D()`               |      | creates a distribution indistinguishable from any other default-constructed `D` |
+  * `D(p)`              |      | creates a distribution indistinguishable from `D` constructed directly from the values used to construct `p` |
+  * `x.param()`         | `P`    | Returns `p` such that `D(p).param() == p`   |
+  * `d.param(p)`        | `void` | Postcondition: `d.param() == p`             |
+  * `d(g)`              | `T`    | The sequence of data returned by successive invocations of this call with the same `g` are randomly distributed according to the distribution parametrized by `d.param()` |
+  * `d(g,p)`            | `T`    | The sequence of data returned by successive invocations of this call with the same `g` are randomly distributed according to the distribution parametrized by `p` |
+  *
+  * \remark All types satisfying the requirements of the STL [RandomNumberDistribution](http://en.cppreference.com/w/cpp/concept/RandomNumberDistribution) satisfy quetzal GenerativeModel concept.
   */
