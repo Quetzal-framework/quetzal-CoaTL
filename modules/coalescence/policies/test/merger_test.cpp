@@ -18,7 +18,10 @@
  *
  */
 
-#include "merger.h"
+
+#include "../merger.h"
+
+//! [Example]
 
 #include <vector>
 #include <list>
@@ -27,29 +30,32 @@
 #include <iostream>
 #include <iterator>
 #include <random>
-#include <assert.h>
+#include <cassert>
 
-template<typename Container>
-void coalesce(Container nodes, unsigned int N){
+int main () {
 
-  using quetzal::coalescence::SimultaneousMultipleMerger;
+  using node_type = std::string;
   using quetzal::coalescence::BinaryMerger;
-  using T = typename Container::value_type;
+  using quetzal::coalescence::SimultaneousMultipleMerger;
+  using quetzal::coalescence::occupancy_spectrum::on_the_fly;
 
-  std::mt19937 g;
+  std::vector<node_type> nodes = {"a", "b", "c", "d"};
+
+  unsigned int N = 3;
+
+  std::mt19937 gen;
 
   std::cout << "\nNodes at sampling time :\n";
-  std::copy(nodes.begin(), nodes.end(), std::ostream_iterator<T>(std::cout, "\n"));
+  std::copy(nodes.begin(), nodes.end(), std::ostream_iterator<node_type>(std::cout, "\n"));
   std::cout << "\n";
 
-  auto init = T();
+  auto init = node_type();
 
   // Define what coalescence means in term of data representation
-  // In this example, operator is suitable for both types string and int
-  auto binary_operator = [](T parent, T child){ return parent + child;};
+  auto binary_operator = [](node_type parent, node_type child){ return parent + child;};
 
   // Binary merger
-  auto last = BinaryMerger::merge(nodes.begin(), nodes.end(), N, init, binary_operator, g);
+  auto last = BinaryMerger::merge(nodes.begin(), nodes.end(), N, init, binary_operator, gen);
 
   std::cout << "\nAfter one binary merge generation:\n";
   for(auto it = nodes.begin(); it != last; ++it){
@@ -58,22 +64,14 @@ void coalesce(Container nodes, unsigned int N){
 
   // Simultaneous multiple merger
   assert(std::distance(nodes.begin(), last) == 3);
-  using spectrum_creation_policy = quetzal::coalescence::occupancy_spectrum::on_the_fly;
-  last = SimultaneousMultipleMerger<spectrum_creation_policy>::merge(nodes.begin(), last, N, init, binary_operator, g);
+  last = SimultaneousMultipleMerger<on_the_fly>::merge(nodes.begin(), last, N, init, binary_operator, gen);
 
   std::cout << "\nAfter one simultaneous multiple merge generation:\n";
   for(auto it = nodes.begin(); it != last; ++it){
     std::cout << *it << std::endl;
   }
-}
-
-int main () {
-
-  std::vector<std::string> str_nodes = {"a", "b", "c", "d"};
-  std::vector<int> int_nodes = {1,1,1,1};
-  unsigned int N = 3;
-  coalesce(str_nodes, N);
-  coalesce(int_nodes, N);
 
   return 0;
 }
+
+//! [Example]

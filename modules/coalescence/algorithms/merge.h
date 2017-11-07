@@ -15,6 +15,7 @@
 
 #include <algorithm> // std::shuffle
 #include <iterator> // std::advance
+#include <cassert>
 
 namespace quetzal{
 namespace coalescence {
@@ -44,6 +45,7 @@ namespace coalescence {
   template<class BidirectionalIterator, class T, class BinaryOperation, class Generator>
   BidirectionalIterator binary_merge(BidirectionalIterator first, BidirectionalIterator last,
                                      T init, BinaryOperation op, Generator& g) {
+      assert(std::distance(first, last) > 1 && "Coalescence should operate on a range containing more than one element.");
       std::shuffle(first, last, g);
       *first = op(init, *first);
       *first = op(*first, *(--last));
@@ -76,6 +78,7 @@ namespace coalescence {
   template<class BidirectionalIterator, class T, class BinaryOperation, class OccupancySpectrum, class Generator>
   BidirectionalIterator simultaneous_multiple_merge(BidirectionalIterator first, BidirectionalIterator last,
                                    T init, OccupancySpectrum const& sp, BinaryOperation op, Generator& g) {
+      assert(std::distance(first, last) > 1 && "Coalescence should operate on a range containing more than one element.");
       std::shuffle(first, last, g);
 
        // directly go to binary merge.
