@@ -19,7 +19,7 @@
  */
 
 
-#include "../merger.h"
+#include "../../merger.h"
 
 //! [Example]
 
@@ -35,7 +35,7 @@
 int main () {
 
   using node_type = std::string;
-  using quetzal::coalescence::BinaryMerger;
+
   using quetzal::coalescence::SimultaneousMultipleMerger;
   using quetzal::coalescence::occupancy_spectrum::on_the_fly;
 
@@ -54,17 +54,7 @@ int main () {
   // Define what coalescence means in term of data representation
   auto binary_operator = [](node_type parent, node_type child){ return parent + child;};
 
-  // Binary merger
-  auto last = BinaryMerger::merge(nodes.begin(), nodes.end(), N, init, binary_operator, gen);
-
-  std::cout << "\nAfter one binary merge generation:\n";
-  for(auto it = nodes.begin(); it != last; ++it){
-    std::cout << *it << std::endl;
-  }
-
-  // Simultaneous multiple merger
-  assert(std::distance(nodes.begin(), last) == 3);
-  last = SimultaneousMultipleMerger<on_the_fly>::merge(nodes.begin(), last, N, init, binary_operator, gen);
+  auto last = SimultaneousMultipleMerger<on_the_fly>::merge(nodes.begin(), nodes.end(), N, init, binary_operator, gen);
 
   std::cout << "\nAfter one simultaneous multiple merge generation:\n";
   for(auto it = nodes.begin(); it != last; ++it){

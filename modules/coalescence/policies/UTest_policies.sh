@@ -2,9 +2,15 @@
 
 echo -e "UTest_policies\n|"
 
-cd test
+cd test/BinaryMerger
 
-echo -e "|--\t test..................................."
+echo -e "|--\t BinaryMerger_test..................................."
+./UTest.sh
+echo -e "|--\t DONE \n|"
+
+cd ../SimultaneousMultipleMerger
+
+echo -e "|--\t SimultaneousMultipleMerger_test..................................."
 ./UTest.sh
 echo -e "|--\t DONE \n|"
 
