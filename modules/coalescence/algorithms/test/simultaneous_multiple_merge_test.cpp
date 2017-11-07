@@ -26,21 +26,22 @@
 #include <iostream>   // std::cout
 #include <iterator>   // std::ostream_iterator
 #include <algorithm>  // std::copy
-#include <functional> // std::plus
+#include <functional> // std::minus
 
 int main(){
 
   using node_type = int;
   std::vector<node_type> nodes = {1,1,1,1,1};
 
-  // 99 parents with no child, 1 parent with 2 children, 1 parent with 3 children
-  std::vector<unsigned int> sp = {98,0,1,1};
+  // 99 parents with no child, 0 parent with 1 child, 1 parent with 2 children, 1 parent with 3 children
+  std::vector<unsigned int> spectrum = {98,0,1,1};
   std::mt19937 rng;
 
   using quetzal::coalescence::simultaneous_multiple_merge;
-  auto last = simultaneous_multiple_merge(nodes.begin(), nodes.end(), node_type(), sp, std::plus<node_type>(), rng);
 
+  auto last = simultaneous_multiple_merge(nodes.begin(), nodes.end(), spectrum, rng);
   std::copy(nodes.begin(), last, std::ostream_iterator<node_type>(std::cout, " "));
+
   return 0;
 }
 
