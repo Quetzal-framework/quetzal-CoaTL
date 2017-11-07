@@ -29,9 +29,9 @@ namespace coalescence {
    *
    * \ingroup coal_policies
    * \section Example
-   * \snippet coalescence/policies/test/merger_test.cpp Example
+   * \snippet coalescence/policies/test/BinaryMerger/test.cpp Example
    * \section Output
-   * \include coalescence/policies/test/merger_test.output
+   * \include coalescence/policies/test/BinaryMerger/test.output
    */
   struct BinaryMerger{
     /**
@@ -55,9 +55,9 @@ namespace coalescence {
                that should be considered its new past-the-end element. The range between first and
                this iterator includes all the remaining nodes in the sequence.
      * \section Example
-     * \snippet coalescence/policies/test/merger_test.cpp Example
+     * \snippet coalescence/policies/test/BinaryMerger/test.cpp Example
      * \section Output
-     * \include coalescence/algorithms/test/merger_test.output
+     * \include coalescence/policies/test/BinaryMerger/test.output
      */
     template<class BidirectionalIterator, class T, class BinaryOperation, class Generator>
     static auto
@@ -84,12 +84,37 @@ namespace coalescence {
    * \ingroup coal_policies
    * \tparam SpectrumCreationPolicy The policy used to generate an OccupancySpectrum.
    * \section Example
-   * \snippet coalescence/policies/test/merger_test.cpp Example
+   * \snippet coalescence/policies/test/SimultaneousMultipleMerger/test.cpp Example
    * \section Output
-   * \include coalescence/policies/test/merger_test.output
+   * \include coalescence/policies/test/SimultaneousMultipleMerger/test.output
    */
   template<class SpectrumCreationPolicy>
   struct SimultaneousMultipleMerger {
+    /**
+     * \brief merges multiple randomly selected elements in a range.
+     *
+     * Coalesce multiple nodes selected uniformely at random in a range, according to an OccupancySpectrum.
+     *
+     * \param first iterator at the begin of the range
+     * \param last iterator to the past-the-end element.
+     * \param N the number of individuals in the population
+     * \param init the value at which parent is initialized
+     * \param op binary operation function object that will be applied for branching a
+                 child to its parent. The binary operator takes the parent value a
+                 (initialized to init) and the value of the child b. The signature
+                 of the function should be equivalent to the following:
+                 `Ret fun(const Type1 &parent, const Type2 &child);`
+     * \return An iterator to the element that follows the last element of the nodes remaining after coalescence.
+               The function cannot alter the properties of the object containing the range of elements
+               (i.e., it cannot alter the size of an array or a container):
+               signaling the new size of the shortened range is done by returning an iterator to the element
+               that should be considered its new past-the-end element. The range between first and
+               this iterator includes all the remaining nodes in the sequence.
+     * \section Example
+     * \snippet coalescence/policies/test/SimultaneousMultipleMerger/test.cpp Example
+     * \section Output
+     * \include coalescence/policies/test/SimultaneousMultipleMerger/test.output
+     */
     template<class BidirectionalIterator, class T, class BinaryOperation, class Generator>
     static auto
     merge(BidirectionalIterator first, BidirectionalIterator last, unsigned int N, T const& init, BinaryOperation const& binop, Generator& g)
