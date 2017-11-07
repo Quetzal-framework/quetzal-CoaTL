@@ -35,9 +35,8 @@
 int main () {
 
   using node_type = std::string;
-
-  using quetzal::coalescence::SimultaneousMultipleMerger;
   using quetzal::coalescence::occupancy_spectrum::on_the_fly;
+  using SMM = quetzal::coalescence::SimultaneousMultipleMerger<on_the_fly> ;
 
   std::vector<node_type> nodes = {"a", "b", "c", "d"};
 
@@ -49,12 +48,7 @@ int main () {
   std::copy(nodes.begin(), nodes.end(), std::ostream_iterator<node_type>(std::cout, "\n"));
   std::cout << "\n";
 
-  auto init = node_type();
-
-  // Define what coalescence means in term of data representation
-  auto binary_operator = [](node_type parent, node_type child){ return parent + child;};
-
-  auto last = SimultaneousMultipleMerger<on_the_fly>::merge(nodes.begin(), nodes.end(), N, init, binary_operator, gen);
+  auto last = SMM::merge(nodes.begin(), nodes.end(), N, gen);
 
   std::cout << "\nAfter one simultaneous multiple merge generation:\n";
   for(auto it = nodes.begin(); it != last; ++it){

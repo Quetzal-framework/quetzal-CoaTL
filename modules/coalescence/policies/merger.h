@@ -34,6 +34,8 @@ namespace coalescence {
    * \include coalescence/policies/test/BinaryMerger/test.output
    */
   struct BinaryMerger{
+
+
     /**
      * \brief merges 2 randomly selected elements in a range.
      *
@@ -48,12 +50,15 @@ namespace coalescence {
                  (initialized to init) and the value of the child b. The signature
                  of the function should be equivalent to the following:
                  `Ret fun(const Type1 &parent, const Type2 &child);`
+     * \param g a random generator that must meet the requirements of UniformRandomBitGenerator concept.
      * \return An iterator to the element that follows the last element of the nodes remaining after coalescence.
                The function cannot alter the properties of the object containing the range of elements
                (i.e., it cannot alter the size of an array or a container):
                signaling the new size of the shortened range is done by returning an iterator to the element
                that should be considered its new past-the-end element. The range between first and
                this iterator includes all the remaining nodes in the sequence.
+     *
+     * \remark BidirectionalIterator must meet the requirements of ValueSwappable and RandomAccessIterator.
      * \section Example
      * \snippet coalescence/policies/test/BinaryMerger/test.cpp Example
      * \section Output
@@ -63,15 +68,51 @@ namespace coalescence {
     static auto
     merge(BidirectionalIterator first, BidirectionalIterator last, unsigned int N, T const& init, BinaryOperation const& binop, Generator& g)
     {
-        assert(N >= 1 && "Population size should be positive for evaluating coalescence probability" );
-        assert(std::distance(first, last) > 1 && "Coalescence should operate on a range containing more than one element.");
-        double coal_proba = 1/static_cast<double>(N);
-        std::bernoulli_distribution d(coal_proba);
-        if( d(g) ){
-          last = binary_merge(first, last, init, binop, g);
-        }
-        return last;
+      assert(N >= 1 && "Population size should be positive for evaluating coalescence probability" );
+      assert(std::distance(first, last) > 1 && "Coalescence should operate on a range containing more than one element.");
+      double coal_proba = 1/static_cast<double>(N);
+      std::bernoulli_distribution d(coal_proba);
+      if( d(g) ){
+        last = binary_merge(first, last, init, binop, g);
       }
+      return last;
+    }
+
+    /**
+     * \brief merges 2 randomly selected elements in a range.
+     *
+     * With a probability \f$1/N\f$, merges 2 elements selected uniformely at random in a range.
+     *
+     * \param first iterator at the begin of the range
+     * \param last iterator to the past-the-end element.
+     * \param N the number of individuals in the population
+     * \param g a random generator that must meet the requirements of UniformRandomBitGenerator concept.
+     * \return An iterator to the element that follows the last element of the nodes remaining after coalescence.
+               The function cannot alter the properties of the object containing the range of elements
+               (i.e., it cannot alter the size of an array or a container):
+               signaling the new size of the shortened range is done by returning an iterator to the element
+               that should be considered its new past-the-end element. The range between first and
+               this iterator includes all the remaining nodes in the sequence.
+     *
+     * \remark the type `T` `BidirectionalIterator::value_type` must be defined.
+     * \remark the `T` default constructor is used to set the value at which the parent is initialized.
+     * \remark With `a` and `b` two objects of type `T`, the expression `a + B` must be defined.
+     * \remark BidirectionalIterator must meet the requirements of ValueSwappable and RandomAccessIterator.
+     * \section Example
+     * \snippet coalescence/policies/test/BinaryMerger/test.cpp Example
+     * \section Output
+     * \include coalescence/policies/test/BinaryMerger/test.output
+     */
+    template<class BidirectionalIterator, class Generator>
+    static auto
+    merge(BidirectionalIterator first, BidirectionalIterator last, unsigned int N, Generator& g)
+    {
+      assert(N >= 1 && "Population size should be positive for evaluating coalescence probability" );
+      assert(std::distance(first, last) > 1 && "Coalescence should operate on a range containing more than one element.");
+      using T = typename BidirectionalIterator::value_type;
+      return merge(first, last, N, T(), std::plus<T>(), g);
+    }
+
   };
 
   /*!
@@ -90,6 +131,8 @@ namespace coalescence {
    */
   template<class SpectrumCreationPolicy>
   struct SimultaneousMultipleMerger {
+
+
     /**
      * \brief merges multiple randomly selected elements in a range.
      *
@@ -110,6 +153,7 @@ namespace coalescence {
                signaling the new size of the shortened range is done by returning an iterator to the element
                that should be considered its new past-the-end element. The range between first and
                this iterator includes all the remaining nodes in the sequence.
+     * \remark BidirectionalIterator must meet the requirements of ValueSwappable and RandomAccessIterator.
      * \section Example
      * \snippet coalescence/policies/test/SimultaneousMultipleMerger/test.cpp Example
      * \section Output
@@ -124,6 +168,42 @@ namespace coalescence {
       unsigned int k = std::distance(first, last);
       return simultaneous_multiple_merge(first, last, init, SpectrumCreationPolicy::sample(k, N, g), binop, g);
     }
+
+
+    /**
+     * \brief merges multiple randomly selected elements in a range.
+     *
+     * Coalesce multiple nodes selected uniformely at random in a range, according to an OccupancySpectrum.
+     *
+     * \param first iterator at the begin of the range
+     * \param last iterator to the past-the-end element.
+     * \param N the number of individuals in the population
+     * \return An iterator to the element that follows the last element of the nodes remaining after coalescence.
+               The function cannot alter the properties of the object containing the range of elements
+               (i.e., it cannot alter the size of an array or a container):
+               signaling the new size of the shortened range is done by returning an iterator to the element
+               that should be considered its new past-the-end element. The range between first and
+               this iterator includes all the remaining nodes in the sequence.
+     *
+     * \remark the type `T` `BidirectionalIterator::value_type` must be defined.
+     * \remark the `T` default constructor is used to set the value at which the parent is initialized.
+     * \remark With `a` and `b` two objects of type `T`, the expression `a + B` must be defined.
+     * \remark BidirectionalIterator must meet the requirements of ValueSwappable and RandomAccessIterator.
+     * \section Example
+     * \snippet coalescence/policies/test/SimultaneousMultipleMerger/test.cpp Example
+     * \section Output
+     * \include coalescence/policies/test/SimultaneousMultipleMerger/test.output
+     */
+    template<class BidirectionalIterator, class Generator>
+    static auto
+    merge(BidirectionalIterator first, BidirectionalIterator last, unsigned int N, Generator& g)
+    {
+      assert(N >= 1 && "Population size should be positive for evaluating coalescence probability" );
+      assert(std::distance(first, last) > 1 && "Coalescence should operate on a range containing more than one element.");
+      unsigned int k = std::distance(first, last);
+      return simultaneous_multiple_merge(first, last, SpectrumCreationPolicy::sample(k, N, g), g);
+    }
+
   };
 
 } // namespace coalescence

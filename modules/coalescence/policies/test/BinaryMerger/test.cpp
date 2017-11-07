@@ -47,12 +47,7 @@ int main () {
   std::copy(nodes.begin(), nodes.end(), std::ostream_iterator<node_type>(std::cout, "\n"));
   std::cout << "\n";
 
-  auto init = node_type();
-
-  // Define what coalescence means in term of data representation
-  auto binary_operator = [](node_type parent, node_type child){ return parent + child;};
-
-  auto last = BinaryMerger::merge(nodes.begin(), nodes.end(), N, init, binary_operator, gen);
+  auto last = BinaryMerger::merge(nodes.begin(), nodes.end(), N, gen);
 
   std::cout << "\nAfter one binary merge generation:\n";
   for(auto it = nodes.begin(); it != last; ++it){
