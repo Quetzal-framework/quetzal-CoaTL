@@ -2,10 +2,16 @@
 
 echo -e "UTest_policies\n|"
 
-echo -e "|--\t merger_test..................................."
-g++ -o Utest -Wall -std=c++14 merger_test.cpp
-./Utest
-rm Utest
+cd test/BinaryMerger
+
+echo -e "|--\t BinaryMerger_test..................................."
+./UTest.sh
+echo -e "|--\t DONE \n|"
+
+cd ../SimultaneousMultipleMerger
+
+echo -e "|--\t SimultaneousMultipleMerger_test..................................."
+./UTest.sh
 echo -e "|--\t DONE \n|"
 
 echo -e "DONE\n"

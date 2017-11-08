@@ -26,8 +26,7 @@
 #include <iostream>   // std::cout
 #include <iterator>   // std::ostream_iterator
 #include <algorithm>  // std::copy
-#include <functional> // std::plus
-
+#include <functional> // std::minus
 int main(){
 
   using node_type = int;
@@ -35,9 +34,16 @@ int main(){
   std::mt19937 rng;
 
   using quetzal::coalescence::binary_merge;
-  auto last = binary_merge(nodes.begin(), nodes.end(), node_type(), std::plus<node_type>(), rng);
 
+  // First coalescence using default parent initialization and operator
+  auto last = binary_merge(nodes.begin(), nodes.end(), rng);
   std::copy(nodes.begin(), last, std::ostream_iterator<node_type>(std::cout, " "));
+  std::cout << std::endl;
+
+  // Second coalescence using custom initialization and operator
+  last = binary_merge(nodes.begin(), last, 100, std::minus<node_type>(), rng);
+  std::copy(nodes.begin(), last, std::ostream_iterator<node_type>(std::cout, " "));
+
   return 0;
 }
 
