@@ -14,6 +14,8 @@
  * this library can offer you some useful tools for building programs based on complex generative
  * models of genetic data.
  *
+ * [Check the founder article introducing the library.](https://www.biorxiv.org/content/early/2017/11/06/214767)
+ *
  * - Because of ABC is computationally intensive, we wanted Quetzal to be
  *   <B>fast</B> enough to run millions of simulations in a minimal amount of time.
  *
@@ -45,6 +47,8 @@
  * # About
  *
  * **Maintainer:** [Arnaud Becheler](https://becheler.github.io/)
+ *
+ * **How to cite:** [see the founder article](https://www.biorxiv.org/content/early/2017/11/06/214767)
  *
  * **Community:** IRC channel \#quetzal on [Freenode](https://webchat.freenode.net/)
  *
