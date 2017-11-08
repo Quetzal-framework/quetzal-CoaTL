@@ -14,8 +14,8 @@
 
 //! [Example]
 
-#include <random>
-#include <iostream>
+#include <random>    // std::poisson_distribution, std::uniform_real_distribution
+#include <iostream>  // std::endl
 
 int main () {
 
@@ -38,7 +38,6 @@ int main () {
   }
 
   return 0;
-
-  //! [Example]
-
 }
+
+//! [Example]

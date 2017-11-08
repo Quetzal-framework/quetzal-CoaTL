@@ -15,7 +15,3 @@ rm UTest
 g++ -o UTest -Wall -std=c++14 pritchard_identity_test.cpp
 ./UTest > pritchard_identity_test.output
 rm UTest
-
-g++ -o UTest -Wall -std=c++14 ReferenceTable_test.cpp
-./UTest > ReferenceTable_test.output
-rm UTest
