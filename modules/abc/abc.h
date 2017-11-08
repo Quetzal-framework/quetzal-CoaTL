@@ -164,16 +164,16 @@ namespace abc {
 			*
 			* A parameter \f$\theta\f$ is generated from the prior \f$\pi(\theta)\f$, a data is simulated,
 			* and the parameter is accepted if the simulated data is equal to the observed data \f$y\f$,
-			* assuming observed data takes values in a finite or countable set \f$D\f$
+			* assuming observed data takes values in a continuous set \f$D\f$
 			* as defined in
 			* [Approximate Bayesian Computations methods, Marin et al 2011](https://link.springer.com/article/10.1007%2Fs11222-011-9288-2?LI=true),
 			* Algorithm 2.
 			*
 			* \param N the number of parameters to accept.
 			* \param y the observed data from which to draw inference.
-			* \param eta a function \f$eta\f$ on \f$D\f$ defining a statistics (sufficient or not).
-			* \param rho a distance \f$rho > 0\f$ on \f$eta(D)\f$
-			* \param epsilon a tolerance level \f$epsilon > 0\f$
+			* \param eta a function \f$\eta\f$ on \f$D\f$ defining a statistics (sufficient or not).
+			* \param rho a distance \f$\rho > 0\f$ on \f$\eta(D)\f$
+			* \param epsilon a tolerance level \f$\epsilon > 0\f$
 			* \param g a random generator that must meet the requirements of UniformRandomBitGenerator concept.
 			*
 			* \return a vector of accepted parameter values.
@@ -214,20 +214,20 @@ namespace abc {
 			*
 			* A parameter \f$\theta\f$ is generated from the prior \f$\pi(\theta)\f$, a data is simulated,
 			* and the parameter is accepted if the simulated data is equal to the observed data \f$y\f$,
-			* assuming observed data takes values in a finite or countable set \f$D\f$
+			* assuming observed data takes values in a continuous set \f$D\f$
 			* as defined in
 			* [Approximate Bayesian Computations methods, Marin et al 2011](https://link.springer.com/article/10.1007%2Fs11222-011-9288-2?LI=true),
 			* Algorithm 2.
 			*
 			* \param n the number of parameters to accept.
 			* \param y the observed data from which to draw inference.
-			* \param rho a distance \f$rho > 0\f$ on \f$eta(D)\f$
-			* \param epsilon a tolerance level \f$epsilon > 0\f$
+			* \param rho a distance \f$\rho > 0\f$ on \f$D\f$
+			* \param epsilon a tolerance level \f$\epsilon > 0\f$
 			* \param g a random generator that must meet the requirements of UniformRandomBitGenerator concept.
 			*
 			* \return a vector of accepted parameter values.
 			*
-			* \remark the dimension reduction function \f$eta\f$ is here defined as the identity.
+			* \remark the dimension reduction function \f$\eta\f$ is here defined as the identity.
 			*
 			* \section Example
 			* \snippet abc/test/pritchard_identity_test.cpp Example
@@ -245,14 +245,14 @@ namespace abc {
 			*
 			*
 			* A parameter \f$\theta\f$ is generated from the prior \f$\pi(\theta)\f$,
-			* a data \f$z\f$ is simulated from the likelyhood and a dimension reduction function \f$eta\f$
+			* a data \f$z\f$ is simulated from the likelyhood and a dimension reduction function \f$\eta\f$
 			* is computed on \f$z\f$. The set of simulated statistics is called the
 			* reference table.
 			*
 			* See Algorithm 1 in [ABC Random Forests for Bayesian Parameter Inference (Marin et al 2016)](https://arxiv.org/abs/1605.05537)
 			*
 			* \param N the number of parameters to accept.
-			* \param eta a function \f$eta\f$ on \f$D\f$ defining a statistics (sufficient or not).
+			* \param eta a function \f$\eta\f$ on \f$D\f$ defining a statistics (sufficient or not).
 			* \param g a random generator that must meet the requirements of UniformRandomBitGenerator concept.
 			*
 			* \return a ReferenceTable
@@ -299,7 +299,7 @@ namespace abc {
 			*
 			* \return a ReferenceTable
 			*
-			* \remark the dimension reduction function \f$eta\f$ is here defined as the identity.
+			* \remark the dimension reduction function \f$\eta\f$ is here defined as the identity.
 			*
 			* \section Example
 			* \snippet abc/test/ReferenceTable_test.cpp Example
