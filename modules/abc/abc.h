@@ -130,7 +130,7 @@ namespace abc {
 			*
 			* \param N the number of parameters to accept.
 			* \param y the observed data from which to draw inference.
-			* \param g a random generator that must meet the requirements of UniformRandomBitGenerator concept.
+			* \param g a random generator that must meet the requirements of [UniformRandomBitGenerator](http://en.cppreference.com/w/cpp/concept/UniformRandomBitGenerator) concept.
 			*
 			* \return a vector of accepted parameter values.
 			*
@@ -174,7 +174,7 @@ namespace abc {
 			* \param eta a function \f$\eta\f$ on \f$D\f$ defining a statistics (sufficient or not).
 			* \param rho a distance \f$\rho > 0\f$ on \f$\eta(D)\f$
 			* \param epsilon a tolerance level \f$\epsilon > 0\f$
-			* \param g a random generator that must meet the requirements of UniformRandomBitGenerator concept.
+			* \param g a random generator that must meet the requirements of [UniformRandomBitGenerator](http://en.cppreference.com/w/cpp/concept/UniformRandomBitGenerator) concept.
 			*
 			* \return a vector of accepted parameter values.
 			*
@@ -223,7 +223,7 @@ namespace abc {
 			* \param y the observed data from which to draw inference.
 			* \param rho a distance \f$\rho > 0\f$ on \f$D\f$
 			* \param epsilon a tolerance level \f$\epsilon > 0\f$
-			* \param g a random generator that must meet the requirements of UniformRandomBitGenerator concept.
+			* \param g a random generator that must meet the requirements of [UniformRandomBitGenerator](http://en.cppreference.com/w/cpp/concept/UniformRandomBitGenerator) concept.
 			*
 			* \return a vector of accepted parameter values.
 			*
@@ -253,7 +253,7 @@ namespace abc {
 			*
 			* \param N the number of parameters to accept.
 			* \param eta a function \f$\eta\f$ on \f$D\f$ defining a statistics (sufficient or not).
-			* \param g a random generator that must meet the requirements of UniformRandomBitGenerator concept.
+			* \param g a random generator that must meet the requirements of [UniformRandomBitGenerator](http://en.cppreference.com/w/cpp/concept/UniformRandomBitGenerator) concept.
 			*
 			* \return a ReferenceTable
 			*
@@ -295,7 +295,7 @@ namespace abc {
 			* See Algorithm 1 in [ABC Random Forests for Bayesian Parameter Inference (Marin et al 2016)](https://arxiv.org/abs/1605.05537)
 			*
 			* \param N the number of parameters to accept.
-			* \param g a random generator that must meet the requirements of UniformRandomBitGenerator concept.
+			* \param g a random generator that must meet the requirements of [UniformRandomBitGenerator](http://en.cppreference.com/w/cpp/concept/UniformRandomBitGenerator) concept.
 			*
 			* \return a ReferenceTable
 			*
