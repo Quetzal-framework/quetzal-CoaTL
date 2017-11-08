@@ -12,7 +12,46 @@
 #include <vector>
 #include <algorithm>
 
-//! \remark Represents a set of couples {param, summary statistics}
+/*!
+ * \brief Reference table produced by ABC sampling procedures in the prior predictive distribution.
+ *
+ * In some ABC procedures, a parameter \f$\theta\f$ is generated from the prior \f$\pi(\theta)\f$,
+ * a data \f$z\f$ is simulated from the likelyhood and a dimension reduction function \f$\eta\f$
+ * is computed on \f$z\f$. The set of simulated statistics is called the
+ * reference table.
+ *
+ * \tparam ParamType the parameter type.
+ * \tparam DataType the type of the data generated.
+ * \tparam Cont the type wrapping the couple parameter and the data value.
+ *
+ * The template parameter Cont must meet the following requirements:
+ *
+ * * `Cont` satisfies [CopyConstructible](http://en.cppreference.com/w/cpp/concept/CopyConstructible)
+ * * `Cont` satisfies [CopyAssignable](http://en.cppreference.com/w/cpp/concept/CopyAssignable)
+ *
+ * Given
+ *
+ * * `T`, the type named by `Cont::data_type`
+ * * `P`, the type named by `Cont::param_type`, which:
+ * * `s`, a value of type `Cont`
+ * * `x`, a value of type `T`
+ * * `p`, a value of type `P`
+ *
+ * The following expressions must be valid and have their specified effects :
+ *
+ * Expression          | Type | Notes
+ * --------------------|------|-------------------------------------|
+ * `Cont::data_type`   | `T`    | the type of the simulated data    |
+ * `Cont::param_type`  | `P`    | the type of the parameter         |
+ * `s.data()`          | `T`    | Returns the simulated data        |
+ * `s.param()`         | `P`    | Returns the parameter used for simulating the data |
+ *
+ * \ingroup abc
+ * \section Example
+ * \snippet abc/test/test.cpp Example
+ * \section Output
+ * \include abc/test/test.output
+ */
 template<template <class,class> class Cont, class ParamType, class DataType>
 class ReferenceTable{
 

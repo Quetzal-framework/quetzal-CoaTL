@@ -228,8 +228,8 @@
   *   * declares a member typedef `using distribution_type = D`;
   * * `d`, a value of type `D`
   * * `x`, a (possibly `const`) value of type `D`
-  * *  p, a (possibly `const`) value of type `P`
-  * * `g`  a lvalue of a type satisfying the STL [UniformRandomBitGenerator](http://en.cppreference.com/w/cpp/concept/UniformRandomBitGenerator) concept
+  * * `p`, a (possibly `const`) value of type `P`
+  * * `g`,  a lvalue of a type satisfying the STL [UniformRandomBitGenerator](http://en.cppreference.com/w/cpp/concept/UniformRandomBitGenerator) concept
   *
   * The following expressions must be valid and have their specified effects :
   *

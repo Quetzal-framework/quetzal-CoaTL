@@ -67,14 +67,27 @@ namespace abc {
 		mutable prior_type priors;
 		mutable model_type generative_model;
 
-		//! \remark Represent a couple {parameter, generated data}
+		/*!
+		 * \brief A sample in the prior predictive distribution
+		 *
+		 * In some ABC procedures, a parameter \f$\theta\f$ is generated from the prior \f$\pi(\theta)\f$,
+		 * a data \f$z\f$ is simulated from the likelyhood and a dimension reduction function \f$\eta\f$
+		 * is computed on \f$z\f$. Each couple \f$\{\theta, z\}\f$ is represented in the compute_distance_to
+		 * by the PriorPredictiveDistributionSample. The reference table contains all the sampled couples.
+		 *
+		 */
 		template<class ParamType, class DataType>
 		class PriorPredictiveDistributionSample{
 
-		private:
+		public:
 
+			//! \typedef parameter type
 			using param_type = ParamType;
+
+			//! \typedef simulated data_type
 			using data_type = DataType;
+
+		private:
 
 			param_type m_param;
 			data_type m_data;
@@ -95,15 +108,17 @@ namespace abc {
 			m_data(std::move(d))
 			{}
 
+		//! Get the parameter used for generating the associated data
 		const param_type & param() const {return m_param; }
 
+		//! Get the data generated
 		const data_type & data() const {return m_data; }
 
 		}; // end class PriorPredictiveDistributionSample
 
 
 	public:
-
+		
 	 /**
 		 * \brief Constructor
 		 * \param m the model to be used
@@ -323,10 +338,11 @@ namespace abc {
 		*
 		* \return an ABC object.
 		*
+		* \ingroup abc
 		* \section Example
- 	  * \snippet abc/test/ABC/test.cpp Example
+ 	  * \snippet abc/test/test.cpp Example
  	  * \section Output
- 	  * \include abc/test/ABC/test.output
+ 	  * \include abc/test/test.output
 		*/
 	template<class ModelType, class PriorType>
 	auto make_ABC(ModelType const& model,	PriorType const& prior)
