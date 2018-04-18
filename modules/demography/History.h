@@ -1,0 +1,78 @@
+// Copyright 2016 Arnaud Becheler    <Arnaud.Becheler@egce.cnrs-gif.fr>
+
+/***********************************************************************                                                                         *
+* This program is free software; you can redistribute it and/or modify *
+* it under the terms of the GNU General Public License as published by *
+* the Free Software Foundation; either version 2 of the License, or    *
+* (at your option) any later version.                                  *
+*                                                                      *
+***************************************************************************/
+
+#ifndef __HISTORY_H_INCLUDED__
+#define __HISTORY_H_INCLUDED__
+
+#include <vector>
+
+namespace quetzal {
+namespace demography {
+
+  template<typename Space, typename Time, typename Value>
+  class History;
+
+  template<typename Space, typename Time>
+  class History<Space, Time, unsigned int>{
+
+  public:
+
+    using flow_type = PopulationFlux<Space, Time, unsigned int>;
+    using N_type = PopulationSize<Space, Time, unsigned int>;
+    using coord_type = Space;
+    using time_type = Time;
+
+  private:
+    N_type m_sizes;
+    flow_type m_flows;
+    std::vector<Time> m_times;
+
+  public:
+
+    History(coord_type const& x, time_type const& t, unsigned int N){
+      m_sizes(x,t) = N;
+      m_times.push_back(t);
+    }
+
+    flow_type const& flows() const {return m_flows;}
+    N_type const& N() const {return m_sizes;}
+    time_type const& first_time() const {return m_times.front(); }
+    time_type const& last_time() const {return m_times.back(); }
+
+    template<typename Growth, typename Dispersal, typename Generator>
+    void expand(unsigned int nb_generations, Growth sim_growth, Dispersal kernel, Generator& gen) {
+      for(unsigned int g = 1; g != nb_generations; g++){
+        auto t = *m_times.rbegin();
+        auto t_next = t; ++ t_next;
+        unsigned int landscape_count = 0;
+        for(auto x : m_sizes.definition_space(t) ){
+          auto N_tilde = sim_growth(gen, x, t);
+          landscape_count += N_tilde;
+          if(N_tilde >= 1){
+            for(unsigned int ind = 1; ind <= N_tilde; ++ind){
+              coord_type y = kernel(gen, x, t);
+              m_flows(x, y, t) += 1;
+              m_sizes(y, t_next) += 1;
+            }
+          }
+        }
+        if(landscape_count == 0){
+          throw std::domain_error("Landscape populations went extinct before sampling");
+        }
+        m_times.push_back(t_next);
+      }
+    }
+  };
+
+} // namespace demography
+} // namespace quetzal
+
+
+#endif
