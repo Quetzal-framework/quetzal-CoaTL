@@ -13,6 +13,9 @@
 
 #include <vector>
 
+#include "PopulationFlux.h"
+#include "PopulationSize.h"
+
 namespace quetzal {
 namespace demography {
 

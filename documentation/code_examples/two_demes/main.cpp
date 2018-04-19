@@ -1,7 +1,7 @@
 
-//  compiles with g++ -o3 two_demes.cpp -std=c++14 -Wall -I/usr/include/gdal  -L/usr/lib/ -lgdal
+//  compiles with g++ -o3 main.cpp -std=c++14 -Wall -I/usr/include/gdal  -L/usr/lib/ -lgdal
 
-#include "/home/becheler/dev/quetzal/quetzal.h"
+#include "../../../quetzal.h"
 
 #include <memory>
 #include <random>
@@ -200,7 +200,7 @@ private:
   std::vector<coord_type> m_demes = {-1,1};
 
   // Initial distribution
-  coord_type m_x0 = 0;
+  coord_type m_x0 = -1;
   time_type m_t0 = 2000;
   unsigned int m_N0 = 100;
   unsigned int m_nb_generations = 10;

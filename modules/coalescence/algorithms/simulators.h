@@ -11,6 +11,10 @@
 #ifndef __SIMULATORS_H_INCLUDED__
 #define __SIMULATORS_H_INCLUDED__
 
+#include "../../demography/History.h"
+#include "../containers/Forest.h"
+#include "../../../random.h"
+
 namespace quetzal {
 namespace coalescence {
 
@@ -35,9 +39,9 @@ private:
   using backward_kernel_type = quetzal::random::TransitionKernel<time_type, discrete_distribution_type>;
 
   history_type const& m_history;
-  backward_kernel_type m_kernel;
+  mutable backward_kernel_type m_kernel;
 
-  auto make_backward_distribution(coord_type const& x, time_type const& t){
+  auto make_backward_distribution(coord_type const& x, time_type const& t) const {
     std::vector<double> w;
     std::vector<coord_type> X;
     assert(m_history.flows().flux_to_is_defined(x,t));
@@ -51,9 +55,9 @@ private:
     return discrete_distribution_type(std::move(X),std::move(w));
   }
 
-  template<typename Generator, typename Tree>
-  void sim_backward_migration(Generator& gen, forest_type<Tree>& forest, time_type const& t){
-    forest_type<Tree> new_forest;
+  template<typename Generator, typename Forest>
+  void sim_backward_migration(Forest & forest, time_type const& t, Generator& gen) const {
+    Forest new_forest;
     for(auto const it : forest){
       coord_type x = it.first;
       if( ! m_kernel.has_distribution(x, t)){
@@ -66,7 +70,8 @@ private:
   }
 
   template<typename Generator, typename Tree>
-  void coalesce(Generator& gen, forest_type<Tree>& forest, time_type const& t){
+  void coalesce(forest_type<Tree>& forest, time_type const& t, Generator& gen) const {
+    auto const& N = m_history.N();
     for(auto const & x : forest.positions()){
       auto range = forest.trees_at_same_position(x);
       std::vector<Tree> v;
@@ -88,11 +93,11 @@ public:
   Simulator(history_type const& history) : m_history(history){}
 
   template<typename Generator, typename Tree>
-  forest_type<Tree> operator()(Generator& gen, forest_type<Tree> const& forest){
+  forest_type<Tree> operator()(Generator& gen, forest_type<Tree> forest) const {
     auto t = m_history.last_time();
     while( (forest.nb_trees() > 1) && (t > m_history.first_time()) ){
-      sim_backward_migration(gen, forest, t);
-      coalesce(gen, forest, t);
+      sim_backward_migration(forest, t, gen);
+      coalesce(forest, t, gen);
       --t;
     }
     return forest;
