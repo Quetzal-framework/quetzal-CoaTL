@@ -45,7 +45,11 @@ namespace demography {
     }
 
     flow_type const& flows() const {return m_flows;}
+    flow_type & flows() {return m_flows;}
+
     N_type const& N() const {return m_sizes;}
+    N_type & N() {return m_sizes;}
+
     time_type const& first_time() const {return m_times.front(); }
     time_type const& last_time() const {return m_times.back(); }
 
