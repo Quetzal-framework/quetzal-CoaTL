@@ -12,7 +12,8 @@
 #define __POPULATION_FLUX_H_INCLUDED__
 
 #include <unordered_map>
-#include "assert.h"
+#include <cassert>
+#include <functional>
 
 namespace quetzal{
 namespace demography {
@@ -61,11 +62,11 @@ public:
 	  * \section Output
 	  * \include demography/test/PopulationFlux/PopulationFlux_test.output
 		*/
-	value_type flux_from_to(coord_type const& from, coord_type const& to, time_type t) const {
-		assert(m_flux.count(t) == 1);
-		assert(m_flux.at(t).count(to) == 1);
-		assert(m_flux.at(t).at(to).count(from) == 1);
-		return m_flux.at(t).at(to).at(from);
+	value_type flux_from_to(coord_type const& from, coord_type const& to, time_type t) const
+	{
+		auto key = std::make_tuple(t, from, to);
+		assert(m_flows.count(key) == 1);
+		return(m_flows.at(key));
 	}
 
 	/**
@@ -77,7 +78,8 @@ public:
 	  * \include demography/test/PopulationFlux/PopulationFlux_test.output
 		*/
 	value_type& flux_from_to(coord_type const& from, coord_type const& to, time_type t){
-		return m_flux[t][to][from];
+		//return m_flux[t][to][from];
+		return m_flows[key_type(t, from, to)];
 	}
 
 	/**
@@ -88,7 +90,8 @@ public:
 	 * \section Output
 	 * \include demography/test/PopulationSize/PopulationSize_test.output
 	 */
-	value_type& operator()(coord_type const& from,coord_type const& to, time_type const& t){
+	value_type& operator()(coord_type const& from,coord_type const& to, time_type const& t)
+	{
 		return flux_from_to(from,to,t);
 	}
 
@@ -101,7 +104,7 @@ public:
 	 * \include demography/test/PopulationSize/PopulationSize_test.output
 	 */
 	value_type operator()(coord_type const& from,coord_type const& to, time_type const& t) const {
-		return flux_from_to(from,to,t);
+		return flux_from_to(from, to, t);
 	}
 
 	/**
@@ -113,9 +116,17 @@ public:
 	  * \section Output
 	  * \include demography/test/PopulationFlux/PopulationFlux_test.output
 		*/
-	std::unordered_map<coord_type, value_type> const& flux_to(coord_type const& x, time_type t) const {
+	std::unordered_map<coord_type, value_type> flux_to(coord_type const& x, time_type t) const
+	{
 		assert(flux_to_is_defined(x,t));
-		return m_flux.at(t).at(x);
+		std::unordered_map<coord_type, value_type> result;
+		for(auto const& it : m_flows){
+			if(it.first.time == t && it.first.to == x)
+			{
+				result[it.first.from] = it.second;
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -126,16 +137,67 @@ public:
 	  * \section Output
 	  * \include demography/test/PopulationFlux/PopulationFlux_test.output
 		*/
-	bool flux_to_is_defined(coord_type const& to, time_type const& t) const {
-		return (m_flux.count(t) == 1) && (m_flux.at(t).count(to) == 1);
+	bool flux_to_is_defined(coord_type const& to, time_type const& t) const
+	{
+		bool is_defined = false;
+		for(auto const& it : m_flows){
+			if(it.first.time == t && it.first.to == to){
+				is_defined = true;
+			}
+			break;
+		}
+		return is_defined;
+	}
+
+	auto begin() const
+	{
+		return m_flows.cbegin();
+	}
+
+	auto end() const
+	{
+		return m_flows.cend();
 	}
 
 private:
 
-	// period//to_deme/from_deme
-	std::unordered_map<time_type,
-		std::unordered_map<coord_type,
-			std::unordered_map<coord_type, value_type> > > m_flux;
+	struct key_type
+	{
+		time_type time;
+		coord_type from;
+		coord_type to;
+
+		key_type(time_type const& t, coord_type const& origin, coord_type const& destination):
+		time(t),
+		from(origin),
+		to(destination)
+		{}
+
+		bool operator==(key_type const& other) const
+		{
+			return (
+							 other.time == this->time &&
+							 other.from == this->from &&
+							 other.to == this->to
+						 );
+		}
+	};
+
+	struct key_hash : public std::unary_function<key_type, std::size_t>
+	{
+	 std::size_t operator()(const key_type& k) const
+	 {
+		 size_t res = 17;
+		 res = res * 31 + std::hash<time_type>()( k.time );
+		 res = res * 31 + std::hash<coord_type>()( k.from );
+		 res = res * 31 + std::hash<coord_type>()( k.to );
+		 return res;
+	 }
+	};
+
+	using map_type = std::unordered_map<const key_type, value_type, key_hash>;
+	map_type m_flows;
+
 };
 
 } // demography

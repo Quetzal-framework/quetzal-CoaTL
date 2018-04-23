@@ -49,29 +49,6 @@ namespace demography {
     time_type const& first_time() const {return m_times.front(); }
     time_type const& last_time() const {return m_times.back(); }
 
-    template<typename Growth, typename Dispersal, typename Generator>
-    void expand(unsigned int nb_generations, Growth sim_growth, Dispersal kernel, Generator& gen) {
-      for(unsigned int g = 1; g != nb_generations; g++){
-        auto t = *m_times.rbegin();
-        auto t_next = t; ++ t_next;
-        unsigned int landscape_count = 0;
-        for(auto x : m_sizes.definition_space(t) ){
-          auto N_tilde = sim_growth(gen, x, t);
-          landscape_count += N_tilde;
-          if(N_tilde >= 1){
-            for(unsigned int ind = 1; ind <= N_tilde; ++ind){
-              coord_type y = kernel(gen, x, t);
-              m_flows(x, y, t) += 1;
-              m_sizes(y, t_next) += 1;
-            }
-          }
-        }
-        if(landscape_count == 0){
-          throw std::domain_error("Landscape populations went extinct before sampling");
-        }
-        m_times.push_back(t_next);
-      }
-    }
   };
 
 } // namespace demography

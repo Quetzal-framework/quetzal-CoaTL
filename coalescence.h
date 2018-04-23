@@ -11,8 +11,6 @@
 
 #include "modules/coalescence/policies/merger.h"
 
-#include "modules/coalescence/algorithms/simulators.h"
-
 #include "modules/coalescence/containers/Tree.h"
 
 #include "modules/coalescence/containers/Forest.h"
