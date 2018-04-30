@@ -133,7 +133,7 @@ int main()
   };
 
   auto abc = quetzal::abc::make_ABC(model, prior);
-  auto table = abc.sample_prior_predictive_distribution(1000000, gen);
+  auto table = abc.sample_prior_predictive_distribution(1000, gen);
 
   auto eta = [](auto const& forest){
     std::vector<unsigned int> v;

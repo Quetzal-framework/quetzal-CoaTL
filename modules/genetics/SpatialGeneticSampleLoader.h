@@ -41,6 +41,7 @@ public:
 	using allelic_state_type = typename marker_type::value_type;
 	using allele_type = Allele<allelic_state_type>;
 	using individual_type = DiploidIndividual<allele_type>;
+	using return_type = SpatialGeneticSample<coord_type, individual_type>;
 
 	SpatialGeneticSample<coord_type, individual_type> read(std::string const& path){
 		if( !is_readable(path)) {	throw std::string("In GeneticsLoader::read : unable to read file");}
