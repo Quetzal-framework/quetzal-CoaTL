@@ -81,6 +81,8 @@ std::ostream& operator <<(std::ostream& stream, const quetzal::demography::Popul
 
 class GenerativeModel{
 
+  using generator_type = std::mt19937;
+
 private:
 
   class Params{
@@ -106,7 +108,18 @@ private:
   };
 
 public:
-  using generator_type = std::mt19937;
+
+  struct Prior {
+    Params operator()(generator_type& gen) const
+    {
+      GenerativeModel::param_type params;
+      params.N0(std::uniform_int_distribution<>(1,15)(gen));
+      params.k(std::uniform_int_distribution<>(1,500)(gen));
+      params.r(100);
+      params.a(60);
+      return params;
+    }
+  };
 
   // Spatio-temporal coordinates
   using time_type = unsigned int;
@@ -142,21 +155,31 @@ public:
 
   // Interface for ABC module
   using param_type = Params;
-  using result_type = forest_type;
+  using prior_type = Prior;
+  using result_type = FuzzyPartition<coord_type> ;
 
   GenerativeModel(const landscape_type & landscape):
   m_landscape(landscape)
   {
-    std::string file = "/home/becheler/Documents/VespaVelutina/DataForAnalysis.csv";
+    std::cout << "avant" << std::endl;
+
+    //std::string file = "/home/becheler/Documents/VespaVelutina/DataForAnalysis.csv";
+    std::string file = "/home/becheler/dev/quetzal/modules/genetics/microsat_test.csv";
+    std::cout << "après" << std::endl;
+
     loader_type loader;
     auto dataset = loader.read(file);
+    std::cout << "read" << std::endl;
+
     m_dataset = dataset.reproject(m_landscape);
+    std::cout << "reprojected" << std::endl;
 
     auto sampled_demes = m_dataset.get_sampling_points();
     for(auto const& it : sampled_demes)
     {
       m_forest.insert(it, std::vector<coord_type>(dataset.size(it)));
     }
+    std::cout << "forested" << std::endl;
 
   }
 
@@ -177,7 +200,7 @@ public:
     return sim_N_tilde;
   }
 
-  FuzzyPartition<coord_type> operator()(generator_type& gen, param_type const& param) const
+  result_type operator()(generator_type& gen, param_type const& param) const
   {
     simulator_type simulator(m_x0, m_t0, m_N0);
     using namespace quetzal::demography::dispersal;
@@ -230,20 +253,25 @@ public:
 int main()
 {
   std::mt19937 gen;
-  GenerativeModel::landscape_type landscape("/home/Downloads/wc2.0_5m_bio/bio1.tif", {2000,2001});
-  GenerativeModel model(landscape);
+  //GenerativeModel::landscape_type landscape("/home/Downloads/wc2.0_5m_bio/wc2.0_bio_5m_01.tif", {2000,2001});
+  std::cout << "here" << std::endl;
+  std::string bio_file = "/home/becheler/dev/quetzal/modules/geography/test/test_data/bio1.tif";
+  std::cout << "there" << std::endl;
 
-  auto prior = [](auto& gen){
-    GenerativeModel::param_type params;
-    params.N0(std::uniform_int_distribution<>(1,15)(gen));
-    params.k(std::uniform_int_distribution<>(1,500)(gen));
-    params.r(100);
-    params.a(60);
-    return params;
-  };
+  GenerativeModel::landscape_type landscape(bio_file, {2001,2002,2003,2004,2005,2006,2007,2008,2009,2010});
+  std::cout << "hey" << std::endl;
+
+  GenerativeModel model(landscape);
+  std::cout << "ho" << std::endl;
+
+  GenerativeModel::Prior prior;
+
+  std::cout << "ha" << std::endl;
 
   auto abc = quetzal::abc::make_ABC(model, prior);
-  //auto table = abc.sample_prior_predictive_distribution(1000, gen);
+  std::cout << "huhu" << std::endl;
+
+  auto table = abc.sample_prior_predictive_distribution(1000, gen);
 /*
   auto to_json_str = [](auto const& p){
     return "{\"r\":"+ std::to_string(p.r()) +
