@@ -42,29 +42,28 @@ struct NegativeExponential
   }
 };
 
-template<typename Kernel, typename Space, typename... Args>
+template<typename Kernel, typename Distance, typename Space, typename... Args>
 quetzal::random::DiscreteDistribution<Space>
-make_dispersal_location_random_distribution(Space const& x, std::vector<Space> const& demes, Args&&... args)
+make_dispersal_location_random_distribution(Space const& x, std::vector<Space> const& demes, Distance d, Args&&... args)
 {
   std::vector<double> weights;
   weights.reserve(demes.size());
   for(auto const& it : demes)
   {
-    weights.push_back(Kernel::pdf(std::forward<Args>(args)...));
+    weights.push_back(Kernel::pdf(d(x, it), std::forward<Args>(args)...));
   }
   return quetzal::random::DiscreteDistribution<Space>(demes, weights);
 }
 
-template<typename Kernel, typename Space, typename... Args>
-quetzal::random::DiscreteDistribution<Space>
-make_dispersal_kernel(std::vector<Space> const& demes, Args&&... args)
+template<typename Kernel, typename Distance, typename Space, typename... Args>
+auto make_dispersal_kernel(std::vector<Space> const& demes, Distance d, Args&&... args)
 {
   assert(!demes.empty());
   using law_type =  quetzal::random::DiscreteDistribution<Space>;
   quetzal::random::TransitionKernel<law_type> kernel;
   for(auto const& it : demes)
   {
-    kernel.set(it, make_dispersal_location_random_distribution(it, demes, std::forward<Args>(args)...));
+    kernel.set(it, make_dispersal_location_random_distribution<Kernel>(it, demes, d, std::forward<Args>(args)...));
   }
   return kernel;
 }
@@ -106,6 +105,7 @@ private:
     unsigned int m_N0;
   };
 
+public:
   using generator_type = std::mt19937;
 
   // Spatio-temporal coordinates
@@ -119,8 +119,9 @@ private:
   using simulator_type = quetzal::simulators::IDDC_model_1<coord_type, time_type, N_type>;
 
   // Landscape
-  landscape_type m_landscape;
+  const landscape_type & m_landscape;
 
+private:
   // Initial distribution
   coord_type m_x0 = coord_type(44.00, 0.20);
   time_type m_t0 = 2004;
@@ -143,8 +144,8 @@ public:
   using param_type = Params;
   using result_type = forest_type;
 
-  GenerativeModel():
-  m_landscape("/home/Downloads/wc2.0_5m_bio/bio1.tif", {2000,2001})
+  GenerativeModel(const landscape_type & landscape):
+  m_landscape(landscape)
   {
     std::string file = "/home/becheler/Documents/VespaVelutina/DataForAnalysis.csv";
     loader_type loader;
@@ -176,16 +177,24 @@ public:
     return sim_N_tilde;
   }
 
-  auto operator()(generator_type& gen, param_type const& param) const
+  FuzzyPartition<coord_type> operator()(generator_type& gen, param_type const& param) const
   {
     simulator_type simulator(m_x0, m_t0, m_N0);
     using namespace quetzal::demography::dispersal;
     using kernel_type = Gaussian;
-    auto heavy_kernel = make_dispersal_kernel<kernel_type>(m_landscape.geographic_definition_space(), param.a());
+    auto distance = [](const auto & x, const auto & y){return x.great_circle_distance_to(y);};
+    auto heavy_kernel = make_dispersal_kernel<kernel_type>(m_landscape.geographic_definition_space(), distance, param.a());
     auto light_kernel = [&heavy_kernel](auto& gen, coord_type x, time_type t){ return heavy_kernel(gen, x); };
     auto growth = make_growth_expression(param, simulator.size_history());
 
-    simulator.coalesce(m_forest, growth, light_kernel, m_sampling_time, gen);
+    auto merge_binop = [](const tree_type &parent, const tree_type &child)
+    {
+      auto v = parent;
+      v.insert( v.end(), child.begin(), child.end() );
+      return v;
+    };
+    auto copy = m_forest;
+    simulator.coalesce(copy, growth, light_kernel, m_sampling_time, merge_binop, gen);
 
     std::unordered_map<coord_type, std::vector<double>> coeffs;
     for(auto const& it : m_landscape.geographic_definition_space())
@@ -221,7 +230,8 @@ public:
 int main()
 {
   std::mt19937 gen;
-  GenerativeModel model;
+  GenerativeModel::landscape_type landscape("/home/Downloads/wc2.0_5m_bio/bio1.tif", {2000,2001});
+  GenerativeModel model(landscape);
 
   auto prior = [](auto& gen){
     GenerativeModel::param_type params;
@@ -233,20 +243,8 @@ int main()
   };
 
   auto abc = quetzal::abc::make_ABC(model, prior);
-  auto table = abc.sample_prior_predictive_distribution(1000, gen);
-
-  auto eta = [](auto const& m_forest){
-
-    std::vector<unsigned int> v;
-    for(auto const& it: m_forest){
-      v.push_back(it.second);
-    }
-    std::sort(v.begin(), v.end());
-    return f;
-  };
-
-  auto sum_stats = table.compute_summary_statistics(eta);
-
+  //auto table = abc.sample_prior_predictive_distribution(1000, gen);
+/*
   auto to_json_str = [](auto const& p){
     return "{\"r\":"+ std::to_string(p.r()) +
            ",\"k\":" + std::to_string(p.k()) + "}";
@@ -287,5 +285,7 @@ int main()
   buffer += "}";
 
   std::cout << buffer << std::endl;
+
+  */
   return 0;
 }

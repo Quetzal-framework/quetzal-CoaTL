@@ -140,6 +140,32 @@ private:
     }
   }
 
+  template<typename Generator, typename Tree, typename F>
+  void coalesce(forest_type<Tree>& forest, time_type const& t, F binop, Generator& gen) const
+  {
+    auto const& N = m_history.N();
+
+    for(auto const & x : forest.positions())
+    {
+      auto range = forest.trees_at_same_position(x);
+      std::vector<Tree> v;
+
+      for(auto it = range.first; it != range.second; ++it)
+      {
+        v.push_back(it->second);
+      }
+
+      if(v.size() >= 2){
+        auto last = merger_type::merge(v.begin(), v.end(), N(x, t), Tree(), binop, gen );
+        forest.erase(x);
+        for(auto it = v.begin(); it != last; ++it){
+          forest.insert(x, *it);
+        }
+      }
+
+    }
+  }
+
 public:
 
   IDDC_model_1(coord_type x_0, time_type t_0, N_type N_0) : m_history(x_0, t_0, N_0){}
@@ -176,6 +202,39 @@ public:
     {
       simulate_backward_migration(forest, t, gen);
       coalesce(forest, t, gen);
+      --t;
+    }
+    return forest;
+  }
+
+  template<typename Generator, typename Growth, typename Dispersal, typename F, typename Tree>
+  forest_type<Tree> coalesce(
+    forest_type<Tree> forest,
+    Growth growth,
+    Dispersal kernel,
+    time_type t_sampling,
+    F binary_op,
+    Generator& gen )
+  {
+    assert(forest.positions().size() == 1);
+    auto x_sampling = *(forest.positions().cbegin());
+    time_type nb_generations = t_sampling - m_history.first_time() ;
+
+    expand(m_history, nb_generations, growth, kernel, gen);
+
+    if( m_history.N()(x_sampling, m_history.last_time()) < forest.nb_trees(x_sampling)){
+      throw std::domain_error("Simulated population size inferior to sampling size");
+    }
+
+    //std::cout << history.last_time() << std::endl;
+    //std::cout << history.flows() << std::endl;
+
+    auto t = m_history.last_time();
+
+    while( (forest.nb_trees() > 1) && (t > m_history.first_time()) )
+    {
+      simulate_backward_migration(forest, t, gen);
+      coalesce(forest, t, binary_op, gen);
       --t;
     }
     return forest;
