@@ -183,18 +183,18 @@ public:
     time_type t_sampling,
     Generator& gen )
   {
-    assert(forest.positions().size() == 1);
-    auto x_sampling = *(forest.positions().cbegin());
     time_type nb_generations = t_sampling - m_history.first_time() ;
 
     expand(m_history, nb_generations, growth, kernel, gen);
 
-    if( m_history.N()(x_sampling, m_history.last_time()) < forest.nb_trees(x_sampling)){
-      throw std::domain_error("Simulated population size inferior to sampling size");
-    }
 
-    //std::cout << history.last_time() << std::endl;
-    //std::cout << history.flows() << std::endl;
+    for(auto const& it : forest.positions())
+    {
+      if( m_history.N()(it, m_history.last_time()) < forest.nb_trees(it))
+      {
+        throw std::domain_error("Simulated population size inferior to sampling size");
+      }
+    }
 
     auto t = m_history.last_time();
 
@@ -216,18 +216,16 @@ public:
     F binary_op,
     Generator& gen )
   {
-    assert(forest.positions().size() == 1);
-    auto x_sampling = *(forest.positions().cbegin());
     time_type nb_generations = t_sampling - m_history.first_time() ;
-
     expand(m_history, nb_generations, growth, kernel, gen);
 
-    if( m_history.N()(x_sampling, m_history.last_time()) < forest.nb_trees(x_sampling)){
-      throw std::domain_error("Simulated population size inferior to sampling size");
+    for(auto const& it : forest.positions())
+    {
+      if( m_history.N()(it, m_history.last_time()) < forest.nb_trees(it))
+      {
+        throw std::domain_error("Simulated population size inferior to sampling size");
+      }
     }
-
-    //std::cout << history.last_time() << std::endl;
-    //std::cout << history.flows() << std::endl;
 
     auto t = m_history.last_time();
 
@@ -237,6 +235,7 @@ public:
       coalesce(forest, t, binary_op, gen);
       --t;
     }
+
     return forest;
   }
 

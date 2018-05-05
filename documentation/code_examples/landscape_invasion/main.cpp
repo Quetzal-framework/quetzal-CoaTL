@@ -2,73 +2,15 @@
 //  compiles with g++ -o3 main.cpp -std=c++14 -Wall -I/usr/include/gdal  -L/usr/lib/ -lgdal
 
 #include "../../../quetzal.h"
+#include "../../../modules/demography/dispersal.h"
 #include "../../../modules/simulator/simulators.h"
 #include "../../../modules/fuzzy_transfer_distance/FuzzyPartition.h"
 #include <memory>
 #include <random>
 #include <functional>  // std::plus
 #include <map>
-#include <cmath>
 
-namespace quetzal{
-  namespace demography {
-    namespace dispersal {
 
-//nathan et al 2012, table 15.1
-struct Logistic
-{
-  static double pdf(double r, double a, double b)
-  {
-    assert(a > 0 && b >2 && r >= 0);
-    return (b/(2*M_PI*(a*a)*std::tgamma(2/b)*std::tgamma(1-2/b)))*(1/(1+(std::pow(r,b)/(std::pow(a,b)))));
-  }
-};
-
-struct Gaussian
-{
-  static double pdf(double r, double a)
-  {
-    assert(a > 0 && r >= 0);
-    return 1/(M_PI*a*a) * std::exp(-(r*r)/(a*a)) ;
-  }
-};
-
-struct NegativeExponential
-{
-  static double pdf(double r, double a)
-  {
-    assert(a > 0 && r >= 0);
-    return  (1/2*M_PI*a*a)*std::exp(-r/a);
-  }
-};
-
-template<typename Kernel, typename Distance, typename Space, typename... Args>
-quetzal::random::DiscreteDistribution<Space>
-make_dispersal_location_random_distribution(Space const& x, std::vector<Space> const& demes, Distance d, Args&&... args)
-{
-  std::vector<double> weights;
-  weights.reserve(demes.size());
-  for(auto const& it : demes)
-  {
-    weights.push_back(Kernel::pdf(d(x, it), std::forward<Args>(args)...));
-  }
-  return quetzal::random::DiscreteDistribution<Space>(demes, weights);
-}
-
-template<typename Kernel, typename Distance, typename Space, typename... Args>
-auto make_dispersal_kernel(std::vector<Space> const& demes, Distance d, Args&&... args)
-{
-  assert(!demes.empty());
-  using law_type =  quetzal::random::DiscreteDistribution<Space>;
-  quetzal::random::TransitionKernel<law_type> kernel;
-  for(auto const& it : demes)
-  {
-    kernel.set(it, make_dispersal_location_random_distribution<Kernel>(it, demes, d, std::forward<Args>(args)...));
-  }
-  return kernel;
-}
-
-}}}
 
 template<typename Space, typename Time, typename Value>
 std::ostream& operator <<(std::ostream& stream, const quetzal::demography::PopulationFlux<Space, Time, Value>& flows)
@@ -161,26 +103,20 @@ public:
   GenerativeModel(const landscape_type & landscape):
   m_landscape(landscape)
   {
-    std::cout << "avant" << std::endl;
 
     //std::string file = "/home/becheler/Documents/VespaVelutina/DataForAnalysis.csv";
     std::string file = "/home/becheler/dev/quetzal/modules/genetics/microsat_test.csv";
-    std::cout << "après" << std::endl;
-
     loader_type loader;
     auto dataset = loader.read(file);
-    std::cout << "read" << std::endl;
 
     m_dataset = dataset.reproject(m_landscape);
-    std::cout << "reprojected" << std::endl;
+    m_x0 = landscape.reproject_to_centroid(m_x0);
 
     auto sampled_demes = m_dataset.get_sampling_points();
     for(auto const& it : sampled_demes)
     {
       m_forest.insert(it, std::vector<coord_type>(dataset.size(it)));
     }
-    std::cout << "forested" << std::endl;
-
   }
 
   auto make_growth_expression(param_type const& param, history_type::N_type const& N) const
@@ -207,7 +143,7 @@ public:
     using kernel_type = Gaussian;
     auto distance = [](const auto & x, const auto & y){return x.great_circle_distance_to(y);};
     auto heavy_kernel = make_dispersal_kernel<kernel_type>(m_landscape.geographic_definition_space(), distance, param.a());
-    auto light_kernel = [&heavy_kernel](auto& gen, coord_type x, time_type t){ return heavy_kernel(gen, x); };
+    auto light_kernel = [&heavy_kernel](auto& gen, coord_type x, time_type t){return heavy_kernel(gen, x); };
     auto growth = make_growth_expression(param, simulator.size_history());
 
     auto merge_binop = [](const tree_type &parent, const tree_type &child)
@@ -242,7 +178,6 @@ public:
         it2 = it2/sum;
       }
     }
-
     return FuzzyPartition<coord_type>(coeffs);
   }
 
@@ -253,23 +188,14 @@ public:
 int main()
 {
   std::mt19937 gen;
-  //GenerativeModel::landscape_type landscape("/home/Downloads/wc2.0_5m_bio/wc2.0_bio_5m_01.tif", {2000,2001});
-  std::cout << "here" << std::endl;
-  std::string bio_file = "/home/becheler/dev/quetzal/modules/geography/test/test_data/bio1.tif";
-  std::cout << "there" << std::endl;
-
-  GenerativeModel::landscape_type landscape(bio_file, {2001,2002,2003,2004,2005,2006,2007,2008,2009,2010});
-  std::cout << "hey" << std::endl;
+  std::string bio_file = "/home/becheler/Documents/VespaVelutina/wc2.0_10m_prec_01_europe_agg_fact_5.tif";
+  GenerativeModel::landscape_type landscape(bio_file, std::vector<GenerativeModel::time_type>(1));
 
   GenerativeModel model(landscape);
-  std::cout << "ho" << std::endl;
 
   GenerativeModel::Prior prior;
 
-  std::cout << "ha" << std::endl;
-
   auto abc = quetzal::abc::make_ABC(model, prior);
-  std::cout << "huhu" << std::endl;
 
   auto table = abc.sample_prior_predictive_distribution(1000, gen);
 /*
