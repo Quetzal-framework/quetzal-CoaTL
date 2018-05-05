@@ -57,8 +57,8 @@ public:
       GenerativeModel::param_type params;
       params.N0(std::uniform_int_distribution<>(1,15)(gen));
       params.k(std::uniform_int_distribution<>(1,500)(gen));
-      params.r(100);
-      params.a(60);
+      params.r(std::uniform_real_distribution<>(1.0, 20.0)(gen));
+      params.a(std::uniform_real_distribution<>(10.0, 1000.0)(gen));
       return params;
     }
   };
@@ -178,6 +178,7 @@ public:
         it2 = it2/sum;
       }
     }
+    std::cout << "valid" << std::endl;
     return FuzzyPartition<coord_type>(coeffs);
   }
 

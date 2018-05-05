@@ -34,66 +34,7 @@ public:
 
 private:
 
-  using discrete_distribution_type = quetzal::random::DiscreteDistribution<coord_type>;
-  using backward_kernel_type = quetzal::random::TransitionKernel<time_type, discrete_distribution_type>;
-
-  mutable backward_kernel_type m_kernel;
   history_type m_history;
-
-  template<typename Growth, typename Dispersal, typename Generator>
-  void
-  expand(
-    history_type & history,
-    unsigned int nb_generations,
-    Growth sim_growth,
-    Dispersal kernel,
-    Generator& gen)
-  {
-
-    for(unsigned int g = 1; g != nb_generations; g++)
-    {
-      auto t = history.last_time();
-      auto t_next = t; ++ t_next;
-      unsigned int landscape_individuals_count = 0;
-
-      for(auto x : history.N().definition_space(t) )
-      {
-        auto N_tilde = sim_growth(gen, x, t);
-        landscape_individuals_count += N_tilde;
-        if(N_tilde >= 1)
-        {
-          for(unsigned int ind = 1; ind <= N_tilde; ++ind)
-          {
-            coord_type y = kernel(gen, x, t);
-            history.flows().operator()(x, y, t) += 1;
-            history.N().operator()(y, t_next) += 1;
-          }
-        }
-      }
-      if(landscape_individuals_count == 0)
-      {
-        throw std::domain_error("Landscape populations went extinct before sampling");
-      }
-    }
-  }
-
-  auto make_backward_distribution(coord_type const& x, time_type const& t) const
-  {
-    std::vector<double> weights;
-    std::vector<coord_type> support;
-    assert(m_history.flows().flux_to_is_defined(x,t));
-    auto const& flux_to = m_history.flows().flux_to(x,t);
-    weights.reserve(flux_to.size());
-    support.reserve(flux_to.size());
-
-    for(auto const& it : flux_to)
-    {
-      support.push_back(it.first);
-      weights.push_back(static_cast<double>(it.second));
-    }
-
-    return discrete_distribution_type(std::move(support),std::move(weights));
-  }
 
   template<typename Generator, typename Forest>
   void simulate_backward_migration(Forest & forest, time_type const& t, Generator& gen) const
@@ -102,13 +43,7 @@ private:
     for(auto const it : forest)
     {
       coord_type x = it.first;
-
-      if( ! m_kernel.has_distribution(x, t))
-      {
-        m_kernel.set(x, t, make_backward_distribution(x, t));
-      }
-
-      new_forest.insert(m_kernel(gen, x, t), it.second);
+      new_forest.insert(m_history.backward_kernel(x, t, gen), it.second);
     }
     assert(forest.nb_trees() == new_forest.nb_trees());
     forest = new_forest;
@@ -185,8 +120,7 @@ public:
   {
     time_type nb_generations = t_sampling - m_history.first_time() ;
 
-    expand(m_history, nb_generations, growth, kernel, gen);
-
+    m_history.expand(nb_generations, growth, kernel, gen);
 
     for(auto const& it : forest.positions())
     {
@@ -217,12 +151,15 @@ public:
     Generator& gen )
   {
     time_type nb_generations = t_sampling - m_history.first_time() ;
-    expand(m_history, nb_generations, growth, kernel, gen);
+    m_history.expand(nb_generations, growth, kernel, gen);
 
     for(auto const& it : forest.positions())
     {
-      if( m_history.N()(it, m_history.last_time()) < forest.nb_trees(it))
+      auto t = m_history.last_time();
+      if( m_history.N()(it, t) < forest.nb_trees(it))
       {
+        std::cout << "N(" << it << "," << t << ") = " << m_history.N()(it, t) << std::endl;
+        std::cout << "n(" << it << "," << t << ") = " << forest.nb_trees(it) << std::endl;
         throw std::domain_error("Simulated population size inferior to sampling size");
       }
     }
