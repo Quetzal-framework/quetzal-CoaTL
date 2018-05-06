@@ -101,16 +101,6 @@ private:
     }
   }
 
-public:
-
-  IDDC_model_1(coord_type x_0, time_type t_0, N_type N_0) : m_history(x_0, t_0, N_0){}
-
-  auto const& size_history() const
-  {
-    return m_history.N();
-  }
-
-
   template<typename Generator, typename Growth, typename Dispersal>
   void simulate_demography(Growth growth, Dispersal kernel, time_type t_sampling, Generator& gen )
   {
@@ -126,7 +116,8 @@ public:
       std::cout << it << " "<< history.last_time()
                       << " " << history.N()(it, history.last_time())
                       << " " << forest.nb_trees(it)
-                      << " " << history.flows().flux_to(it, history.last_time()).size() << std::endl;
+                      //<< " " << history.flows().flux_to(it, history.last_time()).size() 
+                      << std::endl;
 
       if(history.N()(it, history.last_time()) < forest.nb_trees(it))
       {
@@ -165,6 +156,15 @@ public:
     return forest;
   }
 
+public:
+
+  IDDC_model_1(coord_type x_0, time_type t_0, N_type N_0) : m_history(x_0, t_0, N_0){}
+
+  auto const& size_history() const
+  {
+    return m_history.N();
+  }
+
   template<typename Generator, typename Growth, typename Dispersal, typename Tree>
   forest_type<Tree> simulate(
     forest_type<Tree> const& forest,
@@ -176,13 +176,16 @@ public:
 
     simulate_demography(growth, kernel, t_sampling, gen);
 
+    std::cout << "hey" << std::endl;
     if( ! is_history_consistent_with_sampling(m_history, forest))
     {
         throw std::domain_error("Simulated population size inferior to sampling size");
     }
+    std::cout << "hay" << std::endl;
 
     return coalescence_process(forest, m_history, gen);
   }
+
 
   template<typename Generator, typename Growth, typename Dispersal, typename F, typename Tree>
   forest_type<Tree> simulate(
@@ -195,11 +198,13 @@ public:
   {
 
     simulate_demography(growth, kernel, t_sampling, gen);
+    std::cout << "hu" << std::endl;
 
     if( ! is_history_consistent_with_sampling(m_history, forest))
     {
         throw std::domain_error("Simulated population size inferior to sampling size");
     }
+    std::cout << "hi" << std::endl;
 
     return coalescence_process(forest, m_history, binary_op, gen);
   }
