@@ -16,6 +16,7 @@
 #include "../../random.h"
 
 #include <vector>
+#include <memory>
 
 namespace quetzal {
 namespace demography {
@@ -32,16 +33,15 @@ namespace demography {
     using N_type = PopulationSize<Space, Time, unsigned int>;
     using coord_type = Space;
     using time_type = Time;
-
-    std::vector<Time> m_times;
-
-  private:
-    N_type m_sizes;
-    flow_type m_flows;
-
     using discrete_distribution_type = quetzal::random::DiscreteDistribution<coord_type>;
     using backward_kernel_type = quetzal::random::TransitionKernel<time_type, discrete_distribution_type>;
-    mutable backward_kernel_type m_kernel;
+
+  private:
+
+    std::unique_ptr<N_type> m_sizes;
+    std::unique_ptr<flow_type> m_flows;
+    std::vector<Time> m_times;
+    std::unique_ptr<backward_kernel_type> m_kernel;
 
     auto make_backward_distribution(coord_type const& x, time_type const& t) const
     {
@@ -49,10 +49,10 @@ namespace demography {
       std::vector<double> weights;
       std::vector<coord_type> support;
 
-      weights.reserve(m_flows.flux_to(x,t).size());
-      support.reserve(m_flows.flux_to(x,t).size());
+      weights.reserve(m_flows->flux_to(x,t).size());
+      support.reserve(m_flows->flux_to(x,t).size());
 
-      for(auto const& it : m_flows.flux_to(x,t) )
+      for(auto const& it : m_flows->flux_to(x,t) )
       {
         support.push_back(it.first);
         weights.push_back(static_cast<double>(it.second));
@@ -63,16 +63,20 @@ namespace demography {
 
   public:
 
-    History(coord_type const& x, time_type const& t, unsigned int N){
-      m_sizes(x,t) = N;
+    History(coord_type const& x, time_type const& t, unsigned int N):
+    m_sizes(std::make_unique<N_type>()),
+    m_flows(std::make_unique<flow_type>()),
+    m_kernel(std::make_unique<backward_kernel_type>())
+    {
+      m_sizes->operator()(x,t) = N;
       m_times.push_back(t);
     }
 
-    flow_type const& flows() const {return m_flows;}
-    flow_type & flows() {return m_flows;}
+    flow_type const& flows() const {return *m_flows;}
+    flow_type & flows() {return *m_flows;}
 
-    N_type const& N() const {return m_sizes;}
-    N_type & N() {return m_sizes;}
+    N_type const& N() const {return *m_sizes;}
+    N_type & N() {return *m_sizes;}
 
     time_type const& first_time() const {return m_times.front(); }
     time_type const& last_time() const {return m_times.back(); }
@@ -90,7 +94,7 @@ namespace demography {
         unsigned int landscape_individuals_count = 0;
 
         // TODO : optimize the definition_space function (for loop)
-        for(auto x : m_sizes.definition_space(t) )
+        for(auto x : m_sizes->definition_space(t) )
         {
           auto N_tilde = sim_growth(gen, x, t);
           landscape_individuals_count += N_tilde;
@@ -99,8 +103,8 @@ namespace demography {
             for(unsigned int ind = 1; ind <= N_tilde; ++ind)
             {
               coord_type y = kernel(gen, x, t);
-              m_flows(x, y, t) += 1;
-              m_sizes(y, t_next) += 1;
+              m_flows->operator()(x, y, t) += 1;
+              m_sizes->operator()(y, t_next) += 1;
             }
           }
         }
@@ -115,15 +119,15 @@ namespace demography {
 
     // when i'm in x at time t, where could i have been at t-1 ?
     template<typename Generator>
-    auto backward_kernel(coord_type const& x, time_type t, Generator& gen) const
+    auto backward_kernel(coord_type const& x, time_type t, Generator& gen)
     {
       --t;
-      assert(m_flows.flux_to_is_defined(x,t));
-      if( ! m_kernel.has_distribution(x, t))
+      assert(m_flows->flux_to_is_defined(x,t));
+      if( ! m_kernel->has_distribution(x, t))
       {
-        m_kernel.set(x, t, make_backward_distribution(x, t));
+        m_kernel->set(x, t, make_backward_distribution(x, t));
       }
-      return m_kernel(gen, x, t);
+      return m_kernel->operator()(gen, x, t);
     }
 
   };

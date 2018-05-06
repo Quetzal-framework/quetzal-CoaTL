@@ -34,7 +34,7 @@ public:
 
 private:
 
-  history_type m_history;
+  mutable history_type m_history;
 
   template<typename Generator, typename Forest>
   void simulate_backward_migration(Forest & forest, time_type const& t, Generator& gen) const
