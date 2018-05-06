@@ -33,10 +33,11 @@ namespace demography {
     using coord_type = Space;
     using time_type = Time;
 
+    std::vector<Time> m_times;
+
   private:
     N_type m_sizes;
     flow_type m_flows;
-    std::vector<Time> m_times;
 
     using discrete_distribution_type = quetzal::random::DiscreteDistribution<coord_type>;
     using backward_kernel_type = quetzal::random::TransitionKernel<time_type, discrete_distribution_type>;

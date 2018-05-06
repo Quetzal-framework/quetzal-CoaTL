@@ -111,19 +111,13 @@ private:
   template<typename Tree>
   bool is_history_consistent_with_sampling(history_type const& history, forest_type<Tree> const& forest) const
   {
+    time_type t = history.last_time();
     for(auto const& it : forest.positions())
     {
-      std::cout << it << " "<< history.last_time()
-                      << " " << history.N()(it, history.last_time())
-                      << " " << forest.nb_trees(it)
-                      //<< " " << history.flows().flux_to(it, history.last_time()).size() 
-                      << std::endl;
-
-      if(history.N()(it, history.last_time()) < forest.nb_trees(it))
+      if( !history.N().is_defined(it, t) || history.N()(it, t) < forest.nb_trees(it))
       {
         return false;
       }
-
     }
     return true;
   }
@@ -176,12 +170,10 @@ public:
 
     simulate_demography(growth, kernel, t_sampling, gen);
 
-    std::cout << "hey" << std::endl;
     if( ! is_history_consistent_with_sampling(m_history, forest))
     {
         throw std::domain_error("Simulated population size inferior to sampling size");
     }
-    std::cout << "hay" << std::endl;
 
     return coalescence_process(forest, m_history, gen);
   }
@@ -198,13 +190,11 @@ public:
   {
 
     simulate_demography(growth, kernel, t_sampling, gen);
-    std::cout << "hu" << std::endl;
 
     if( ! is_history_consistent_with_sampling(m_history, forest))
     {
         throw std::domain_error("Simulated population size inferior to sampling size");
     }
-    std::cout << "hi" << std::endl;
 
     return coalescence_process(forest, m_history, binary_op, gen);
   }
