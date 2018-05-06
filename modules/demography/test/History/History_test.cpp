@@ -8,13 +8,12 @@
 *                                                                      *
 ***************************************************************************/
 
-
 #include "../../History.h"
 
 //! [Example]
 
-#include <random>
 #include <iostream>
+#include <random>
 #include <map>
 
 template<typename Space, typename Time, typename Value>

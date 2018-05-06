@@ -14,6 +14,7 @@
 #include <unordered_map>
 #include <cassert>
 #include <functional>
+#include <algorithm>
 
 namespace quetzal{
 namespace demography {
@@ -139,14 +140,11 @@ public:
 		*/
 	bool flux_to_is_defined(coord_type const& to, time_type const& t) const
 	{
-		bool is_defined = false;
-		for(auto const& it : m_flows){
-			if(it.first.time == t && it.first.to == to){
-				is_defined = true;
-			}
-			break;
-		}
-		return is_defined;
+		auto predicate = [t, to](auto const& it){
+			return (it.first.time == t && it.first.to == to);
+		};
+		auto it = std::find_if(m_flows.begin(), m_flows.end(), predicate);
+		return it != m_flows.end();
 	}
 
 	auto begin() const

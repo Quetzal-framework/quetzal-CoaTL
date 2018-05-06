@@ -84,7 +84,6 @@ namespace demography {
       {
         auto t = last_time();
         auto t_next = t; ++ t_next;
-        //std::cout << t << " -> " << t_next << std::endl;
 
         m_times.push_back(t_next);
 
@@ -119,9 +118,7 @@ namespace demography {
     auto backward_kernel(coord_type const& x, time_type t, Generator& gen) const
     {
       --t;
-      //std::cout << "Phi( " << x << ", " << t << ") not defined" << std::endl;
       assert(m_flows.flux_to_is_defined(x,t));
-
       if( ! m_kernel.has_distribution(x, t))
       {
         m_kernel.set(x, t, make_backward_distribution(x, t));
