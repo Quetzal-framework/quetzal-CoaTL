@@ -110,29 +110,39 @@ public:
     return m_history.N();
   }
 
-  template<typename Generator, typename Growth, typename Dispersal, typename Tree>
-  forest_type<Tree> coalesce(
-    forest_type<Tree> forest,
-    Growth growth,
-    Dispersal kernel,
-    time_type t_sampling,
-    Generator& gen )
+
+  template<typename Generator, typename Growth, typename Dispersal>
+  void simulate_demography(Growth growth, Dispersal kernel, time_type t_sampling, Generator& gen )
   {
     time_type nb_generations = t_sampling - m_history.first_time() ;
-
     m_history.expand(nb_generations, growth, kernel, gen);
+  }
 
+  template<typename Tree>
+  bool is_history_consistent_with_sampling(history_type const& history, forest_type<Tree> const& forest) const
+  {
     for(auto const& it : forest.positions())
     {
-      if( m_history.N()(it, m_history.last_time()) < forest.nb_trees(it))
+      std::cout << it << " "<< history.last_time()
+                      << " " << history.N()(it, history.last_time())
+                      << " " << forest.nb_trees(it)
+                      << " " << history.flows().flux_to(it, history.last_time()).size() << std::endl;
+
+      if(history.N()(it, history.last_time()) < forest.nb_trees(it))
       {
-        throw std::domain_error("Simulated population size inferior to sampling size");
+        return false;
       }
+
     }
+    return true;
+  }
 
-    auto t = m_history.last_time();
+  template<typename Generator, typename Tree>
+  forest_type<Tree> coalescence_process(forest_type<Tree> forest, history_type const& history, Generator& gen)
+  {
+    auto t = history.last_time();
 
-    while( (forest.nb_trees() > 1) && (t > m_history.first_time()) )
+    while( (forest.nb_trees() > 1) && (t > history.first_time()) )
     {
       simulate_backward_migration(forest, t, gen);
       coalesce(forest, t, gen);
@@ -141,8 +151,41 @@ public:
     return forest;
   }
 
+  template<typename Generator, typename F, typename Tree>
+  forest_type<Tree> coalescence_process(forest_type<Tree> forest, history_type const& history, F binary_op, Generator& gen)
+  {
+    auto t = history.last_time();
+
+    while( (forest.nb_trees() > 1) && (t > history.first_time()) )
+    {
+      simulate_backward_migration(forest, t, gen);
+      coalesce(forest, t, binary_op, gen);
+      --t;
+    }
+    return forest;
+  }
+
+  template<typename Generator, typename Growth, typename Dispersal, typename Tree>
+  forest_type<Tree> simulate(
+    forest_type<Tree> const& forest,
+    Growth growth,
+    Dispersal kernel,
+    time_type t_sampling,
+    Generator& gen )
+  {
+
+    simulate_demography(growth, kernel, t_sampling, gen);
+
+    if( ! is_history_consistent_with_sampling(m_history, forest))
+    {
+        throw std::domain_error("Simulated population size inferior to sampling size");
+    }
+
+    return coalescence_process(forest, m_history, gen);
+  }
+
   template<typename Generator, typename Growth, typename Dispersal, typename F, typename Tree>
-  forest_type<Tree> coalesce(
+  forest_type<Tree> simulate(
     forest_type<Tree> forest,
     Growth growth,
     Dispersal kernel,
@@ -150,30 +193,15 @@ public:
     F binary_op,
     Generator& gen )
   {
-    time_type nb_generations = t_sampling - m_history.first_time() ;
-    m_history.expand(nb_generations, growth, kernel, gen);
 
-    for(auto const& it : forest.positions())
+    simulate_demography(growth, kernel, t_sampling, gen);
+
+    if( ! is_history_consistent_with_sampling(m_history, forest))
     {
-      auto t = m_history.last_time();
-      if( m_history.N()(it, t) < forest.nb_trees(it))
-      {
-        std::cout << "N(" << it << "," << t << ") = " << m_history.N()(it, t) << std::endl;
-        std::cout << "n(" << it << "," << t << ") = " << forest.nb_trees(it) << std::endl;
         throw std::domain_error("Simulated population size inferior to sampling size");
-      }
     }
 
-    auto t = m_history.last_time();
-
-    while( (forest.nb_trees() > 1) && (t > m_history.first_time()) )
-    {
-      simulate_backward_migration(forest, t, gen);
-      coalesce(forest, t, binary_op, gen);
-      --t;
-    }
-
-    return forest;
+    return coalescence_process(forest, m_history, binary_op, gen);
   }
 
 };

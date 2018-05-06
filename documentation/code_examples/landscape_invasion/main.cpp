@@ -139,11 +139,15 @@ public:
   result_type operator()(generator_type& gen, param_type const& param) const
   {
     simulator_type simulator(m_x0, m_t0, m_N0);
+
+    // Dispersal patterns
     using namespace quetzal::demography::dispersal;
     using kernel_type = Gaussian;
     auto distance = [](const auto & x, const auto & y){return x.great_circle_distance_to(y);};
     auto heavy_kernel = make_dispersal_kernel<kernel_type>(m_landscape.geographic_definition_space(), distance, param.a());
     auto light_kernel = [&heavy_kernel](auto& gen, coord_type x, time_type t){return heavy_kernel(gen, x); };
+
+    // Growth patterns
     auto growth = make_growth_expression(param, simulator.size_history());
 
     auto merge_binop = [](const tree_type &parent, const tree_type &child)
@@ -152,8 +156,10 @@ public:
       v.insert( v.end(), child.begin(), child.end() );
       return v;
     };
+
     auto copy = m_forest;
-    simulator.coalesce(copy, growth, light_kernel, m_sampling_time, merge_binop, gen);
+
+    simulator.simulate(copy, growth, light_kernel, m_sampling_time, merge_binop, gen);
 
     std::unordered_map<coord_type, std::vector<double>> coeffs;
     for(auto const& it : m_landscape.geographic_definition_space())

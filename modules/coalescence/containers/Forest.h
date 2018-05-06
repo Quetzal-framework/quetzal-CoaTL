@@ -167,7 +167,7 @@ public:
 		* \section Output
 		* \include coalescence/containers/test/Forest/basics_test.output
 	  */
-	unsigned int nb_trees(Position const& position);
+	unsigned int nb_trees(Position const& position) const;
 
 	/**
 	  * \brief non-modifying access to trees in the forest at a given position
@@ -337,7 +337,7 @@ unsigned int Forest<Position, Tree>::nb_trees() const {
 }
 
 template<typename Position, typename Tree>
-unsigned int Forest<Position, Tree>::nb_trees(Position const& position){
+unsigned int Forest<Position, Tree>::nb_trees(Position const& position) const {
 	return m_data.count(position);
 }
 

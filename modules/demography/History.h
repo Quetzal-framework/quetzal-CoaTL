@@ -44,11 +44,9 @@ namespace demography {
 
     auto make_backward_distribution(coord_type const& x, time_type const& t) const
     {
+
       std::vector<double> weights;
       std::vector<coord_type> support;
-
-      std::cout << x << "  " << t << std::endl;
-      assert(m_flows.flux_to_is_defined(x,t));
 
       weights.reserve(m_flows.flux_to(x,t).size());
       support.reserve(m_flows.flux_to(x,t).size());
@@ -81,14 +79,17 @@ namespace demography {
     template<typename Growth, typename Dispersal, typename Generator>
     void expand(unsigned int nb_generations, Growth sim_growth, Dispersal kernel, Generator& gen)
     {
-      for(unsigned int g = 1; g != nb_generations; g++)
+      for(unsigned int g = 0; g < nb_generations; ++g)
       {
         auto t = last_time();
         auto t_next = t; ++ t_next;
+        std::cout << t << " -> " << t_next << std::endl;
+
         m_times.push_back(t_next);
 
         unsigned int landscape_individuals_count = 0;
 
+        // TODO : optimize the definition_space function (for loop)
         for(auto x : m_sizes.definition_space(t) )
         {
           auto N_tilde = sim_growth(gen, x, t);
@@ -103,16 +104,23 @@ namespace demography {
             }
           }
         }
+
         if(landscape_individuals_count == 0)
         {
           throw std::domain_error("Landscape populations went extinct before sampling");
         }
+
       }
     }
 
+    // when i'm in x at time t, where could i have been at t-1 ?
     template<typename Generator>
-    auto backward_kernel(coord_type const& x, time_type const& t, Generator& gen) const
+    auto backward_kernel(coord_type const& x, time_type t, Generator& gen) const
     {
+      --t;
+      std::cout << "Phi( " << x << ", " << t << ") not defined" << std::endl;
+      assert(m_flows.flux_to_is_defined(x,t));
+
       if( ! m_kernel.has_distribution(x, t))
       {
         m_kernel.set(x, t, make_backward_distribution(x, t));
