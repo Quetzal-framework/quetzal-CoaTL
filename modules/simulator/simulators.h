@@ -126,13 +126,13 @@ private:
   forest_type<Tree> coalescence_process(forest_type<Tree> forest, history_type const& history, Generator& gen)
   {
     auto t = history.last_time();
-
     while( (forest.nb_trees() > 1) && (t > history.first_time()) )
     {
-      simulate_backward_migration(forest, t, gen);
       coalesce(forest, t, gen);
+      simulate_backward_migration(forest, t, gen);
       --t;
     }
+    coalesce(forest, t, gen);
     return forest;
   }
 
@@ -143,10 +143,12 @@ private:
 
     while( (forest.nb_trees() > 1) && (t > history.first_time()) )
     {
-      simulate_backward_migration(forest, t, gen);
+      std::cout << t << std::endl;
       coalesce(forest, t, binary_op, gen);
+      simulate_backward_migration(forest, t, gen);
       --t;
     }
+    coalesce(forest, t, binary_op, gen);
     return forest;
   }
 
