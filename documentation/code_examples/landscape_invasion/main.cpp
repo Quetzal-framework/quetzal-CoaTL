@@ -20,6 +20,19 @@ std::ostream& operator <<(std::ostream& stream, const quetzal::demography::Popul
     return stream;
 }
 
+template<typename Space, typename Tree>
+std::ostream& operator <<(std::ostream& stream, const quetzal::coalescence::Forest<Space, Tree>& forest)
+{
+  for(auto const& it1 : forest){
+    stream << it1.first << "\t -> \t [";
+    for(auto const& it2 : it1.second){
+      stream << it2 << " ";
+    }
+    stream << "]\n";
+  }
+    return stream;
+}
+
 struct Gaussian
 {
   class param_type{
@@ -136,7 +149,7 @@ private:
   std::unique_ptr<std::vector<coord_type>> m_demes;
   std::unordered_map<coord_type, unsigned int> m_reverse_demes;
   forest_type m_forest;
-  std::unique_ptr<distance_dico_type> m_distances;
+  distance_dico_type m_distances;
 
   // Initial distribution
   coord_type m_x0;
@@ -153,7 +166,10 @@ public:
   m_reverse_demes(make_reverse(*m_demes)),
   m_forest(make_forest(*m_dataset)),
   m_distances(compute_distances())
-  {}
+  {
+    std::cout << m_forest << std::endl;
+    std::cout << "******" << std::endl;
+  }
 
   std::unordered_map<coord_type, unsigned int> make_reverse(std::vector<coord_type> const& demes) const {
     unsigned int position = 0;
@@ -166,16 +182,18 @@ public:
     return m;
   }
 
-  std::unique_ptr<distance_dico_type> compute_distances() const {
-    auto ptr = std::make_unique<distance_dico_type>();
+  distance_dico_type compute_distances() const {
+  distance_dico_type map;
+    assert(m_demes->size() > 0);
+    std::cout << m_demes->size() << std::endl;
     for(auto const& x0 : *m_demes){
-      std::vector<coord_type::km> d;
-      d.reserve(m_demes->size());
+      std::vector<coord_type::km> distances;
+      distances.reserve(m_demes->size());
       auto unop = [x0](const auto & y){return x0.great_circle_distance_to(y);};
-      std::transform(m_demes->cbegin(), m_demes->cend(), d.begin(), unop);
-      ptr->insert({x0, d});
+      std::transform(m_demes->cbegin(), m_demes->cend(), std::back_inserter(distances), unop);
+      map.insert(std::make_pair(x0, std::move(distances)));
     }
-    return ptr;
+    return map;
   }
 
   std::unique_ptr<dataset_type> make_data(dataset_type const& data){
@@ -224,9 +242,15 @@ public:
   template<typename Kernel>
   auto compute_weights(std::vector<coord_type::km> const& d, typename Kernel::param_type const& p) const
   {
+    assert(d.size() > 0);
     std::vector<double> weights;
     weights.reserve(d.size());
-    std::transform(d.cbegin(), d.cend(), weights.begin(), [p](auto r){return Kernel::pdf(r, p);} );
+    std::transform(d.cbegin(), d.cend(), std::back_inserter(weights), [p](auto r){return Kernel::pdf(r, p);} );
+/*    std::cout << "problem" << std::endl;
+    for(auto const& it : weights){
+      std::cout << it << std::endl;
+    }
+    */
     return weights;
   }
 
@@ -234,7 +258,8 @@ public:
   std::discrete_distribution<unsigned int>
   make_distribution(coord_type const& x, typename Kernel::param_type const& p) const
   {
-    auto const& d = m_distances->at(x);
+    auto const& d = m_distances.at(x);
+    assert(d.size() > 0);
     auto w = compute_weights<Kernel>(d, p);
     return std::discrete_distribution<unsigned int>(w.begin(), w.end());
   }
@@ -274,18 +299,18 @@ public:
       return v;
     };
 
-    auto copy = m_forest;
+    auto updated_forest = simulator.simulate(m_forest, growth, light_kernel, m_sampling_time, merge_binop, gen);
 
-    simulator.simulate(copy, growth, light_kernel, m_sampling_time, merge_binop, gen);
+    std::cout << updated_forest << std::endl;
 
     std::unordered_map<coord_type, std::vector<double>> coeffs;
     for(auto const& it : *m_demes)
     {
-      coeffs[it].reserve(m_forest.nb_trees());
+      coeffs[it].reserve(updated_forest.nb_trees());
     }
 
     unsigned int cluster_id = 0;
-    for(auto const& it1 : m_forest )
+    for(auto const& it1 : updated_forest )
     {
       for(auto const& it2 : it1.second)
       {
@@ -295,7 +320,8 @@ public:
     }
 
     for(auto & it1 : coeffs){
-      unsigned int sum = std::accumulate(it1.second.begin(), it1.second.end(), 0);
+      double sum = std::accumulate(it1.second.begin(), it1.second.end(), 0.0);
+      std::cout << sum << std::endl;
       assert(sum > 0.0);
       for(auto & it2 : it1.second){
         it2 = it2/sum;
@@ -344,7 +370,7 @@ int main()
 
   auto abc = quetzal::abc::make_ABC(wrap, prior);
 
-  auto table = abc.sample_prior_predictive_distribution(1000, gen);
+  auto table = abc.sample_prior_predictive_distribution(2, gen);
 /*
   auto to_json_str = [](auto const& p){
     return "{\"r\":"+ std::to_string(p.r()) +
