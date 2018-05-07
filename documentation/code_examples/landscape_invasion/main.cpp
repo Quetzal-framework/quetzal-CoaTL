@@ -61,7 +61,11 @@ struct Logistic
 
 class GenerativeModel{
 
+public:
+
   using generator_type = std::mt19937;
+
+private:
 
   class Params : public Gaussian::param_type {
   public:
@@ -128,11 +132,11 @@ public:
 private:
 
   const landscape_type & m_landscape;
-  std::shared_ptr<dataset_type> m_dataset;
-  std::shared_ptr<std::vector<coord_type>> m_demes;
+  std::unique_ptr<dataset_type> m_dataset;
+  std::unique_ptr<std::vector<coord_type>> m_demes;
   std::unordered_map<coord_type, unsigned int> m_reverse_demes;
   forest_type m_forest;
-  std::shared_ptr<distance_dico_type> m_distances;
+  std::unique_ptr<distance_dico_type> m_distances;
 
   // Initial distribution
   coord_type m_x0;
@@ -145,7 +149,7 @@ public:
   GenerativeModel(const landscape_type & landscape, dataset_type dataset):
   m_landscape(landscape),
   m_dataset(make_data(dataset)),
-  m_demes(std::make_shared<std::vector<coord_type>>(landscape.geographic_definition_space())),
+  m_demes(std::make_unique<std::vector<coord_type>>(landscape.geographic_definition_space())),
   m_reverse_demes(make_reverse(*m_demes)),
   m_forest(make_forest(*m_dataset)),
   m_distances(compute_distances())
@@ -162,19 +166,20 @@ public:
     return m;
   }
 
-  std::shared_ptr<distance_dico_type> compute_distances() const {
-    std::shared_ptr<distance_dico_type> ptr;
-    std::vector<coord_type::km> d;
-    d.reserve(m_demes->size());
+  std::unique_ptr<distance_dico_type> compute_distances() const {
+    auto ptr = std::make_unique<distance_dico_type>();
     for(auto const& x0 : *m_demes){
-      ptr->emplace(x0, d);
-      std::transform(m_demes->cbegin(), m_demes->cend(), ptr->at(x0).begin(), [x0](const auto & y){return x0.great_circle_distance_to(y);});
+      std::vector<coord_type::km> d;
+      d.reserve(m_demes->size());
+      auto unop = [x0](const auto & y){return x0.great_circle_distance_to(y);};
+      std::transform(m_demes->cbegin(), m_demes->cend(), d.begin(), unop);
+      ptr->insert({x0, d});
     }
     return ptr;
   }
 
-  std::shared_ptr<dataset_type> make_data(dataset_type const& data){
-    auto ptr = std::make_shared<dataset_type>(data);
+  std::unique_ptr<dataset_type> make_data(dataset_type const& data){
+    auto ptr = std::make_unique<dataset_type>(data);
     ptr->reproject(m_landscape);
     return ptr;
   }
@@ -302,7 +307,22 @@ public:
 
 }; // GenerativeModel
 
+struct Wrapper{
+  // Interface for ABC module
+  using param_type = GenerativeModel::param_type;
+  using prior_type = GenerativeModel::prior_type;
+  using result_type = GenerativeModel::result_type;
+  using generator_type = GenerativeModel::generator_type;
 
+  GenerativeModel& m_model;
+
+  Wrapper(GenerativeModel& model): m_model(model){};
+
+  result_type operator()(generator_type& gen, param_type const& param) const {
+    return m_model(gen, param);
+  }
+
+};
 
 int main()
 {
@@ -320,8 +340,9 @@ int main()
   model.sampling_time(2008);
 
   GenerativeModel::prior_type prior;
+  Wrapper wrap(model);
 
-  auto abc = quetzal::abc::make_ABC(model, prior);
+  auto abc = quetzal::abc::make_ABC(wrap, prior);
 
   auto table = abc.sample_prior_predictive_distribution(1000, gen);
 /*
