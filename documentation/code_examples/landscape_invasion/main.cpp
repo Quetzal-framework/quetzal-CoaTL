@@ -2,7 +2,6 @@
 //  compiles with g++ -o3 main.cpp -std=c++14 -Wall -I/usr/include/gdal  -L/usr/lib/ -lgdal
 
 #include "../../../quetzal.h"
-#include "../../../modules/demography/dispersal.h"
 #include "../../../modules/simulator/simulators.h"
 #include "../../../modules/fuzzy_transfer_distance/FuzzyPartition.h"
 #include <memory>
@@ -21,13 +20,50 @@ std::ostream& operator <<(std::ostream& stream, const quetzal::demography::Popul
     return stream;
 }
 
+struct Gaussian
+{
+  class param_type{
+    double _a;
+  public:
+    double a() const {return _a;}
+    void a(double value) { _a = value ;}
+  };
+
+  static double pdf(double r, param_type const& p)
+  {
+    double a = p.a();
+    assert(a > 0 && r >= 0);
+    return 1/(M_PI*a*a) * std::exp(-(r*r)/(a*a)) ;
+  }
+};
+
+struct Logistic
+{
+  class param_type{
+    double _a;
+    double _b;
+  public:
+    double a() const {return _a;}
+    double b() const {return _b;}
+    void a(double value) { _a = value;}
+    void b(double value) { _b = value;}
+  };
+
+  static double pdf(double r, param_type const& p)
+  {
+    double a = p.a();
+    double b = p.b();
+    assert(a > 0 && b >2 && r >= 0);
+    return (b/(2*M_PI*(a*a)*std::tgamma(2/b)*std::tgamma(1-2/b)))*(1/(1+(std::pow(r,b)/(std::pow(a,b)))));
+  }
+
+};
+
 class GenerativeModel{
 
   using generator_type = std::mt19937;
 
-private:
-
-  class Params{
+  class Params : public Gaussian::param_type {
   public:
 
     auto N0() const {return m_N0; }
@@ -39,17 +75,11 @@ private:
     auto r() const { return m_r; }
     void r(unsigned int value) { m_r = value; }
 
-    auto a() const  { return m_a; }
-    void a(double value) { m_a = value; }
-
   private:
     unsigned int m_k;
     unsigned int m_r;
-    double m_a;
     unsigned int m_N0;
   };
-
-public:
 
   struct Prior {
     Params operator()(generator_type& gen) const
@@ -64,59 +94,109 @@ public:
   };
 
   // Spatio-temporal coordinates
+public:
   using time_type = unsigned int;
   using landscape_type = quetzal::geography::EnvironmentalQuantity<time_type>;
   using coord_type = typename landscape_type::coord_type;
+private:
+
+  using distance_dico_type = std::unordered_map<coord_type, std::vector<coord_type::km>>;
+  using law_type =  std::discrete_distribution<unsigned int>;
 
   // Demographic simulation types
   using N_type = unsigned int;
   using history_type = quetzal::demography::History<coord_type, time_type, N_type>;
   using simulator_type = quetzal::simulators::IDDC_model_1<coord_type, time_type, N_type>;
-
-  // Landscape
-  const landscape_type & m_landscape;
-
-private:
-  // Initial distribution
-  coord_type m_x0 = coord_type(44.00, 0.20);
-  time_type m_t0 = 2004;
-  N_type m_N0;
+  using kernel_type = Gaussian;
 
   // Genetic sample
-  using loader_type = quetzal::genetics::Loader<typename landscape_type::coord_type, typename quetzal::genetics::microsatellite>;
+public:
+  using loader_type = quetzal::genetics::Loader<coord_type, quetzal::genetics::microsatellite>;
+private:
   using dataset_type = loader_type::return_type;
-  dataset_type m_dataset;
-  time_type m_sampling_time = 2008;
 
   // Coalescence simulation
   using tree_type = std::vector<coord_type>;
   using forest_type = quetzal::coalescence::Forest<coord_type, tree_type>;
-  forest_type m_forest;
 
 public:
-
   // Interface for ABC module
   using param_type = Params;
   using prior_type = Prior;
   using result_type = FuzzyPartition<coord_type> ;
 
-  GenerativeModel(const landscape_type & landscape):
-  m_landscape(landscape)
-  {
+private:
 
-    //std::string file = "/home/becheler/Documents/VespaVelutina/DataForAnalysis.csv";
-    std::string file = "/home/becheler/dev/quetzal/modules/genetics/microsat_test.csv";
-    loader_type loader;
-    auto dataset = loader.read(file);
+  const landscape_type & m_landscape;
+  std::shared_ptr<dataset_type> m_dataset;
+  std::shared_ptr<std::vector<coord_type>> m_demes;
+  std::unordered_map<coord_type, unsigned int> m_reverse_demes;
+  forest_type m_forest;
+  std::shared_ptr<distance_dico_type> m_distances;
 
-    m_dataset = dataset.reproject(m_landscape);
-    m_x0 = landscape.reproject_to_centroid(m_x0);
+  // Initial distribution
+  coord_type m_x0;
+  time_type m_t0;
+  N_type m_N0;
 
-    auto sampled_demes = m_dataset.get_sampling_points();
-    for(auto const& it : sampled_demes)
+  time_type m_sampling_time;
+
+public:
+  GenerativeModel(const landscape_type & landscape, dataset_type dataset):
+  m_landscape(landscape),
+  m_dataset(make_data(dataset)),
+  m_demes(std::make_shared<std::vector<coord_type>>(landscape.geographic_definition_space())),
+  m_reverse_demes(make_reverse(*m_demes)),
+  m_forest(make_forest(*m_dataset)),
+  m_distances(compute_distances())
+  {}
+
+  std::unordered_map<coord_type, unsigned int> make_reverse(std::vector<coord_type> const& demes) const {
+    unsigned int position = 0;
+    std::unordered_map<coord_type, unsigned int> m;
+    for(auto const& it : demes)
     {
-      m_forest.insert(it, std::vector<coord_type>(dataset.size(it)));
+      m.emplace(it, position);
+      ++position;
     }
+    return m;
+  }
+
+  std::shared_ptr<distance_dico_type> compute_distances() const {
+    std::shared_ptr<distance_dico_type> ptr;
+    std::vector<coord_type::km> d;
+    d.reserve(m_demes->size());
+    for(auto const& x0 : *m_demes){
+      ptr->emplace(x0, d);
+      std::transform(m_demes->cbegin(), m_demes->cend(), ptr->at(x0).begin(), [x0](const auto & y){return x0.great_circle_distance_to(y);});
+    }
+    return ptr;
+  }
+
+  std::shared_ptr<dataset_type> make_data(dataset_type const& data){
+    auto ptr = std::make_shared<dataset_type>(data);
+    ptr->reproject(m_landscape);
+    return ptr;
+  }
+
+  forest_type make_forest(dataset_type const& data) const {
+    forest_type forest;
+    for(auto const& it : data.get_sampling_points())
+    {
+      forest.insert(it, std::vector<coord_type>(data.size(it), it));
+    }
+    return forest;
+  }
+
+  auto& introduction_point(coord_type const& x0, time_type t0){
+    m_x0 = m_landscape.reproject_to_centroid(x0);
+    m_t0 = t0;
+    return *this;
+  }
+
+  auto& sampling_time(time_type t){
+    m_sampling_time = t;
+    return *this;
   }
 
   auto make_growth_expression(param_type const& param, history_type::N_type const& N) const
@@ -136,16 +216,48 @@ public:
     return sim_N_tilde;
   }
 
+  template<typename Kernel>
+  auto compute_weights(std::vector<coord_type::km> const& d, typename Kernel::param_type const& p) const
+  {
+    std::vector<double> weights;
+    weights.reserve(d.size());
+    std::transform(d.cbegin(), d.cend(), weights.begin(), [p](auto r){return Kernel::pdf(r, p);} );
+    return weights;
+  }
+
+  template<typename Kernel>
+  std::discrete_distribution<unsigned int>
+  make_distribution(coord_type const& x, typename Kernel::param_type const& p) const
+  {
+    auto const& d = m_distances->at(x);
+    auto w = compute_weights<Kernel>(d, p);
+    return std::discrete_distribution<unsigned int>(w.begin(), w.end());
+  }
+
+  coord_type sample(
+    quetzal::random::TransitionKernel<law_type> & kernel,
+    coord_type const& x,
+    param_type const& param,
+    generator_type & gen) const
+  {
+    auto id = m_reverse_demes.at(x);
+    if( ! kernel.has_distribution(id) )
+    {
+      kernel.set(id, make_distribution<Gaussian>(x, param));
+    }
+    return m_demes->at(kernel(gen, id));
+  }
+
   result_type operator()(generator_type& gen, param_type const& param) const
   {
     simulator_type simulator(m_x0, m_t0, m_N0);
 
     // Dispersal patterns
-    using namespace quetzal::demography::dispersal;
-    using kernel_type = Gaussian;
-    auto distance = [](const auto & x, const auto & y){return x.great_circle_distance_to(y);};
-    auto heavy_kernel = make_dispersal_kernel<kernel_type>(m_landscape.geographic_definition_space(), distance, param.a());
-    auto light_kernel = [&heavy_kernel](auto& gen, coord_type x, time_type t){return heavy_kernel(gen, x); };
+
+    auto ptr = std::make_shared<quetzal::random::TransitionKernel<law_type>>();
+    auto light_kernel = [ptr, param, this](auto& gen, coord_type x, time_type t){
+      return this->sample(*ptr, x, param, gen);
+    };
 
     // Growth patterns
     auto growth = make_growth_expression(param, simulator.size_history());
@@ -162,7 +274,7 @@ public:
     simulator.simulate(copy, growth, light_kernel, m_sampling_time, merge_binop, gen);
 
     std::unordered_map<coord_type, std::vector<double>> coeffs;
-    for(auto const& it : m_landscape.geographic_definition_space())
+    for(auto const& it : *m_demes)
     {
       coeffs[it].reserve(m_forest.nb_trees());
     }
@@ -198,9 +310,16 @@ int main()
   std::string bio_file = "/home/becheler/Documents/VespaVelutina/wc2.0_10m_prec_01_europe_agg_fact_5.tif";
   GenerativeModel::landscape_type landscape(bio_file, std::vector<GenerativeModel::time_type>(1));
 
-  GenerativeModel model(landscape);
+  //std::string file = "/home/becheler/Documents/VespaVelutina/DataForAnalysis.csv";
+  std::string file = "/home/becheler/dev/quetzal/modules/genetics/microsat_test.csv";
+  GenerativeModel::loader_type loader;
+  auto dataset = loader.read(file);
 
-  GenerativeModel::Prior prior;
+  GenerativeModel model(landscape, dataset);
+  model.introduction_point(GenerativeModel::coord_type(44.00, 0.20), 2004);
+  model.sampling_time(2008);
+
+  GenerativeModel::prior_type prior;
 
   auto abc = quetzal::abc::make_ABC(model, prior);
 
