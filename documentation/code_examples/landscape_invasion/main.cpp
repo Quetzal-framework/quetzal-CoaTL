@@ -368,7 +368,7 @@ int main()
 
   auto abc = quetzal::abc::make_ABC(wrap, prior);
 
-  auto table = abc.sample_prior_predictive_distribution(2, gen);
+  auto table = abc.sample_prior_predictive_distribution(10, gen);
 /*
   auto to_json_str = [](auto const& p){
     return "{\"r\":"+ std::to_string(p.r()) +
