@@ -91,6 +91,7 @@ private:
       }
 
       if(v.size() >= 2){
+        std::cout << x << " " << t << " " << N(x,t) << std::endl;
         auto last = merger_type::merge(v.begin(), v.end(), N(x, t), Tree(), binop, gen );
         forest.erase(x);
         for(auto it = v.begin(); it != last; ++it){
@@ -149,6 +150,7 @@ private:
       simulate_backward_migration(forest, t, gen);
       --t;
     }
+    //std::cout << t << std::endl;
     coalesce(forest, t, binary_op, gen);
     return forest;
   }

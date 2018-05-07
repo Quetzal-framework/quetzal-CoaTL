@@ -154,8 +154,6 @@ private:
   // Initial distribution
   coord_type m_x0;
   time_type m_t0;
-  N_type m_N0;
-
   time_type m_sampling_time;
 
 public:
@@ -278,7 +276,7 @@ public:
 
   result_type operator()(generator_type& gen, param_type const& param) const
   {
-    simulator_type simulator(m_x0, m_t0, m_N0);
+    simulator_type simulator(m_x0, m_t0, param.N0());
 
     // Dispersal patterns
 
