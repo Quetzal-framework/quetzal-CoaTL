@@ -114,6 +114,7 @@ private:
     time_type t = history.last_time();
     for(auto const& it : forest.positions())
     {
+      //std::cout << it << " " << t << std::endl;
       if( !history.N().is_defined(it, t) || history.N()(it, t) < forest.nb_trees(it))
       {
         return false;
@@ -143,7 +144,7 @@ private:
 
     while( (forest.nb_trees() > 1) && (t > history.first_time()) )
     {
-      std::cout << t << std::endl;
+      //std::cout << t << std::endl;
       coalesce(forest, t, binary_op, gen);
       simulate_backward_migration(forest, t, gen);
       --t;
