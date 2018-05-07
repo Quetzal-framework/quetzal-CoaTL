@@ -102,7 +102,7 @@ private:
     Params operator()(generator_type& gen) const
     {
       GenerativeModel::param_type params;
-      params.N0(std::uniform_int_distribution<>(1,15)(gen));
+      params.N0(std::uniform_int_distribution<>(1,2)(gen));
       params.k(std::uniform_int_distribution<>(1,500)(gen));
       params.r(std::uniform_real_distribution<>(1.0, 20.0)(gen));
       params.a(std::uniform_real_distribution<>(10.0, 1000.0)(gen));
@@ -206,7 +206,10 @@ public:
     forest_type forest;
     for(auto const& it : data.get_sampling_points())
     {
-      forest.insert(it, std::vector<coord_type>(data.size(it), it));
+      for(unsigned int i =  0; i < data.size(it); ++i)
+      {
+        forest.insert(it, std::vector<coord_type>(1, it));
+      }
     }
     return forest;
   }
@@ -246,11 +249,6 @@ public:
     std::vector<double> weights;
     weights.reserve(d.size());
     std::transform(d.cbegin(), d.cend(), std::back_inserter(weights), [p](auto r){return Kernel::pdf(r, p);} );
-/*    std::cout << "problem" << std::endl;
-    for(auto const& it : weights){
-      std::cout << it << std::endl;
-    }
-    */
     return weights;
   }
 
@@ -294,19 +292,21 @@ public:
 
     auto merge_binop = [](const tree_type &parent, const tree_type &child)
     {
-      auto v = parent;
-      v.insert( v.end(), child.begin(), child.end() );
-      return v;
+      tree_type copy = parent;
+      copy.insert( copy.end(), child.begin(), child.end() );
+      return copy;
     };
 
     auto updated_forest = simulator.simulate(m_forest, growth, light_kernel, m_sampling_time, merge_binop, gen);
 
     std::cout << updated_forest << std::endl;
 
+
+
     std::unordered_map<coord_type, std::vector<double>> coeffs;
-    for(auto const& it : *m_demes)
+    for(auto const& it : m_dataset->get_sampling_points())
     {
-      coeffs[it].reserve(updated_forest.nb_trees());
+      coeffs[it].resize(updated_forest.nb_trees());
     }
 
     unsigned int cluster_id = 0;
@@ -319,9 +319,9 @@ public:
       cluster_id += 1;
     }
 
+
     for(auto & it1 : coeffs){
       double sum = std::accumulate(it1.second.begin(), it1.second.end(), 0.0);
-      std::cout << sum << std::endl;
       assert(sum > 0.0);
       for(auto & it2 : it1.second){
         it2 = it2/sum;
