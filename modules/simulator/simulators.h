@@ -91,7 +91,6 @@ private:
       }
 
       if(v.size() >= 2){
-        std::cout << x << " " << t << " " << N(x,t) << std::endl;
         auto last = merger_type::merge(v.begin(), v.end(), N(x, t), Tree(), binop, gen );
         forest.erase(x);
         for(auto it = v.begin(); it != last; ++it){
@@ -115,7 +114,6 @@ private:
     time_type t = history.last_time();
     for(auto const& it : forest.positions())
     {
-      //std::cout << it << " " << t << std::endl;
       if( !history.N().is_defined(it, t) || history.N()(it, t) < forest.nb_trees(it))
       {
         return false;
@@ -145,12 +143,10 @@ private:
 
     while( (forest.nb_trees() > 1) && (t > history.first_time()) )
     {
-      //std::cout << t << std::endl;
       coalesce(forest, t, binary_op, gen);
       simulate_backward_migration(forest, t, gen);
       --t;
     }
-    //std::cout << t << std::endl;
     coalesce(forest, t, binary_op, gen);
     return forest;
   }

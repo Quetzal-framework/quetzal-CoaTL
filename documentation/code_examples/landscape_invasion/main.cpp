@@ -131,6 +131,7 @@ public:
   using loader_type = quetzal::genetics::Loader<coord_type, quetzal::genetics::microsatellite>;
 private:
   using dataset_type = loader_type::return_type;
+  using locus_ID_type = dataset_type::locus_ID_type;
 
   // Coalescence simulation
   using tree_type = std::vector<coord_type>;
@@ -157,16 +158,16 @@ private:
   time_type m_sampling_time;
 
 public:
-  GenerativeModel(const landscape_type & landscape, dataset_type dataset):
+  GenerativeModel(const landscape_type & landscape, dataset_type dataset, locus_ID_type locus):
   m_landscape(landscape),
   m_dataset(make_data(dataset)),
   m_demes(std::make_unique<std::vector<coord_type>>(landscape.geographic_definition_space())),
   m_reverse_demes(make_reverse(*m_demes)),
-  m_forest(make_forest(*m_dataset)),
+  m_forest(make_forest(*m_dataset, locus)),
   m_distances(compute_distances())
   {
+    std::cout << "initial forest" << std::endl;
     std::cout << m_forest << std::endl;
-    std::cout << "******" << std::endl;
   }
 
   std::unordered_map<coord_type, unsigned int> make_reverse(std::vector<coord_type> const& demes) const {
@@ -183,7 +184,6 @@ public:
   distance_dico_type compute_distances() const {
   distance_dico_type map;
     assert(m_demes->size() > 0);
-    std::cout << m_demes->size() << std::endl;
     for(auto const& x0 : *m_demes){
       std::vector<coord_type::km> distances;
       distances.reserve(m_demes->size());
@@ -200,13 +200,16 @@ public:
     return ptr;
   }
 
-  forest_type make_forest(dataset_type const& data) const {
+
+  forest_type make_forest(dataset_type const& data, dataset_type::locus_ID_type locus) const {
     forest_type forest;
-    for(auto const& it : data.get_sampling_points())
+    for(auto const& x : data.get_sampling_points())
     {
-      for(unsigned int i =  0; i < data.size(it); ++i)
+      for(auto const& individual : data.individuals_at(x))
       {
-        forest.insert(it, std::vector<coord_type>(1, it));
+        auto alleles = individual.alleles(locus);
+        if(alleles.first.get_allelic_state() > 0) forest.insert(x, std::vector<coord_type>(1, x));
+        if(alleles.second.get_allelic_state() > 0) forest.insert(x, std::vector<coord_type>(1, x));
       }
     }
     return forest;
@@ -297,12 +300,12 @@ public:
 
     auto updated_forest = simulator.simulate(m_forest, growth, light_kernel, m_sampling_time, merge_binop, gen);
 
-    std::cout << updated_forest << std::endl;
+    std::cout << "coalesced forest:\n" << updated_forest << std::endl;
 
 
 
     std::unordered_map<coord_type, std::vector<double>> coeffs;
-    for(auto const& it : m_dataset->get_sampling_points())
+    for(auto const& it : m_forest.positions())
     {
       coeffs[it].resize(updated_forest.nb_trees());
     }
@@ -354,21 +357,24 @@ int main()
   std::string bio_file = "/home/becheler/Documents/VespaVelutina/wc2.0_10m_prec_01_europe_agg_fact_5.tif";
   GenerativeModel::landscape_type landscape(bio_file, std::vector<GenerativeModel::time_type>(1));
 
-  //std::string file = "/home/becheler/Documents/VespaVelutina/DataForAnalysis.csv";
-  std::string file = "/home/becheler/dev/quetzal/modules/genetics/microsat_test.csv";
+  std::string file = "/home/becheler/Documents/VespaVelutina/dataForAnalysis.csv";
+  //std::string file = "/home/becheler/dev/quetzal/modules/genetics/microsat_test.csv";
   GenerativeModel::loader_type loader;
   auto dataset = loader.read(file);
 
-  GenerativeModel model(landscape, dataset);
-  model.introduction_point(GenerativeModel::coord_type(44.00, 0.20), 2004);
-  model.sampling_time(2008);
+  for(auto const& locus : dataset.loci() ){
+    GenerativeModel model(landscape, dataset, locus);
+    model.introduction_point(GenerativeModel::coord_type(44.00, 0.20), 2004);
+    model.sampling_time(2008);
 
-  GenerativeModel::prior_type prior;
-  Wrapper wrap(model);
+    GenerativeModel::prior_type prior;
+    Wrapper wrap(model);
 
-  auto abc = quetzal::abc::make_ABC(wrap, prior);
+    auto abc = quetzal::abc::make_ABC(wrap, prior);
 
-  auto table = abc.sample_prior_predictive_distribution(10, gen);
+    auto table = abc.sample_prior_predictive_distribution(10, gen);
+  }
+
 /*
   auto to_json_str = [](auto const& p){
     return "{\"r\":"+ std::to_string(p.r()) +

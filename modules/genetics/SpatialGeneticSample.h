@@ -27,6 +27,7 @@ class SpatialGeneticSample
 public:
 	using coord_type = Space;
 	using individual_type = Individual;
+	using locus_ID_type = typename individual_type::locus_ID_type;
 
 	SpatialGeneticSample( std::map<coord_type, std::vector<individual_type>> const& data) :
 	m_loci(extract_loci(data)),
