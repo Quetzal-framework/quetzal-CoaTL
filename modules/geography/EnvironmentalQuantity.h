@@ -260,7 +260,7 @@ private:
     std::vector<XY> v;
     for(unsigned int x = 0; x < width(); ++x){
       for( unsigned int y = 0; y < height(); ++y){
-        if(std::isfinite(read(x, y, bandID))){
+        if( read(x, y, bandID) > std::numeric_limits<value_type>::min() ){
           v.emplace_back(x,y);
         }
       }
