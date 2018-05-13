@@ -165,10 +165,7 @@ public:
   m_reverse_demes(make_reverse(*m_demes)),
   m_forest(make_forest(*m_dataset, locus)),
   m_distances(compute_distances())
-  {
-    std::cout << "initial forest" << std::endl;
-    std::cout << m_forest << std::endl;
-  }
+  {}
 
   std::unordered_map<coord_type, unsigned int> make_reverse(std::vector<coord_type> const& demes) const {
     unsigned int position = 0;
@@ -327,10 +324,9 @@ public:
     };
 
     auto updated_forest = simulator.simulate(m_forest, growth, light_kernel, m_sampling_time, merge_binop, gen);
-
-    std::cout << "coalesced forest:\n" << updated_forest << std::endl;
-
-    return fuzzifie(updated_forest);
+    auto S_sim = fuzzifie(updated_forest);
+    std::cout << "Simulated fuzzy Partiton:\n" << S_sim << std::endl;
+    return S_sim;
 
   }
 
@@ -362,13 +358,6 @@ public:
         auto index = std::distance(clusters.begin(), it_pos);
         it1.second[index] = freq;
       }
-    }
-
-    for(auto const& it1 : coeffs){
-      for(auto const& it2 : it1.second){
-        std::cout << it2 << " ";
-      }
-      std::cout << "\n";
     }
 
     return FuzzyPartition<coord_type>(coeffs);
@@ -407,8 +396,12 @@ int main()
   auto dataset = loader.read(file);
 
   for(auto const& locus : dataset.loci() ){
+    std::cout << "Locus : " << locus << std::endl;
     GenerativeModel model(landscape, dataset, locus);
-    std::cout << model.fuzzifie_data(locus) << std::endl;
+
+    auto S_obs = model.fuzzifie_data(locus);
+    std::cout << "Observed Fuzzy Partition:\n" << S_obs << std::endl;
+
     model.introduction_point(GenerativeModel::coord_type(44.00, 0.20), 2004);
     model.sampling_time(2008);
 
@@ -417,7 +410,7 @@ int main()
 
     auto abc = quetzal::abc::make_ABC(wrap, prior);
 
-    auto table = abc.sample_prior_predictive_distribution(10, gen);
+    auto table = abc.sample_prior_predictive_distribution(1, gen);
   }
 
 /*
