@@ -335,17 +335,40 @@ public:
   }
 
   FuzzyPartition<coord_type> fuzzifie_data(GenerativeModel::dataset_type::locus_ID_type const& locus) const {
-    auto frequencies = m_dataset->frequencies_discarding_NA(locus);
-    unsigned int n_clusters = m_dataset->allelic_richness(locus);
+    using cluster_type = unsigned int;
+    std::set<cluster_type> clusters;
     std::map<coord_type, std::vector<double>> coeffs;
 
+    auto frequencies = m_dataset->frequencies_discarding_NA(locus);
+    unsigned int n_clusters = m_dataset->allelic_richness(locus);
+
+    // preparing coeffs clusters vectors
+    // and preparing clusters set
     for(auto const& it1 : frequencies)
     {
-      coeffs[it1.first].reserve(n_clusters);
-      for(auto const& it2 : it1.second)
-      {
-        coeffs[it1.first].push_back(it2.second);
+      coeffs[it1.first].resize(n_clusters);
+      for(auto const& it2: it1.second){
+        clusters.insert(it2.first);
       }
+    }
+
+    // fill the coefficients
+    for(auto & it1 : coeffs){
+      for(auto const& it2 : frequencies[it1.first]){
+        auto allele = it2.first;
+        auto freq = it2.second;
+        auto it_pos = std::find(clusters.cbegin(), clusters.cend(), allele);
+        assert(it_pos != clusters.end());
+        auto index = std::distance(clusters.begin(), it_pos);
+        it1.second[index] = freq;
+      }
+    }
+
+    for(auto const& it1 : coeffs){
+      for(auto const& it2 : it1.second){
+        std::cout << it2 << " ";
+      }
+      std::cout << "\n";
     }
 
     return FuzzyPartition<coord_type>(coeffs);
