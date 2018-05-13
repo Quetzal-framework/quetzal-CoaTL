@@ -277,6 +277,34 @@ public:
     return m_demes->at(kernel(gen, id));
   }
 
+    auto fuzzifie(forest_type const& forest) const {
+    std::unordered_map<coord_type, std::vector<double>> coeffs;
+
+    for(auto const& it : m_forest.positions())
+    {
+      coeffs[it].resize(forest.nb_trees());
+    }
+
+    unsigned int cluster_id = 0;
+    for(auto const& it1 : forest )
+    {
+      for(auto const& it2 : it1.second)
+      {
+        coeffs[it2][cluster_id] += 1;
+      }
+      cluster_id += 1;
+    }
+
+    for(auto & it1 : coeffs){
+      double sum = std::accumulate(it1.second.begin(), it1.second.end(), 0.0);
+      assert(sum > 0.0);
+      for(auto & it2 : it1.second){
+        it2 = it2/sum;
+      }
+    }
+    return FuzzyPartition<coord_type>(coeffs);
+  }
+
   result_type operator()(generator_type& gen, param_type const& param) const
   {
     simulator_type simulator(m_x0, m_t0, param.N0());
@@ -302,35 +330,27 @@ public:
 
     std::cout << "coalesced forest:\n" << updated_forest << std::endl;
 
+    return fuzzifie(updated_forest);
 
+  }
 
-    std::unordered_map<coord_type, std::vector<double>> coeffs;
-    for(auto const& it : m_forest.positions())
+  FuzzyPartition<coord_type> fuzzifie_data(GenerativeModel::dataset_type::locus_ID_type const& locus) const {
+    auto frequencies = m_dataset->frequencies_discarding_NA(locus);
+    unsigned int n_clusters = m_dataset->allelic_richness(locus);
+    std::map<coord_type, std::vector<double>> coeffs;
+
+    for(auto const& it1 : frequencies)
     {
-      coeffs[it].resize(updated_forest.nb_trees());
-    }
-
-    unsigned int cluster_id = 0;
-    for(auto const& it1 : updated_forest )
-    {
+      coeffs[it1.first].reserve(n_clusters);
       for(auto const& it2 : it1.second)
       {
-        coeffs[it2][cluster_id] += 1;
-      }
-      cluster_id += 1;
-    }
-
-
-    for(auto & it1 : coeffs){
-      double sum = std::accumulate(it1.second.begin(), it1.second.end(), 0.0);
-      assert(sum > 0.0);
-      for(auto & it2 : it1.second){
-        it2 = it2/sum;
+        coeffs[it1.first].push_back(it2.second);
       }
     }
-    std::cout << "valid" << std::endl;
+
     return FuzzyPartition<coord_type>(coeffs);
   }
+
 
 }; // GenerativeModel
 
@@ -351,6 +371,7 @@ struct Wrapper{
 
 };
 
+
 int main()
 {
   std::mt19937 gen;
@@ -364,6 +385,7 @@ int main()
 
   for(auto const& locus : dataset.loci() ){
     GenerativeModel model(landscape, dataset, locus);
+    std::cout << model.fuzzifie_data(locus) << std::endl;
     model.introduction_point(GenerativeModel::coord_type(44.00, 0.20), 2004);
     model.sampling_time(2008);
 
