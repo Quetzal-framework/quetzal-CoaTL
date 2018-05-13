@@ -383,9 +383,10 @@ struct Wrapper{
 
 };
 
-
 int main()
 {
+  using result_type = GenerativeModel::result_type;
+
   std::mt19937 gen;
   std::string bio_file = "/home/becheler/Documents/VespaVelutina/wc2.0_10m_prec_01_europe_agg_fact_5.tif";
   GenerativeModel::landscape_type landscape(bio_file, std::vector<GenerativeModel::time_type>(1));
@@ -410,51 +411,36 @@ int main()
 
     auto abc = quetzal::abc::make_ABC(wrap, prior);
 
-    auto table = abc.sample_prior_predictive_distribution(1, gen);
-  }
+    auto table = abc.sample_prior_predictive_distribution(10, gen);
 
+    auto distances = table.compute_distance_to(S_obs, [](result_type const& a, result_type const& b){return a.fuzzy_transfer_distance(b);});
 /*
-  auto to_json_str = [](auto const& p){
-    return "{\"r\":"+ std::to_string(p.r()) +
-           ",\"k\":" + std::to_string(p.k()) + "}";
-  };
+    auto to_json_str = [](auto const& p){
+      return "{\"r\":"+ std::to_string(p.r()) +
+      ",\"k\":" + std::to_string(p.k()) +
+      ",\"N0\":" + std::to_string(p.N0()) +
+      ",\"a\":" + std::to_string(p.a()) + "}";
+    };
+*/
+    std::string headers = "locus\tr\tk\tN0\ta\tFTD\n";
+    std::cout << headers << std::endl;
 
-  //multiple rejections
-  auto true_param = prior(gen);
-  true_param.k(50);
-  std::vector<std::vector<unsigned int>> pods;
-
-  for(int i = 0; i != 100; ++i){
-    try {
-      pods.push_back(eta(model(gen, true_param)));
-    }catch(...){
-      std::cerr << "one pod less" << std::endl;
+    std::string buffer;
+    for(auto const& it : distances)
+    {
+      auto const& p = it.param();
+      auto ftd = it.data();
+      buffer += locus +
+      "\t" + std::to_string(p.r()) +
+      "\t" + std::to_string(p.k()) +
+      "\t" + std::to_string(p.N0()) +
+      "\t" + std::to_string(p.a()) +
+      "\t" + std::to_string(ftd) + "\n";
     }
+
+    std::cout << buffer << std::endl;
+
   }
 
-  std::string buffer = "{";
-  unsigned int pod_id = 1;
-  for(auto const& it1 : pods){
-    buffer = buffer + "\"" + std::to_string(pod_id) + "\":[";
-    bool is_empty = true;
-    for(auto const& it2 : sum_stats){
-      if(it2.data() == it1){
-        buffer += to_json_str(it2.param());
-        buffer += ",";
-        is_empty = false;
-      }
-    }
-    if(!is_empty){
-        buffer.pop_back();
-    }
-    buffer += "],";
-    pod_id += 1;
-  }
-  buffer.pop_back();
-  buffer += "}";
-
-  std::cout << buffer << std::endl;
-
-  */
   return 0;
 }
