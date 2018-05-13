@@ -278,7 +278,7 @@ public:
   }
 
     auto fuzzifie(forest_type const& forest) const {
-    std::unordered_map<coord_type, std::vector<double>> coeffs;
+    std::map<coord_type, std::vector<double>> coeffs;
 
     for(auto const& it : m_forest.positions())
     {
