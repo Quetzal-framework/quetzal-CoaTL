@@ -326,7 +326,7 @@ public:
 
     auto updated_forest = simulator.simulate(m_forest, growth, light_kernel, m_sampling_time, merge_binop, gen);
     auto S_sim = fuzzifie(updated_forest);
-    std::cout << "Simulated fuzzy Partiton:\n" << S_sim << std::endl;
+    //std::cout << "Simulated fuzzy Partiton:\n" << S_sim << std::endl;
     if(S_sim.nClusters() > 1 ){
       std::uniform_int_distribution<unsigned int> dist(0, S_sim.nClusters()-1 );
       std::vector<unsigned int> v;
@@ -350,18 +350,10 @@ public:
         }
       }
 
-      for(auto const& it : v){
-        std::cout << it << "\t";
-      }
-      std::cout << std::endl;
-      for(auto const& it : rgs){
-        std::cout << it << "\t";
-      }
-      std::cout << std::endl;
       S_sim.merge_clusters(RestrictedGrowthString(rgs));
     }
 
-    std::cout << "Aggregated simulated fuzzy Partiton:\n" << S_sim << std::endl;
+    //std::cout << "Aggregated simulated fuzzy Partiton:\n" << S_sim << std::endl;
 
     return S_sim;
 
@@ -433,12 +425,15 @@ int main()
   GenerativeModel::loader_type loader;
   auto dataset = loader.read(file);
 
+  std::string headers = "locus\tr\tk\tN0\ta\tFTD";
+  std::cout << headers << std::endl;
+
   for(auto const& locus : dataset.loci() ){
-    std::cout << "Locus : " << locus << std::endl;
+    //std::cout << "Locus : " << locus << std::endl;
     GenerativeModel model(landscape, dataset, locus);
 
     auto S_obs = model.fuzzifie_data(locus);
-    std::cout << "Observed Fuzzy Partition:\n" << S_obs << std::endl;
+  //  std::cout << "Observed Fuzzy Partition:\n" << S_obs << std::endl;
 
     model.introduction_point(GenerativeModel::coord_type(44.00, 0.20), 2004);
     model.sampling_time(2008);
@@ -451,9 +446,6 @@ int main()
     auto table = abc.sample_prior_predictive_distribution(10, gen);
 
     auto distances = table.compute_distance_to(S_obs, [](result_type const& a, result_type const& b){return a.fuzzy_transfer_distance(b);});
-
-    std::string headers = "locus\tr\tk\tN0\ta\tFTD\n";
-    std::cout << headers << std::endl;
 
     std::string buffer;
     for(auto const& it : distances)
@@ -468,7 +460,7 @@ int main()
       "\t" + std::to_string(ftd) + "\n";
     }
 
-    std::cout << buffer << std::endl;
+    std::cout << buffer;
 
   }
 
