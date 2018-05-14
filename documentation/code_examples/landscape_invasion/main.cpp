@@ -4,6 +4,7 @@
 #include "../../../quetzal.h"
 #include "../../../modules/simulator/simulators.h"
 #include "../../../modules/fuzzy_transfer_distance/FuzzyPartition.h"
+#include "../../../modules/fuzzy_transfer_distance/RestrictedGrowthString.h"
 #include <memory>
 #include <random>
 #include <functional>  // std::plus
@@ -102,7 +103,7 @@ private:
     Params operator()(generator_type& gen) const
     {
       GenerativeModel::param_type params;
-      params.N0(std::uniform_int_distribution<>(1,2)(gen));
+      params.N0(std::uniform_int_distribution<>(1,15)(gen));
       params.k(std::uniform_int_distribution<>(1,500)(gen));
       params.r(std::uniform_real_distribution<>(1.0, 20.0)(gen));
       params.a(std::uniform_real_distribution<>(10.0, 1000.0)(gen));
@@ -131,6 +132,7 @@ public:
   using loader_type = quetzal::genetics::Loader<coord_type, quetzal::genetics::microsatellite>;
 private:
   using dataset_type = loader_type::return_type;
+  using locus_ID_type = dataset_type::locus_ID_type;
 
   // Coalescence simulation
   using tree_type = std::vector<coord_type>;
@@ -157,17 +159,14 @@ private:
   time_type m_sampling_time;
 
 public:
-  GenerativeModel(const landscape_type & landscape, dataset_type dataset):
+  GenerativeModel(const landscape_type & landscape, dataset_type dataset, locus_ID_type locus):
   m_landscape(landscape),
   m_dataset(make_data(dataset)),
   m_demes(std::make_unique<std::vector<coord_type>>(landscape.geographic_definition_space())),
   m_reverse_demes(make_reverse(*m_demes)),
-  m_forest(make_forest(*m_dataset)),
+  m_forest(make_forest(*m_dataset, locus)),
   m_distances(compute_distances())
-  {
-    std::cout << m_forest << std::endl;
-    std::cout << "******" << std::endl;
-  }
+  {}
 
   std::unordered_map<coord_type, unsigned int> make_reverse(std::vector<coord_type> const& demes) const {
     unsigned int position = 0;
@@ -183,7 +182,6 @@ public:
   distance_dico_type compute_distances() const {
   distance_dico_type map;
     assert(m_demes->size() > 0);
-    std::cout << m_demes->size() << std::endl;
     for(auto const& x0 : *m_demes){
       std::vector<coord_type::km> distances;
       distances.reserve(m_demes->size());
@@ -200,13 +198,16 @@ public:
     return ptr;
   }
 
-  forest_type make_forest(dataset_type const& data) const {
+
+  forest_type make_forest(dataset_type const& data, dataset_type::locus_ID_type locus) const {
     forest_type forest;
-    for(auto const& it : data.get_sampling_points())
+    for(auto const& x : data.get_sampling_points())
     {
-      for(unsigned int i =  0; i < data.size(it); ++i)
+      for(auto const& individual : data.individuals_at(x))
       {
-        forest.insert(it, std::vector<coord_type>(1, it));
+        auto alleles = individual.alleles(locus);
+        if(alleles.first.get_allelic_state() > 0) forest.insert(x, std::vector<coord_type>(1, x));
+        if(alleles.second.get_allelic_state() > 0) forest.insert(x, std::vector<coord_type>(1, x));
       }
     }
     return forest;
@@ -274,6 +275,34 @@ public:
     return m_demes->at(kernel(gen, id));
   }
 
+    auto fuzzifie(forest_type const& forest) const {
+    std::map<coord_type, std::vector<double>> coeffs;
+
+    for(auto const& it : m_forest.positions())
+    {
+      coeffs[it].resize(forest.nb_trees());
+    }
+
+    unsigned int cluster_id = 0;
+    for(auto const& it1 : forest )
+    {
+      for(auto const& it2 : it1.second)
+      {
+        coeffs[it2][cluster_id] += 1;
+      }
+      cluster_id += 1;
+    }
+
+    for(auto & it1 : coeffs){
+      double sum = std::accumulate(it1.second.begin(), it1.second.end(), 0.0);
+      assert(sum > 0.0);
+      for(auto & it2 : it1.second){
+        it2 = it2/sum;
+      }
+    }
+    return FuzzyPartition<coord_type>(coeffs);
+  }
+
   result_type operator()(generator_type& gen, param_type const& param) const
   {
     simulator_type simulator(m_x0, m_t0, param.N0());
@@ -296,38 +325,73 @@ public:
     };
 
     auto updated_forest = simulator.simulate(m_forest, growth, light_kernel, m_sampling_time, merge_binop, gen);
+    auto S_sim = fuzzifie(updated_forest);
+    //std::cout << "Simulated fuzzy Partiton:\n" << S_sim << std::endl;
+    if(S_sim.nClusters() > 1 ){
+      std::uniform_int_distribution<unsigned int> dist(0, S_sim.nClusters()-1 );
+      std::vector<unsigned int> v;
 
-    std::cout << updated_forest << std::endl;
-
-
-
-    std::unordered_map<coord_type, std::vector<double>> coeffs;
-    for(auto const& it : m_dataset->get_sampling_points())
-    {
-      coeffs[it].resize(updated_forest.nb_trees());
-    }
-
-    unsigned int cluster_id = 0;
-    for(auto const& it1 : updated_forest )
-    {
-      for(auto const& it2 : it1.second)
-      {
-        coeffs[it2][cluster_id] += 1;
+      for(auto const& it : S_sim.clusters()){
+        v.push_back(dist(gen));
       }
-      cluster_id += 1;
+      std::map<unsigned int, unsigned int> ids;
+      std::vector<unsigned int> rgs;
+      rgs.resize(v.size());
+
+      unsigned int block_ID = 0;
+      for(unsigned int i = 0; i < v.size(); ++i){
+        auto it = ids.find(v[i]);
+        if( it != ids.end() ){
+          rgs[i] = it->second;
+        }else {
+          rgs[i] = block_ID;
+          ids[v[i]] = block_ID;
+          ++block_ID;
+        }
+      }
+
+      S_sim.merge_clusters(RestrictedGrowthString(rgs));
     }
 
+    //std::cout << "Aggregated simulated fuzzy Partiton:\n" << S_sim << std::endl;
 
+    return S_sim;
+
+  }
+
+  FuzzyPartition<coord_type> fuzzifie_data(GenerativeModel::dataset_type::locus_ID_type const& locus) const {
+    using cluster_type = unsigned int;
+    std::set<cluster_type> clusters;
+    std::map<coord_type, std::vector<double>> coeffs;
+
+    auto frequencies = m_dataset->frequencies_discarding_NA(locus);
+    unsigned int n_clusters = m_dataset->allelic_richness(locus);
+
+    // preparing coeffs clusters vectors
+    // and preparing clusters set
+    for(auto const& it1 : frequencies)
+    {
+      coeffs[it1.first].resize(n_clusters);
+      for(auto const& it2: it1.second){
+        clusters.insert(it2.first);
+      }
+    }
+
+    // fill the coefficients
     for(auto & it1 : coeffs){
-      double sum = std::accumulate(it1.second.begin(), it1.second.end(), 0.0);
-      assert(sum > 0.0);
-      for(auto & it2 : it1.second){
-        it2 = it2/sum;
+      for(auto const& it2 : frequencies[it1.first]){
+        auto allele = it2.first;
+        auto freq = it2.second;
+        auto it_pos = std::find(clusters.cbegin(), clusters.cend(), allele);
+        assert(it_pos != clusters.end());
+        auto index = std::distance(clusters.begin(), it_pos);
+        it1.second[index] = freq;
       }
     }
-    std::cout << "valid" << std::endl;
+
     return FuzzyPartition<coord_type>(coeffs);
   }
+
 
 }; // GenerativeModel
 
@@ -350,67 +414,55 @@ struct Wrapper{
 
 int main()
 {
+  using result_type = GenerativeModel::result_type;
+
   std::mt19937 gen;
   std::string bio_file = "/home/becheler/Documents/VespaVelutina/wc2.0_10m_prec_01_europe_agg_fact_5.tif";
   GenerativeModel::landscape_type landscape(bio_file, std::vector<GenerativeModel::time_type>(1));
 
-  //std::string file = "/home/becheler/Documents/VespaVelutina/DataForAnalysis.csv";
-  std::string file = "/home/becheler/dev/quetzal/modules/genetics/microsat_test.csv";
+  std::string file = "/home/becheler/Documents/VespaVelutina/dataForAnalysis.csv";
+  //std::string file = "/home/becheler/dev/quetzal/modules/genetics/microsat_test.csv";
   GenerativeModel::loader_type loader;
   auto dataset = loader.read(file);
 
-  GenerativeModel model(landscape, dataset);
-  model.introduction_point(GenerativeModel::coord_type(44.00, 0.20), 2004);
-  model.sampling_time(2008);
+  std::string headers = "locus\tr\tk\tN0\ta\tFTD";
+  std::cout << headers << std::endl;
 
-  GenerativeModel::prior_type prior;
-  Wrapper wrap(model);
+  for(auto const& locus : dataset.loci() ){
+    //std::cout << "Locus : " << locus << std::endl;
+    GenerativeModel model(landscape, dataset, locus);
 
-  auto abc = quetzal::abc::make_ABC(wrap, prior);
+    auto S_obs = model.fuzzifie_data(locus);
+  //  std::cout << "Observed Fuzzy Partition:\n" << S_obs << std::endl;
 
-  auto table = abc.sample_prior_predictive_distribution(10, gen);
-/*
-  auto to_json_str = [](auto const& p){
-    return "{\"r\":"+ std::to_string(p.r()) +
-           ",\"k\":" + std::to_string(p.k()) + "}";
-  };
+    model.introduction_point(GenerativeModel::coord_type(44.00, 0.20), 2004);
+    model.sampling_time(2008);
 
-  //multiple rejections
-  auto true_param = prior(gen);
-  true_param.k(50);
-  std::vector<std::vector<unsigned int>> pods;
+    GenerativeModel::prior_type prior;
+    Wrapper wrap(model);
 
-  for(int i = 0; i != 100; ++i){
-    try {
-      pods.push_back(eta(model(gen, true_param)));
-    }catch(...){
-      std::cerr << "one pod less" << std::endl;
+    auto abc = quetzal::abc::make_ABC(wrap, prior);
+
+    auto table = abc.sample_prior_predictive_distribution(10, gen);
+
+    auto distances = table.compute_distance_to(S_obs, [](result_type const& a, result_type const& b){return a.fuzzy_transfer_distance(b);});
+
+    std::string buffer;
+    for(auto const& it : distances)
+    {
+      auto const& p = it.param();
+      auto ftd = it.data();
+      buffer += locus +
+      "\t" + std::to_string(p.r()) +
+      "\t" + std::to_string(p.k()) +
+      "\t" + std::to_string(p.N0()) +
+      "\t" + std::to_string(p.a()) +
+      "\t" + std::to_string(ftd) + "\n";
     }
+
+    std::cout << buffer;
+
   }
 
-  std::string buffer = "{";
-  unsigned int pod_id = 1;
-  for(auto const& it1 : pods){
-    buffer = buffer + "\"" + std::to_string(pod_id) + "\":[";
-    bool is_empty = true;
-    for(auto const& it2 : sum_stats){
-      if(it2.data() == it1){
-        buffer += to_json_str(it2.param());
-        buffer += ",";
-        is_empty = false;
-      }
-    }
-    if(!is_empty){
-        buffer.pop_back();
-    }
-    buffer += "],";
-    pod_id += 1;
-  }
-  buffer.pop_back();
-  buffer += "}";
-
-  std::cout << buffer << std::endl;
-
-  */
   return 0;
 }

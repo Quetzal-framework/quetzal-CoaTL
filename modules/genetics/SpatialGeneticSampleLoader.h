@@ -90,11 +90,16 @@ private:
 		std::vector<std::string> names;
 		std::istringstream iss( line );
 		std::string elem;
-	    while ( std::getline( iss, elem, ' ' ) ) {
+    while ( std::getline( iss, elem, ' ' ) )
+		{
 			names.push_back(elem);
-	    }
-
-	    return names;
+    }
+		assert(!names.empty());
+		for(auto const& it : names){
+			std::cout << it << "-";
+		}
+		std::cout << std::endl;
+	  return names;
 	}
 
 	coord_type read_coordinates(std::string const& line) const {

@@ -6,7 +6,7 @@
 * the Free Software Foundation; either version 2 of the License, or    *
 * (at your option) any later version.                                  *
 *                                                                      *
-***************************************************************************/ 
+***************************************************************************/
 
 // g++ -o Partitioner_test Partitioner_test.cpp -std=c++14 -Wall
 
@@ -14,11 +14,10 @@
 #include <vector>
 #include "assert.h"
 #include <iostream>
-#include "../../presentation/printers.h"
 
 int main(){
 	using fuzzy_transfer_distance::Partitioner;
-	
+
 	std::vector<unsigned int> set = {1,2,3,4,5};
 
 	Partitioner partitioner(set);
@@ -50,16 +49,16 @@ int main(){
 	std::vector<unsigned int> other = {1,2,3,4};
 	Partitioner partitioner2(other);
 	auto const& ps = partitioner2.construct_all_m_blocks_partitions_of_the_set_by_algorithm_u(3);
-	/* Expected : 
-	[0, 0, 1, 2] 
-	[0, 1, 1, 2] 
-	[0, 1, 0, 2] 
-	[0, 1, 2, 2] 
-	[0, 1, 2, 1] 
-	[0, 1, 2, 0] 
+	/* Expected :
+	[0, 0, 1, 2]
+	[0, 1, 1, 2]
+	[0, 1, 0, 2]
+	[0, 1, 2, 2]
+	[0, 1, 2, 1]
+	[0, 1, 2, 0]
 	*/
 	assert(ps.size() == 6);
-	
+
 	// Test cause of weird results...
 	Partitioner partitioner3(std::set<int>({1,2,3,4}));
 	auto all = partitioner3.construct_all_m_blocks_partitions_of_the_set_by_algorithm_u(3);
