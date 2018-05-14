@@ -115,9 +115,14 @@ public:
 	FuzzyPartition & merge_clusters(RestrictedGrowthString const& rgs)
 	{
 		assert( rgs.size() == this->nClusters() );
+		std::cout << "nblocks "<<rgs.nBlocks() << std::endl;
+		std::cout << "nelems "<< this->nElements() << std::endl;
+		std::cout << "size1" << m_membership_coefficients.size1() << std::endl;
 		matrix_type new_coefficients(rgs.nBlocks(), this->nElements(), 0);
+		///size1 = nbr of rows
 		for(unsigned int i = 0; i < m_membership_coefficients.size1(); ++i){
 			for(unsigned int j = 0; j < m_membership_coefficients.size2(); ++j){
+				std::cout << i << " " << j << " "<< rgs.at(i) << std::endl;
 				new_coefficients(rgs.at(i), j) += m_membership_coefficients(i,j);
 			}
 		}

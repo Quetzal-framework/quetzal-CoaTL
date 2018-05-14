@@ -16,10 +16,4 @@ g++ -o FuzzyPartition_test FuzzyPartition_test.cpp -std=c++14 -Wall
 rm FuzzyPartition_test
 echo -e "|--\t DONE \n|"
 
-echo -e "|--\t Fuzzifier_test ..............................."
-g++ -o Fuzzifier_test Fuzzifier_test.cpp -std=c++14 -Wall
-./Fuzzifier_test
-rm Fuzzifier_test
-echo -e "|--\t DONE \n|"
-
 echo -e "DONE\n"

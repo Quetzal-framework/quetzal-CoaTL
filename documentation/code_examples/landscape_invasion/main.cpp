@@ -4,6 +4,7 @@
 #include "../../../quetzal.h"
 #include "../../../modules/simulator/simulators.h"
 #include "../../../modules/fuzzy_transfer_distance/FuzzyPartition.h"
+#include "../../../modules/fuzzy_transfer_distance/RestrictedGrowthString.h"
 #include <memory>
 #include <random>
 #include <functional>  // std::plus
@@ -102,7 +103,7 @@ private:
     Params operator()(generator_type& gen) const
     {
       GenerativeModel::param_type params;
-      params.N0(std::uniform_int_distribution<>(1,2)(gen));
+      params.N0(std::uniform_int_distribution<>(1,15)(gen));
       params.k(std::uniform_int_distribution<>(1,500)(gen));
       params.r(std::uniform_real_distribution<>(1.0, 20.0)(gen));
       params.a(std::uniform_real_distribution<>(10.0, 1000.0)(gen));
@@ -326,6 +327,42 @@ public:
     auto updated_forest = simulator.simulate(m_forest, growth, light_kernel, m_sampling_time, merge_binop, gen);
     auto S_sim = fuzzifie(updated_forest);
     std::cout << "Simulated fuzzy Partiton:\n" << S_sim << std::endl;
+    if(S_sim.nClusters() > 1 ){
+      std::uniform_int_distribution<unsigned int> dist(0, S_sim.nClusters()-1 );
+      std::vector<unsigned int> v;
+
+      for(auto const& it : S_sim.clusters()){
+        v.push_back(dist(gen));
+      }
+      std::map<unsigned int, unsigned int> ids;
+      std::vector<unsigned int> rgs;
+      rgs.resize(v.size());
+
+      unsigned int block_ID = 0;
+      for(unsigned int i = 0; i < v.size(); ++i){
+        auto it = ids.find(v[i]);
+        if( it != ids.end() ){
+          rgs[i] = it->second;
+        }else {
+          rgs[i] = block_ID;
+          ids[v[i]] = block_ID;
+          ++block_ID;
+        }
+      }
+
+      for(auto const& it : v){
+        std::cout << it << "\t";
+      }
+      std::cout << std::endl;
+      for(auto const& it : rgs){
+        std::cout << it << "\t";
+      }
+      std::cout << std::endl;
+      S_sim.merge_clusters(RestrictedGrowthString(rgs));
+    }
+
+    std::cout << "Aggregated simulated fuzzy Partiton:\n" << S_sim << std::endl;
+
     return S_sim;
 
   }
@@ -414,14 +451,7 @@ int main()
     auto table = abc.sample_prior_predictive_distribution(10, gen);
 
     auto distances = table.compute_distance_to(S_obs, [](result_type const& a, result_type const& b){return a.fuzzy_transfer_distance(b);});
-/*
-    auto to_json_str = [](auto const& p){
-      return "{\"r\":"+ std::to_string(p.r()) +
-      ",\"k\":" + std::to_string(p.k()) +
-      ",\"N0\":" + std::to_string(p.N0()) +
-      ",\"a\":" + std::to_string(p.a()) + "}";
-    };
-*/
+
     std::string headers = "locus\tr\tk\tN0\ta\tFTD\n";
     std::cout << headers << std::endl;
 
