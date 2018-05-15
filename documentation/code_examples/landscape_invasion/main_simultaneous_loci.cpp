@@ -437,7 +437,7 @@ int main()
   GenerativeModel::loader_type loader;
   auto dataset = loader.read(file);
 
-  std::string headers = "r\tk\tN0\ta\tFTD\t";
+  std::string headers = "r\tk\tN0\ta\t";
   for(auto const& it : dataset.loci()){
     headers += it + "\t";
   }
@@ -462,7 +462,7 @@ int main()
 
     auto abc = quetzal::abc::make_ABC(wrap, prior);
 
-    auto table = abc.sample_prior_predictive_distribution(100, gen);
+    auto table = abc.sample_prior_predictive_distribution(2, gen);
 
     auto ftds =  [](result_type const& a, result_type const& b){
       assert(a.size() == b.size());
