@@ -95,10 +95,6 @@ private:
 			names.push_back(elem);
     }
 		assert(!names.empty());
-		for(auto const& it : names){
-			std::cout << it << "-";
-		}
-		std::cout << std::endl;
 	  return names;
 	}
 
