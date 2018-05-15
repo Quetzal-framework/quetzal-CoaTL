@@ -95,6 +95,7 @@ public:
 		return m_dictionnary.at(x);
 	}
 
+	// TODO take ploidy into account
 	auto nb_gene_copies_discarding_NA(locus_ID_type const& locus) const
 	{
 		std::map<coord_type, std::map<value_type, unsigned int>> counts;

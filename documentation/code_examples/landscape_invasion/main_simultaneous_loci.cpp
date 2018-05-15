@@ -334,8 +334,15 @@ public:
 
     result_type fps;
 
+    std::map<coord_type, unsigned int> counts;
+    for(auto const& it : m_dataset->get_sampling_points()){
+      counts[it] = (m_dataset->size(it)) * 2;
+    }
+
+    auto const& history = simulator.simulate_demography(counts, growth, light_kernel, m_sampling_time, gen);
+
     for(auto const& locus : m_dataset->loci() ){
-      auto updated_forest = simulator.simulate(m_forests.at(locus), growth, light_kernel, m_sampling_time, merge_binop, gen);
+      auto updated_forest = simulator.coalescence_process(m_forests.at(locus), history, merge_binop, gen);
       auto S_sim = fuzzifie(updated_forest, locus);
       //std::cout << "Simulated fuzzy Partiton:\n" << S_sim << std::endl;
       if(S_sim.nClusters() > 1 ){
