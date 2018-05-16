@@ -24,7 +24,7 @@ class IDDC_model_1 {
 public:
 
   using merger_type = quetzal::coalescence::SimultaneousMultipleMerger<quetzal::coalescence::occupancy_spectrum::on_the_fly>;
-  using history_type = quetzal::demography::History<Space, Time, Value>;
+  using history_type = quetzal::demography::History<Space, Time, Value, quetzal::demography::Flow<Space, Time, Value>>;
   using coord_type = Space;
   using time_type = Time;
   using N_type = Value;

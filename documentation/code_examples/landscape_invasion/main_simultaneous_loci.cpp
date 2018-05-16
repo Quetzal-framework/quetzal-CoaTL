@@ -123,7 +123,7 @@ private:
 
   // Demographic simulation types
   using N_type = unsigned int;
-  using history_type = quetzal::demography::History<coord_type, time_type, N_type>;
+  using history_type = quetzal::demography::History<coord_type, time_type, N_type, quetzal::demography::Flow<coord_type, time_type, N_type>>;
   using simulator_type = quetzal::simulators::IDDC_model_1<coord_type, time_type, N_type>;
   using kernel_type = Gaussian;
 
@@ -469,7 +469,7 @@ int main()
 
     auto abc = quetzal::abc::make_ABC(wrap, prior);
 
-    auto table = abc.sample_prior_predictive_distribution(2, gen);
+    auto table = abc.sample_prior_predictive_distribution(1000, gen);
 
     auto ftds =  [](result_type const& a, result_type const& b){
       assert(a.size() == b.size());
