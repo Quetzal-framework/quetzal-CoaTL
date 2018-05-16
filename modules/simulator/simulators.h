@@ -24,7 +24,7 @@ class IDDC_model_1 {
 public:
 
   using merger_type = quetzal::coalescence::SimultaneousMultipleMerger<quetzal::coalescence::occupancy_spectrum::on_the_fly>;
-  using history_type = quetzal::demography::History<Space, Time, Value>;
+  using history_type = quetzal::demography::History<Space, Time, Value, quetzal::demography::Flow<Space, Time, Value>>;
   using coord_type = Space;
   using time_type = Time;
   using N_type = Value;
@@ -122,6 +122,22 @@ private:
     return true;
   }
 
+  bool is_history_consistent_with_sampling(history_type const& history, std::map<coord_type, unsigned int> const& counts) const
+  {
+    time_type t = history.last_time();
+    for(auto const& it : counts)
+    {
+      if( !history.N().is_defined(it.first, t) || history.N()(it.first, t) < it.second)
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+
+
+public:
+
   template<typename Generator, typename Tree>
   forest_type<Tree> coalescence_process(forest_type<Tree> forest, history_type const& history, Generator& gen)
   {
@@ -151,8 +167,6 @@ private:
     return forest;
   }
 
-public:
-
   IDDC_model_1(coord_type x_0, time_type t_0, N_type N_0) : m_history(x_0, t_0, N_0){}
 
   auto const& size_history() const
@@ -179,6 +193,24 @@ public:
     return coalescence_process(forest, m_history, gen);
   }
 
+  template<typename Generator, typename Growth, typename Dispersal>
+  history_type const& simulate_demography(
+    std::map<coord_type, unsigned int> const& sampling_counts,
+    Growth growth,
+    Dispersal kernel,
+    time_type t_sampling,
+    Generator& gen )
+  {
+
+    simulate_demography(growth, kernel, t_sampling, gen);
+
+    if( ! is_history_consistent_with_sampling(m_history, sampling_counts))
+    {
+        throw std::domain_error("Simulated population size inferior to sampling size");
+    }
+
+    return m_history;
+  }
 
   template<typename Generator, typename Growth, typename Dispersal, typename F, typename Tree>
   forest_type<Tree> simulate(
