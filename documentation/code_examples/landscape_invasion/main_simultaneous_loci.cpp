@@ -138,6 +138,9 @@ private:
   using tree_type = std::vector<coord_type>;
   using forest_type = quetzal::coalescence::Forest<coord_type, tree_type>;
 
+  // ftd
+  mutable std::map<unsigned int, std::discrete_distribution<unsigned int>> m_distribs;
+
 public:
   // Interface for ABC module
   using param_type = Params;
@@ -352,18 +355,19 @@ public:
   template<typename Generator>
   auto sample_partition(unsigned int n, Generator& gen) const
   {
-    std::cout << "coucou" << std::endl;
-    std::vector<double> w;
-    w.resize(100);
-    w[0] = 0;
-    for(unsigned int k = 1; k < 100; ++k)
-    {
-      w[k] = pdf(k,n);
+    if(m_distribs.find(n) == m_distribs.end()){
+      std::vector<double> w;
+      size_t size = 10000;
+      w.resize(size);
+      w[0] = 0;
+      for(unsigned int k = 1; k < size; ++k)
+      {
+        w[k] = pdf(k,n);
+      }
+      m_distribs[n] = std::discrete_distribution<unsigned int>(w.begin(), w.end());
     }
-    std::cout << "au revoir" << std::endl;
-    std::discrete_distribution<> dist(w.begin(), w.end());
 
-    unsigned int K = dist(gen);
+    unsigned int K = m_distribs.at(n)(gen);
 
     std::uniform_int_distribution<> unif(1, K);
     std::vector<unsigned int> Cs;
@@ -423,39 +427,14 @@ public:
     for(auto const& locus : m_dataset->loci() ){
       auto updated_forest = simulator.coalescence_process(m_forests.at(locus), history, merge_binop, gen);
       auto S_sim = fuzzifie(updated_forest, locus);
-      //std::cout << "Simulated fuzzy Partiton:\n" << S_sim << std::endl;
-      if(S_sim.nClusters() > 1 ){
-/*        std::uniform_int_distribution<unsigned int> dist(0, S_sim.nClusters()-1 );
-        std::vector<unsigned int> v;
 
-        for(auto const& it : S_sim.clusters()){
-          v.push_back(dist(gen));
-        }
-        std::map<unsigned int, unsigned int> ids;
-        std::vector<unsigned int> rgs;
-        rgs.resize(v.size());
-
-        unsigned int block_ID = 0;
-        for(unsigned int i = 0; i < v.size(); ++i){
-          auto it = ids.find(v[i]);
-          if( it != ids.end() ){
-            rgs[i] = it->second;
-          }else {
-            rgs[i] = block_ID;
-            ids[v[i]] = block_ID;
-            ++block_ID;
-          }
-        }
-
-        S_sim.merge_clusters(RestrictedGrowthString(rgs));
-        */
+      if(S_sim.nClusters() > 1 )
+      {
         S_sim.merge_clusters(sample_partition(S_sim.nClusters(), gen));
-
       }
+
       fps.push_back(S_sim);
     }
-
-    //std::cout << "Aggregated simulated fuzzy Partiton:\n" << S_sim << std::endl;
 
     return fps;
 
@@ -552,7 +531,7 @@ int main()
 
     auto abc = quetzal::abc::make_ABC(wrap, prior);
 
-    auto table = abc.sample_prior_predictive_distribution(2, gen);
+    auto table = abc.sample_prior_predictive_distribution(20, gen);
 
     auto ftds =  [](result_type const& a, result_type const& b){
       assert(a.size() == b.size());
