@@ -103,10 +103,10 @@ private:
     Params operator()(generator_type& gen) const
     {
       GenerativeModel::param_type params;
-      params.N0(std::uniform_int_distribution<>(1,15)(gen));
+      params.N0(std::uniform_int_distribution<>(3,15)(gen));
       params.k(std::uniform_int_distribution<>(1,500)(gen));
       params.r(std::uniform_real_distribution<>(1.0, 20.0)(gen));
-      params.a(std::uniform_real_distribution<>(10.0, 1000.0)(gen));
+      params.a(std::uniform_real_distribution<>(100.0, 1000.0)(gen));
       return params;
     }
   };
@@ -311,6 +311,85 @@ public:
     return FuzzyPartition<coord_type>(coeffs);
   }
 
+  unsigned int factorial(unsigned int n) const
+  {
+      if (n == 0)
+         return 1;
+      return n * factorial(n - 1);
+  }
+
+  int countP(int n, int k) const
+  {
+    // Base cases
+    if (n == 0 || k == 0 || k > n)
+       return 0;
+    if (k == 1 || k == n)
+        return 1;
+
+    // S(n+1, k) = k*S(n, k) + S(n, k-1)
+    return  k*countP(n-1, k) + countP(n-1, k-1);
+  }
+
+  int Bell(unsigned int n) const
+  {
+    int sum = 0;
+    for(unsigned int k = 1; k <= n; ++k)
+    {
+      sum += countP(n, k);
+    }
+    return sum;
+  }
+
+  double pdf(unsigned int k, unsigned int n) const
+  {
+    double a = static_cast<double>(factorial(k));
+    double b = static_cast<double>(Bell(n));
+    double e = 2.71828;
+    double p = std::pow(k,n)/(a*b*e);
+    return p;
+  }
+
+  template<typename Generator>
+  auto sample_partition(unsigned int n, Generator& gen) const
+  {
+    std::cout << "coucou" << std::endl;
+    std::vector<double> w;
+    w.resize(100);
+    w[0] = 0;
+    for(unsigned int k = 1; k < 100; ++k)
+    {
+      w[k] = pdf(k,n);
+    }
+    std::cout << "au revoir" << std::endl;
+    std::discrete_distribution<> dist(w.begin(), w.end());
+
+    unsigned int K = dist(gen);
+
+    std::uniform_int_distribution<> unif(1, K);
+    std::vector<unsigned int> Cs;
+    for(unsigned int i = 1; i <= n; ++i )
+    {
+      Cs.push_back(unif(gen));
+    }
+
+    std::map<unsigned int, unsigned int> ids;
+    std::vector<unsigned int> rgs;
+    rgs.resize(Cs.size());
+
+    unsigned int block_ID = 0;
+    for(unsigned int i = 0; i < Cs.size(); ++i){
+      auto it = ids.find(Cs[i]);
+      if( it != ids.end() ){
+        rgs[i] = it->second;
+      }else {
+        rgs[i] = block_ID;
+        ids[Cs[i]] = block_ID;
+        ++block_ID;
+      }
+    }
+    return RestrictedGrowthString(rgs);
+  }
+
   auto operator()(generator_type& gen, param_type const& param) const
   {
     simulator_type simulator(m_x0, m_t0, param.N0());
@@ -346,7 +425,7 @@ public:
       auto S_sim = fuzzifie(updated_forest, locus);
       //std::cout << "Simulated fuzzy Partiton:\n" << S_sim << std::endl;
       if(S_sim.nClusters() > 1 ){
-        std::uniform_int_distribution<unsigned int> dist(0, S_sim.nClusters()-1 );
+/*        std::uniform_int_distribution<unsigned int> dist(0, S_sim.nClusters()-1 );
         std::vector<unsigned int> v;
 
         for(auto const& it : S_sim.clusters()){
@@ -367,7 +446,11 @@ public:
             ++block_ID;
           }
         }
+
         S_sim.merge_clusters(RestrictedGrowthString(rgs));
+        */
+        S_sim.merge_clusters(sample_partition(S_sim.nClusters(), gen));
+
       }
       fps.push_back(S_sim);
     }
@@ -469,7 +552,7 @@ int main()
 
     auto abc = quetzal::abc::make_ABC(wrap, prior);
 
-    auto table = abc.sample_prior_predictive_distribution(1000, gen);
+    auto table = abc.sample_prior_predictive_distribution(2, gen);
 
     auto ftds =  [](result_type const& a, result_type const& b){
       assert(a.size() == b.size());
@@ -488,10 +571,10 @@ int main()
       auto const& p = it.param();
       auto ftds = it.data();
       buffer +=
-      "\t" + std::to_string(p.r()) +
+      std::to_string(p.r()) +
       "\t" + std::to_string(p.k()) +
       "\t" + std::to_string(p.N0()) +
-      "\t" + std::to_string(p.a());
+      "\t" + std::to_string(p.a()) + "\t";
 
       for(auto const& it : ftds){
         buffer += std::to_string(it) + "\t";
