@@ -1,5 +1,5 @@
 
-//  compiles with g++ -o3 main_simultaneous_loci.cpp -std=c++14 -Wall -I/usr/include/gdal  -L/usr/lib/ -lgdal
+//  compiles with g++ -o3 cross_val.cpp -std=c++14 -Wall -I/usr/include/gdal  -L/usr/lib/ -lgdal
 
 #include "../../../quetzal.h"
 #include "../../../modules/simulator/simulators.h"
@@ -103,7 +103,8 @@ private:
     Params operator()(generator_type& gen) const
     {
       GenerativeModel::param_type params;
-      params.N0(std::uniform_int_distribution<>(3,15)(gen));
+      // locus 11 has max diversity: 8
+      params.N0(8);
       params.k(std::uniform_int_distribution<>(1,500)(gen));
       params.r(std::uniform_real_distribution<>(1.0, 20.0)(gen));
       params.a(std::uniform_real_distribution<>(100.0, 1000.0)(gen));
@@ -314,85 +315,86 @@ public:
     return FuzzyPartition<coord_type>(coeffs);
   }
 
-  unsigned int factorial(unsigned int n) const
-  {
-      if (n == 0)
-         return 1;
-      return n * factorial(n - 1);
-  }
 
-  int countP(int n, int k) const
-  {
-    // Base cases
-    if (n == 0 || k == 0 || k > n)
-       return 0;
-    if (k == 1 || k == n)
-        return 1;
-
-    // S(n+1, k) = k*S(n, k) + S(n, k-1)
-    return  k*countP(n-1, k) + countP(n-1, k-1);
-  }
-
-  int Bell(unsigned int n) const
-  {
-    int sum = 0;
-    for(unsigned int k = 1; k <= n; ++k)
+    unsigned int factorial(unsigned int n) const
     {
-      sum += countP(n, k);
+        if (n == 0)
+           return 1;
+        return n * factorial(n - 1);
     }
-    return sum;
-  }
 
-  double pdf(unsigned int k, unsigned int n) const
-  {
-    double a = static_cast<double>(factorial(k));
-    double b = static_cast<double>(Bell(n));
-    double e = 2.71828;
-    double p = std::pow(k,n)/(a*b*e);
-    return p;
-  }
+    int countP(int n, int k) const
+    {
+      // Base cases
+      if (n == 0 || k == 0 || k > n)
+         return 0;
+      if (k == 1 || k == n)
+          return 1;
 
-  template<typename Generator>
-  auto sample_partition(unsigned int n, Generator& gen) const
-  {
-    if(m_distribs.find(n) == m_distribs.end()){
-      std::vector<double> w;
-      size_t size = 10000;
-      w.resize(size);
-      w[0] = 0;
-      for(unsigned int k = 1; k < size; ++k)
+      // S(n+1, k) = k*S(n, k) + S(n, k-1)
+      return  k*countP(n-1, k) + countP(n-1, k-1);
+    }
+
+    int Bell(unsigned int n) const
+    {
+      int sum = 0;
+      for(unsigned int k = 1; k <= n; ++k)
       {
-        w[k] = pdf(k,n);
+        sum += countP(n, k);
       }
-      m_distribs[n] = std::discrete_distribution<unsigned int>(w.begin(), w.end());
+      return sum;
     }
 
-    unsigned int K = m_distribs.at(n)(gen);
-
-    std::uniform_int_distribution<> unif(1, K);
-    std::vector<unsigned int> Cs;
-    for(unsigned int i = 1; i <= n; ++i )
+    double pdf(unsigned int k, unsigned int n) const
     {
-      Cs.push_back(unif(gen));
+      double a = static_cast<double>(factorial(k));
+      double b = static_cast<double>(Bell(n));
+      double e = 2.71828;
+      double p = std::pow(k,n)/(a*b*e);
+      return p;
     }
 
-    std::map<unsigned int, unsigned int> ids;
-    std::vector<unsigned int> rgs;
-    rgs.resize(Cs.size());
-
-    unsigned int block_ID = 0;
-    for(unsigned int i = 0; i < Cs.size(); ++i){
-      auto it = ids.find(Cs[i]);
-      if( it != ids.end() ){
-        rgs[i] = it->second;
-      }else {
-        rgs[i] = block_ID;
-        ids[Cs[i]] = block_ID;
-        ++block_ID;
+    template<typename Generator>
+    auto sample_partition(unsigned int n, Generator& gen) const
+    {
+      if(m_distribs.find(n) == m_distribs.end()){
+        std::vector<double> w;
+        size_t size = 10000;
+        w.resize(size);
+        w[0] = 0;
+        for(unsigned int k = 1; k < size; ++k)
+        {
+          w[k] = pdf(k,n);
+        }
+        m_distribs[n] = std::discrete_distribution<unsigned int>(w.begin(), w.end());
       }
+
+      unsigned int K = m_distribs.at(n)(gen);
+
+      std::uniform_int_distribution<> unif(1, K);
+      std::vector<unsigned int> Cs;
+      for(unsigned int i = 1; i <= n; ++i )
+      {
+        Cs.push_back(unif(gen));
+      }
+
+      std::map<unsigned int, unsigned int> ids;
+      std::vector<unsigned int> rgs;
+      rgs.resize(Cs.size());
+
+      unsigned int block_ID = 0;
+      for(unsigned int i = 0; i < Cs.size(); ++i){
+        auto it = ids.find(Cs[i]);
+        if( it != ids.end() ){
+          rgs[i] = it->second;
+        }else {
+          rgs[i] = block_ID;
+          ids[Cs[i]] = block_ID;
+          ++block_ID;
+        }
+      }
+      return RestrictedGrowthString(rgs);
     }
-    return RestrictedGrowthString(rgs);
-  }
 
   auto operator()(generator_type& gen, param_type const& param) const
   {
@@ -427,14 +429,15 @@ public:
     for(auto const& locus : m_dataset->loci() ){
       auto updated_forest = simulator.coalescence_process(m_forests.at(locus), history, merge_binop, gen);
       auto S_sim = fuzzifie(updated_forest, locus);
-
+      //std::cout << "Simulated fuzzy Partiton:\n" << S_sim << std::endl;
       if(S_sim.nClusters() > 1 )
       {
         S_sim.merge_clusters(sample_partition(S_sim.nClusters(), gen));
       }
-
       fps.push_back(S_sim);
     }
+
+    //std::cout << "Aggregated simulated fuzzy Partiton:\n" << S_sim << std::endl;
 
     return fps;
 
@@ -506,63 +509,69 @@ int main()
   GenerativeModel::loader_type loader;
   auto dataset = loader.read(file);
 
-  std::string headers = "r\tk\tN0\ta\t";
-  for(auto const& it : dataset.loci()){
-    headers += it + "\t";
+  GenerativeModel model(landscape, dataset);
+
+  model.introduction_point(GenerativeModel::coord_type(44.00, 0.20), 2004);
+  model.sampling_time(2008);
+
+  GenerativeModel::prior_type prior;
+  Wrapper wrap(model);
+
+  auto abc = quetzal::abc::make_ABC(wrap, prior);
+
+  auto table = abc.sample_prior_predictive_distribution(20000, gen);
+
+  GenerativeModel::param_type true_param;
+  true_param.N0(8);
+  true_param.k(250);
+  true_param.r(10);
+  true_param.a(500);
+
+  std::vector<result_type> pods;
+
+  for(int i = 0; i != 10; ++i){
+    try {
+      pods.push_back(model(gen, true_param));
+    }catch(...){
+      std::cerr << "one pod less" << std::endl;
+    }
   }
-  headers.pop_back();
-  std::cout << headers << std::endl;
 
+  // headers
+  std::cout << "pod\tr\tk\tN0\ta\t";
+  auto const& loci = dataset.loci();
+  std::copy(loci.begin(), loci.end(), std::ostream_iterator<std::string>(std::cout, "\t"));
+  std::cout << "\n";
 
-    //std::cout << "Locus : " << locus << std::endl;
-    GenerativeModel model(landscape, dataset);
-
-    result_type S_obs;
-    for(auto const& locus : dataset.loci()){
-      S_obs.push_back(model.fuzzifie_data(locus));
-    }
-  //  std::cout << "Observed Fuzzy Partition:\n" << S_obs << std::endl;
-
-    model.introduction_point(GenerativeModel::coord_type(44.00, 0.20), 2004);
-    model.sampling_time(2008);
-
-    GenerativeModel::prior_type prior;
-    Wrapper wrap(model);
-
-    auto abc = quetzal::abc::make_ABC(wrap, prior);
-
-    auto table = abc.sample_prior_predictive_distribution(20000, gen);
-
-    auto ftds =  [](result_type const& a, result_type const& b){
-      assert(a.size() == b.size());
-      std::vector<double> ftds;
-      for(unsigned int i = 0; i < a.size(); ++i){
-        ftds.push_back(a.at(i).fuzzy_transfer_distance(b.at(i)));
-      }
-      return ftds;
-    };
-
-    auto distances = table.compute_distance_to(S_obs, ftds);
-
-    std::string buffer;
-    for(auto const& it : distances)
+  auto distance = [](result_type const& o, result_type const& s){
+    assert(o.size() == s.size());
+    std::vector<double> v;
+    for(unsigned int i = 0; i < o.size(); ++ i )
     {
-      auto const& p = it.param();
-      auto ftds = it.data();
-      buffer +=
-      std::to_string(p.r()) +
-      "\t" + std::to_string(p.k()) +
-      "\t" + std::to_string(p.N0()) +
-      "\t" + std::to_string(p.a()) + "\t";
-
-      for(auto const& it : ftds){
-        buffer += std::to_string(it) + "\t";
-      }
-      buffer.pop_back();
-      buffer+= "\n";
+      v.push_back(o.at(i).fuzzy_transfer_distance(s.at(i)));
     }
+    return v;
+  };
 
-    std::cout << buffer;
+
+  unsigned int id = 0 ;
+  for(auto const& it : pods)
+  {
+    auto ftds = table.compute_distance_to(it, distance);
+    for(auto const& it2 : ftds)
+    {
+      auto const& p = it2.param();
+      std::cout << id << "\t"
+                << std::to_string(p.r()) << "\t"
+                << std::to_string(p.k()) << "\t"
+                << std::to_string(p.N0()) << "\t"
+                << std::to_string(p.a()) << "\t";
+
+      std::copy(it2.data().begin(), it2.data().end(), std::ostream_iterator<double>(std::cout, "\t"));
+      std::cout << "\n";
+    }
+    id += 1;
+  }
 
   return 0;
 }
