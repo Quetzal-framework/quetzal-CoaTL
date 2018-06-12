@@ -9,7 +9,9 @@
 ***************************************************************************/
 
 
-#include "../../SymmetricDistanceMatrix.h"
+#include "../../DistanceBasedLocationKernel.h"
+#include "../../dispersal.h"
+#include <random>
 
 //! [Example]
 
@@ -27,6 +29,18 @@ int main()
 	auto X = D.apply([](int a){return a <= 2;});
 	std::cout << X << std::endl;
 
+	using quetzal::demography::dispersal::Gaussian;
+	Gaussian::param_type p;
+	p.a(1.);
+	auto k = quetzal::demography::dispersal::DiscreteLocationKernelFactory::make<int, int, Gaussian>(D, p);
+
+	std::mt19937 rng;
+	int position = 1;
+	for(unsigned int i = 0; i < 10 ; ++i){
+		position = k(position, rng);
+		std::cout << position << " -> ";
+	}
+	
 	return 0;
 }
 

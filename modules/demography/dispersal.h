@@ -96,7 +96,7 @@ struct ExponentialPower
 
 };
 
-struct 2Dt
+struct TwoDt
 {
   class param_type{
     double _a;
@@ -134,7 +134,7 @@ struct InversePowerLaw
     double a = p.a();
     double b = p.b();
     assert(a > 0 && b > 2 && r >= 0);
-    return (b-2)(b-1)/(2*M_PI*a*a) * std::pow( (1 + r/a) , -b);
+    return (b-2)*(b-1)/(2*M_PI*a*a) * std::pow( (1 + r/a) , -b);
   }
 };
 

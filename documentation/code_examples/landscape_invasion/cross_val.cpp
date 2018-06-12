@@ -11,68 +11,6 @@
 #include <map>
 
 
-
-template<typename Space, typename Time, typename Value>
-std::ostream& operator <<(std::ostream& stream, const quetzal::demography::PopulationFlux<Space, Time, Value>& flows)
-{
-  for(auto const& it : flows){
-    stream << it.first.time << "\t" << it.first.from <<  "\t" << it.first.to << "\t" << it.second << "\n";
-  }
-    return stream;
-}
-
-template<typename Space, typename Tree>
-std::ostream& operator <<(std::ostream& stream, const quetzal::coalescence::Forest<Space, Tree>& forest)
-{
-  for(auto const& it1 : forest){
-    stream << it1.first << "\t -> \t [";
-    for(auto const& it2 : it1.second){
-      stream << it2 << " ";
-    }
-    stream << "]\n";
-  }
-    return stream;
-}
-
-struct Gaussian
-{
-  class param_type{
-    double _a;
-  public:
-    double a() const {return _a;}
-    void a(double value) { _a = value ;}
-  };
-
-  static double pdf(double r, param_type const& p)
-  {
-    double a = p.a();
-    assert(a > 0 && r >= 0);
-    return 1/(M_PI*a*a) * std::exp(-(r*r)/(a*a)) ;
-  }
-};
-
-struct Logistic
-{
-  class param_type{
-    double _a;
-    double _b;
-  public:
-    double a() const {return _a;}
-    double b() const {return _b;}
-    void a(double value) { _a = value;}
-    void b(double value) { _b = value;}
-  };
-
-  static double pdf(double r, param_type const& p)
-  {
-    double a = p.a();
-    double b = p.b();
-    assert(a > 0 && b >2 && r >= 0);
-    return (b/(2*M_PI*(a*a)*std::tgamma(2/b)*std::tgamma(1-2/b)))*(1/(1+(std::pow(r,b)/(std::pow(a,b)))));
-  }
-
-};
-
 class GenerativeModel{
 
 public:
@@ -119,9 +57,6 @@ public:
   using coord_type = typename landscape_type::coord_type;
 private:
 
-  using distance_dico_type = std::unordered_map<coord_type, std::vector<coord_type::km>>;
-  using law_type =  std::discrete_distribution<unsigned int>;
-
   // Demographic simulation types
   using N_type = unsigned int;
   using history_type = quetzal::demography::History<coord_type, time_type, N_type, quetzal::demography::Flow<coord_type, time_type, N_type>>;
@@ -152,10 +87,7 @@ private:
 
   const landscape_type & m_landscape;
   std::unique_ptr<dataset_type> m_dataset;
-  std::unique_ptr<std::vector<coord_type>> m_demes;
-  std::unordered_map<coord_type, unsigned int> m_reverse_demes;
   std::map<locus_ID_type, forest_type> m_forests;
-  distance_dico_type m_distances;
 
   // Initial distribution
   coord_type m_x0;
@@ -171,30 +103,6 @@ public:
   m_forests(make_forests(*m_dataset)),
   m_distances(compute_distances())
   {}
-
-  std::unordered_map<coord_type, unsigned int> make_reverse(std::vector<coord_type> const& demes) const {
-    unsigned int position = 0;
-    std::unordered_map<coord_type, unsigned int> m;
-    for(auto const& it : demes)
-    {
-      m.emplace(it, position);
-      ++position;
-    }
-    return m;
-  }
-
-  distance_dico_type compute_distances() const {
-  distance_dico_type map;
-    assert(m_demes->size() > 0);
-    for(auto const& x0 : *m_demes){
-      std::vector<coord_type::km> distances;
-      distances.reserve(m_demes->size());
-      auto unop = [x0](const auto & y){return x0.great_circle_distance_to(y);};
-      std::transform(m_demes->cbegin(), m_demes->cend(), std::back_inserter(distances), unop);
-      map.insert(std::make_pair(x0, std::move(distances)));
-    }
-    return map;
-  }
 
   std::unique_ptr<dataset_type> make_data(dataset_type const& data){
     auto ptr = std::make_unique<dataset_type>(data);
@@ -251,40 +159,6 @@ public:
       return poisson(gen);
     };
     return sim_N_tilde;
-  }
-
-  template<typename Kernel>
-  auto compute_weights(std::vector<coord_type::km> const& d, typename Kernel::param_type const& p) const
-  {
-    assert(d.size() > 0);
-    std::vector<double> weights;
-    weights.reserve(d.size());
-    std::transform(d.cbegin(), d.cend(), std::back_inserter(weights), [p](auto r){return Kernel::pdf(r, p);} );
-    return weights;
-  }
-
-  template<typename Kernel>
-  std::discrete_distribution<unsigned int>
-  make_distribution(coord_type const& x, typename Kernel::param_type const& p) const
-  {
-    auto const& d = m_distances.at(x);
-    assert(d.size() > 0);
-    auto w = compute_weights<Kernel>(d, p);
-    return std::discrete_distribution<unsigned int>(w.begin(), w.end());
-  }
-
-  coord_type sample(
-    quetzal::random::TransitionKernel<law_type> & kernel,
-    coord_type const& x,
-    param_type const& param,
-    generator_type & gen) const
-  {
-    auto id = m_reverse_demes.at(x);
-    if( ! kernel.has_distribution(id) )
-    {
-      kernel.set(id, make_distribution<Gaussian>(x, param));
-    }
-    return m_demes->at(kernel(gen, id));
   }
 
     auto fuzzifie(forest_type const& forest, locus_ID_type const& locus) const {
