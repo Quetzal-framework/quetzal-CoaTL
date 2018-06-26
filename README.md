@@ -1,4 +1,4 @@
-![quetzal logo](logo.png)
+![quetzal logo](documentation/logo.png)
 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Ask Me Anything !](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://GitHub.com/Naereen/ama)
 # Overview
@@ -13,7 +13,7 @@ However if you are working on developing some border case simulation model, or i
 
 Quetzal can help you doing so by offering atomic components (structures, algorithms, concepts) that can be easily reused to build a new program. The template mechanism allow to adapt them efficiently to each particular situation you may encounter !
 
-![library schema](schema_library.png)
+![library schema](documentation/schema_library.png)
 
 # Getting Started
 
