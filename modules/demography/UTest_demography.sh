@@ -20,4 +20,10 @@ echo -e "|--\t Flow_test....................................."
 ./UTest.sh
 echo -e "|--\t DONE \n|"
 
+cd ../SymmetricDistanceMatrix
+
+echo -e "|--\t SymmetricDistanceMatrix_test....................................."
+./UTest.sh
+echo -e "|--\t DONE \n|"
+
 echo -e "DONE\n"

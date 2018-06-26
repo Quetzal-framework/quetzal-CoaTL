@@ -13,7 +13,12 @@
 
 #include "../demography/History.h"
 #include "../coalescence/containers/Forest.h"
+#include "../coalescence/policies/merger.h"
 #include "../../random.h"
+#include "../geography/EnvironmentalQuantity.h"
+#include "../../genetics.h"
+
+#include <map>
 
 namespace quetzal {
 namespace simulators {
