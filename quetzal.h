@@ -23,3 +23,5 @@
 #include "abc.h"
 
 #include "genetics.h"
+
+#include "modules/simulator/simulators.h"

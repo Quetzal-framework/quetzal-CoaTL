@@ -106,7 +106,7 @@ auto make_symmetric_distance_matrix(std::vector<T> const& points, F f){
 }
 
 } // namespace dispersal
-} // namespace geography
+} // namespace demography
 } // namespace quetzal
 
 #endif
