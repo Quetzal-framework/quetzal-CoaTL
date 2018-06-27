@@ -2,7 +2,7 @@
 
 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/Becheler/quetzal/graphs/commit-activity) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-![Tests](https://img.shields.io/badge/tests-passed-green.svg)
+[![Tests](https://img.shields.io/badge/tests-passed-green.svg)](https://en.wikipedia.org/wiki/Unit_testing)
 
 # Overview
 
