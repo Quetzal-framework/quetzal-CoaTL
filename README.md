@@ -1,8 +1,10 @@
 ![quetzal logo](documentation/logo.png)
 
 
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/Becheler/quetzal/graphs/commit-activity) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Website becheler.github.io](https://img.shields.io/website-up-down-green-red/https/naereen.github.io.svg)](https://becheler.github.io/)
-[![Generic badge](https://img.shields.io/badge/<docs>-<up>-<BLUE>.svg)](https://becheler.github.io/quetzalAPI/html/index.html) ![Generic badge](https://img.shields.io/badge/<tests>-<passed>-<GREEN>.svg)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/Becheler/quetzal/graphs/commit-activity) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Website becheler.github.io](https://img.shields.io/website-up-down-green-red/https/naereen.github.io.svg)](https://becheler.github.io/)
+[![Generic badge](https://img.shields.io/badge/docs-up-blue.svg)](https://becheler.github.io/quetzalAPI/html/index.html)
+![Generic badge](https://img.shields.io/badge/tests-passed-green.svg)
 
 # Overview
 
