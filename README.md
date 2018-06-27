@@ -1,40 +1,70 @@
-# quetzal
-C++ template library for coalescence
+![quetzal logo](documentation/logo.png)
 
-# Environmental demogenetic model
 
-- AUTHOR : Arnaud Becheler, Florence Jornod
-- DATE   : 2016
-- LICENCE : This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.    
-- CONTACT : Arnaud.Becheler@egce.cnrs-gif.fr
-- WEBSITE : https://becheler.github.io/
-- DOCUMENTATION : https://becheler.github.io/quetzalAPI/html/index.html
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/Becheler/quetzal/graphs/commit-activity) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Tests](https://img.shields.io/badge/tests-passed-green.svg)](https://en.wikipedia.org/wiki/Unit_testing) [![Doc](https://img.shields.io/badge/doc-latest-blue.svg)](https://becheler.github.io/quetzalAPI/html/index.html)
+[![Website becheler.github.io](https://img.shields.io/website-up-down-green-red/https/becheler.github.io.svg)](https://becheler.github.io/)
 
-## Description
-Environmental demogenetic model for study of invasion processes. Since biological invasions are demographic process well-delimited in space and time, with reasonably short range, we can hope to learn about biological processes from genetic data, using coalescence-based approach and Approximate Bayesian Computation (ABC). ABC aims at simulating a dataset from a randomly drawn parametrized model, then computing a distance between the observed dataset and the simulation in order to reject the parameters if the distance is above a given threshold. We account here for migration pattern and heterogeneous environment.
+# Overview
 
-This github repository is basically the implementation of the probabilistic model of biological invasion developed during my PhD thesis under the direction of Stephane Dupas (laboratoire d'Evolution, Génomes, Comportements et Ecologie de Gif-sur-Yvette) and Camille Coron (Laboratoire de Mathématiques d'Orsay). It is mostly written in C++ but makes use of shell script for running unit tests and very few lines of C for GDAL API encapsulation.
+Quetzal-CoalTL is a C++ template scientific library for simulating gene genealogies in explicit landscapes.
 
-## Informations
+Infering populations ecological features (such as migration or growth patterns) from genetic datasets can be a complex task. Is some settings it is actually a mathematically intractable problem, so simulations methods are needed ! Approximate Bayesian Computation (ABC) can be used to update your knowledge about the processes shaping your genetic dataset by simulating the underlying gene genealogies (coalescents) in an explicit geographic space.
 
-The present project was tested with:
+Existing softwares like [SPLATCHE](http://splatche.com/), [simcoal2](http://cmpg.unibe.ch/software/simcoal2/), [egglib](http://mycor.nancy.inra.fr/egglib/index.html), or [msprime](http://msprime.readthedocs.io/en/stable/index.html) are very useful and user-friendly resources that should be used whenever possible to achieve this task.
 
-###### OS
+However if you are working on developing some border case simulation model, or if you are not comfortable with hypothesis of the existing software solutions, you will surely consider to build your own program.
+
+Quetzal can help you doing so by offering atomic components (structures, algorithms, concepts) that can be easily reused to build a new program. The template mechanism allow to adapt them efficiently to each particular situation you may encounter.
+
+![library schema](documentation/schema_library.png)
+
+# Getting Started
+
+## Installing
+
+Quetzal is a header-only library. Just clone the project and include the files you need.
+
+Have a look on the [documentation](https://becheler.github.io/quetzalAPI/html/index.html) to know more about quetzal modules and architecture !
+
+## Prerequisites
+
+### g++
+gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.2)
+
+###  Boost
+
+Install boost with: ```sudo apt-get install libboost-all-dev```
+
+### GDAL
+
+The Geospatial Data Abstraction Library (GDAL) is essential to represent a spatially explicit landscape!
+To install GDAL please visit: http://www.gdal.org/
+
+### OS
+
+The present project was tested with the following OS:
+
 - Distributor ID: Ubuntu
 - Description: Ubuntu 16.04.1 LTS
 - Release: 16.04
 - Codename: xenial
 
-###### g++
-gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.2)
-
-## Dependencies
-
-- Boost: ```sudo apt-get install libboost-all-dev```
-
 ## Test Driven Development
 For Test Driven Development, bash scripts allow to run all the tests of the module at once, ensuring they are no regression. The sub-modules tests can be run independently.
 Run the executable ```UTest<...>``` : this will recursively execute the test of the sub-modules.
+
+## Acknowledgements
+
+# Authors
+
+This github repository is basically the implementation of the probabilistic model of biological invasion developed during my PhD thesis under the direction of Stephane Dupas (laboratoire d'Evolution, Génomes, Comportements et Ecologie de Gif-sur-Yvette) and Camille Coron (Laboratoire de Mathématiques d'Orsay).
+
+- AUTHOR : Arnaud Becheler
+- DATE   : 2016
+- LICENCE : This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.    
+- CONTACT : Arnaud.Becheler@egce.cnrs-gif.fr
+- WEBSITE : https://becheler.github.io/
+- DOCUMENTATION : https://becheler.github.io/quetzalAPI/html/index.html
 
 ## Acknowledgements
 

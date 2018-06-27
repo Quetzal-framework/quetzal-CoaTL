@@ -15,7 +15,7 @@
 #include "GeographicCoordinates.h"
 #include "Resolution.h"
 #include "Extent.h"
-
+#include <string>
 #include <algorithm>
 
 namespace quetzal {
@@ -78,7 +78,12 @@ public:
   {
 
     if(times.size() != depth()){
-     throw std::runtime_error("the size of times argument should be equal to the depth of the given dataset");
+      std::string message("the size of times argument should be equal to the depth of the given dataset: size is ");
+      message += std::to_string(times.size());
+      message += ", should be ";
+      message += std::to_string(depth());
+      message += ".";
+      throw std::runtime_error(message.c_str());
     }
 
 		if( ! std::is_sorted(m_times.cbegin(), m_times.cend())){
@@ -255,7 +260,7 @@ private:
     std::vector<XY> v;
     for(unsigned int x = 0; x < width(); ++x){
       for( unsigned int y = 0; y < height(); ++y){
-        if(std::isfinite(read(x, y, bandID))){
+        if( read(x, y, bandID) > std::numeric_limits<value_type>::min() ){
           v.emplace_back(x,y);
         }
       }

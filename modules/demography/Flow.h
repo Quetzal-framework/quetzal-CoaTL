@@ -8,8 +8,8 @@
 *                                                                      *
 ***************************************************************************/
 
-#ifndef __POPULATION_FLUX_H_INCLUDED__
-#define __POPULATION_FLUX_H_INCLUDED__
+#ifndef __POPULATION_FLOW_H_INCLUDED__
+#define __POPULATION_FLOW_H_INCLUDED__
 
 #include <unordered_map>
 #include <cassert>
@@ -33,7 +33,7 @@ namespace demography {
  * \include demography/test/PopulationFlux/PopulationFlux_test.output
  */
 template<typename Space, typename Time, typename Value>
-class PopulationFlux
+class Flow
 {
 
 public:
@@ -54,7 +54,7 @@ public:
 	  * \section Output
 	  * \include demography/test/PopulationFlux/PopulationFlux_test.output
 		*/
-	PopulationFlux() = default;
+	Flow() = default;
 
 	/**
 	  * \brief Retrieves value of the flux from deme i to deme j at time t.
@@ -65,9 +65,8 @@ public:
 		*/
 	value_type flux_from_to(coord_type const& from, coord_type const& to, time_type t) const
 	{
-		auto key = std::make_tuple(t, from, to);
-		assert(m_flows.count(key) == 1);
-		return(m_flows.at(key));
+		assert(m_flows.find(key_type(t,from,to)) != m_flows.end());
+		return m_flows.at(key_type(t,from,to));
 	}
 
 	/**
@@ -78,34 +77,15 @@ public:
 	  * \section Output
 	  * \include demography/test/PopulationFlux/PopulationFlux_test.output
 		*/
-	value_type& flux_from_to(coord_type const& from, coord_type const& to, time_type t){
-		//return m_flux[t][to][from];
-		return m_flows[key_type(t, from, to)];
+	void set_flux_from_to(coord_type const& from, coord_type const& to, time_type t, value_type v){
+		m_flows[key_type(t, from, to)] = v;
+		m_reverse_flows[reverse_key_type(to, t)][from] = v;
 	}
 
-	/**
-	 * \brief Get population size at deme x at time t.
-	 * \remark operator allows for more expressive mathematical style in client code
-	 * \section Example
-	 * \snippet demography/test/PopulationSize/PopulationSize_test.cpp Example
-	 * \section Output
-	 * \include demography/test/PopulationSize/PopulationSize_test.output
-	 */
-	value_type& operator()(coord_type const& from,coord_type const& to, time_type const& t)
-	{
-		return flux_from_to(from,to,t);
-	}
 
-	/**
-	 * \brief Get population size at deme x at time t.
-	 * \remark operator allows for more expressive mathematical style in client code
-	 * \section Example
-	 * \snippet demography/test/PopulationSize/PopulationSize_test.cpp Example
-	 * \section Output
-	 * \include demography/test/PopulationSize/PopulationSize_test.output
-	 */
-	value_type operator()(coord_type const& from,coord_type const& to, time_type const& t) const {
-		return flux_from_to(from, to, t);
+	void add_to_flux_from_to(coord_type const& from, coord_type const& to, time_type t, value_type v){
+		m_flows[key_type(t, from, to)] += v;
+		m_reverse_flows[reverse_key_type(to, t)][from] += v;
 	}
 
 	/**
@@ -117,17 +97,10 @@ public:
 	  * \section Output
 	  * \include demography/test/PopulationFlux/PopulationFlux_test.output
 		*/
-	std::unordered_map<coord_type, value_type> flux_to(coord_type const& x, time_type t) const
+	std::unordered_map<coord_type, value_type> const & flux_to(coord_type const& x, time_type t) const
 	{
 		assert(flux_to_is_defined(x,t));
-		std::unordered_map<coord_type, value_type> result;
-		for(auto const& it : m_flows){
-			if(it.first.time == t && it.first.to == x)
-			{
-				result[it.first.from] = it.second;
-			}
-		}
-		return result;
+		return m_reverse_flows.at(reverse_key_type(x, t));
 	}
 
 	/**
@@ -140,11 +113,8 @@ public:
 		*/
 	bool flux_to_is_defined(coord_type const& to, time_type const& t) const
 	{
-		auto predicate = [t, to](auto const& it){
-			return (it.first.time == t && it.first.to == to);
-		};
-		auto it = std::find_if(m_flows.begin(), m_flows.end(), predicate);
-		return it != m_flows.end();
+		auto it = m_reverse_flows.find(reverse_key_type(to, t));
+		return it != m_reverse_flows.end();
 	}
 
 	auto begin() const
@@ -158,6 +128,33 @@ public:
 	}
 
 private:
+
+	struct reverse_key_type{
+		time_type time;
+		coord_type to;
+
+		reverse_key_type(coord_type const& x, time_type const& t):
+		time(t),
+		to(x)
+		{}
+
+		bool operator==(reverse_key_type const& other) const
+		{
+			return ( other.time == this->time && other.to == this->to );
+		}
+
+	};
+
+	struct reverse_key_hash : public std::unary_function<reverse_key_type, std::size_t>
+	{
+	 std::size_t operator()(const reverse_key_type& k) const
+	 {
+		 size_t res = 17;
+		 res = res * 31 + std::hash<time_type>()( k.time );
+		 res = res * 31 + std::hash<coord_type>()( k.to );
+		 return res;
+	 }
+	};
 
 	struct key_type
 	{
@@ -194,7 +191,9 @@ private:
 	};
 
 	using map_type = std::unordered_map<const key_type, value_type, key_hash>;
+	using reverse_flow_type =  std::unordered_map<const reverse_key_type, std::unordered_map<coord_type, value_type>, reverse_key_hash>;
 	map_type m_flows;
+	reverse_flow_type m_reverse_flows;
 
 };
 

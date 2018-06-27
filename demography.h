@@ -12,3 +12,9 @@
 #include "modules/demography/PopulationFlux.h"
 
 #include "modules/demography/PopulationSize.h"
+
+#include "modules/demography/History.h"
+
+#include "modules/demography/dispersal.h"
+
+#include "modules/demography/DistanceBasedLocationKernel.h"

@@ -27,6 +27,8 @@ class SpatialGeneticSample
 public:
 	using coord_type = Space;
 	using individual_type = Individual;
+	using locus_ID_type = typename individual_type::locus_ID_type;
+	using value_type = typename individual_type::allele_type::value_type;
 
 	SpatialGeneticSample( std::map<coord_type, std::vector<individual_type>> const& data) :
 	m_loci(extract_loci(data)),
@@ -93,6 +95,62 @@ public:
 		return m_dictionnary.at(x);
 	}
 
+	// TODO take ploidy into account
+	auto nb_gene_copies_discarding_NA(locus_ID_type const& locus) const
+	{
+		std::map<coord_type, std::map<value_type, unsigned int>> counts;
+		for(auto const& x : get_sampling_points())
+		{
+			for(auto const& individual : individuals_at(x))
+			{
+				auto alleles = individual.alleles(locus);
+
+				if(alleles.first.get_allelic_state() > 0)
+				{
+					counts[x][alleles.first.get_allelic_state()] += 1;
+				}
+
+				if(alleles.second.get_allelic_state() > 0)
+				{
+					counts[x][alleles.second.get_allelic_state()] += 1;
+				}
+			}
+		}
+		return counts;
+	}
+
+	unsigned int allelic_richness(locus_ID_type const& locus) const {
+		std::set<value_type> set;
+		auto freq = frequencies_discarding_NA(locus);
+		for(auto const& it1 : freq){
+			for(auto const& it2 : it1.second){
+				set.insert(it2.first);
+			}
+		}
+		return set.size();
+	}
+
+	auto frequencies_discarding_NA(locus_ID_type const& locus) const {
+
+		std::map<coord_type, std::map<value_type, double>> freq;
+
+		auto counts = nb_gene_copies_discarding_NA(locus);
+
+		auto get = [](auto const& a, auto const& b){return b.second;};
+
+		for(auto const& it1 : counts)
+		{
+			double sum = std::accumulate(it1.second.begin(), it1.second.end(), 0.0, get);
+			assert(sum > 0.0);
+
+			for(auto const& it2 : it1.second)
+			{
+				freq[it1.first][it2.first] = static_cast<double>(it2.second)/sum;
+			}
+		}
+		return freq;
+	}
+
 private:
 
 	std::set<typename individual_type::locus_ID_type> m_loci;
@@ -121,8 +179,8 @@ private:
 	}
 
 };
+}
+}
 
-}
-}
 
 #endif
