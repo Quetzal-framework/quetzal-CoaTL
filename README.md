@@ -3,6 +3,8 @@
 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/Becheler/quetzal/graphs/commit-activity) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Website becheler.github.io](https://img.shields.io/website-up-down-green-red/https/becheler.github.io.svg)](https://becheler.github.io/)
+![Tests](https://img.shields.io/badge/tests-passed-green.svg)]
+![Doc](https://img.shields.io/badge/doc-latest-blue.svg)]
 
 # Overview
 
@@ -16,7 +18,7 @@ However if you are working on developing some border case simulation model, or i
 
 Quetzal can help you doing so by offering atomic components (structures, algorithms, concepts) that can be easily reused to build a new program. The template mechanism allow to adapt them efficiently to each particular situation you may encounter.
 
-![library schema](documentationschema_library.png)
+![library schema](documentation/schema_library.png)
 
 # Getting Started
 
