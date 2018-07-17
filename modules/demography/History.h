@@ -33,8 +33,6 @@ namespace demography {
 
   }
 
-  // https://stackoverflow.com/questions/17056579/template-specialization-and-inheritance
-
   /*!
    * \brief Spatially explicit and forward-in time population history simulator.
    *
@@ -207,7 +205,37 @@ namespace demography {
   {
   };
 
-
+  /**
+  * \brief Demographic history simulated from an individual-based strategy (each individual is dispersed individually).
+  * \details $N$ is initialized by setting \f$N(.,t_0)\f$ the initial distribution
+  * of individuals across demes at the first time \f$t_0\f$.
+  * Typically for a biological invasion, this is restricted to the introduction site(s)
+  * with the number of introduced individuals. For endemic species, paleoclimatic
+  * distribution can be considered as starting points. The number of descendants
+  * \f$\tilde{N}_{x}^{t}\f$ in each deme is sampled in a distribution conditionally
+  * to a function of the the local density of parents. Non-overlapping generations
+  * are considered (the parents die just after reproduction). The children dispersal
+  * is done by sampling their destination in a multinomial law, that defines
+  * \f$ \Phi_{x,y}^t \f$ the number of individuals going from \f$x\f$ to \f$y\f$ at time \f$t\f$:
+  * \f[ (\Phi_{x,y}^{t})_{y\in \mathds{X}} \sim \mathcal{M}(\tilde{N}_{x}^{t},(m_{xy})_y) ~. \f]
+  * The term \f$ (m_{xy})_y \f$ denotes the parameters of the multinomial law,
+  * giving for an individual in \f$x\f$ its proability to go to \f$y\f$.
+  * These probabilities are given by the dispersal law with parameter \f$\theta\f$:
+  * \f[
+  * \begin{array}{cclcl}
+  * m  & : & \mathds{X}^2 & \mapsto & \mathds{R}_{+} \\
+  * &   &    (x,y)     & \mapsto & m^{\theta}(x,y)  ~. \\
+  * \end{array}
+  * \f]
+  * After migration, the number of individuals in deme \f$x\f$ is defined by the total number of individuals converging to \f$x\f$:
+  * \f[
+  * N(x,t+1) = \displaystyle \sum_{i\in\mathds{X}} \Phi_{i,x}^{t}~.
+  * \f\]
+  * \section Example
+  * \snippet demography/test/History/History_test.cpp Example
+  * \section Output
+  * \include demography/test/History/History_test.output
+  */
   template<typename Space, typename Time>
   class History<Space, Time, strategy::individual_based> : public CommonBaseHistory<Space, Time, strategy::individual_based>
   {
@@ -215,6 +243,21 @@ namespace demography {
 
   public:
 
+    /**
+      * \brief Expands the demographic database.
+      * \exception std::domain_error if the population goes extincted before the simulation is completed.
+      * \param nb_generations the number of generations to simulate
+      * \param sim_growth a functor simulating \f$\tilde{N}_{x}^{t}\f$.
+      * The functor can possibly internally use a reference on the population sizes database to represent the time dependency.
+      * The signature of the function should be equivalent to the following:
+      * `unsigned int sim_growth(Generator &gen, const coord_type &x, const time_type &t);`
+      * \param kernel a functor representing the dispersal location kernel that simulates the coordinate of the next location conditionally to the current location.
+      * The signature should be equivalent to `coord_type kernel(Generator &gen, const coord_type &x, const time_type &t);`
+      * \section Example
+      * \snippet demography/test/History/History_test.cpp Example
+      * \section Output
+      * \include demography/test/History/History_test.output
+      */
     template<typename Growth, typename Dispersal, typename Generator>
     void expand(unsigned int nb_generations, Growth sim_growth, Dispersal kernel, Generator& gen)
     {
@@ -253,6 +296,38 @@ namespace demography {
 
   };
 
+
+  /**
+  * \brief Demographic history where populations levels are assumed high enough to be considered as divisible masses.
+  * \details $N$ is initialized by setting \f$N(.,t_0)\f$ the initial distribution
+  * of individuals across demes at the first time \f$t_0\f$.
+  * Typically for a biological invasion, this is restricted to the introduction site(s)
+  * with the number of introduced individuals. For endemic species, paleoclimatic
+  * distribution can be considered as starting points. The number of descendants
+  * \f$\tilde{N}_{x}^{t}\f$ in each deme is sampled in a distribution conditionally
+  * to a function of the the local density of parents. Non-overlapping generations
+  * are considered (the parents die just after reproduction). The children dispersal
+  * is done by sampling their destination in a multinomial law, that defines
+  * \f$ \Phi_{x,y}^t \f$ the number of individuals going from \f$x\f$ to \f$y\f$ at time \f$t\f$:
+  * \f[ (\Phi_{x,y}^{t})_{y\in \mathds{X}} \sim \mathcal{M}(\tilde{N}_{x}^{t},(m_{xy})_y) ~. \f]
+  * The term \f$ (m_{xy})_y \f$ denotes the parameters of the multinomial law,
+  * giving for an individual in \f$x\f$ its probability to go to \f$y\f$.
+  * These probabilities are given by the dispersal law with parameter \f$\theta\f$:
+  * \f[
+  * \begin{array}{cclcl}
+  * m  & : & \mathds{X}^2 & \mapsto & \mathds{R}_{+} \\
+  * &   &    (x,y)     & \mapsto & m^{\theta}(x,y)  ~. \\
+  * \end{array}
+  * \f]
+  * After migration, the number of individuals in deme \f$x\f$ is defined by the total number of individuals converging to \f$x\f$:
+  * \f[
+  * N(x,t+1) = \displaystyle \sum_{i\in\mathds{X}} \Phi_{i,x}^{t}~.
+  * \f\]
+  * \section Example
+  * \snippet demography/test/History/History_test.cpp Example
+  * \section Output
+  * \include demography/test/History/History_test.output
+  */
   template<typename Space, typename Time>
   class History<Space, Time, strategy::mass_based> : public CommonBaseHistory<Space, Time, strategy::mass_based>{
 
@@ -260,6 +335,46 @@ namespace demography {
 
 public:
 
+  /**
+    * \brief Expands the demographic database,
+    * \details $N$ is initialized by setting \f$N(.,t_0)\f$ the initial distribution
+    * of individuals across demes at the first time \f$t_0\f$.
+    * Typically for a biological invasion, this is restricted to the introduction site(s)
+    * with the number of introduced individuals. For endemic species, paleoclimatic
+    * distribution can be considered as starting points. The number of descendants
+    * \f$\tilde{N}_{x}^{t}\f$ in each deme is sampled in a distribution conditionally
+    * to a function of the the local density of parents. Non-overlapping generations
+    * are considered (the parents die just after reproduction). The children dispersal
+    * is done by sampling their destination in a multinomial law, that defines
+    * \f$ \Phi_{x,y}^t \f$ the population flow going from \f$x\f$ to \f$y\f$ at time \f$t\f$:
+    * \f[ (\Phi_{x,y}^{t})_{y\in \mathds{X}} = (\tilde{N}_{x}^{t}*m_{xy})_{y\in \mathds{X}} ~. \f]
+    * The term \f$ m_{xy} \f$ denotes the parameters of the transition kernel,
+    * giving for an individual in \f$x\f$ its probability to go to \f$y\f$.
+    * These probabilities are given by the dispersal law with parameter \f$\theta\f$:
+    * \f[
+    * \begin{array}{cclcl}
+    * m  & : & \mathds{X}^2 & \mapsto & \mathds{R}_{+} \\
+    * &   &    (x,y)     & \mapsto & m^{\theta}(x,y)  ~. \\
+    * \end{array}
+    * \f]
+    * After migration, the population size in deme \f$x\f$ is defined by the sum of population flows converging to \f$x\f$:
+    * \f[
+    * N(x,t+1) = \displaystyle \sum_{i\in\mathds{X}} \Phi_{i,x}^{t}~.
+    * \f\]
+    * \param nb_generations the number of generations to simulate
+    * \param sim_growth a functor simulating \f$\tilde{N}_{x}^{t}\f$.
+    * The functor can possibly internally use a reference on the population sizes database to represent the time dependency.
+    * The signature of the function should be equivalent to the following:
+    * `double sim_growth(Generator &gen, const coord_type &x, const time_type &t);`
+    * \param kernel a functor representing the dispersal location kernel that simulates the coordinate of the next location conditionally to the current location.
+    * The signature should be equivalent to `coord_type kernel(Generator &gen, const coord_type &x, const time_type &t);`.
+    * The expression `kernel.support(time_type const& t)` must be valid and return an iterable container of geographic coordinates
+    * indicating the transition kernel state space at time \f$t\f$.
+    * \section Example
+    * \snippet demography/test/History/History_test.cpp Example
+    * \section Output
+    * \include demography/test/History/History_test.output
+    */
     template<typename Growth, typename Dispersal, typename Generator>
     void expand(unsigned int nb_generations, Growth sim_growth, Dispersal kernel, Generator& gen)
     {
