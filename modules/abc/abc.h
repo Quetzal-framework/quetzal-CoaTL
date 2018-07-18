@@ -118,7 +118,7 @@ namespace abc {
 
 
 	public:
-		
+
 	 /**
 		 * \brief Constructor
 		 * \param m the model to be used
@@ -268,7 +268,7 @@ namespace abc {
 			*
 			* \param N the number of parameters to accept.
 			* \param eta a function \f$\eta\f$ on \f$D\f$ defining a statistics (sufficient or not).
-			* \param g a random generator that must meet the requirements of [UniformRandomBitGenerator](http://en.cppreference.com/w/cpp/concept/UniformRandomBitGenerator) concept.
+			* \param g a random generator that must meet the requirements of [UniformRandomBitGenerator](https://en.cppreference.com/w/cpp/named_req/UniformRandomBitGenerator) concept.
 			*
 			* \return a ReferenceTable
 			*

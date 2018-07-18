@@ -39,7 +39,7 @@ public:
 	//! \typedef time type
 	using time_type = Time;
 
-	//! \typedf space type
+	//! \typedef space type
 	using coord_type = Space;
 
 	//! \typedef type of the population size variable
