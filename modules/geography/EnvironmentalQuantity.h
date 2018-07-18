@@ -15,8 +15,10 @@
 #include "GeographicCoordinates.h"
 #include "Resolution.h"
 #include "Extent.h"
+
 #include <string>
 #include <algorithm>
+#include <numeric>      // std::iota
 
 namespace quetzal {
 namespace geography {
