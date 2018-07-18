@@ -12,8 +12,9 @@
 #define __DISTANCE_BASED_TRANSITION_KERNEL_H_INCLUDED__
 
 #include "SymmetricDistanceMatrix.h"
-#include <unordered_map>
 
+#include <unordered_map>
+#include <random>        // std::discrete_distribution
 namespace quetzal{
 namespace demography {
 namespace dispersal {
