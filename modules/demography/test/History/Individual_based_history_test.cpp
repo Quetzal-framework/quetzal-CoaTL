@@ -47,6 +47,8 @@ int main(){
 
 	std::cout << "Population flows from x to y at time t:\n\n" << history.flows() << std::endl;
 
+	std::cout << "\nKnowing an indiviual was in deme 1 in 2021, where could it have been just before dispersal ?\n";
+	std::cout << history.backward_kernel(1, 2021, gen) << std::endl;
 	return 0;
 }
 
