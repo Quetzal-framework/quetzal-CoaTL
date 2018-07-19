@@ -21,7 +21,7 @@ struct kernel {
 	using coord_type = int;
 	using time_type = unsigned int;
 
-	std::vector<coord_type> support(time_type t)
+	std::vector<coord_type> state_space(time_type t)
 	{
 		return {-1, 1};
 	}

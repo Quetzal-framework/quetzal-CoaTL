@@ -415,7 +415,7 @@ public:
         for(auto x : this->m_sizes->definition_space(t) )
         {
           auto N_tilde = sim_growth(gen, x, t);
-          for(auto y : kernel.support(t) )
+          for(auto y : kernel.state_space(t) )
           {
             auto m = kernel(x, y, t);
             this->m_flows->set_flux_from_to(x, y, t, m*N_tilde);
