@@ -23,10 +23,18 @@ namespace demography {
 
   namespace strategy {
 
+    /*!
+     * \brief Traits class for individual based demographic history simulation.
+     * \details Suited for small number of individuals in the landscape (small populations).
+     */
     struct individual_based {
       using value_type = unsigned int;
     };
 
+    /*!
+     * \brief Traits class for high levels of populations simulation
+     * \details Considers the populations as divisible masses.
+     */
     struct mass_based {
       using value_type = double;
     };
@@ -127,7 +135,10 @@ namespace demography {
           * \section Output
           * \include demography/test/History/History_test.output
           */
-        flow_type const& flows() const {return *m_flows;}
+        flow_type const& flows() const
+        {
+          return *m_flows;
+        }
 
         /**
           * \brief Read and write access to the demographic flows database
@@ -136,16 +147,23 @@ namespace demography {
           * \section Output
           * \include demography/test/History/History_test.output
           */
-        flow_type & flows() {return *m_flows;}
+        flow_type & flows()
+        {
+          return *m_flows;
+        }
 
         /**
-          * \brief Read-only access to the demographic sizes database
+          * \brief Read-only access to the demographic sizes database.
+          * \remark Can be used for composition into time dependent growth functions.
           * \section Example
           * \snippet demography/test/History/History_test.cpp Example
           * \section Output
           * \include demography/test/History/History_test.output
           */
-        N_type const& N() const {return *m_sizes;}
+        const N_type & pop_sizes() const
+        {
+          return *m_sizes;
+        }
 
         /**
           * \brief Read-and-write access to the demographic sizes database
@@ -154,7 +172,10 @@ namespace demography {
           * \section Output
           * \include demography/test/History/History_test.output
           */
-        N_type & N() {return *m_sizes;}
+        N_type & pop_sizes()
+        {
+          return *m_sizes;
+        }
 
         /**
           * \brief First time recorded in the foward-in-time database history.
@@ -163,7 +184,10 @@ namespace demography {
           * \section Output
           * \include demography/test/History/History_test.output
           */
-        time_type const& first_time() const {return m_times.front(); }
+        time_type const& first_time() const
+        {
+          return m_times.front();
+        }
 
         /**
           * \brief Last time recorded in the foward-in-time database history.
@@ -172,7 +196,10 @@ namespace demography {
           * \section Output
           * \include demography/test/History/History_test.output
           */
-        time_type const& last_time() const {return m_times.back(); }
+        time_type const& last_time() const
+        {
+          return m_times.back();
+        }
 
         /**
           * \brief Samples from the backward-in-time dispersal kernel from the demographic flows database.

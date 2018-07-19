@@ -16,14 +16,50 @@
 #include <random>
 #include <map>
 
-template<typename Space, typename Time, typename Value>
-std::ostream& operator <<(std::ostream& stream, const quetzal::demography::Flow<Space, Time, Value>& flows)
-{
-  for(auto const& it : flows){
-    stream << it.first.time << "\t" << it.first.from <<  "\t" << it.first.to << "\t" << it.second << "\n";
-  }
-    return stream;
-}
+struct kernel {
+
+	using coord_type = int;
+	using time_type = unsigned int;
+
+	std::vector<coord_type> support(time_type t)
+	{
+		return {-1, 1};
+	}
+
+	double operator()(coord_type x, coord_type y, time_type t)
+	{
+		return 0.5; // 1/2 probability to change deme
+	}
+
+};
+
+int main(){
+
+	using coord_type = int;
+	using time_type = unsigned int;
+	using generator_type = std::mt19937;
+
+  // Initialize history: 10 individuals introduced at x=1, t=2018
+	using quetzal::demography::strategy::mass_based;
+	quetzal::demography::History<coord_type, time_type, mass_based> history(1, 2018, 10);
+
+  // Growth function
+  auto N = std::cref(history.pop_sizes());
+  auto growth = [N](auto& gen, coord_type x, time_type t){ return 2*N(x,t) ; };
+
+  // Number of non-overlapping generations for the demographic simulation
+  unsigned int nb_generations = 3;
+
+  // Random number generation
+  generator_type gen;
+
+	kernel k;
+
+	history.expand(nb_generations, growth, k, gen);
+
+	std::cout << "Population flows from x to y at time t:\n\n" << history.flows() << std::endl;
+
+/*
 
 template<typename coord_type, typename time_type>
 struct big_pop_kernel{
@@ -37,29 +73,6 @@ struct big_pop_kernel{
     return(support);
   }
 };
-
-
-int main(){
-
-  // Small populations
-	using generator_type = std::mt19937;
-	using coord_type = int;
-	using time_type = unsigned int;
-
-	generator_type gen;
-
-	auto stochastic_dispersal = [](auto& gen, coord_type x, time_type t){
-	 std::bernoulli_distribution d(0.5);
-	 if(d(gen)){ x = -x; }
-	 return x;
-  };
-
- 	auto growth = [](auto& gen, coord_type x, time_type t){return static_cast<unsigned int>(10);};
-
-	quetzal::demography::History<coord_type, time_type, quetzal::demography::strategy::individual_based> history(1, 2000, 10);
-	history.expand(3, growth, stochastic_dispersal, gen);
-
-	std::cout << "Small populations\n" << history.flows() << std::endl;
 
 	std::map<coord_type, unsigned int> counts;
 	for(unsigned int i = 0; i < 1000; ++i)
@@ -78,7 +91,7 @@ int main(){
   other_history.expand(3, growth, pdf, gen);
 
   std::cout << "Big populations\n" << other_history.flows() << std::endl;
-
+*/
 	return 0;
 }
 
