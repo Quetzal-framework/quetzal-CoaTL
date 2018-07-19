@@ -172,6 +172,7 @@ public:
     return forest;
   }
 
+
   IDDC_model_1(coord_type x_0, time_type t_0, N_type N_0) : m_history(x_0, t_0, N_0){}
 
   auto const& size_history() const

@@ -15,13 +15,14 @@
 #include <cassert>
 #include <functional>
 #include <algorithm>
+#include <iostream>     // output operator
 
 namespace quetzal{
 namespace demography {
 
 
 /*!
- * \brief Defines a template class to store the effective migrants number across a landscape along time.
+ * \brief Defines a template class to store the demographic flows number across a landscape along time.
  *
  * \tparam Space    Demes identifiers.
  * \tparam Time     EqualityComparable, CopyConstructible.
@@ -165,6 +166,14 @@ public:
 		return m_flows.cbegin();
 	}
 
+	/**
+	  * \brief Read-only access to the migration history.
+		* \return An iterator on an object of type map_type
+		* \section Example
+	  * \snippet demography/test/Flow/Flow_test.cpp Example
+	  * \section Output
+	  * \include demography/test/Flow/Flow_test.output
+		*/
 	auto end() const
 	{
 		return m_flows.cend();
@@ -226,6 +235,18 @@ private:
 	reverse_flow_type m_reverse_flows;
 
 };
+
+
+template<typename Space, typename Time, typename Value>
+std::ostream& operator <<(std::ostream& stream, const Flow<Space, Time, Value>& flows)
+{
+	stream << "time" <<  "\t" << "from" <<  "\t"  << "to" << "\t" << "flow" << "\n";
+  for(auto const& it : flows){
+    stream << it.first.time << "\t" << it.first.from <<  "\t" << it.first.to << "\t" << it.second << "\n";
+  }
+    return stream;
+}
+
 
 } // demography
 } // quetzal

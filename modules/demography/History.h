@@ -23,10 +23,20 @@ namespace demography {
 
   namespace strategy {
 
+    /*!
+     * \brief Traits class for individual based demographic history simulation.
+     * \details Suited for small number of individuals in the landscape (small populations).
+     * \ingroup demography
+     */
     struct individual_based {
       using value_type = unsigned int;
     };
 
+    /*!
+     * \brief Traits class for high levels of populations simulation
+     * \details Considers the populations as divisible masses.
+     * \ingroup demography
+     */
     struct mass_based {
       using value_type = double;
     };
@@ -127,7 +137,10 @@ namespace demography {
           * \section Output
           * \include demography/test/History/History_test.output
           */
-        flow_type const& flows() const {return *m_flows;}
+        flow_type const& flows() const
+        {
+          return *m_flows;
+        }
 
         /**
           * \brief Read and write access to the demographic flows database
@@ -136,16 +149,23 @@ namespace demography {
           * \section Output
           * \include demography/test/History/History_test.output
           */
-        flow_type & flows() {return *m_flows;}
+        flow_type & flows()
+        {
+          return *m_flows;
+        }
 
         /**
-          * \brief Read-only access to the demographic sizes database
+          * \brief Read-only access to the demographic sizes database.
+          * \remark Can be used for composition into time dependent growth functions.
           * \section Example
           * \snippet demography/test/History/History_test.cpp Example
           * \section Output
           * \include demography/test/History/History_test.output
           */
-        N_type const& N() const {return *m_sizes;}
+        const N_type & pop_sizes() const
+        {
+          return *m_sizes;
+        }
 
         /**
           * \brief Read-and-write access to the demographic sizes database
@@ -154,7 +174,10 @@ namespace demography {
           * \section Output
           * \include demography/test/History/History_test.output
           */
-        N_type & N() {return *m_sizes;}
+        N_type & pop_sizes()
+        {
+          return *m_sizes;
+        }
 
         /**
           * \brief First time recorded in the foward-in-time database history.
@@ -163,7 +186,10 @@ namespace demography {
           * \section Output
           * \include demography/test/History/History_test.output
           */
-        time_type const& first_time() const {return m_times.front(); }
+        time_type const& first_time() const
+        {
+          return m_times.front();
+        }
 
         /**
           * \brief Last time recorded in the foward-in-time database history.
@@ -172,15 +198,22 @@ namespace demography {
           * \section Output
           * \include demography/test/History/History_test.output
           */
-        time_type const& last_time() const {return m_times.back(); }
+        time_type const& last_time() const
+        {
+          return m_times.back();
+        }
 
         /**
-          * \brief Samples from the backward-in-time dispersal kernel from the demographic flows database.
-          * The returned coordinate object will basically answer the question: when I am in \f$x\f$ at time \f$t\f$, where could I have been at \f$t-1\f$ ?
-          * Let \f$ \mathds{X} \f$ be the geographic space and \f$\Phi_{x,y}^t\f$ be the number of individuals going
-          * from coordinate \f$x \in \mathds{X}\f$ to coordinate \f$y\f$ at time \f$t\f$.
-          * Knowing that a child node \f$c\f$ is found in \f$ j \in \mathds{X} \f$, the probability for its parent
-          * \f$p\f$ to be in \f$i\in \mathds{X}\f$ is: \f$ P( p \in i ~|~ e \in j) = \frac{\Phi_{i, j}^{t}}{ \sum_{k} \Phi_{k, j}^{t} } ~.\f$
+          * \brief Samples a coordinate from the backward-in-time transition matrix
+          *
+          * \details The transition matrix is computed from the demographic flows
+          * database. The returned coordinate object will basically answer the question:
+          * when an individual is found in \f$x\f$ at time \f$t\f$, where could it
+          * have been at time \f$t-1\f$ ?
+          * Let \f$ X \f$ be the geographic space and \f$\Phi_{x,y}^t\f$ be the number of individuals going
+          * from coordinate \f$x \in X \f$ to coordinate \f$y\f$ at time \f$t\f$.
+          * Knowing that a child node \f$c\f$ is found in \f$ j \in X \f$, the probability for its parent
+          * \f$p\f$ to be in \f$i\in X \f$ is: \f$ P( p \in i ~|~ e \in j) = \frac{\Phi_{i, j}^{t}}{ \sum_{k} \Phi_{k, j}^{t} } ~.\f$
           * \section Example
           * \snippet demography/test/History/History_test.cpp Example
           * \section Output
@@ -200,6 +233,9 @@ namespace demography {
 
   };
 
+  /**
+  * \brief Demographic history simulated from an individual-based strategy (each individual is dispersed individually).
+  */
   template<typename Space, typename Time, typename Strategy>
   class History : public CommonBaseHistory<Space, Time, Strategy>
   {
@@ -217,19 +253,19 @@ namespace demography {
   * are considered (the parents die just after reproduction). The children dispersal
   * is done by sampling their destination in a multinomial law, that defines
   * \f$ \Phi_{x,y}^t \f$ the number of individuals going from \f$x\f$ to \f$y\f$ at time \f$t\f$:
-  * \f[ (\Phi_{x,y}^{t})_{y\in \mathds{X}} \sim \mathcal{M}(\tilde{N}_{x}^{t},(m_{xy})_y) ~. \f]
+  * \f[ (\Phi_{x,y}^{t})_{y\in X} \sim \mathcal{M}(\tilde{N}_{x}^{t},(m_{xy})_y) ~. \f]
   * The term \f$ (m_{xy})_y \f$ denotes the parameters of the multinomial law,
   * giving for an individual in \f$x\f$ its proability to go to \f$y\f$.
   * These probabilities are given by the dispersal law with parameter \f$\theta\f$:
   * \f[
   * \begin{array}{cclcl}
-  * m  & : & \mathds{X}^2 & \mapsto & \mathds{R}_{+} \\
+  * m  & : &  X^2 & \mapsto & R_{+} \\
   * &   &    (x,y)     & \mapsto & m^{\theta}(x,y)  ~. \\
   * \end{array}
   * \f]
   * After migration, the number of individuals in deme \f$x\f$ is defined by the total number of individuals converging to \f$x\f$:
   * \f[
-  * N(x,t+1) = \displaystyle \sum_{i\in\mathds{X}} \Phi_{i,x}^{t}~.
+  * N(x,t+1) = \displaystyle \sum_{i\in X} \Phi_{i,x}^{t}~.
   * \f\]
   * \section Example
   * \snippet demography/test/History/History_test.cpp Example
@@ -309,19 +345,19 @@ namespace demography {
   * are considered (the parents die just after reproduction). The children dispersal
   * is done by sampling their destination in a multinomial law, that defines
   * \f$ \Phi_{x,y}^t \f$ the number of individuals going from \f$x\f$ to \f$y\f$ at time \f$t\f$:
-  * \f[ (\Phi_{x,y}^{t})_{y\in \mathds{X}} \sim \mathcal{M}(\tilde{N}_{x}^{t},(m_{xy})_y) ~. \f]
+  * \f[ (\Phi_{x,y}^{t})_{y\in  X} \sim \mathcal{M}(\tilde{N}_{x}^{t},(m_{xy})_y) ~. \f]
   * The term \f$ (m_{xy})_y \f$ denotes the parameters of the multinomial law,
   * giving for an individual in \f$x\f$ its probability to go to \f$y\f$.
   * These probabilities are given by the dispersal law with parameter \f$\theta\f$:
   * \f[
   * \begin{array}{cclcl}
-  * m  & : & \mathds{X}^2 & \mapsto & \mathds{R}_{+} \\
+  * m  & : &  X^2 & \mapsto & R_{+} \\
   * &   &    (x,y)     & \mapsto & m^{\theta}(x,y)  ~. \\
   * \end{array}
   * \f]
   * After migration, the number of individuals in deme \f$x\f$ is defined by the total number of individuals converging to \f$x\f$:
   * \f[
-  * N(x,t+1) = \displaystyle \sum_{i\in\mathds{X}} \Phi_{i,x}^{t}~.
+  * N(x,t+1) = \displaystyle \sum_{i\in X} \Phi_{i,x}^{t}~.
   * \f\]
   * \section Example
   * \snippet demography/test/History/History_test.cpp Example
@@ -347,19 +383,19 @@ public:
     * are considered (the parents die just after reproduction). The children dispersal
     * is done by sampling their destination in a multinomial law, that defines
     * \f$ \Phi_{x,y}^t \f$ the population flow going from \f$x\f$ to \f$y\f$ at time \f$t\f$:
-    * \f[ (\Phi_{x,y}^{t})_{y\in \mathds{X}} = (\tilde{N}_{x}^{t}*m_{xy})_{y\in \mathds{X}} ~. \f]
+    * \f[ (\Phi_{x,y}^{t})_{y\in  X} = (\tilde{N}_{x}^{t}*m_{xy})_{y\in  X} ~. \f]
     * The term \f$ m_{xy} \f$ denotes the parameters of the transition kernel,
     * giving for an individual in \f$x\f$ its probability to go to \f$y\f$.
     * These probabilities are given by the dispersal law with parameter \f$\theta\f$:
     * \f[
     * \begin{array}{cclcl}
-    * m  & : & \mathds{X}^2 & \mapsto & \mathds{R}_{+} \\
+    * m  & : &  X^2 & \mapsto & R_{+} \\
     * &   &    (x,y)     & \mapsto & m^{\theta}(x,y)  ~. \\
     * \end{array}
     * \f]
     * After migration, the population size in deme \f$x\f$ is defined by the sum of population flows converging to \f$x\f$:
     * \f[
-    * N(x,t+1) = \displaystyle \sum_{i\in\mathds{X}} \Phi_{i,x}^{t}~.
+    * N(x,t+1) = \displaystyle \sum_{i\in X} \Phi_{i,x}^{t}~.
     * \f\]
     * \param nb_generations the number of generations to simulate
     * \param sim_growth a functor simulating \f$\tilde{N}_{x}^{t}\f$.
@@ -388,7 +424,7 @@ public:
         for(auto x : this->m_sizes->definition_space(t) )
         {
           auto N_tilde = sim_growth(gen, x, t);
-          for(auto y : kernel.support(t) )
+          for(auto y : kernel.state_space(t) )
           {
             auto m = kernel(x, y, t);
             this->m_flows->set_flux_from_to(x, y, t, m*N_tilde);
