@@ -22,7 +22,7 @@ namespace demography {
 
 
 /*!
- * \brief Defines a template class to store the effective migrants number across a landscape along time.
+ * \brief Defines a template class to store the demographic flows number across a landscape along time.
  *
  * \tparam Space    Demes identifiers.
  * \tparam Time     EqualityComparable, CopyConstructible.
