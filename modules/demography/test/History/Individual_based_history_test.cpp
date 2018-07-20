@@ -18,6 +18,8 @@
 
 int main(){
 
+	// Here we simulate a population expansion through a 2 demes landscape.
+	
 	using coord_type = int;
 	using time_type = unsigned int;
 	using generator_type = std::mt19937;
@@ -36,7 +38,7 @@ int main(){
 	// Random number generation
 	generator_type gen;
 
-	// Stochastic dispersal kernel
+	// Stochastic dispersal kernel, which geographic sampling space is {-1 , 1}
 	auto sample_location = [](auto& gen, coord_type x, time_type t){
 	 std::bernoulli_distribution d(0.5);
 	 if(d(gen)){ x = -x; }

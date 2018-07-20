@@ -16,32 +16,34 @@
 #include <random>
 #include <map>
 
+// Here we simulate a population expansion through a 2 demes landscape.
+
 struct transition_matrix {
 
-	using coord_type = int;
+	using coord_type = std::string;
 	using time_type = unsigned int;
 
 	std::vector<coord_type> state_space(time_type t)
 	{
-		return {-1, 1};
+		return {"Paris", "Ann Arbor"};
 	}
 
 	double operator()(coord_type x, coord_type y, time_type t)
 	{
-		return 0.5; // 1/2 probability to change deme
+		return 0.5; // 1/2 probability to change of location
 	}
 
 };
 
 int main(){
 
-	using coord_type = int;
+	using coord_type = std::string;
 	using time_type = unsigned int;
 	using generator_type = std::mt19937;
 
 	// Initialize history: 10 individuals introduced at x=1, t=2018
 	using quetzal::demography::strategy::mass_based;
-	quetzal::demography::History<coord_type, time_type, mass_based> history(1, 2018, 10);
+	quetzal::demography::History<coord_type, time_type, mass_based> history("Paris", 2018, 10);
 
 	// Growth function
 	auto N = std::cref(history.pop_sizes());
@@ -59,8 +61,8 @@ int main(){
 
 	std::cout << "Population flows from x to y at time t:\n\n" << history.flows() << std::endl;
 
-	std::cout << "\nKnowing an indiviual was in deme 1 in 2021, where could it have been just before dispersal ?\n";
-	std::cout << "Answer: it could have been in deme " << history.backward_kernel(1, 2021, gen) << std::endl;
+	std::cout << "\nKnowing an indiviual was in Paris in 2021, where could it have been just before dispersal ?\n";
+	std::cout << "Answer: it could have been in " << history.backward_kernel("Paris", 2021, gen) << std::endl;
 
 	return 0;
 }

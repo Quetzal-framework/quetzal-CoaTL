@@ -1,17 +1,17 @@
 Population flows from x to y at time t:
 
 time	from	to	flow
-2020	1	1	20
-2020	1	-1	20
-2020	-1	-1	20
-2018	1	1	10
-2020	-1	1	20
-2019	1	-1	10
-2019	-1	-1	10
-2018	1	-1	10
-2019	-1	1	10
-2019	1	1	10
+2020	Ann Arbor	Ann Arbor	20
+2020	Paris	Paris	20
+2018	Paris	Ann Arbor	10
+2020	Ann Arbor	Paris	20
+2019	Ann Arbor	Ann Arbor	10
+2020	Paris	Ann Arbor	20
+2019	Paris	Paris	10
+2018	Paris	Paris	10
+2019	Paris	Ann Arbor	10
+2019	Ann Arbor	Paris	10
 
 
-Knowing an indiviual was in deme 1 in 2021, where could it have been just before dispersal ?
-Answer: it could have been in deme 1
+Knowing an indiviual was in Paris in 2021, where could it have been just before dispersal ?
+Answer: it could have been in Ann Arbor
