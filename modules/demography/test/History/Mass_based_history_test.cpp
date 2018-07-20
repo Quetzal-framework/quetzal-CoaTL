@@ -39,19 +39,19 @@ int main(){
 	using time_type = unsigned int;
 	using generator_type = std::mt19937;
 
-  // Initialize history: 10 individuals introduced at x=1, t=2018
+	// Initialize history: 10 individuals introduced at x=1, t=2018
 	using quetzal::demography::strategy::mass_based;
 	quetzal::demography::History<coord_type, time_type, mass_based> history(1, 2018, 10);
 
-  // Growth function
-  auto N = std::cref(history.pop_sizes());
-  auto growth = [N](auto& gen, coord_type x, time_type t){ return 2*N(x,t) ; };
+	// Growth function
+	auto N = std::cref(history.pop_sizes());
+	auto growth = [N](auto& gen, coord_type x, time_type t){ return 2*N(x,t) ; };
 
-  // Number of non-overlapping generations for the demographic simulation
-  unsigned int nb_generations = 3;
+	// Number of non-overlapping generations for the demographic simulation
+	unsigned int nb_generations = 3;
 
-  // Random number generation
-  generator_type gen;
+	// Random number generation
+	generator_type gen;
 
 	transition_matrix M;
 
@@ -60,7 +60,7 @@ int main(){
 	std::cout << "Population flows from x to y at time t:\n\n" << history.flows() << std::endl;
 
 	std::cout << "\nKnowing an indiviual was in deme 1 in 2021, where could it have been just before dispersal ?\n";
-	std::cout << history.backward_kernel(1, 2021, gen) << std::endl;
+	std::cout << "Answer: it could have been in deme " << history.backward_kernel(1, 2021, gen) << std::endl;
 
 	return 0;
 }

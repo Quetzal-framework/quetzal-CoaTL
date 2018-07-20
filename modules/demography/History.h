@@ -24,19 +24,99 @@ namespace demography {
   namespace strategy {
 
     /*!
-     * \brief Traits class for individual based demographic history simulation.
-     * \details Suited for small number of individuals in the landscape (small populations).
+     * \brief Traits class for individual based demographic history simulation, strategy suited for small number of individuals in the landscape (small populations).
      * \ingroup demography
+     *
+     * \details Simulate the demographic history with an individual-based strategy: each
+     * individual is dispersed individually.
+     * \par History Initialization:
+     * The population size history\f$N\f$ is initialized by setting \f$N(.,t_0)\f$, the initial distribution of individuals across demes at the
+     * first time of the history \f$t_0\f$. Typically for a biological invasion,
+     * this is restricted to the introduction site(s) with the number of introduced
+     * individuals. For endemic species, paleoclimatic distribution can be considered
+     * as starting points.
+     *
+     * \par Growth:
+     * The offspring number \f$ \tilde{N}_{x}^{t} \f$ in each deme is freely defined by the user. It can for example be
+     * sampled in a distribution conditionally to a function of the local density of
+     * parents. Non-overlapping generations are considered (the parents die just after reproduction).
+     *
+     * \par Dispersal:
+     *  The children dispersal is done by sampling their destination in a multinomial
+     *  law, that defines \f$ \Phi_{x,y}^t \f$, the number of individuals going from
+     *  \f$x\f$ to \f$y\f$ at time \f$t\f$:
+     *
+     * \f[ (\Phi_{x,y}^{t})_{y\in X} \sim \mathcal{M}(\tilde{N}_{x}^{t},(m_{xy})_y) ~. \f]
+     *
+     * The term \f$ (m_{xy})_y \f$ denotes the parameters of the multinomial law,
+     * giving for an individual in \f$x\f$ its proability to go to \f$y\f$.
+     * These probabilities are given by the dispersal law with parameter \f$\theta\f$:
+     *
+     * \f[
+     * \begin{array}{cclcl}
+     * m  & : &  X^2 & \mapsto & R_{+} \\
+     * &   &    (x,y)     & \mapsto & m^{\theta}(x,y)  ~. \\
+     * \end{array}
+     * \f]
+     *
+     * After migration, the number of individuals in deme \f$x\f$ is defined by
+     * the total number of individuals converging to \f$x\f$:
+     *
+     * \f[
+     * N(x,t+1) = \displaystyle \sum_{i\in X} \Phi_{i,x}^{t}~.
+     * \f]
+     * \section Example
+     * \snippet demography/test/History/Individual_based_history_test.cpp Example
+     * \section Output
+     * \include demography/test/History/Individual_based_history_test.output
      */
     struct individual_based {
       using value_type = unsigned int;
     };
 
     /*!
-     * \brief Traits class for high levels of populations simulation
-     * \details Considers the populations as divisible masses.
-     * \ingroup demography
-     */
+    * \brief Traits class for simulating the demographic history of importnat masses of populations.
+    * \ingroup demography
+    *
+    * \details Simulate the demographic history by considering that populations of individuals are divisible masses,
+    *  leading to faster simulations.
+    *
+    * \par Intialization:
+    * \f$N\f$ is initialized by setting \f$N(.,t_0)\f$ the initial distribution
+    * of individuals across demes at the first time \f$t_0\f$.
+    * Typically for a biological invasion, this is restricted to the introduction site(s)
+    * with the number of introduced individuals. For endemic species, paleoclimatic
+    * distribution can be considered as starting points.
+    *
+    * \par Growth:
+    * The offspring number \f$\tilde{N}_{x}^{t}\f$ in each deme is freely defined by
+    * the user. For example, it can be sampled in a distribution conditionally
+    * to a function of the local density of parents. Non-overlapping generations
+    * are considered (the parents die just after reproduction).
+    *
+    * \par dispersal
+    * The children dispersal is done by splitting the population masses according
+    * to their migration probabilities, defining
+    * \f$ \Phi_{x,y}^t \f$, the population flow going from \f$x\f$ to \f$y\f$ at time \f$t\f$:
+    * \f[ (\Phi_{x,y}^{t})_{y\in  X} = (\tilde{N}_{x}^{t} \times m_{xy})_{y\in  X} ~. \f]
+    * The term \f$ m_{xy} \f$ denotes the parameters of the transition kernel,
+    * giving for an individual in \f$x\f$ its probability to go to \f$y\f$.
+    * These probabilities are given by the dispersal law with parameter \f$\theta\f$:
+    * \f[
+    * \begin{array}{cclcl}
+    * m  & : &  X^2 & \mapsto & R_{+} \\
+    * &   &    (x,y)     & \mapsto & m^{\theta}(x,y)  ~. \\
+    * \end{array}
+    * \f]
+    * After migration, the population size in deme \f$x\f$ is defined by the sum of population flows converging to \f$x\f$:
+    * \f[
+    * N(x,t+1) = \displaystyle \sum_{i\in X} \Phi_{i,x}^{t}~.
+    * \f]
+    * \section Example
+    * \snippet demography/test/History/Mass_based_history_test.cpp Example
+    * \section Output
+    * \include demography/test/History/Mass_based_history_test.output
+    */
     struct mass_based {
       using value_type = double;
     };
@@ -46,14 +126,11 @@ namespace demography {
   /*!
    * \brief Spatially explicit and forward-in time population history simulator.
    *
+   * \details Is used as an implemtation base of the specialized simulation strategies.
    * \tparam Space    Demes identifiers.
    * \tparam Time     EqualityComparable, CopyConstructible.
    * \tparam Strategy    Strategy use for simulating populations dynamics
    * \ingroup demography
-   * \section Example
-   * \snippet demography/test/History/History_test.cpp Example
-   * \section Output
-   * \include demography/test/History/History_test.output
    */
   template<typename Space, typename Time, typename Strategy>
   class CommonBaseHistory {
@@ -132,10 +209,6 @@ namespace demography {
 
         /**
           * \brief Read-only access to the demographic flows database
-          * \section Example
-          * \snippet demography/test/History/History_test.cpp Example
-          * \section Output
-          * \include demography/test/History/History_test.output
           */
         flow_type const& flows() const
         {
@@ -144,10 +217,6 @@ namespace demography {
 
         /**
           * \brief Read and write access to the demographic flows database
-          * \section Example
-          * \snippet demography/test/History/History_test.cpp Example
-          * \section Output
-          * \include demography/test/History/History_test.output
           */
         flow_type & flows()
         {
@@ -157,10 +226,6 @@ namespace demography {
         /**
           * \brief Read-only access to the demographic sizes database.
           * \remark Can be used for composition into time dependent growth functions.
-          * \section Example
-          * \snippet demography/test/History/History_test.cpp Example
-          * \section Output
-          * \include demography/test/History/History_test.output
           */
         const N_type & pop_sizes() const
         {
@@ -169,10 +234,6 @@ namespace demography {
 
         /**
           * \brief Read-and-write access to the demographic sizes database
-          * \section Example
-          * \snippet demography/test/History/History_test.cpp Example
-          * \section Output
-          * \include demography/test/History/History_test.output
           */
         N_type & pop_sizes()
         {
@@ -181,10 +242,6 @@ namespace demography {
 
         /**
           * \brief First time recorded in the foward-in-time database history.
-          * \section Example
-          * \snippet demography/test/History/History_test.cpp Example
-          * \section Output
-          * \include demography/test/History/History_test.output
           */
         time_type const& first_time() const
         {
@@ -193,10 +250,6 @@ namespace demography {
 
         /**
           * \brief Last time recorded in the foward-in-time database history.
-          * \section Example
-          * \snippet demography/test/History/History_test.cpp Example
-          * \section Output
-          * \include demography/test/History/History_test.output
           */
         time_type const& last_time() const
         {
@@ -215,9 +268,9 @@ namespace demography {
           * Knowing that a child node \f$c\f$ is found in \f$ j \in X \f$, the probability for its parent
           * \f$p\f$ to be in \f$i\in X \f$ is: \f$ P( p \in i ~|~ e \in j) = \frac{\Phi_{i, j}^{t}}{ \sum_{k} \Phi_{k, j}^{t} } ~.\f$
           * \section Example
-          * \snippet demography/test/History/History_test.cpp Example
+          * \snippet demography/test/History/Mass_based_history_test.cpp Example
           * \section Output
-          * \include demography/test/History/History_test.output
+          * \include demography/test/History/Mass_based_history_test.output
           */
         template<typename Generator>
         coord_type backward_kernel(coord_type const& x, time_type t, Generator& gen)
@@ -243,16 +296,16 @@ namespace demography {
 
   /**
   * \brief Demographic history simulated from an individual-based strategy (each individual is dispersed individually).
-  * \details $N$ is initialized by setting \f$N(.,t_0)\f$ the initial distribution
-  * of individuals across demes at the first time \f$t_0\f$.
+  * \details $N$ is initialized by setting \f$ N(.,t_0) \f$ the initial distribution
+  * of individuals across demes at the first time \f$ t_0 \f$.
   * Typically for a biological invasion, this is restricted to the introduction site(s)
   * with the number of introduced individuals. For endemic species, paleoclimatic
   * distribution can be considered as starting points. The number of descendants
-  * \f$\tilde{N}_{x}^{t}\f$ in each deme is sampled in a distribution conditionally
+  * \f$ \tilde{N}_{x}^{t} \f$ in each deme is sampled in a distribution conditionally
   * to a function of the the local density of parents. Non-overlapping generations
   * are considered (the parents die just after reproduction). The children dispersal
   * is done by sampling their destination in a multinomial law, that defines
-  * \f$ \Phi_{x,y}^t \f$ the number of individuals going from \f$x\f$ to \f$y\f$ at time \f$t\f$:
+  * \f$ \Phi_{x,y}^t \f$ the number of individuals going from \f$ x \f$ to \f$ y \f$ at time \f$ t \f$:
   * \f[ (\Phi_{x,y}^{t})_{y\in X} \sim \mathcal{M}(\tilde{N}_{x}^{t},(m_{xy})_y) ~. \f]
   * The term \f$ (m_{xy})_y \f$ denotes the parameters of the multinomial law,
   * giving for an individual in \f$x\f$ its proability to go to \f$y\f$.
