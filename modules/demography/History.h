@@ -94,7 +94,7 @@ namespace demography {
     * to a function of the local density of parents. Non-overlapping generations
     * are considered (the parents die just after reproduction).
     *
-    * \par dispersal
+    * \par Dispersal:
     * The children dispersal is done by splitting the population masses according
     * to their migration probabilities, defining
     * \f$ \Phi_{x,y}^t \f$, the population flow going from \f$x\f$ to \f$y\f$ at time \f$t\f$:
@@ -124,16 +124,19 @@ namespace demography {
   }
 
   /*!
-   * \brief Spatially explicit and forward-in time population history simulator.
+   * \brief Base class for spatially explicit and forward-in time population history simulators.
    *
-   * \details Is used as an implemtation base of the specialized simulation strategies.
    * \tparam Space    Demes identifiers.
    * \tparam Time     EqualityComparable, CopyConstructible.
    * \tparam Strategy    Strategy use for simulating populations dynamics
+   *
+   * \details Is used as an implementation base of the specialized simulation strategies.
+   *
    * \ingroup demography
+   *
    */
   template<typename Space, typename Time, typename Strategy>
-  class CommonBaseHistory {
+  class BaseHistory {
 
       public:
 
@@ -144,7 +147,7 @@ namespace demography {
         using flow_type = Flow<Space, Time, typename strategy_type::value_type>;
 
         //! \typedef type of the population size database
-        using N_type = PopulationSize<Space, Time, typename strategy_type::value_type>;
+        using pop_sizes_type = PopulationSize<Space, Time, typename strategy_type::value_type>;
 
         //! \typedef space type
         using coord_type = Space;
@@ -161,7 +164,7 @@ namespace demography {
       protected:
 
         // Need to be accessed by the expand method
-        std::unique_ptr<N_type> m_sizes;
+        std::unique_ptr<pop_sizes_type> m_sizes;
         std::unique_ptr<flow_type> m_flows;
         std::vector<Time> m_times;
         std::unique_ptr<backward_kernel_type> m_kernel;
@@ -198,8 +201,8 @@ namespace demography {
           * \section Output
           * \include demography/test/History/History_test.output
           */
-        CommonBaseHistory(coord_type const& x, time_type const& t, typename strategy_type::value_type N):
-        m_sizes(std::make_unique<N_type>()),
+        BaseHistory(coord_type const& x, time_type const& t, typename strategy_type::value_type N):
+        m_sizes(std::make_unique<pop_sizes_type>()),
         m_flows(std::make_unique<flow_type>()),
         m_kernel(std::make_unique<backward_kernel_type>())
         {
@@ -227,7 +230,7 @@ namespace demography {
           * \brief Read-only access to the demographic sizes database.
           * \remark Can be used for composition into time dependent growth functions.
           */
-        const N_type & pop_sizes() const
+        const pop_sizes_type & pop_sizes() const
         {
           return *m_sizes;
         }
@@ -235,7 +238,7 @@ namespace demography {
         /**
           * \brief Read-and-write access to the demographic sizes database
           */
-        N_type & pop_sizes()
+        pop_sizes_type & pop_sizes()
         {
           return *m_sizes;
         }
@@ -288,14 +291,29 @@ namespace demography {
 
   /**
   * \brief Demographic history simulated from an individual-based strategy (each individual is dispersed individually).
+  *
+  * \tparam Space    Demes identifiers.
+  * \tparam Time     EqualityComparable, CopyConstructible.
+  * \tparam Strategy    Strategy used for simulating populations dynamics
+  *
+  * \details Inherit from this class and specialize the Strategy template parameter
+  *
+  * \ingroup demography
+  *
   */
   template<typename Space, typename Time, typename Strategy>
-  class History : public CommonBaseHistory<Space, Time, Strategy>
+  class History : public BaseHistory<Space, Time, Strategy>
   {
   };
 
   /**
   * \brief Demographic history simulated from an individual-based strategy (each individual is dispersed individually).
+  *
+  * \tparam Space    Demes identifiers.
+  * \tparam Time     EqualityComparable, CopyConstructible.
+  *
+  * \ingroup demography
+  *
   * \details $N$ is initialized by setting \f$ N(.,t_0) \f$ the initial distribution
   * of individuals across demes at the first time \f$ t_0 \f$.
   * Typically for a biological invasion, this is restricted to the introduction site(s)
@@ -320,28 +338,37 @@ namespace demography {
   * \f[
   * N(x,t+1) = \displaystyle \sum_{i\in X} \Phi_{i,x}^{t}~.
   * \f\]
+  *
   * \section Example
   * \snippet demography/test/History/History_test.cpp Example
   * \section Output
   * \include demography/test/History/History_test.output
   */
   template<typename Space, typename Time>
-  class History<Space, Time, strategy::individual_based> : public CommonBaseHistory<Space, Time, strategy::individual_based>
+  class History<Space, Time, strategy::individual_based> : public BaseHistory<Space, Time, strategy::individual_based>
   {
-    using CommonBaseHistory<Space, Time, strategy::individual_based>::CommonBaseHistory;
+    using BaseHistory<Space, Time, strategy::individual_based>::BaseHistory;
 
   public:
 
     /**
       * \brief Expands the demographic database.
+      *
+      * \tparam Space    Demes identifiers.
+      * \tparam Time     EqualityComparable, CopyConstructible.
+      *
       * \exception std::domain_error if the population goes extincted before the simulation is completed.
+      *
       * \param nb_generations the number of generations to simulate
       * \param sim_growth a functor simulating \f$\tilde{N}_{x}^{t}\f$.
+      *
       * The functor can possibly internally use a reference on the population sizes database to represent the time dependency.
       * The signature of the function should be equivalent to the following:
       * `unsigned int sim_growth(Generator &gen, const coord_type &x, const time_type &t);`
+      *
       * \param kernel a functor representing the dispersal location kernel that simulates the coordinate of the next location conditionally to the current location.
       * The signature should be equivalent to `coord_type kernel(Generator &gen, const coord_type &x, const time_type &t);`
+      *
       * \section Example
       * \snippet demography/test/History/History_test.cpp Example
       * \section Output
@@ -388,6 +415,12 @@ namespace demography {
 
   /**
   * \brief Demographic history where populations levels are assumed high enough to be considered as divisible masses.
+  *
+  *  \ingroup demography
+  *
+  * \tparam Space    Demes identifiers.
+  * \tparam Time     EqualityComparable, CopyConstructible.
+  *
   * \details $N$ is initialized by setting \f$N(.,t_0)\f$ the initial distribution
   * of individuals across demes at the first time \f$t_0\f$.
   * Typically for a biological invasion, this is restricted to the introduction site(s)
@@ -412,15 +445,16 @@ namespace demography {
   * \f[
   * N(x,t+1) = \displaystyle \sum_{i\in X} \Phi_{i,x}^{t}~.
   * \f\]
+  *
   * \section Example
   * \snippet demography/test/History/History_test.cpp Example
   * \section Output
   * \include demography/test/History/History_test.output
   */
   template<typename Space, typename Time>
-  class History<Space, Time, strategy::mass_based> : public CommonBaseHistory<Space, Time, strategy::mass_based>{
+  class History<Space, Time, strategy::mass_based> : public BaseHistory<Space, Time, strategy::mass_based>{
 
-    using CommonBaseHistory<Space, Time, strategy::mass_based>::CommonBaseHistory;
+    using BaseHistory<Space, Time, strategy::mass_based>::BaseHistory;
 
 public:
 
