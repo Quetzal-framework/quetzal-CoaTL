@@ -120,7 +120,7 @@ namespace demography {
     * \include demography/test/History/Mass_based_history_test.output
     */
     struct mass_based {
-      using value_type = double;
+      using value_type = unsigned int;
     };
 
   }
@@ -167,7 +167,9 @@ namespace demography {
         std::unique_ptr<pop_sizes_type> m_sizes;
         std::unique_ptr<flow_type> m_flows;
         std::vector<Time> m_times;
-        std::unique_ptr<backward_kernel_type> m_kernel;
+
+        // mutable because sampling backward kernel can update the state
+        mutable std::unique_ptr<backward_kernel_type> m_kernel;
 
       private:
 
@@ -278,7 +280,7 @@ namespace demography {
           * \include demography/test/History/Mass_based_history_test.output
           */
         template<typename Generator>
-        coord_type backward_kernel(coord_type const& x, time_type t, Generator& gen)
+        coord_type backward_kernel(coord_type const& x, time_type t, Generator& gen) const
         {
           --t;
           assert(m_flows->flux_to_is_defined(x,t));
@@ -424,7 +426,7 @@ public:
     *        can possibly internally use a reference on the population sizes database
     *        to represent the time dependency. The signature of the function should
     *        be equivalent to the following:
-    *        `double sim_growth(V &gen, const coord_type &x, const time_type &t);`.
+    *        `unsigned int sim_growth(V &gen, const coord_type &x, const time_type &t);`.
     * @param kernel a functor representing the dispersal transition matrix.
     *               The signature of the function should be equivalent to
     *               `double kernel( const coord_type & x, const coord_type &y, const time_type &t);`
@@ -450,16 +452,34 @@ public:
 
         this->m_times.push_back(t_next);
 
+        unsigned int landscape_individuals_count = 0;
+
         for(auto x : this->m_sizes->definition_space(t) )
         {
           auto N_tilde = sim_growth(gen, x, t);
+
           for(auto y : kernel.state_space(t) )
           {
             auto m = kernel(x, y, t);
-            this->m_flows->set_flux_from_to(x, y, t, m*N_tilde);
-            this->m_sizes->operator()(y, t_next) += m*N_tilde;
+            assert(m >= 0.0 && m <= 1.0);
+
+            auto nb_migrants = m * static_cast<double>(N_tilde);
+            landscape_individuals_count += nb_migrants;
+
+            if(nb_migrants >= 1)
+            {
+              this->m_flows->set_flux_from_to(x, y, t, nb_migrants);
+              this->m_sizes->operator()(y, t_next) += nb_migrants;
+            }
+
           }
         }
+
+        if(landscape_individuals_count == 0)
+        {
+          throw std::domain_error("Landscape populations went extinct before sampling");
+        }
+
       }
     }
 

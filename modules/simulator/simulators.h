@@ -22,19 +22,13 @@ namespace quetzal {
   namespace simulators {
 
     template<typename Strategy>
-    struct Policy
-    {
-      using merger_type = coalescence::BinaryMerger;
-
-      template<typename ... Args>
-      constexpr void check_consistency(Args&&...) noexcept
-      {}
-
-      };
+    class Policy
+    {};
 
       template<>
-      struct Policy<quetzal::demography::strategy::individual_based>
+      class Policy<quetzal::demography::strategy::individual_based>
       {
+      public:
         using merger_type = coalescence::SimultaneousMultipleMerger<coalescence::occupancy_spectrum::on_the_fly>;
 
         template<typename T, typename U>
@@ -43,18 +37,37 @@ namespace quetzal {
           auto t = history.last_time();
           for(auto const& it : forest.positions())
           {
-            if( !history.N().is_defined(it, t) || history.pop_sizes(it, t) < forest.nb_trees(it))
+            if( !history.pop_sizes().is_defined(it, t) || history.pop_sizes()(it, t) < forest.nb_trees(it))
             {
               throw std::domain_error("Simulated population size inferior to sampling size");
             }
           }
         }
+      };
 
+      template<>
+      class Policy<quetzal::demography::strategy::mass_based>
+      {
+      public:
+        using merger_type = coalescence::BinaryMerger;
+
+        template<typename T, typename U>
+        void check_consistency(T const& history, U const& forest) const
+        {
+          auto t = history.last_time();
+          for(auto const& it : forest.positions())
+          {
+            if( !history.pop_sizes().is_defined(it, t) || history.pop_sizes()(it, t) < forest.nb_trees(it))
+            {
+              throw std::domain_error("Simulated population size inferior to sampling size");
+            }
+          }
+        }
       };
 
 
       template<typename Space, typename Time, typename Strategy>
-      class Spatially_explicit_coalescence_simulator : public Policy<Strategy>
+      class SpatiallyExplicitCoalescenceSimulator : public Policy<Strategy>
       {
 
       public:
@@ -69,7 +82,7 @@ namespace quetzal {
 
       private:
 
-        using history_type = demography::History<coord_type, time_type, N_value_type, strategy_type>;
+        using history_type = demography::History<coord_type, time_type, strategy_type>;
         history_type m_history;
 
       public:
@@ -82,7 +95,7 @@ namespace quetzal {
         * \param t_0 Initialization time.
         * \param N_0 Population size at intialization
         */
-        IDDC_model_1(coord_type x_0, time_type t_0, N_value_type N_0) : m_history(x_0, t_0, N_0){}
+        SpatiallyExplicitCoalescenceSimulator(coord_type x_0, time_type t_0, N_value_type N_0) : m_history(x_0, t_0, N_0){}
 
         /**
         * \brief Read-only access to the population size history.
@@ -96,14 +109,14 @@ namespace quetzal {
         * time_type const& t)' giving the population size in deme \f$x\f$ at time \f$t\f$.
         *
         */
-        auto size_history() const noexcept
+        auto pop_size_history() const noexcept
         {
           return std::cref(m_history.pop_sizes());
         }
 
 
         template<typename Generator, typename Growth, typename Dispersal>
-        void expand_demography(Growth growth, Dispersal kernel, time_type t_sampling, Generator& gen ) noexcept
+        void expand_demography(time_type t_sampling, Growth growth, Dispersal kernel, Generator& gen ) noexcept
         {
           time_type nb_generations = t_sampling - m_history.first_time() ;
           m_history.expand(nb_generations, growth, kernel, gen);
@@ -114,24 +127,24 @@ namespace quetzal {
         forest_type<Tree> coalesce_along_history(forest_type<Tree> forest, F binary_op, Generator& gen) const
         {
 
-          TestPolicy<strategy_type>::check_consistency(m_history, forest);
+        this->check_consistency(m_history, forest);
 
-          auto t = history.last_time();
+          auto t = m_history.last_time();
 
-          while( (forest.nb_trees() > 1) && (t > history.first_time()) )
+          while( (forest.nb_trees() > 1) && (t > m_history.first_time()) )
           {
-            may_coalesce_colocated(forest, t, binary_op, gen);
-            auto new_forest = migrate_backward(forest, t, gen);
+            may_coalesce_colocated(forest, t, gen, binary_op);
+            migrate_backward(forest, t, gen);
             --t;
           }
-          may_coalesce_colocated(new_forest, t, binary_op, gen);
-          return new_forest;
+          may_coalesce_colocated(forest, t, gen, binary_op);
+          return forest;
         }
 
       private:
 
         template<typename Generator, typename Forest>
-        Forest migrate_backward(Forest & forest, time_type t, Generator& gen) const noexcept
+        void migrate_backward(Forest & forest, time_type t, Generator& gen) const noexcept
         {
           Forest new_forest;
           for(auto const it : forest)
@@ -140,14 +153,14 @@ namespace quetzal {
             new_forest.insert(m_history.backward_kernel(x, t, gen), it.second);
           }
           assert(forest.nb_trees() == new_forest.nb_trees());
-          return new_forest;
+          forest = new_forest;
         }
 
 
         template<typename Generator, typename Tree, typename F>
         void may_coalesce_colocated(forest_type<Tree>& forest, time_type const& t, Generator& gen, F binop) const noexcept
         {
-          auto N = size_history();
+          auto N = pop_size_history();
 
           for(auto const & x : forest.positions())
           {
@@ -160,7 +173,7 @@ namespace quetzal {
             }
 
             if(v.size() >= 2){
-              auto last = merger_type::merge(v.begin(), v.end(), N(x, t), Tree(), binop, gen );
+              auto last = Policy<strategy_type>::merger_type::merge(v.begin(), v.end(), N(x, t), Tree(), binop, gen );
               forest.erase(x);
               for(auto it = v.begin(); it != last; ++it){
                 forest.insert(x, *it);
@@ -168,7 +181,7 @@ namespace quetzal {
             }
           }
         }
-        
+
       };
 
 

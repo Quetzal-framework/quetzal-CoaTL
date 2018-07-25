@@ -68,7 +68,7 @@ namespace coalescence {
     static auto
     merge(BidirectionalIterator first, BidirectionalIterator last, unsigned int N, T const& init, BinaryOperation const& binop, Generator& g)
     {
-      assert(N >= 1 && "Population size should be positive for evaluating coalescence probability" );
+      assert(N >= 1 && "Population size should be more than 1 for evaluating coalescence probability" );
       assert(std::distance(first, last) > 1 && "Coalescence should operate on a range containing more than one element.");
       double coal_proba = 1/static_cast<double>(N);
       std::bernoulli_distribution d(coal_proba);
