@@ -14,233 +14,179 @@
 #include "../demography/History.h"
 #include "../coalescence/containers/Forest.h"
 #include "../coalescence/policies/merger.h"
-#include "../../random.h"
-#include "../geography/EnvironmentalQuantity.h"
-#include "../../genetics.h"
 
 #include <map>
 
 namespace quetzal {
-namespace simulators {
 
-template<typename Space, typename Time, typename Value>
-class IDDC_model_1 {
+  namespace simulators {
 
-public:
+    template<typename Strategy>
+    class Policy
+    {};
 
-  using merger_type = quetzal::coalescence::SimultaneousMultipleMerger<quetzal::coalescence::occupancy_spectrum::on_the_fly>;
-  using history_type = quetzal::demography::History<Space, Time, Value, quetzal::demography::Flow<Space, Time, Value>>;
-  using coord_type = Space;
-  using time_type = Time;
-  using N_type = Value;
-
-  template<typename Tree>
-  using forest_type = quetzal::coalescence::Forest<coord_type, Tree>;
-
-private:
-
-  mutable history_type m_history;
-
-  template<typename Generator, typename Forest>
-  void simulate_backward_migration(Forest & forest, time_type const& t, Generator& gen) const
-  {
-    Forest new_forest;
-    for(auto const it : forest)
-    {
-      coord_type x = it.first;
-      new_forest.insert(m_history.backward_kernel(x, t, gen), it.second);
-    }
-    assert(forest.nb_trees() == new_forest.nb_trees());
-    forest = new_forest;
-  }
-
-  template<typename Generator, typename Tree>
-  void coalesce(forest_type<Tree>& forest, time_type const& t, Generator& gen) const
-  {
-    auto const& N = m_history.N();
-
-    for(auto const & x : forest.positions())
-    {
-      auto range = forest.trees_at_same_position(x);
-      std::vector<Tree> v;
-
-      for(auto it = range.first; it != range.second; ++it)
+      template<>
+      class Policy<quetzal::demography::strategy::individual_based>
       {
-        v.push_back(it->second);
-      }
+      public:
+        using merger_type = coalescence::SimultaneousMultipleMerger<coalescence::occupancy_spectrum::on_the_fly>;
 
-      if(v.size() >= 2){
-        auto last = merger_type::merge(v.begin(), v.end(), N(x, t), gen );
-        forest.erase(x);
-        for(auto it = v.begin(); it != last; ++it){
-          forest.insert(x, *it);
+        template<typename T, typename U>
+        void check_consistency(T const& history, U const& forest) const
+        {
+          auto t = history.last_time();
+          for(auto const& it : forest.positions())
+          {
+            if( !history.pop_sizes().is_defined(it, t) || history.pop_sizes()(it, t) < forest.nb_trees(it))
+            {
+              throw std::domain_error("Simulated population size inferior to sampling size");
+            }
+          }
         }
-      }
+      };
 
-    }
-  }
-
-  template<typename Generator, typename Tree, typename F>
-  void coalesce(forest_type<Tree>& forest, time_type const& t, F binop, Generator& gen) const
-  {
-    auto const& N = m_history.N();
-
-    for(auto const & x : forest.positions())
-    {
-      auto range = forest.trees_at_same_position(x);
-      std::vector<Tree> v;
-
-      for(auto it = range.first; it != range.second; ++it)
+      template<>
+      class Policy<quetzal::demography::strategy::mass_based>
       {
-        v.push_back(it->second);
-      }
+      public:
+        using merger_type = coalescence::BinaryMerger;
 
-      if(v.size() >= 2){
-        auto last = merger_type::merge(v.begin(), v.end(), N(x, t), Tree(), binop, gen );
-        forest.erase(x);
-        for(auto it = v.begin(); it != last; ++it){
-          forest.insert(x, *it);
+        template<typename T, typename U>
+        void check_consistency(T const& history, U const& forest) const
+        {
+          auto t = history.last_time();
+          for(auto const& it : forest.positions())
+          {
+            if( !history.pop_sizes().is_defined(it, t) || history.pop_sizes()(it, t) < forest.nb_trees(it))
+            {
+              throw std::domain_error("Simulated population size inferior to sampling size");
+            }
+          }
         }
-      }
+      };
 
-    }
-  }
 
-  template<typename Generator, typename Growth, typename Dispersal>
-  void simulate_demography(Growth growth, Dispersal kernel, time_type t_sampling, Generator& gen )
-  {
-    time_type nb_generations = t_sampling - m_history.first_time() ;
-    m_history.expand(nb_generations, growth, kernel, gen);
-  }
-
-  template<typename Tree>
-  bool is_history_consistent_with_sampling(history_type const& history, forest_type<Tree> const& forest) const
-  {
-    time_type t = history.last_time();
-    for(auto const& it : forest.positions())
-    {
-      if( !history.N().is_defined(it, t) || history.N()(it, t) < forest.nb_trees(it))
+      template<typename Space, typename Time, typename Strategy>
+      class SpatiallyExplicitCoalescenceSimulator : public Policy<Strategy>
       {
-        return false;
-      }
-    }
-    return true;
-  }
 
-  bool is_history_consistent_with_sampling(history_type const& history, std::map<coord_type, unsigned int> const& counts) const
-  {
-    time_type t = history.last_time();
-    for(auto const& it : counts)
-    {
-      if( !history.N().is_defined(it.first, t) || history.N()(it.first, t) < it.second)
-      {
-        return false;
-      }
-    }
-    return true;
-  }
+      public:
 
+        using coord_type = Space;
+        using time_type = Time;
+        using strategy_type = Strategy;
+        using N_value_type = typename strategy_type::value_type;
 
-public:
+        template<typename Tree>
+        using forest_type = quetzal::coalescence::Forest<coord_type, Tree>;
 
-  template<typename Generator, typename Tree>
-  forest_type<Tree> coalescence_process(forest_type<Tree> forest, history_type const& history, Generator& gen)
-  {
-    auto t = history.last_time();
-    while( (forest.nb_trees() > 1) && (t > history.first_time()) )
-    {
-      coalesce(forest, t, gen);
-      simulate_backward_migration(forest, t, gen);
-      --t;
-    }
-    coalesce(forest, t, gen);
-    return forest;
-  }
+      private:
 
-  template<typename Generator, typename F, typename Tree>
-  forest_type<Tree> coalescence_process(forest_type<Tree> forest, history_type const& history, F binary_op, Generator& gen)
-  {
-    auto t = history.last_time();
+        using history_type = demography::History<coord_type, time_type, strategy_type>;
+        history_type m_history;
 
-    while( (forest.nb_trees() > 1) && (t > history.first_time()) )
-    {
-      coalesce(forest, t, binary_op, gen);
-      simulate_backward_migration(forest, t, gen);
-      --t;
-    }
-    coalesce(forest, t, binary_op, gen);
-    return forest;
-  }
+      public:
 
 
-  IDDC_model_1(coord_type x_0, time_type t_0, N_type N_0) : m_history(x_0, t_0, N_0){}
+        /**
+        * \brief Constructor
+        *
+        * \param x_0 Initialization coordinate.
+        * \param t_0 Initialization time.
+        * \param N_0 Population size at intialization
+        */
+        SpatiallyExplicitCoalescenceSimulator(coord_type x_0, time_type t_0, N_value_type N_0) : m_history(x_0, t_0, N_0){}
 
-  auto const& size_history() const
-  {
-    return m_history.N();
-  }
+        /**
+        * \brief Read-only access to the population size history.
+        *
+        * \details The primary purpose of this access is to allow the implemention of
+        *          time-dependent population growth models>. The returned functor
+        *          can be captured in a lambda expression and/or composed into more
+        *          complex expressions using the expressive module.
+        *
+        * \return a functor with signature 'N_value_type fun(coord_type const& x,
+        * time_type const& t)' giving the population size in deme \f$x\f$ at time \f$t\f$.
+        *
+        */
+        auto pop_size_history() const noexcept
+        {
+          return std::cref(m_history.pop_sizes());
+        }
 
-  template<typename Generator, typename Growth, typename Dispersal, typename Tree>
-  forest_type<Tree> simulate(
-    forest_type<Tree> const& forest,
-    Growth growth,
-    Dispersal kernel,
-    time_type t_sampling,
-    Generator& gen )
-  {
 
-    simulate_demography(growth, kernel, t_sampling, gen);
+        template<typename Generator, typename Growth, typename Dispersal>
+        void expand_demography(time_type t_sampling, Growth growth, Dispersal kernel, Generator& gen ) noexcept
+        {
+          time_type nb_generations = t_sampling - m_history.first_time() ;
+          m_history.expand(nb_generations, growth, kernel, gen);
+        }
 
-    if( ! is_history_consistent_with_sampling(m_history, forest))
-    {
-        throw std::domain_error("Simulated population size inferior to sampling size");
-    }
 
-    return coalescence_process(forest, m_history, gen);
-  }
+        template<typename Generator, typename F, typename Tree>
+        forest_type<Tree> coalesce_along_history(forest_type<Tree> forest, F binary_op, Generator& gen) const
+        {
 
-  template<typename Generator, typename Growth, typename Dispersal>
-  history_type const& simulate_demography(
-    std::map<coord_type, unsigned int> const& sampling_counts,
-    Growth growth,
-    Dispersal kernel,
-    time_type t_sampling,
-    Generator& gen )
-  {
+        this->check_consistency(m_history, forest);
 
-    simulate_demography(growth, kernel, t_sampling, gen);
+          auto t = m_history.last_time();
 
-    if( ! is_history_consistent_with_sampling(m_history, sampling_counts))
-    {
-        throw std::domain_error("Simulated population size inferior to sampling size");
-    }
+          while( (forest.nb_trees() > 1) && (t > m_history.first_time()) )
+          {
+            may_coalesce_colocated(forest, t, gen, binary_op);
+            migrate_backward(forest, t, gen);
+            --t;
+          }
+          may_coalesce_colocated(forest, t, gen, binary_op);
+          return forest;
+        }
 
-    return m_history;
-  }
+      private:
 
-  template<typename Generator, typename Growth, typename Dispersal, typename F, typename Tree>
-  forest_type<Tree> simulate(
-    forest_type<Tree> forest,
-    Growth growth,
-    Dispersal kernel,
-    time_type t_sampling,
-    F binary_op,
-    Generator& gen )
-  {
+        template<typename Generator, typename Forest>
+        void migrate_backward(Forest & forest, time_type t, Generator& gen) const noexcept
+        {
+          Forest new_forest;
+          for(auto const it : forest)
+          {
+            coord_type x = it.first;
+            new_forest.insert(m_history.backward_kernel(x, t, gen), it.second);
+          }
+          assert(forest.nb_trees() == new_forest.nb_trees());
+          forest = new_forest;
+        }
 
-    simulate_demography(growth, kernel, t_sampling, gen);
 
-    if( ! is_history_consistent_with_sampling(m_history, forest))
-    {
-        throw std::domain_error("Simulated population size inferior to sampling size");
-    }
+        template<typename Generator, typename Tree, typename F>
+        void may_coalesce_colocated(forest_type<Tree>& forest, time_type const& t, Generator& gen, F binop) const noexcept
+        {
+          auto N = pop_size_history();
 
-    return coalescence_process(forest, m_history, binary_op, gen);
-  }
+          for(auto const & x : forest.positions())
+          {
+            auto range = forest.trees_at_same_position(x);
+            std::vector<Tree> v;
 
-};
+            for(auto it = range.first; it != range.second; ++it)
+            {
+              v.push_back(it->second);
+            }
 
-} // namespace coalescence
-} // namespace quetzal
+            if(v.size() >= 2){
+              auto last = Policy<strategy_type>::merger_type::merge(v.begin(), v.end(), N(x, t), Tree(), binop, gen );
+              forest.erase(x);
+              for(auto it = v.begin(); it != last; ++it){
+                forest.insert(x, *it);
+              }
+            }
+          }
+        }
 
-#endif
+      };
+
+
+
+    } // namespace coalescence
+  } // namespace quetzal
+
+  #endif

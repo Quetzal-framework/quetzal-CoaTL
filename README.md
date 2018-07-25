@@ -62,7 +62,13 @@ Run the executable ```UTest<...>``` : this will recursively execute the test of 
 - WEBSITE : https://becheler.github.io/
 - DOCUMENTATION : https://becheler.github.io/quetzalAPI/html/index.html
 
-## Acknowledgements
+## How to cite:
+
+Quetzal - an open source C++ template library for coalescence-based environmental demogenetic models inference
+Arnaud Becheler, Camille Coron, Stephane Dupas
+bioRxiv 214767; doi: https://doi.org/10.1101/214767
+
+# Acknowledgements
 
 This github repository is basically the implementation of the probabilistic model of biological invasion developed during my PhD thesis under the direction of Stephane Dupas (laboratoire d'Evolution, Génomes, Comportements et Ecologie de Gif-sur-Yvette) and Camille Coron (Laboratoire de Mathématiques d'Orsay).
 
