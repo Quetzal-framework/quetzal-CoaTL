@@ -193,6 +193,9 @@
   *
   * @}
   *
+  * \defgroup simulator simulator
+  * \brief Template classes to simulate coalescence in complex frameworks
+  *  
   * \defgroup abc abc
   * \brief Template classes for embedding simulation model objects into an Approximate Bayesian Computation framework.
   *
@@ -202,6 +205,7 @@
   * this allows to perform an open-ended number of important inference tasks,
   * as the user can for example inject almost any kind of distance or summary statistics
   * in the analysis of the reference table.
+  *
   *
   * ## C++ concept : GenerativeModel
   *

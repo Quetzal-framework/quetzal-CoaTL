@@ -65,7 +65,20 @@ namespace quetzal {
         }
       };
 
-
+      /**
+       * @brief Coalescence simulator in a spatially explicit landscape.
+       *
+       * @tparam Space deme identifiers (like the populations geographic coordinates)
+       * @tparam Time time identifier (like an integer representing the year)
+       * @tparam Strategy a politic for the demographic expansion (e.g. individual_based)
+       *
+       * @ingroup simulator
+       *
+       * @section Example
+       * @include simulator/test/spatially_explicit_coalescence_simulator/mass_based_simulator_test.cpp
+       * @section Output
+       * @include simulator/test/spatially_explicit_coalescence_simulator/mass_based_simulator_test.output
+       */
       template<typename Space, typename Time, typename Strategy>
       class SpatiallyExplicitCoalescenceSimulator : public Policy<Strategy>
       {
@@ -89,23 +102,18 @@ namespace quetzal {
 
 
         /**
-        * \brief Constructor
+        * @brief Constructor
         *
-        * \param x_0 Initialization coordinate.
-        * \param t_0 Initialization time.
-        * \param N_0 Population size at intialization
+        * @param x_0 Initialization coordinate.
+        * @param t_0 Initialization time.
+        * @param N_0 Population size at intialization
         */
         SpatiallyExplicitCoalescenceSimulator(coord_type x_0, time_type t_0, N_value_type N_0) : m_history(x_0, t_0, N_0){}
 
         /**
-        * \brief Read-only access to the population size history.
+        * @brief Read-only access to the population size history.
         *
-        * \details The primary purpose of this access is to allow the implemention of
-        *          time-dependent population growth models>. The returned functor
-        *          can be captured in a lambda expression and/or composed into more
-        *          complex expressions using the expressive module.
-        *
-        * \return a functor with signature 'N_value_type fun(coord_type const& x,
+        * @return a functor with signature 'N_value_type fun(coord_type const& x,
         * time_type const& t)' giving the population size in deme \f$x\f$ at time \f$t\f$.
         *
         */
@@ -114,15 +122,21 @@ namespace quetzal {
           return std::cref(m_history.pop_sizes());
         }
 
-
+        /**
+        * @brief Simulate the forward-in-time demographic expansion.
+        *
+        */
         template<typename Generator, typename Growth, typename Dispersal>
-        void expand_demography(time_type t_sampling, Growth growth, Dispersal kernel, Generator& gen ) noexcept
+        void expand_demography(time_type t_sampling, Growth growth, Dispersal kernel, Generator& gen )
         {
           time_type nb_generations = t_sampling - m_history.first_time() ;
           m_history.expand(nb_generations, growth, kernel, gen);
         }
 
-
+        /**
+        * @brief Coalesce a forest (nodes) conditionally to the simulated demography.
+        *
+        */
         template<typename Generator, typename F, typename Tree>
         forest_type<Tree> coalesce_along_history(forest_type<Tree> forest, F binary_op, Generator& gen) const
         {
