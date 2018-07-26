@@ -20,4 +20,8 @@ cd coalescence
 ./UTest_coalescence.sh
 cd ../
 
+cd simulator
+./UTest_simulator.sh
+cd ../
+
 echo -e "DONE\n"

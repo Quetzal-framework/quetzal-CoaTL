@@ -136,7 +136,7 @@
   *
   * Defines template classes for storage and retrieval of demographic quantities of
   * interest such as populations size distribution across space and time, or demographic
-  * flux between demes at all times.
+  * flows between demes at all times.
   *
   * These quantities are used in coalescence models for defining coalescence
   * probability or backward migration probabilities of gene copies.
@@ -193,6 +193,9 @@
   *
   * @}
   *
+  * \defgroup simulator simulator
+  * \brief Template classes to simulate coalescence in complex frameworks
+  *  
   * \defgroup abc abc
   * \brief Template classes for embedding simulation model objects into an Approximate Bayesian Computation framework.
   *
@@ -202,6 +205,7 @@
   * this allows to perform an open-ended number of important inference tasks,
   * as the user can for example inject almost any kind of distance or summary statistics
   * in the analysis of the reference table.
+  *
   *
   * ## C++ concept : GenerativeModel
   *

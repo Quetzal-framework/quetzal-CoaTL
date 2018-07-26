@@ -8,12 +8,6 @@ echo -e "|--\t PopulationSize_test....................................."
 ./UTest.sh
 echo -e "|--\t DONE \n|"
 
-cd ../PopulationFlux
-
-echo -e "|--\t PopulationFlux_test....................................."
-./UTest.sh
-echo -e "|--\t DONE \n|"
-
 cd ../Flow
 
 echo -e "|--\t Flow_test....................................."
@@ -23,6 +17,12 @@ echo -e "|--\t DONE \n|"
 cd ../SymmetricDistanceMatrix
 
 echo -e "|--\t SymmetricDistanceMatrix_test....................................."
+./UTest.sh
+echo -e "|--\t DONE \n|"
+
+cd ../History
+
+echo -e "|--\t History_test....................................."
 ./UTest.sh
 echo -e "|--\t DONE \n|"
 

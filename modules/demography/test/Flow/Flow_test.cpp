@@ -32,8 +32,8 @@ int main(){
 	quetzal::demography::Flow<coord_type, time_type, value_type> Phi;
 
 	assert( ! Phi.flux_to_is_defined(i, t) );
-	Phi.set_flux_from_to(i,j,t, 12);
-	Phi.add_to_flux_from_to(j,j,t, 1);
+	Phi.set_flux_from_to(i, j, t, 12);
+	Phi.add_to_flux_from_to(j, j, t, 1);
 	assert(Phi.flux_to_is_defined(j, t));
 
 	assert(Phi.flux_from_to(i,j,t) == 12);

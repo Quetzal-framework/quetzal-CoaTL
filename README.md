@@ -66,7 +66,13 @@ This github repository is basically the implementation of the probabilistic mode
 - WEBSITE : https://becheler.github.io/
 - DOCUMENTATION : https://becheler.github.io/quetzalAPI/html/index.html
 
-## Acknowledgements
+## How to cite:
+
+Quetzal - an open source C++ template library for coalescence-based environmental demogenetic models inference
+Arnaud Becheler, Camille Coron, Stephane Dupas
+bioRxiv 214767; doi: https://doi.org/10.1101/214767
+
+# Acknowledgements
 
 - Florence Jornod who was a tremendous intern and add much to the project.
 - Ambre Marques for his help, tips and the implementation of the expressive library.
