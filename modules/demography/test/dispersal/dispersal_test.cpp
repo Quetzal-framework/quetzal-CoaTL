@@ -21,18 +21,23 @@ int main(){
 
 	using generator_type = std::mt19937;
 	using coord_type = double;
-	using law_type = quetzal::demography::dispersal::Gaussian;
 
 	std::vector<coord_type> demes {0.0, 12.0, 30.0};
 	auto distance = [](coord_type x, coord_type y){return std::abs(x-y);};
-	auto kernel = quetzal::demography::dispersal::make_dispersal_kernel<law_type>(demes, distance, 20.0);
+	auto D = quetzal::demography::dispersal::make_symmetric_distance_matrix(demes, distance);
+
+	using law_type = quetzal::demography::dispersal::Gaussian;
+	using quetzal::demography::dispersal::make_discrete_location_sampler;
+	law_type::param_type p;
+	p.a(20.0);
+	auto sampler = make_discrete_location_sampler<law_type>(D, p);
 
 	generator_type gen;
 	std::vector<coord_type> path;
 	path.push_back(demes.front());
 	for(unsigned int t = 0; t < 10; ++t)
 	{
-		path.push_back(kernel(gen, path.back()));
+		path.push_back(sampler(path.back(),gen));
 	}
 
 	std::copy(path.begin(), path.end(), std::ostream_iterator<coord_type>(std::cout, " -> "));

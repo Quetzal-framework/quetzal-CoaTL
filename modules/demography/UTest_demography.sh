@@ -14,15 +14,21 @@ echo -e "|--\t Flow_test....................................."
 ./UTest.sh
 echo -e "|--\t DONE \n|"
 
+cd ../History
+
+echo -e "|--\t History_test....................................."
+./UTest.sh
+echo -e "|--\t DONE \n|"
+
 cd ../SymmetricDistanceMatrix
 
 echo -e "|--\t SymmetricDistanceMatrix_test....................................."
 ./UTest.sh
 echo -e "|--\t DONE \n|"
 
-cd ../History
+cd ../dispersal
 
-echo -e "|--\t History_test....................................."
+echo -e "|--\t dispersal_test....................................."
 ./UTest.sh
 echo -e "|--\t DONE \n|"
 

@@ -462,16 +462,11 @@ public:
           {
             auto m = kernel(x, y, t);
             assert(m >= 0.0 && m <= 1.0);
-
-            auto nb_migrants = m * static_cast<double>(N_tilde);
+            
+            double nb_migrants = std::ceil(m * static_cast<double>(N_tilde));
             landscape_individuals_count += nb_migrants;
-
-            if(nb_migrants >= 1)
-            {
-              this->m_flows->set_flux_from_to(x, y, t, nb_migrants);
-              this->m_sizes->operator()(y, t_next) += nb_migrants;
-            }
-
+            this->m_flows->set_flux_from_to(x, y, t, nb_migrants);
+            this->m_sizes->operator()(y, t_next) += nb_migrants;
           }
         }
 

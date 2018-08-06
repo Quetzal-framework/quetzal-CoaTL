@@ -8,13 +8,190 @@
 *                                                                      *
 ***************************************************************************/
 
-#include "../../random.h"
 #include <cmath>
 #include <vector>
+#include <unordered_map>
+#include <random>
+
+// SymmetricDistanceMatrix
+#include <boost/numeric/ublas/symmetric.hpp>
+#include <boost/numeric/ublas/io.hpp>
+#include <boost/numeric/ublas/matrix_proxy.hpp>
 
 namespace quetzal{
-  namespace demography {
-    namespace dispersal {
+namespace demography {
+namespace dispersal {
+
+
+template<typename Space, typename Value>
+class SymmetricDistanceMatrix
+{
+
+  template<typename T>
+  using matrix_type = boost::numeric::ublas::symmetric_matrix<T>;
+
+  std::vector<Space> m_points;
+  matrix_type<Value> m_matrix;
+
+public:
+
+  using coord_type = Space;
+  using value_type = Value;
+
+  template<typename F>
+  SymmetricDistanceMatrix(std::vector<coord_type> const& points, F f):
+  m_points(points),
+  m_matrix(construct_matrix(points, f))
+  {}
+
+  SymmetricDistanceMatrix(std::vector<coord_type> const& points, matrix_type<value_type> const& m):
+  m_points(points),
+  m_matrix(m)
+  {}
+
+  friend std::ostream& operator <<(std::ostream& Stream, const SymmetricDistanceMatrix & M)
+  {
+     Stream << M.m_matrix;
+     return Stream;
+  }
+
+  template<typename UnaryOperation>
+  auto apply(UnaryOperation op) const
+  {
+   using other_type = typename std::result_of_t<UnaryOperation(std::remove_cv_t<std::remove_reference_t<const value_type &>>)>;
+
+   matrix_type<other_type> m (m_points.size(), m_points.size());
+   for (unsigned i = 0; i < m.size1 (); ++ i)
+   {
+     for (unsigned j = 0; j <= i; ++ j)
+     {
+       m (i, j) = op(m_matrix(i, j));
+     }
+   }
+
+   return SymmetricDistanceMatrix<coord_type, other_type>(m_points, m);
+  }
+
+  std::vector<coord_type> const& points(){return m_points;}
+
+  auto at(coord_type const& x) const
+  {
+    auto it = std::find(m_points.begin(), m_points.end(), x);
+    assert( it != m_points.end());
+    unsigned int i = std::distance(m_points.begin(), it);
+    return boost::numeric::ublas::row(m_matrix, i);
+  }
+
+private:
+
+  template<typename F>
+  auto construct_matrix(std::vector<coord_type> const& points, F f) const
+  {
+    matrix_type<value_type> m (points.size(), points.size());
+    for (unsigned i = 0; i < m.size1 (); ++ i)
+    {
+      for (unsigned j = 0; j <= i; ++ j)
+      {
+        m (i, j) = f(points.at(i), points.at(j));
+      }
+    }
+    return m;
+  }
+
+};
+
+// @brief Constructs a symmetric matrix of distances between points of the space.
+// @tparam Space Demes identifiers (geographic points)
+// @tparam F a functor implementing a symetric distance relationship between two
+//         geographic points.
+// @param points the set of geographic points to consider
+// @param f a functor giving the distance between two demes and returning any copiable type T.
+//        The signature should be equivalent to the following `T f(Space const& a, Space const& b)`
+// @return a symmetric distance matrix
+template<typename Space, typename F>
+auto make_symmetric_distance_matrix(std::vector<Space> const& points, F f){
+  using value_type = typename std::result_of_t<F(std::remove_cv_t<std::remove_reference_t<const Space &>>,
+                                                 std::remove_cv_t<std::remove_reference_t<const Space &>>)>;
+  return SymmetricDistanceMatrix<Space, value_type>(points, f);
+}
+
+
+// @brief Sampling distribution in the demic structure
+// @tparam Space the deme identifier type (may be integers, geographic coordinates...)
+//
+// Allows to sample a destination point conditioning on the present location
+template<typename Space>
+class DiscreteLocationSampler
+{
+public:
+
+  // @typedef the deme identifier
+  using coord_type = Space;
+
+private:
+  std::vector<coord_type> m_points;
+
+  using ID_type = unsigned int;
+  std::unordered_map<coord_type, ID_type> m_dico;
+
+  using distribution_type = std::discrete_distribution<ID_type>;
+  mutable std::vector<distribution_type> m_kernels;
+
+  std::unordered_map<coord_type, unsigned int> make_dico(std::vector<coord_type> const& points) const
+  {
+    unsigned int position = 0;
+    std::unordered_map<coord_type, unsigned int> m;
+    for(auto const& it : points)
+    {
+      m.emplace(it, position);
+      ++position;
+    }
+    return m;
+  }
+
+public:
+
+  DiscreteLocationSampler(std::vector<coord_type> const& points, std::vector<distribution_type> && kernels):
+  m_points(points),
+  m_dico(make_dico(points)),
+  m_kernels(kernels)
+  {}
+
+  // @brief samples a destination in the location probability distribution
+  // @tparam Generator a random number generator
+  // @param x the present location
+  // @param gen a random number generator
+  // @return a deme sampled in the discrete probability distribution of arrivals.
+  template<typename Generator>
+  coord_type operator()(coord_type const& x, Generator & gen) const
+  {
+    auto id = m_dico.at(x);
+    auto & dist = m_kernels.at(id);
+    return m_points.at(dist(gen));
+  }
+
+};
+
+// @brief Constructs a discrete location kernel
+// @tparam M a distance matrix
+// @tparam Kernel a dispersal kernel
+// @return a DiscreteLocationSampler
+//
+template<typename Kernel, typename M>
+auto make_discrete_location_sampler(M const& d, typename Kernel::param_type const& p)
+{
+  auto f = [p](auto r){return Kernel::pdf(r, p);};
+  auto weights = d.apply(f);
+  std::vector<std::discrete_distribution<unsigned int>> discrete_kernels;
+  discrete_kernels.reserve(weights.points().size());
+  for(auto const& x : weights.points())
+  {
+    auto x_weights = weights.at(x);
+    discrete_kernels.push_back(std::discrete_distribution<unsigned int>(x_weights.begin(), x_weights.end()));
+  }
+  return DiscreteLocationSampler<typename M::coord_type>(weights.points(), std::move(discrete_kernels));
+}
+
 
 //nathan et al 2012, table 15.1
 struct Gaussian
