@@ -16,6 +16,7 @@
 
 #include <iterator> // std::distance
 #include <cassert>
+#include <functional> // std::plus
 
 namespace quetzal{
 namespace coalescence {

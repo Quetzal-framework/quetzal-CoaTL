@@ -9,7 +9,6 @@
 ***************************************************************************/
 
 
-#include "../../DistanceBasedLocationKernel.h"
 #include "../../dispersal.h"
 #include <random>
 
@@ -17,22 +16,23 @@
 
 int main()
 {
-
-	std::vector<int> points {1,2,3,4};
-	auto distance = [](int a, int b){return std::abs(a - b);};
+	using coord_type = int;
+	std::vector<coord_type> points {1,2,3,4};
+	auto distance = [](coord_type a, coord_type b){return std::abs(a - b);};
 	auto D = quetzal::demography::dispersal::make_symmetric_distance_matrix(points, distance);
 	std::cout << D << std::endl;
 
-	auto M = D.apply([](int a){return a * 0.5;});
+	auto M = D.apply([](coord_type a){return a * 0.5;});
 	std::cout << M << std::endl;
 
-	auto X = D.apply([](int a){return a <= 2;});
+	auto X = D.apply([](coord_type a){return a <= 2;});
 	std::cout << X << std::endl;
 
 	using quetzal::demography::dispersal::Gaussian;
 	Gaussian::param_type p;
 	p.a(1.);
-	auto k = quetzal::demography::dispersal::DiscreteLocationKernelFactory::make<int, int, Gaussian>(D, p);
+	using quetzal::demography::dispersal::make_discrete_location_sampler;
+	auto k = make_discrete_location_sampler<Gaussian>(D, p);
 
 	std::mt19937 rng;
 	int position = 1;
@@ -40,7 +40,7 @@ int main()
 		position = k(position, rng);
 		std::cout << position << " -> ";
 	}
-	
+
 	return 0;
 }
 

@@ -5,6 +5,7 @@
 #include "../../../modules/simulator/simulators.h"
 #include "../../../modules/fuzzy_transfer_distance/FuzzyPartition.h"
 #include "../../../modules/fuzzy_transfer_distance/RestrictedGrowthString.h"
+
 #include <memory>
 #include <random>
 #include <functional>  // std::plus

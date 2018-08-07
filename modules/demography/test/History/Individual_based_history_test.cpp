@@ -14,12 +14,11 @@
 
 #include <iostream>
 #include <random>
-#include <map>
 
 int main(){
 
 	// Here we simulate a population expansion through a 2 demes landscape.
-	
+
 	using coord_type = int;
 	using time_type = unsigned int;
 	using generator_type = std::mt19937;
