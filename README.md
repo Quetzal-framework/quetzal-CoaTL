@@ -20,11 +20,11 @@ Quetzal can help you doing so by offering atomic components (structures, algorit
 
 # Getting Started
 
+## Installing
+
 Quetzal is a header-only library. Just clone the project and include the files you need.
 
 Have a look on the [documentation](https://becheler.github.io/quetzalAPI/html/index.html) to know more about quetzal modules and architecture !
-
-## Installing
 
 ## Prerequisites
 
@@ -53,7 +53,11 @@ The present project was tested with the following OS:
 For Test Driven Development, bash scripts allow to run all the tests of the module at once, ensuring they are no regression. The sub-modules tests can be run independently.
 Run the executable ```UTest<...>``` : this will recursively execute the test of the sub-modules.
 
+## Acknowledgements
+
 # Authors
+
+This github repository is basically the implementation of the probabilistic model of biological invasion developed during my PhD thesis under the direction of Stephane Dupas (laboratoire d'Evolution, Génomes, Comportements et Ecologie de Gif-sur-Yvette) and Camille Coron (Laboratoire de Mathématiques d'Orsay).
 
 - AUTHOR : Arnaud Becheler
 - DATE   : 2016
@@ -69,8 +73,6 @@ Arnaud Becheler, Camille Coron, Stephane Dupas
 bioRxiv 214767; doi: https://doi.org/10.1101/214767
 
 # Acknowledgements
-
-This github repository is basically the implementation of the probabilistic model of biological invasion developed during my PhD thesis under the direction of Stephane Dupas (laboratoire d'Evolution, Génomes, Comportements et Ecologie de Gif-sur-Yvette) and Camille Coron (Laboratoire de Mathématiques d'Orsay).
 
 - Florence Jornod who was a tremendous intern and add much to the project.
 - Ambre Marques for his help, tips and the implementation of the expressive library.

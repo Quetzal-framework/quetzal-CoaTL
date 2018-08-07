@@ -123,7 +123,7 @@ public:
 	  * \section Output
 	  * \include random/test/DiscreteDistribution/initialization_test.output
 		*/
-	DiscreteDistribution(DiscreteDistribution<State>&& other) noexcept = default;
+	DiscreteDistribution(DiscreteDistribution<State>&& other) = default;
 
 	/**
 		* \brief Constructor.
@@ -163,7 +163,7 @@ public:
 	  * \section Output
 	  * \include random/test/DiscreteDistribution/initialization_test.output
 		*/
-	DiscreteDistribution<State>& operator=(DiscreteDistribution<State>&& other) noexcept = default;
+	DiscreteDistribution<State>& operator=(DiscreteDistribution<State>&& other) = default;
 
   /** \brief Generates random objects that are distributed according to the associated parameter set. The entropy is acquired by calling g.operator().
 		* \tparam Generator must meet the requirements of <a href="http://en.cppreference.com/w/cpp/concept/UniformRandomBitGenerator">UniformRandomBitGenerator</a>.
