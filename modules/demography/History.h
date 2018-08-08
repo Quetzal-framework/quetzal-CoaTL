@@ -458,7 +458,7 @@ public:
         {
           auto N_tilde = sim_growth(gen, x, t);
 
-          for(auto y : kernel.state_space(x, t) )
+          for(auto y : kernel.arrival_space(x, t) )
           {
             auto m = kernel(x, y, t);
             assert(m >= 0.0 && m <= 1.0);
