@@ -458,11 +458,11 @@ public:
         {
           auto N_tilde = sim_growth(gen, x, t);
 
-          for(auto y : kernel.state_space(t) )
+          for(auto y : kernel.arrival_space(x, t) )
           {
             auto m = kernel(x, y, t);
             assert(m >= 0.0 && m <= 1.0);
-            
+
             double nb_migrants = std::ceil(m * static_cast<double>(N_tilde));
             landscape_individuals_count += nb_migrants;
             this->m_flows->set_flux_from_to(x, y, t, nb_migrants);
