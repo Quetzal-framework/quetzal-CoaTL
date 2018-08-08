@@ -91,12 +91,42 @@ public:
 	 * \section Output
 	 * \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
 	 */
-	decimal_degree lat() const {return m_lat;}
+	 decimal_degree lat() const {return m_lat;}
+
+	 /*!
+ 	 * \brief Gets latitude.
+ 	 *
+ 	 * Gets latitude value reference.
+ 	 *
+ 	 * \return a reference the latitude value
+ 	 * \section Example
+ 	 * \snippet geography/test/GeographicCoordinates/GeographicCoordinates_test.cpp Example
+ 	 * \section Output
+ 	 * \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
+ 	 */
+	 decimal_degree& lat() {return m_lat;}
+
+
+	 /*!
+		* \brief Set latitude.
+		*
+		* Set latitude value.
+		*
+		* \return a reference on the modified object
+		* \section Example
+		* \snippet geography/test/GeographicCoordinates/GeographicCoordinates_test.cpp Example
+		* \section Output
+		* \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
+		*/
+	 GeographicCoordinates& lat(decimal_degree value) {
+		 m_lat = value;
+		 return *this;
+	 }
 
 	/*!
-	 * \brief Gets longitude.
+	 * \brief Get longitude.
 	 *
-	 * Gets longitude value.
+	 * Get longitude value.
 	 *
 	 * \return the longitude value
 	 * \section Example
@@ -105,6 +135,35 @@ public:
 	 * \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
 	 */
 	decimal_degree lon() const {return m_lon;}
+
+	/*!
+	 * \brief Get reference on longitude.
+	 *
+	 * Get reference on longitude value.
+	 *
+	 * \return a reference on the longitude value
+	 * \section Example
+	 * \snippet geography/test/GeographicCoordinates/GeographicCoordinates_test.cpp Example
+	 * \section Output
+	 * \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
+	 */
+	decimal_degree& lon() {return m_lon;}
+
+	/*!
+	 * \brief Set longitude.
+	 *
+	 * Set longitude value.
+	 *
+	 * \return a reference on the modified object
+	 * \section Example
+	 * \snippet geography/test/GeographicCoordinates/GeographicCoordinates_test.cpp Example
+	 * \section Output
+	 * \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
+	 */
+	GeographicCoordinates& lon(decimal_degree value) {
+		m_lon = value;
+		return *this;
+	}
 
 	/*!
 	 * \brief Comparison operator
