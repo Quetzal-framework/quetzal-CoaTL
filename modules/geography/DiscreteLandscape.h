@@ -250,6 +250,39 @@ public:
 		return m_quantities.cbegin()->second.reproject_to_centroid(c);
 	}
 
+	std::vector<coord_type> four_nearest_defined_cells(coord_type const& x) const {
+		auto const& X = geographic_definition_space();
+
+		auto x0 = reproject_to_centroid(x);
+	  assert( std::find(X.begin(), X.end(), x0) != X.end());
+
+		auto res = resolution();
+	  std::vector<coord_type> v;
+
+	  coord_type x1(x0);
+	  x1.lon() += res.lon();
+	  if(std::find(X.begin(), X.end(), x1) != X.end())
+	    v.push_back(x1);
+
+	  coord_type x2(x0);
+	  x2.lat() += res.lat();
+	  if(std::find(X.begin(), X.end(), x2) != X.end())
+	    v.push_back(x2);
+
+	  coord_type x3(x0);
+	  x3.lon() -= res.lon();
+	  if(std::find(X.begin(), X.end(), x3) != X.end())
+	    v.push_back(x3);
+
+	  coord_type x4(x0);
+	  x4.lat() -= res.lat() ;
+	  if(std::find(X.begin(), X.end(), x4) != X.end())
+	    v.push_back(x4);
+
+	  return v;
+	}
+
+
 };
 
 } // geography

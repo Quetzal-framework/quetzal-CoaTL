@@ -23,7 +23,7 @@ struct transition_matrix {
 	using coord_type = std::string;
 	using time_type = unsigned int;
 
-	std::vector<coord_type> state_space(time_type t)
+	std::vector<coord_type> arrival_space(coord_type x, time_type t)
 	{
 		return {"Paris", "Ann Arbor"};
 	}
