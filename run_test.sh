@@ -24,4 +24,8 @@ cd simulator
 ./UTest_simulator.sh
 cd ../
 
+cd expressive
+./UTest_expressive.sh
+cd ../
+
 echo -e "DONE\n"
