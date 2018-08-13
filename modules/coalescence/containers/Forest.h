@@ -345,7 +345,7 @@ template<typename Position, typename Tree>
 std::pair<typename Forest<Position, Tree>::const_iterator, typename Forest<Position, Tree>::const_iterator> Forest<Position, Tree>::trees_at_same_position (const Position& position) const{
 	assert(m_data.count(position) > 0 && "no trees at position" );
 	return m_data.equal_range(position);
-};
+}
 
 template<typename Position, typename Tree>
 std::pair<typename Forest<Position, Tree>::iterator, typename Forest<Position, Tree>::iterator> Forest<Position, Tree>::trees_at_same_position (const Position& position){
