@@ -39,7 +39,7 @@ int main(){
 
 	std::vector<string> v;
 	auto f = [&v](string s){ v.push_back(s); };
-	root.access_leaves_by_DFS(f);
+	root.visit_leaves_cells_by_DFS(f);
 
 	assert(v == expected);
 	std::cout << "done" << std::endl;

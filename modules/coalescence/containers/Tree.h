@@ -209,7 +209,31 @@ public:
 		* \include coalescence/algorithms/test/binary_merge_test.output
 	  */
  	template<typename UnaryOperation>
-	void pre_order_DFS(UnaryOperation op) const ;
+	void visit_cells_by_pre_order_DFS(UnaryOperation op) const
+	{
+		op(this->cell());
+		for(auto const& child : this->m_children){
+			child.visit_cells_by_pre_order_DFS(op);
+		}
+	}
+
+	template<class UnaryOperation>
+	void visit_subtrees_by_pre_order_DFS(UnaryOperation op) {
+		op(*this);
+		for(auto & child : this->m_children){
+			child.visit_subtrees_by_pre_order_DFS(op);
+		}
+	}
+
+	auto& parent(){
+		assert(has_parent());
+		return *m_parent;
+	}
+
+	auto const& parent() const {
+		assert(has_parent());
+		return *m_parent;
+	}
 
 	/**
 	  * \brief Applies a function object to each leave encountered in a depth first search algorithm
@@ -223,7 +247,16 @@ public:
 		* \include coalescence/containers/test/Tree/access_leaves_by_DFS_test.output
 	  */
 	template<typename UnaryOperation>
-	void access_leaves_by_DFS(UnaryOperation op) const ;
+	void visit_leaves_cells_by_DFS(UnaryOperation op) const
+	{
+		if(has_children()){
+			for(auto const& child : this->m_children){
+				child.visit_leaves_cells_by_DFS(op);
+			}
+		}else{
+			op(this->cell());
+		}
+	}
 
 };
 
@@ -337,7 +370,7 @@ Tree<CellT>& Tree<CellT>::add_child(CellT&& cell) noexcept{
 
 template<class CellT>
 bool Tree<CellT>::has_parent() const {
-	return !m_parent;
+	return m_parent;
 }
 
 template<class CellT>
@@ -345,26 +378,9 @@ bool Tree<CellT>::has_children() const {
 	return !m_children.empty();
 }
 
-template<class CellT>
-template<class UnaryOperation>
-void Tree<CellT>::pre_order_DFS(UnaryOperation op) const {
-	op(this->cell());
-	for(auto const& child : this->m_children){
-		child.pre_order_DFS(op);
-	}
-}
 
-template<class CellT>
-template<class UnaryOperation>
-void Tree<CellT>::access_leaves_by_DFS(UnaryOperation op) const {
-	if(has_children()){
-		for(auto const& child : this->m_children){
-			child.access_leaves_by_DFS(op);
-		}
-	}else{
-		op(this->cell());
-	}
-}
+
+
 
 } // namespace coalescence
 } // namespace quetzal
