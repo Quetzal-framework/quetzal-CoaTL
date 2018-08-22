@@ -39,7 +39,7 @@ int main(){
 
 	std::vector<string> v;
 	auto f = [&v](string s){ v.push_back(s); };
-	root.pre_order_DFS(f);
+	root.visit_cells_by_pre_order_DFS(f);
 
 	assert(v == expected);
 	std::cout << "done" << std::endl;

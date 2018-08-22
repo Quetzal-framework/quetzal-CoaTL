@@ -75,7 +75,7 @@ int main(){
     return parent + "," + child + ")" ;
   };
 
-  auto new_forest = simulator.coalesce_along_history(forest, branching_operator, gen);
+  auto new_forest = simulator.coalesce_along_history(forest, branching_operator, gen, [](coord_type, time_type){return tree_type();});
 
   for(auto const& it : new_forest ){
     std::cout << it.first << "\t" << it.second << std::endl;

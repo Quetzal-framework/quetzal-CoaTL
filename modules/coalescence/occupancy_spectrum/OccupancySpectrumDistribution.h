@@ -32,7 +32,7 @@ namespace occupancy_spectrum {
   using boost::multiprecision::cpp_dec_float_50;
 
   struct ReturnAlwaysTrue {
-      bool operator()(double param) const
+      bool operator()(double /*param*/) const
       {
         return true;
       }

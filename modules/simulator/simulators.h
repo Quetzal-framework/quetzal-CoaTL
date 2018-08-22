@@ -136,8 +136,8 @@ public:
   * @brief Coalesce a forest (nodes) conditionally to the simulated demography.
   *
   */
-  template<typename Generator, typename F, typename Tree>
-  forest_type<Tree> coalesce_along_history(forest_type<Tree> forest, F binary_op, Generator& gen) const
+  template<typename Generator, typename F, typename Tree, typename U>
+  forest_type<Tree> coalesce_along_history(forest_type<Tree> forest, F binary_op, Generator& gen, U make_tree) const
   {
 
     this->check_consistency(m_history, forest);
@@ -146,11 +146,11 @@ public:
 
     while( (forest.nb_trees() > 1) && (t > m_history.first_time()) )
     {
-      may_coalesce_colocated(forest, t, gen, binary_op);
+      may_coalesce_colocated(forest, t, gen, binary_op, make_tree);
       migrate_backward(forest, t, gen);
       --t;
     }
-    may_coalesce_colocated(forest, t, gen, binary_op);
+    may_coalesce_colocated(forest, t, gen, binary_op, make_tree);
     return forest;
   }
 
@@ -170,8 +170,8 @@ private:
   }
 
 
-  template<typename Generator, typename Tree, typename F>
-  void may_coalesce_colocated(forest_type<Tree>& forest, time_type const& t, Generator& gen, F binop) const noexcept
+  template<typename Generator, typename Tree, typename F, typename U>
+  void may_coalesce_colocated(forest_type<Tree>& forest, time_type const& t, Generator& gen, F binop, U make_tree) const noexcept
   {
     auto N = pop_size_history();
 
@@ -186,7 +186,7 @@ private:
       }
 
       if(v.size() >= 2){
-        auto last = Policy<strategy_type>::merger_type::merge(v.begin(), v.end(), N(x, t), Tree(), binop, gen );
+        auto last = Policy<strategy_type>::merger_type::merge(v.begin(), v.end(), N(x, t), make_tree(x,t), binop, gen );
         forest.erase(x);
         for(auto it = v.begin(); it != last; ++it){
           forest.insert(x, *it);
@@ -221,14 +221,35 @@ public:
   template<typename Generator>
   static unsigned int sample_waiting_time(unsigned int k, unsigned int N, Generator& gen)
   {
-  	 double p = boost::math::binomial_coefficient<double>(k, 2);
-  	 p /= static_cast<double>(N);
-  	 std::geometric_distribution dist(p);
-  	 return dist(gen);
+    assert(N > k);
+    // Molecular evolution, a statistical approach, Z. Yang, 9.2 p 313
+    double mean = static_cast<double>(N) / boost::math::binomial_coefficient<double>(k, 2);
+    double p = 1 / (1 + mean);
+    assert( 0 < p && p <= 1);
+    std::geometric_distribution dist(p);
+    return dist(gen);
   }
 
-  template<typename Space, typename Tree, typename Generator, typename T, typename U>
-  static Tree coalesce(forest_type<Space, Tree> const& forest, unsigned int N, Generator& gen, T binop, U make_tree){
+
+  template<typename Tree, typename Generator, typename Binop, typename TimeFun>
+  static Tree coalesce(std::vector<Tree> & trees, unsigned int N, Generator& gen, Binop branch, TimeFun make_tree)
+  {
+    auto last = trees.end();
+    unsigned int k = std::distance(trees.begin(), last);
+    assert(k > 1);
+    while( k > 1 ){
+      unsigned int g = sample_waiting_time(k, N, gen);
+      last = quetzal::coalescence::binary_merge(trees.begin(), last, make_tree(g), branch, gen);
+      --k;
+    }
+
+    return *(trees.begin());
+  }
+
+
+  template<typename Space, typename Tree, typename Generator, typename Binop, typename TimeFun>
+  static Tree coalesce(forest_type<Space, Tree> const& forest, unsigned int N, Generator& gen, Binop branch, TimeFun make_tree)
+  {
 
     if(forest.nb_trees()==1){
       auto range = forest.trees_at_same_position(*(forest.positions().begin()));
@@ -236,23 +257,13 @@ public:
       return range.first->second;
     }
 
-    std::vector<Tree> v;
-    v.reserve(forest.nb_trees());
+    std::vector<Tree> trees;
+    trees.reserve(forest.nb_trees());
     for(auto & it : forest){
-      v.push_back(it.second);
+      trees.push_back(it.second);
     }
 
-    auto last = v.end();
-    unsigned int k = std::distance(v.begin(), last);
-    assert(k > 1);
-
-    while( k != 1 ){
-      unsigned int g = sample_waiting_time(k, N, gen);
-      last = quetzal::coalescence::binary_merge(v.begin(), last, make_tree(g), binop, gen);
-      k = k - 1;
-    }
-
-    return *(v.begin());
+    return coalesce(trees, N, gen, branch, make_tree);
 
   }
 
