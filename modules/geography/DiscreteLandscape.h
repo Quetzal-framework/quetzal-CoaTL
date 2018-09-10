@@ -261,23 +261,42 @@ public:
 
 	  coord_type x1(x0);
 	  x1.lon() += res.lon();
-	  if(std::find(X.begin(), X.end(), x1) != X.end())
-	    v.push_back(x1);
+		if(is_in_spatial_extent(x1)){
+			x1 = reproject_to_centroid(x1);
+		  if(std::find(X.begin(), X.end(), x1) != X.end()){
+				v.push_back(x1);
+			}
+		}
+
+
 
 	  coord_type x2(x0);
 	  x2.lat() += res.lat();
-	  if(std::find(X.begin(), X.end(), x2) != X.end())
-	    v.push_back(x2);
+		if(is_in_spatial_extent(x2)){
+			x2 = reproject_to_centroid(x2);
+		  if(std::find(X.begin(), X.end(), x2) != X.end()){
+				v.push_back(x2);
+			}
+		}
+
 
 	  coord_type x3(x0);
 	  x3.lon() -= res.lon();
-	  if(std::find(X.begin(), X.end(), x3) != X.end())
-	    v.push_back(x3);
+		if(is_in_spatial_extent(x3)){
+			x3 = reproject_to_centroid(x3);
+		  if(std::find(X.begin(), X.end(), x3) != X.end()){
+				v.push_back(x3);
+			}
+		}
 
 	  coord_type x4(x0);
 	  x4.lat() -= res.lat() ;
-	  if(std::find(X.begin(), X.end(), x4) != X.end())
-	    v.push_back(x4);
+		if(is_in_spatial_extent(x4)){
+			x4 = reproject_to_centroid(x4);
+		  if(std::find(X.begin(), X.end(), x4) != X.end()){
+				v.push_back(x4);
+			}
+		}
 
 	  return v;
 	}
