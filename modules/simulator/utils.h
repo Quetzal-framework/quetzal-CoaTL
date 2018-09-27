@@ -156,6 +156,198 @@ namespace mutation_kernel{
 
 } // namespace mutation_kernel
 
+
+
+//! Generic sampling schemes simulation
+namespace sampling_scheme {
+
+  //! Base class for sampling schemes parameter classes
+  class param_base_class {
+  private:
+    unsigned int _n;
+  public:
+    /* Constructor
+     * @param n sampling size
+     */
+    param_base_class(unsigned int n): _n(n) {}
+
+    param_base_class() = default;
+
+    /* Read the sampling size parameter
+    */
+    unsigned int sampling_size() const
+    {
+      return _n;
+    }
+
+    /* Set the sampling size parameter
+    */
+    void sampling_size(unsigned int n)
+    {
+      this->_n = n;
+    }
+  };
+
+
+//! Policy to sample coordinates uniformely at random in a space
+class uniform_at_random {
+public:
+
+  /* @brief parameter of the sampling scheme
+  */
+  class param_type : public param_base_class {
+    using param_base_class::param_base_class;
+  };
+
+private:
+  param_type _param;
+
+public:
+  uniform_at_random() = default;
+
+  uniform_at_random(unsigned int n) : _param(n) {}
+
+  param_type param() const { return _param; }
+
+  void param(unsigned int n){ _param = param_type(n); }
+  
+    /* @brief Sample points in a discrete space, uniformely at random
+   * @remark a same coordinates can be sampled several times
+   *
+   * @tparam Cont a container of coordinates
+   * @tparam Generator a RandomNumberGenerator
+   *
+   * @param space coordinates to be sampled
+   * @param n the number of points to sample
+   * @param gen a random number generator
+   *
+   * @return a 'std::map<Cont::value_type, unsigned int>' giving the sampling intensities
+   * at the sampled coordinates.
+   */
+	template<typename Cont, typename Generator>
+	auto operator()(Cont const& space, param_type const& p, Generator& gen)
+	{
+    assert(p.sampling_size() > 0);
+
+		using coord_type = typename Cont::value_type;
+		auto l = space.size();
+
+		std::uniform_int_distribution<unsigned int> dist(0, l-1);
+		std::map<coord_type, unsigned int> sample;
+
+		for(unsigned int i = 0; i < p.sampling_size() ; ++i)
+		{
+			auto it = space.begin();
+			std::advance(it, dist(gen));
+			sample[*it] += 1;
+		}
+		return sample;
+	}
+
+  template<typename Cont, typename Generator>
+  auto operator()(Cont const& space, Generator& gen)
+  {
+    return this->operator()(space, this->param(), gen);
+  }
+};
+
+/* Policy to design a sampling scheme where sampling points form clusters
+ * @tparam Grid he spatial grid type to use to reproject sampling points.
+ */
+template<typename Grid>
+class clustered_sampling {
+public:
+
+  using coord_type = typename Grid::coord_type;
+
+  /* @brief parameter of the sampling scheme
+  */
+  class param_type : public param_base_class {
+  private:
+    unsigned int _nb_clusters;
+    double _var;
+    const Grid & _spatial_grid;
+
+  public:
+
+    /* Constructor
+    * @param n sampling size
+    * @param nb_clusters the number of clusters in which disperse sampling points
+    * @param var the gaussian variance to disperse sampling points around clusters
+    * @param spatial_grid the spatial grid to use to reproject sampling points.
+     */
+    param_type(unsigned int n, unsigned int nb_clusters, double var, Grid const& spatial_grid):
+    param_base_class::param_base_class(n),
+    _nb_clusters(nb_clusters),
+    _var(var),
+    _spatial_grid(spatial_grid) {}
+
+    //! Read the number of clusters
+    unsigned int nb_clusters() const
+    {
+      return _nb_clusters;
+    }
+
+    //! Set the number of clusters
+    void nb_clusters(unsigned int nb_cluster)
+    {
+      this->_nb_clusters = nb_clusters;
+    }
+
+    //! Read the variance of the gaussian dispersion around clusters
+    double var() const
+    {
+      return _var;
+    }
+
+    //! Set the variance of the gaussian dispersion around clusters
+    void var(double v)
+    {
+      this->_var = v;
+    }
+
+  }; // end of param_type inner class
+
+	template<typename Cont, typename Generator>
+	static auto sample (Cont const& space, param_type const& p, Generator& gen)
+	{
+
+    assert(p.nb_clusters() <= p.sampling_size());
+		auto l = space.size();
+
+		std::vector<coord_type> seeds;
+		std::uniform_int_distribution<unsigned int> dist(0, l-1);
+		for(unsigned int i = 0; i < p.nb_clusters(); ++i)
+		{
+			auto it = space.begin();
+			std::advance(it, dist(gen));
+			seeds.push_back(*it);
+		}
+
+		std::normal_distribution gaussian(0.0, p.var());
+		std::uniform_int_distribution<unsigned int> sample_a_seed(0, p.nb_clusters() - 1);
+		std::map<coord_type, unsigned int> sample;
+		unsigned int count = 0;
+		while(count < p.sampling_size())
+		{
+			auto seed_id = sample_a_seed(gen);
+			auto x = seeds.at(seed_id);
+			x.lat() += gaussian(gen);
+			x.lon() += gaussian(gen);
+			if( p.spatial_grid().is_in_spatial_extent(x))
+      {
+				x = p.spatial_grid().reproject_to_centroid(x);
+				sample[x] += 1;
+				count += 1;
+			}
+		}
+		return sample;
+	}
+
+};
+
+} // namespace smapling_scheme
+
 } // namespace quetzal
 
 const std::map<char, std::string> quetzal::mutation_kernel::JC69::dico = { {'A', "TGC"}, {'T', "ACG"}, {'G', "ATC"}, {'C', "ATG"} };
