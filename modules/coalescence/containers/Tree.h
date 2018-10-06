@@ -185,8 +185,10 @@ public:
 		* \section Output
 		* \include coalescence/containers/test/Tree/basics_test.output
 	  */
- 	bool has_parent() const;
-
+ 	bool has_parent() const{
+		return m_parent != nullptr;
+	}
+	
 	/**
 	  * \brief Checks whether the tree has one or more child
 		* \return Returns false if the tree has no child, else returns true.
@@ -225,6 +227,17 @@ public:
 		}
 	}
 
+	template<typename Op1, typename Op2, typename Op3>
+	void visit_subtrees_by_generic_DFS(Op1 preorder, Op2 inorder, Op3 postorder){
+		preorder(*this);
+		for(auto& child : this->m_children)
+		{
+			child.visit_subtrees_by_generic_DFS(preorder, inorder, postorder);
+			inorder(*this);
+		}
+		postorder(*this);
+	}
+
 	auto& parent(){
 		assert(has_parent());
 		return *m_parent;
@@ -235,6 +248,7 @@ public:
 		return *m_parent;
 	}
 
+	unsigned int nb_children() const { return m_children.size(); }
 	/**
 	  * \brief Applies a function object to each leave encountered in a depth first search algorithm
 		* \param op unary operation function object that will be applied to the data member
@@ -365,12 +379,6 @@ Tree<CellT>& Tree<CellT>::add_child(CellT&& cell) noexcept{
 	subtree.m_parent = this;
 	m_children.push_back(std::move(subtree));
 	return m_children.back();
-}
-
-
-template<class CellT>
-bool Tree<CellT>::has_parent() const {
-	return m_parent;
 }
 
 template<class CellT>
