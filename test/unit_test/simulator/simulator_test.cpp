@@ -52,9 +52,15 @@ BOOST_AUTO_TEST_CASE( uniform_at_random, * utf::tolerance(0.1) )
   auto more_sample = d(space, p, gen);
 }
 
-BOOST_AUTO_TEST_CASE( clustered_sampling )
+BOOST_AUTO_TEST_CASE( gaussian_clusters )
 {
+  std::vector<std::pair<int,int>> space = {{0,0},{0,1},{1,0},{1,1}};
+  auto metric = [](auto const& x, auto const& y){return std::sqrt(std::abs(x.first-y.first)+std::abs(x.second-y.second)) ;};
 
+  using sampling_type = quetzal::sampling_scheme::gaussian_clusters;
+  sampling_type d(1000, 20.);
+  std::mt19937 gen;
+  auto sample = d(space, gen);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
