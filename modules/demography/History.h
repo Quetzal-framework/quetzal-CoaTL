@@ -66,11 +66,13 @@ namespace strategy {
     public:
       using point_type = typename Cont::value_type;
 
-      Interface(Cont const& points, M&& m): _matrix(std::move(m), _points(points) {}
+      Interface(Cont const& points, M const& m) :
+      _matrix(m),
+      _points(points) {}
 
       // interface with mass-based demographic history expand method
       // TODO iterate only over non zeros for sparse matrix
-      Cont arrival_space(){
+      Cont const& arrival_space(){
         return _points;
       }
 
@@ -128,11 +130,12 @@ namespace strategy {
      *                The signature should be equivalent to double f(T const& x, T const& Y)
      * @return        A dispersal kernel
      */
-    template<typename F>
-    static auto make_sparse_distance_based_dispersal(F f){
-      using matrix_type = boost::numeric::ublas::sparse_matrix<double>;
+    template<typename Cont, typename F>
+    static auto make_sparse_distance_based_dispersal(Cont const& points, F f){
+      using matrix_type = boost::numeric::ublas::compressed_matrix<double>;
       return make_interface<Cont, F, matrix_type>(points, f);
     }
+
   };
 
 } // namespace strategy
