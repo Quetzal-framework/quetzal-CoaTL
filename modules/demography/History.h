@@ -16,6 +16,8 @@
 #include "../../random.h"
 
 #include <boost/numeric/ublas/matrix_sparse.hpp>
+#include <boost/numeric/ublas/symmetric.hpp>
+#include <boost/numeric/ublas/vector.hpp>
 
 #include <vector>
 #include <memory>
@@ -59,16 +61,40 @@ namespace strategy {
      */
     template<typename Cont, typename M>
     class Interface {
+      using matrix_type = M;
 
       M _matrix;
       Cont const& _points;
 
+      template<typename F>
+      auto make_matrix(Cont const& points, F f){
+
+        using namespace boost::numeric::ublas;
+
+        matrix_type A (points.size(), points.size());
+        for (unsigned i = 0; i < A.size1 (); ++ i)
+        {
+          for (unsigned j = 0; j <= i; ++ j)
+          {
+            A (i, j) = f(points.at(i), points.at(j));
+          }
+        }
+
+        // Dividing each row by the sum of the row
+        auto s = prod(scalar_vector<double>(A.size1(),1.), trans(A));
+        std::for_each( s.begin(), s.end(), [](auto a){ assert(a>0); return 1.0/a;});
+        return prod(diagonal_matrix<double>(s), A);
+
+      }
+
     public:
       using point_type = typename Cont::value_type;
 
-      Interface(Cont const& points, M const& m) :
-      _matrix(m),
-      _points(points) {}
+      template<typename F>
+      Interface(Cont const& points, F const& f) :
+      _matrix( make_matrix(points, f) ),
+      _points(points)
+      {}
 
       // interface with mass-based demographic history expand method
       // TODO iterate only over non zeros for sparse matrix
@@ -78,26 +104,10 @@ namespace strategy {
 
       // interface with mass-based demographic history expand method
       double operator()(point_type const& x, point_type const& y){
-        return m(x.getID(), y.getID());
+        return _matrix(x.getID(), y.getID());
       }
 
     }; // inner class Interface
-
-    template<typename Cont, typename F, typename M>
-    static auto make_interface(Cont const& points, F f)
-    {
-      using matrix_type = M;
-      matrix_type m (points.size(), points.size());
-
-      for (unsigned i = 0; i < m.size1 (); ++ i)
-      {
-        for (unsigned j = 0; j <= i; ++ j)
-        {
-          m (i, j) = f(points.at(i), points.at(j));
-        }
-      }
-      return Interface<Cont, matrix_type>(points, m);
-    }
 
   public:
 
@@ -116,7 +126,7 @@ namespace strategy {
     static auto make_distance_based_dispersal(Cont const& points, F f)
     {
       using matrix_type = boost::numeric::ublas::symmetric_matrix<double>;
-      return make_interface<Cont, F, matrix_type>(points, f);
+      return Interface<Cont, matrix_type>(points, f);
     }
 
     /*!
@@ -133,7 +143,7 @@ namespace strategy {
     template<typename Cont, typename F>
     static auto make_sparse_distance_based_dispersal(Cont const& points, F f){
       using matrix_type = boost::numeric::ublas::compressed_matrix<double>;
-      return make_interface<Cont, F, matrix_type>(points, f);
+      return Interface<Cont, matrix_type>(points, f);
     }
 
   };
