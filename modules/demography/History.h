@@ -18,6 +18,7 @@
 #include <boost/numeric/ublas/matrix_sparse.hpp>
 #include <boost/numeric/ublas/symmetric.hpp>
 #include <boost/numeric/ublas/vector.hpp>
+#include <boost/numeric/ublas/banded.hpp>
 
 #include <vector>
 #include <memory>
@@ -83,8 +84,11 @@ namespace strategy {
         // Dividing each row by the sum of the row
         auto s = prod(scalar_vector<double>(A.size1(),1.), trans(A));
         std::for_each( s.begin(), s.end(), [](auto a){ assert(a>0); return 1.0/a;});
-        return prod(diagonal_matrix<double>(s), A);
-
+        banded_matrix<double> S(s.size(),s.size());
+        for(unsigned int i = 0; i < s.size(); ++i ){
+          S(i,i) = s(i);
+        }
+        return prod(S, A);
       }
 
     public:
