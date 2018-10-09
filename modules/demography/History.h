@@ -70,6 +70,7 @@ namespace strategy {
       matrix_type _matrix;
       std::vector<point_ID_type> const& _points;
       std::vector<coord_type> const& _coords;
+      mutable std::map<coord_type, std::vector<coord_type>> _cash;
 
       /*!
        * Compute a weight pairwise matrix by applying f to each pair of points
@@ -100,7 +101,19 @@ namespace strategy {
       {}
 
       // interface with mass-based demographic history expand method
+      // TODO: memoize if performances are not good enough
       auto arrival_space(coord_type const& x) const {
+        auto it = _cash.find(x);
+        if(it != _cash.end())
+        {
+          return it->second;
+        }else{
+          auto p = _cash.emplace(x, retrieve_non_zero_arrival_space(x));
+          return p.first->second;
+        }
+      }
+
+      auto retrieve_non_zero_arrival_space(coord_type const& x) const {
         using it1_t = typename matrix_type::const_iterator1;
         using it2_t = typename matrix_type::const_iterator2;
         auto i = quetzal::utils::getIndexOfPointInVector(x, _coords);
