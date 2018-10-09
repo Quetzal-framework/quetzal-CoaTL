@@ -17,8 +17,6 @@
 
 #include <boost/numeric/ublas/matrix_sparse.hpp>
 #include <boost/numeric/ublas/symmetric.hpp>
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/banded.hpp>
 
 #include <vector>
 #include <memory>
@@ -69,9 +67,6 @@ namespace strategy {
 
       template<typename F>
       auto make_matrix(Cont const& points, F f){
-
-        using namespace boost::numeric::ublas;
-
         matrix_type A (points.size(), points.size());
         for (unsigned i = 0; i < A.size1 (); ++ i)
         {
@@ -80,15 +75,7 @@ namespace strategy {
             A (i, j) = f(points.at(i), points.at(j));
           }
         }
-
-        // Dividing each row by the sum of the row
-        auto s = prod(scalar_vector<double>(A.size1(),1.), trans(A));
-        std::for_each( s.begin(), s.end(), [](auto a){ assert(a>0); return 1.0/a;});
-        banded_matrix<double> S(s.size(),s.size());
-        for(unsigned int i = 0; i < s.size(); ++i ){
-          S(i,i) = s(i);
-        }
-        return prod(S, A);
+        return quetzal::utils::divide_terms_by_row_sum(A);
       }
 
     public:
@@ -101,14 +88,22 @@ namespace strategy {
       {}
 
       // interface with mass-based demographic history expand method
-      // TODO iterate only over non zeros for sparse matrix
-      Cont const& arrival_space(){
-        return _points;
+      auto const& arrival_space() const {
+        return _points.cbegin()->space();
+      }
+
+      template<typename Point>
+      size_t getIndexOfPointInVector(Point const& p, std::vector<Point> const& vect) {
+      	auto it = std::find(vect.begin(), vect.end(), p);
+      	assert(it != vect.end());
+      	return std::distance(vect.begin(), it);
       }
 
       // interface with mass-based demographic history expand method
-      double operator()(point_type const& x, point_type const& y){
-        return _matrix(x.getID(), y.getID());
+      template<typename T>
+      double operator()(T const& x, T const& y){
+        auto const& v = arrival_space();
+        return _matrix(getIndexOfPointInVector(x, v), getIndexOfPointInVector(y, v) );
       }
 
     }; // inner class Interface
@@ -479,7 +474,7 @@ public:
         {
           auto N_tilde = sim_growth(gen, x, t);
 
-          for(auto y : kernel.arrival_space() )
+          for(auto const& y : kernel.arrival_space() )
           {
             auto m = kernel(x, y);
             assert(m >= 0.0 && m <= 1.0);

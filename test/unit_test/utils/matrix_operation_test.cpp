@@ -8,43 +8,32 @@
 *                                                                      *
 ***************************************************************************/
 
-#define BOOST_TEST_MODULE expressive_test
+#define BOOST_TEST_MODULE utils_test
 
-#include <modules/expressive.h>
+#include <utils.h>
+
+#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/io.hpp>
 
 #include <boost/test/included/unit_test.hpp>
 namespace utf = boost::unit_test;
 
-BOOST_AUTO_TEST_SUITE( expressive )
+#include <cmath>
 
-BOOST_AUTO_TEST_CASE( using_lambdas_and_literals )
+BOOST_AUTO_TEST_SUITE( matrix_operation_test )
+
+BOOST_AUTO_TEST_CASE( boost_features )
 {
-  using quetzal::expressive::use;
-
-  quetzal::expressive::literal_factory<int,int> lit;
-  auto g  = lit(5);
-
-  auto f = [](int a, int b){ return a + b; };
-
-  auto h  = use(f) + g ;
-  assert( h(2,3) == 10);
-
-  BOOST_CHECK_EQUAL( h(2,3), 10);
-
+  using matrix_type = typename boost::numeric::ublas::matrix<double>;
+  matrix_type m(3,4);
+  for(unsigned int i = 0; i < m.size1(); ++i ){
+    for(unsigned int j = 0; j < m.size2(); ++j){
+      m(i,j) = static_cast<double>(i+j);
+    }
+  }
+  std::cout << m << std::endl;
+  auto m2 = quetzal::utils::divide_terms_by_row_sum(m);
+  std::cout << m2 << std::endl;
 }
-
-BOOST_AUTO_TEST_CASE( composing_functors )
-{
-  // NxN -> N -> string
-  auto inner = use([](int a, int b){ return a + b});
-  auto outer = use([](int c ){ return "c";});
-
-  auto composed = quetzal::expressive::compose(outer, inner);
-
-  BOOST_CHECK_EQUAL( composed(1,2), "c");
-
-}
-
-BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE_END()
