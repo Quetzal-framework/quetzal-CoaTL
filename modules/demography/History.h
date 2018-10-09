@@ -59,52 +59,53 @@ namespace strategy {
      * @tparam M the internal stoarage of migration coefficients
      * @tparam Cont a container containing value with getID method giving a unique integer index
      */
-    template<typename Cont, typename M>
+    template<typename T, typename M>
     class Interface {
+
+      using coord_type = T;
       using matrix_type = M;
+      using point_ID_type = quetzal::utils::PointWithId<coord_type>;
 
       M _matrix;
-      Cont const& _points;
+      std::vector<point_ID_type> const& _points;
+      std::vector<coord_type> const& _coords;
 
+      /*!
+       * Compute a weight pairwise matrix by applying f to each pair of points
+       * @param  points [description]
+       * @param  f      [description]
+       * @return        [description]
+       */
       template<typename F>
-      auto make_matrix(Cont const& points, F f){
+      auto make_matrix(std::vector<point_ID_type> const& points, F f){
         matrix_type A (points.size(), points.size());
         for (unsigned i = 0; i < A.size1 (); ++ i)
         {
           for (unsigned j = 0; j <= i; ++ j)
           {
-            A (i, j) = f(points.at(i), points.at(j));
+            A (i, j) = f(points.at(i).getPoint(), points.at(j).getPoint());
           }
         }
         return quetzal::utils::divide_terms_by_row_sum(A);
       }
 
     public:
-      using point_type = typename Cont::value_type;
 
       template<typename F>
-      Interface(Cont const& points, F const& f) :
+      Interface(std::vector<point_ID_type> const& points, std::vector<coord_type> const& coords, F const& f) :
       _matrix( make_matrix(points, f) ),
-      _points(points)
+      _points(points),
+      _coords(coords)
       {}
 
       // interface with mass-based demographic history expand method
       auto const& arrival_space() const {
-        return _points.cbegin()->space();
-      }
-
-      template<typename Point>
-      size_t getIndexOfPointInVector(Point const& p, std::vector<Point> const& vect) {
-      	auto it = std::find(vect.begin(), vect.end(), p);
-      	assert(it != vect.end());
-      	return std::distance(vect.begin(), it);
+        return _coords;
       }
 
       // interface with mass-based demographic history expand method
-      template<typename T>
-      double operator()(T const& x, T const& y){
-        auto const& v = arrival_space();
-        return _matrix(getIndexOfPointInVector(x, v), getIndexOfPointInVector(y, v) );
+      double operator()(coord_type const& x, coord_type const& y){
+        return _matrix(quetzal::utils::getIndexOfPointInVector(x, _coords), quetzal::utils::getIndexOfPointInVector(y, _coords) );
       }
 
     }; // inner class Interface
@@ -117,33 +118,45 @@ namespace strategy {
     /*!
      * Contruct a dispersal kernel compatible with the mass-based strategy
      *
-     * @param  points a container of points of arbitrary type T with a `getID` method giving a unique integer index
+     * @param  coords a container of geographic points
      * @param  f      a functor giving the migration coefficient between two points
      *                The signature should be equivalent to double f(T const& x, T const& Y)
      * @return        A dispersal kernel
      */
-    template<typename Cont, typename F>
-    static auto make_distance_based_dispersal(Cont const& points, F f)
+    template<typename T, typename F>
+    static auto make_distance_based_dispersal(std::vector<T> const& coords, F f)
     {
+      using coord_type = T;
+      std::vector<quetzal::utils::PointWithId<coord_type>> points;
+      points.reserve(coords.size());
+      const auto& ref = coords;
+      std::transform(coords.begin(), coords.end(), std::back_inserter(points),
+                     [ref](coord_type const& x){ return quetzal::utils::PointWithId<coord_type>(ref, x); });
       using matrix_type = boost::numeric::ublas::symmetric_matrix<double>;
-      return Interface<Cont, matrix_type>(points, f);
+      return Interface<coord_type, matrix_type>(points, coords, f);
     }
 
     /*!
      * Contruct a dispersal kernel compatible with the mass-based strategy
      *
      * @details This implementation should be chosen when the migration coefficients
-     *          are expect to be null over the majort part of the landscape.
+     *          are expect to be null over the major part of the landscape.
      *
-     * @param  points a container of points of arbitrary type T with a `getID` method giving a unique integer index
+     * @param  coords a container of geopgrahic points
      * @param  f      a functor giving the migration coefficient between two points
      *                The signature should be equivalent to double f(T const& x, T const& Y)
      * @return        A dispersal kernel
      */
-    template<typename Cont, typename F>
-    static auto make_sparse_distance_based_dispersal(Cont const& points, F f){
+    template<typename T, typename F>
+    static auto make_sparse_distance_based_dispersal(std::vector<T> const& coords, F f){
+      using coord_type = T;
+      std::vector<quetzal::utils::PointWithId<coord_type>> points;
+      points.reserve(coords.size());
+      const auto& ref = coords;
+      std::transform(coords.begin(), coords.end(), std::back_inserter(points),
+                     [ref](coord_type const& x){ return quetzal::utils::PointWithId<coord_type>(ref, x); });
       using matrix_type = boost::numeric::ublas::compressed_matrix<double>;
-      return Interface<Cont, matrix_type>(points, f);
+      return Interface<coord_type, matrix_type>(points, coords, f);
     }
 
   };
