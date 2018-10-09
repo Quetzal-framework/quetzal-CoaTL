@@ -14,284 +14,301 @@
 #include "Flow.h"
 #include "PopulationSize.h"
 #include "../../random.h"
+#include "../../utils.h"
+
+#include <boost/numeric/ublas/matrix_sparse.hpp>
+#include <boost/numeric/ublas/symmetric.hpp>
 
 #include <vector>
 #include <memory>
 
+
 namespace quetzal {
+
 namespace demography {
 
-  namespace strategy {
-
-    /*!
-     * @brief Traits class for individual based demographic history simulation, strategy suited for small number of individuals in the landscape (small populations).
-     *
-     * @ingroup demography
-     *
-     * \details Simulate the demographic history with an individual-based strategy: each
-     * individual is dispersed individually.
-     * \par History Initialization:
-     * The population size history\f$N\f$ is initialized by setting \f$N(.,t_0)\f$, the initial distribution of individuals across demes at the
-     * first time of the history \f$t_0\f$. Typically for a biological invasion,
-     * this is restricted to the introduction site(s) with the number of introduced
-     * individuals. For endemic species, paleoclimatic distribution can be considered
-     * as starting points.
-     *
-     * \par Growth:
-     * The offspring number \f$ \tilde{N}_{x}^{t} \f$ in each deme is freely defined by the user. It can for example be
-     * sampled in a distribution conditionally to a function of the local density of
-     * parents. Non-overlapping generations are considered (the parents die just after reproduction).
-     *
-     * \par Dispersal:
-     *  The children dispersal is done by sampling their destination in a multinomial
-     *  law, that defines \f$ \Phi_{x,y}^t \f$, the number of individuals going from
-     *  \f$x\f$ to \f$y\f$ at time \f$t\f$:
-     *
-     * \f[ (\Phi_{x,y}^{t})_{y\in X} \sim \mathcal{M}(\tilde{N}_{x}^{t},(m_{xy})_y) ~. \f]
-     *
-     * The term \f$ (m_{xy})_y \f$ denotes the parameters of the multinomial law,
-     * giving for an individual in \f$x\f$ its proability to go to \f$y\f$.
-     * These probabilities are given by the dispersal law with parameter \f$\theta\f$:
-     *
-     * \f[
-     * \begin{array}{cclcl}
-     * m  & : &  X^2 & \mapsto & R_{+} \\
-     * &   &    (x,y)     & \mapsto & m^{\theta}(x,y)  ~. \\
-     * \end{array}
-     * \f]
-     *
-     * After migration, the number of individuals in deme \f$x\f$ is defined by
-     * the total number of individuals converging to \f$x\f$:
-     *
-     * \f[
-     * N(x,t+1) = \displaystyle \sum_{i\in X} \Phi_{i,x}^{t}~.
-     * \f]
-     * \section Example
-     * \snippet demography/test/History/Individual_based_history_test.cpp Example
-     * \section Output
-     * \include demography/test/History/Individual_based_history_test.output
-     */
-    struct individual_based {
-      using value_type = unsigned int;
-    };
-
-    /*!
-    * @brief Traits class for simulating the demographic history of important masses of populations.
-    *
-    * @ingroup demography
-    *
-    * \details Simulate the demographic history by considering that populations of individuals are divisible masses,
-    *  leading to faster simulations.
-    *
-    * \par Intialization:
-    * \f$N\f$ is initialized by setting \f$N(.,t_0)\f$ the initial distribution
-    * of individuals across demes at the first time \f$t_0\f$.
-    * Typically for a biological invasion, this is restricted to the introduction site(s)
-    * with the number of introduced individuals. For endemic species, paleoclimatic
-    * distribution can be considered as starting points.
-    *
-    * \par Growth:
-    * The offspring number \f$\tilde{N}_{x}^{t}\f$ in each deme is freely defined by
-    * the user. For example, it can be sampled in a distribution conditionally
-    * to a function of the local density of parents. Non-overlapping generations
-    * are considered (the parents die just after reproduction).
-    *
-    * \par Dispersal:
-    * The children dispersal is done by splitting the population masses according
-    * to their migration probabilities, defining
-    * \f$ \Phi_{x,y}^t \f$, the population flow going from \f$x\f$ to \f$y\f$ at time \f$t\f$:
-    * \f[ (\Phi_{x,y}^{t})_{y\in  X} = (\tilde{N}_{x}^{t} \times m_{xy})_{y\in  X} ~. \f]
-    * The term \f$ m_{xy} \f$ denotes the parameters of the transition kernel,
-    * giving for an individual in \f$x\f$ its probability to go to \f$y\f$.
-    * These probabilities are given by the dispersal law with parameter \f$\theta\f$:
-    * \f[
-    * \begin{array}{cclcl}
-    * m  & : &  X^2 & \mapsto & R_{+} \\
-    * &   &    (x,y)     & \mapsto & m^{\theta}(x,y)  ~. \\
-    * \end{array}
-    * \f]
-    * After migration, the population size in deme \f$x\f$ is defined by the sum of population flows converging to \f$x\f$:
-    * \f[
-    * N(x,t+1) = \displaystyle \sum_{i\in X} \Phi_{i,x}^{t}~.
-    * \f]
-    * \section Example
-    * \snippet demography/test/History/Mass_based_history_test.cpp Example
-    * \section Output
-    * \include demography/test/History/Mass_based_history_test.output
-    */
-    struct mass_based {
-      using value_type = unsigned int;
-    };
-
-  }
+namespace strategy {
 
   /*!
-   * @brief Base class for spatially explicit and forward-in time population history simulators.
-   *
-   * @tparam Space    Demes identifiers.
-   * @tparam Time     EqualityComparable, CopyConstructible.
-   * @tparam Strategy    Strategy use for simulating populations dynamics
+   * @brief Class for demographic simulation of small populations.
    *
    * @ingroup demography
    *
+   * \details Simulate the demographic history by sampling the location of each
+   *          individuals in a proability distribution.
    */
-  template<typename Space, typename Time, typename Strategy>
-  class BaseHistory {
+  class individual_based {
+  public:
 
-      public:
+    //! \typedef type used to represent effective population size and flows
+    using value_type = unsigned int;
+  };
 
-        //! \typedef strategy used for simulating populations dynamics
-        using strategy_type = Strategy;
+  /*!
+  * @brief Class for demographic simulation of large populations.
+  *
+  * @ingroup demography
+  *
+  * \details Simulate the demographic history by considering populations of
+  *          individuals as divisible masses leading to faster simulations.
+  */
+  class mass_based {
 
-        //! \typedef type of the population flows database
-        using flow_type = Flow<Space, Time, typename strategy_type::value_type>;
+    /*!
+     * Interface for demographic expansion algorithm
+     * @tparam M the internal stoarage of migration coefficients
+     * @tparam Cont a container containing value with getID method giving a unique integer index
+     */
+    template<typename Cont, typename M>
+    class Interface {
+      using matrix_type = M;
 
-        //! \typedef type of the population size database
-        using pop_sizes_type = PopulationSize<Space, Time, typename strategy_type::value_type>;
+      M _matrix;
+      Cont const& _points;
 
-        //! \typedef space type
-        using coord_type = Space;
-
-        //! \typedef time type
-        using time_type = Time;
-
-        //! \typedef type of the discrete distribution used inside the backward dispersal kernel
-        using discrete_distribution_type = quetzal::random::DiscreteDistribution<coord_type>;
-
-        //! \typedef Backward dispersal kernel type
-        using backward_kernel_type = quetzal::random::TransitionKernel<time_type, discrete_distribution_type>;
-
-      protected:
-
-        // Need to be accessed by the expand method
-        std::unique_ptr<pop_sizes_type> m_sizes;
-        std::unique_ptr<flow_type> m_flows;
-        std::vector<Time> m_times;
-
-        // mutable because sampling backward kernel can update the state
-        mutable std::unique_ptr<backward_kernel_type> m_kernel;
-
-      private:
-
-        auto make_backward_distribution(coord_type const& x, time_type const& t) const
+      template<typename F>
+      auto make_matrix(Cont const& points, F f){
+        matrix_type A (points.size(), points.size());
+        for (unsigned i = 0; i < A.size1 (); ++ i)
         {
-
-          std::vector<double> weights;
-          std::vector<coord_type> support;
-
-          weights.reserve(m_flows->flux_to(x,t).size());
-          support.reserve(m_flows->flux_to(x,t).size());
-
-          for(auto const& it : m_flows->flux_to(x,t) )
+          for (unsigned j = 0; j <= i; ++ j)
           {
-            support.push_back(it.first);
-            weights.push_back(static_cast<double>(it.second));
+            A (i, j) = f(points.at(i), points.at(j));
           }
-
-          return discrete_distribution_type(std::move(support),std::move(weights));
         }
+        return quetzal::utils::divide_terms_by_row_sum(A);
+      }
 
-      public:
+    public:
+      using point_type = typename Cont::value_type;
 
-        /**
-          * @brief Constructor initializing the demographic database.
-          *
-          * @param x the coordinate of introduction
-          * @param t the introduction time
-          * @param N the population size at coordinate x at time t
-          *
-          * \section Example
-          * \snippet demography/test/History/History_test.cpp Example
-          * \section Output
-          * \include demography/test/History/History_test.output
-          */
-        BaseHistory(coord_type const& x, time_type const& t, typename strategy_type::value_type N):
-        m_sizes(std::make_unique<pop_sizes_type>()),
-        m_flows(std::make_unique<flow_type>()),
-        m_kernel(std::make_unique<backward_kernel_type>())
-        {
-          m_sizes->operator()(x,t) = N;
-          m_times.push_back(t);
-        }
+      template<typename F>
+      Interface(Cont const& points, F const& f) :
+      _matrix( make_matrix(points, f) ),
+      _points(points)
+      {}
 
-        /**
-          * @brief Read-only access to the demographic flows database
-          */
-        flow_type const& flows() const
-        {
-          return *m_flows;
-        }
+      // interface with mass-based demographic history expand method
+      auto const& arrival_space() const {
+        return _points.cbegin()->space();
+      }
 
-        /**
-          * @brief Read and write access to the demographic flows database
-          */
-        flow_type & flows()
-        {
-          return *m_flows;
-        }
+      template<typename Point>
+      size_t getIndexOfPointInVector(Point const& p, std::vector<Point> const& vect) {
+      	auto it = std::find(vect.begin(), vect.end(), p);
+      	assert(it != vect.end());
+      	return std::distance(vect.begin(), it);
+      }
 
-        /**
-          * @brief Read-only access to the demographic sizes database.
-          * \remark Can be used for composition into time dependent growth functions.
-          */
-        const pop_sizes_type & pop_sizes() const
-        {
-          return *m_sizes;
-        }
+      // interface with mass-based demographic history expand method
+      template<typename T>
+      double operator()(T const& x, T const& y){
+        auto const& v = arrival_space();
+        return _matrix(getIndexOfPointInVector(x, v), getIndexOfPointInVector(y, v) );
+      }
 
-        /**
-          * @brief Read-and-write access to the demographic sizes database
-          */
-        pop_sizes_type & pop_sizes()
-        {
-          return *m_sizes;
-        }
+    }; // inner class Interface
 
-        /**
-          * @brief First time recorded in the foward-in-time database history.
-          */
-        time_type const& first_time() const
-        {
-          return m_times.front();
-        }
+  public:
 
-        /**
-          * @brief Last time recorded in the foward-in-time database history.
-          */
-        time_type const& last_time() const
-        {
-          return m_times.back();
-        }
+    //! \typedef type used to represent effective population size and flows
+    using value_type = unsigned int;
 
-        /**
-          * @brief Samples a coordinate from the backward-in-time transition matrix
-          *
-          * \details The transition matrix is computed from the demographic flows
-          * database. The returned coordinate object will basically answer the question:
-          * when an individual is found in \f$x\f$ at time \f$t\f$, where could it
-          * have been at time \f$t-1\f$ ?
-          * Let \f$ X \f$ be the geographic space and \f$\Phi_{x,y}^t\f$ be the number of individuals going
-          * from coordinate \f$x \in X \f$ to coordinate \f$y\f$ at time \f$t\f$.
-          * Knowing that a child node \f$c\f$ is found in \f$ j \in X \f$, the probability for its parent
-          * \f$p\f$ to be in \f$i\in X \f$ is: \f$ P( p \in i ~|~ e \in j) = \frac{\Phi_{i, j}^{t}}{ \sum_{k} \Phi_{k, j}^{t} } ~.\f$
-          * \section Example
-          * \snippet demography/test/History/Mass_based_history_test.cpp Example
-          * \section Output
-          * \include demography/test/History/Mass_based_history_test.output
-          */
-        template<typename Generator>
-        coord_type backward_kernel(coord_type const& x, time_type t, Generator& gen) const
-        {
-          --t;
-          assert(m_flows->flux_to_is_defined(x,t));
-          if( ! m_kernel->has_distribution(x, t))
-          {
-            m_kernel->set(x, t, make_backward_distribution(x, t));
-          }
-          return m_kernel->operator()(gen, x, t);
-        }
+    /*!
+     * Contruct a dispersal kernel compatible with the mass-based strategy
+     *
+     * @param  points a container of points of arbitrary type T with a `getID` method giving a unique integer index
+     * @param  f      a functor giving the migration coefficient between two points
+     *                The signature should be equivalent to double f(T const& x, T const& Y)
+     * @return        A dispersal kernel
+     */
+    template<typename Cont, typename F>
+    static auto make_distance_based_dispersal(Cont const& points, F f)
+    {
+      using matrix_type = boost::numeric::ublas::symmetric_matrix<double>;
+      return Interface<Cont, matrix_type>(points, f);
+    }
+
+    /*!
+     * Contruct a dispersal kernel compatible with the mass-based strategy
+     *
+     * @details This implementation should be chosen when the migration coefficients
+     *          are expect to be null over the majort part of the landscape.
+     *
+     * @param  points a container of points of arbitrary type T with a `getID` method giving a unique integer index
+     * @param  f      a functor giving the migration coefficient between two points
+     *                The signature should be equivalent to double f(T const& x, T const& Y)
+     * @return        A dispersal kernel
+     */
+    template<typename Cont, typename F>
+    static auto make_sparse_distance_based_dispersal(Cont const& points, F f){
+      using matrix_type = boost::numeric::ublas::compressed_matrix<double>;
+      return Interface<Cont, matrix_type>(points, f);
+    }
 
   };
+
+} // namespace strategy
+
+/*!
+* @brief Base class for spatially explicit and forward-in time population history simulators.
+*
+* @tparam Space    Demes identifiers.
+* @tparam Time     EqualityComparable, CopyConstructible.
+* @tparam Strategy    Strategy use for simulating populations dynamics
+*
+* @ingroup demography
+*
+*/
+template<typename Space, typename Time, typename Strategy>
+class BaseHistory {
+
+public:
+
+  //! \typedef strategy used for simulating populations dynamics
+  using strategy_type = Strategy;
+
+  //! \typedef type of the population flows database
+  using flow_type = Flow<Space, Time, typename strategy_type::value_type>;
+
+  //! \typedef type of the population size database
+  using pop_sizes_type = PopulationSize<Space, Time, typename strategy_type::value_type>;
+
+  //! \typedef space type
+  using coord_type = Space;
+
+  //! \typedef time type
+  using time_type = Time;
+
+  //! \typedef type of the discrete distribution used inside the backward dispersal kernel
+  using discrete_distribution_type = quetzal::random::DiscreteDistribution<coord_type>;
+
+  //! \typedef Backward dispersal kernel type
+  using backward_kernel_type = quetzal::random::TransitionKernel<time_type, discrete_distribution_type>;
+
+public:
+
+  /**
+  * @brief Constructor initializing the demographic database.
+  *
+  * @param x the coordinate of introduction
+  * @param t the introduction time
+  * @param N the population size at coordinate x at time t
+  *
+  * \section Example
+  * \snippet demography/test/History/History_test.cpp Example
+  * \section Output
+  * \include demography/test/History/History_test.output
+  */
+  BaseHistory(coord_type const& x, time_type const& t, typename strategy_type::value_type N):
+  m_sizes(std::make_unique<pop_sizes_type>()),
+  m_flows(std::make_unique<flow_type>()),
+  m_kernel(std::make_unique<backward_kernel_type>())
+  {
+    m_sizes->operator()(x,t) = N;
+    m_times.push_back(t);
+  }
+
+  /**
+  * @brief Read-only access to the demographic flows database
+  */
+  flow_type const& flows() const
+  {
+    return *m_flows;
+  }
+
+  /**
+  * @brief Read and write access to the demographic flows database
+  */
+  flow_type & flows()
+  {
+    return *m_flows;
+  }
+
+  /**
+  * @brief Read-only access to the demographic sizes database.
+  * \remark Can be used for composition into time dependent growth functions.
+  */
+  const pop_sizes_type & pop_sizes() const
+  {
+    return *m_sizes;
+  }
+
+  /**
+  * @brief Read-and-write access to the demographic sizes database
+  */
+  pop_sizes_type & pop_sizes()
+  {
+    return *m_sizes;
+  }
+
+  /**
+  * @brief First time recorded in the foward-in-time database history.
+  */
+  time_type const& first_time() const
+  {
+    return m_times.front();
+  }
+
+  /**
+  * @brief Last time recorded in the foward-in-time database history.
+  */
+  time_type const& last_time() const
+  {
+    return m_times.back();
+  }
+
+  /**
+  * @brief Samples a coordinate from the backward-in-time transition matrix
+  *
+  * \details The transition matrix is computed from the demographic flows
+  * database. The returned coordinate object will basically answer the question:
+  * when an individual is found in \f$x\f$ at time \f$t\f$, where could it
+  * have been at time \f$t-1\f$ ?
+  */
+  template<typename Generator>
+  coord_type backward_kernel(coord_type const& x, time_type t, Generator& gen) const
+  {
+    --t;
+    assert(m_flows->flux_to_is_defined(x,t));
+    if( ! m_kernel->has_distribution(x, t))
+    {
+      m_kernel->set(x, t, make_backward_distribution(x, t));
+    }
+    return m_kernel->operator()(gen, x, t);
+  }
+
+protected:
+
+  // Need to be accessed by the expand method
+  std::unique_ptr<pop_sizes_type> m_sizes;
+  std::unique_ptr<flow_type> m_flows;
+  std::vector<Time> m_times;
+
+  // mutable because sampling backward kernel can update the state
+  mutable std::unique_ptr<backward_kernel_type> m_kernel;
+
+private:
+
+  auto make_backward_distribution(coord_type const& x, time_type const& t) const
+  {
+
+    std::vector<double> weights;
+    std::vector<coord_type> support;
+
+    weights.reserve(m_flows->flux_to(x,t).size());
+    support.reserve(m_flows->flux_to(x,t).size());
+
+    for(auto const& it : m_flows->flux_to(x,t) )
+    {
+      support.push_back(it.first);
+      weights.push_back(static_cast<double>(it.second));
+    }
+
+    return discrete_distribution_type(std::move(support),std::move(weights));
+  }
+
+};
 
   /*!
   * @brief Unspecialized class.
@@ -429,12 +446,12 @@ public:
     *        `unsigned int sim_growth(V &gen, const coord_type &x, const time_type &t);`.
     * @param kernel a functor representing the dispersal transition matrix.
     *               The signature of the function should be equivalent to
-    *               `double kernel( const coord_type & x, const coord_type &y, const time_type &t);`
+    *               `double kernel( const coord_type & x, const coord_type &y);`
     *               and the function should return the probability for an individual
     *               to disperse from \f$x\f$ to \f$y\f$ at time \f$t\f$.
-    *               The expression `kernel.state_space(time_type const& t)` must be valid
+    *               The expression `kernel.arrival_state()` must be valid
     *               and returns an iterable container of geographic coordinates
-    *               indicating the transition kernel state space at time \f$t\f$.
+    *               indicating the transition kernel state space.
     *
     * @section Example
     * @snippet demography/test/History/Mass_based_history_test.cpp Example
@@ -458,9 +475,9 @@ public:
         {
           auto N_tilde = sim_growth(gen, x, t);
 
-          for(auto y : kernel.arrival_space(x, t) )
+          for(auto const& y : kernel.arrival_space() )
           {
-            auto m = kernel(x, y, t);
+            auto m = kernel(x, y);
             assert(m >= 0.0 && m <= 1.0);
 
             double nb_migrants = std::ceil(m * static_cast<double>(N_tilde));
@@ -477,6 +494,7 @@ public:
 
       }
     }
+
 
   };
 

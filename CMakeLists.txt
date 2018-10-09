@@ -18,7 +18,10 @@ ENDIF()
 include_directories( ./ )
 
 # creates the executables
-#add_executable(itest test/integration_test/integration.cpp)
-add_executable(utest test/unit_test/simulator/simulator_test.cpp)
+# add_executable(itest test/integration_test/integration.cpp)
+# add_executable(utest1 test/unit_test/simulator/simulator_test.cpp)
+# add_executable(utest2 test/unit_test/demography/History_test.cpp)
+add_executable(expressive_test test/unit_test/expressive/expressive_test.cpp)
+add_executable(utils_test test/unit_test/utils/matrix_operation_test.cpp)
 
 #TARGET_LINK_LIBRARIES( itest LINK_PUBLIC ${GDAL_LIBRARY} )
