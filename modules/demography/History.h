@@ -18,6 +18,7 @@
 
 #include <boost/numeric/ublas/matrix_sparse.hpp>
 #include <boost/numeric/ublas/symmetric.hpp>
+#include <boost/numeric/ublas/io.hpp>
 
 #include <vector>
 #include <memory>
@@ -66,7 +67,7 @@ namespace strategy {
       using matrix_type = M;
       using point_ID_type = quetzal::utils::PointWithId<coord_type>;
 
-      M _matrix;
+      matrix_type _matrix;
       std::vector<point_ID_type> const& _points;
       std::vector<coord_type> const& _coords;
 
@@ -77,7 +78,7 @@ namespace strategy {
        * @return        [description]
        */
       template<typename F>
-      auto make_matrix(std::vector<point_ID_type> const& points, F f){
+      matrix_type make_matrix(std::vector<point_ID_type> const& points, F f){
         matrix_type A (points.size(), points.size());
         for (unsigned i = 0; i < A.size1 (); ++ i)
         {
@@ -99,8 +100,18 @@ namespace strategy {
       {}
 
       // interface with mass-based demographic history expand method
-      auto const& arrival_space() const {
-        return _coords;
+      auto arrival_space(coord_type const& x) const {
+        using it1_t = typename matrix_type::const_iterator1;
+        using it2_t = typename matrix_type::const_iterator2;
+        auto i = quetzal::utils::getIndexOfPointInVector(x, _coords);
+        it1_t it1 = _matrix.begin1();
+        std::advance(it1, i);
+        std::vector<coord_type> v;
+        v.reserve(_matrix.size2()); // worst case
+        for (it2_t it2 = it1.begin(); it2 != it1.end(); it2++) {
+            if(*it2 > 0.0) v.push_back(_coords.at(it2.index2()));
+        }
+        return v;
       }
 
       // interface with mass-based demographic history expand method
@@ -488,7 +499,7 @@ public:
         {
           auto N_tilde = sim_growth(gen, x, t);
 
-          for(auto const& y : kernel.arrival_space() )
+          for(auto const& y : kernel.arrival_space(x) )
           {
             auto m = kernel(x, y);
             assert(m >= 0.0 && m <= 1.0);
