@@ -14,6 +14,7 @@
 #include "Flow.h"
 #include "PopulationSize.h"
 #include "../../random.h"
+#include "../../utils.h"
 
 #include <boost/numeric/ublas/matrix_sparse.hpp>
 #include <boost/numeric/ublas/symmetric.hpp>

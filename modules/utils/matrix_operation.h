@@ -9,8 +9,9 @@
 ***************************************************************************/
 
 #include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/banded.hpp>
+#include <boost/numeric/ublas/matrix_sparse.hpp>
 #include <boost/numeric/ublas/io.hpp>
+#include <boost/numeric/ublas/operation.hpp>
 #include <algorithm>
 
 namespace quetzal {
@@ -18,7 +19,7 @@ namespace quetzal {
 namespace utils {
 
 template<typename matrix_type>
-matrix_type divide_terms_by_row_sum(matrix_type const& A) {
+auto divide_terms_by_row_sum(matrix_type const& A) {
   using namespace boost::numeric::ublas;
   auto v = prod(scalar_vector<double>( A.size2(), 1.0), trans(A));
   vector<double> w ( v.size() );
@@ -27,12 +28,14 @@ matrix_type divide_terms_by_row_sum(matrix_type const& A) {
     assert( a > 0);
     w(i) = 1.0 / a ;
   }
-  banded_matrix<double> S( w.size(), w.size() );
+  compressed_matrix<double> S( w.size(), w.size() );
   assert(S.size2() == A.size1());
   for(unsigned int i = 0; i < v.size(); ++i ){
     S(i,i) = w(i);
   }
-  return prod(S, A);
+  matrix_type M(A.size1(),A.size2(), 0.0);
+  axpy_prod(S, A, M);
+  return M;
 }
 
 }

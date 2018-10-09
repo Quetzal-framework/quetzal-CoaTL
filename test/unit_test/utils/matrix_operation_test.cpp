@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE( boost_features )
     }
   }
   std::cout << m << std::endl;
-  auto m2 = quetzal::utils::divide_terms_by_row_sum(m);
+  matrix_type m2 = quetzal::utils::divide_terms_by_row_sum(m);
   std::cout << m2 << std::endl;
 }
 
