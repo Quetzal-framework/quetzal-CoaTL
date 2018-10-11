@@ -75,6 +75,11 @@ private:
 
 public:
 
+	template<typename F, typename G>
+	void export_to_geotiff(F f, time_type const& t1, time_type const& t2, G g, std::string const& filename) const {
+		m_quantities.cbegin()->second.export_to_geotiff(f,g, t1, t2, filename);
+	}
+
 	/**
 	  * \brief Constructor
 		*
