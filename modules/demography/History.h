@@ -79,13 +79,16 @@ namespace strategy {
        * @return        [description]
        */
       template<typename F>
-      matrix_type make_matrix(std::vector<point_ID_type> const& points, F f){
-        matrix_type A (points.size(), points.size());
+      matrix_type make_matrix(std::vector<coord_type> const& coords, F f){
+        matrix_type A (coords.size(), coords.size());
         for (unsigned i = 0; i < A.size1 (); ++ i)
         {
-          for (unsigned j = 0; j <= i; ++ j)
+          for (unsigned j = 0; j < A.size2(); ++ j)
           {
-            A (i, j) = f(points.at(i).getPoint(), points.at(j).getPoint());
+            auto x = coords.at(i);
+            auto y = coords.at(j);
+            //std::cout << i << "/" << j << "\t" << x << y << "\t" << f(x,y) << std::endl;
+            A (i, j) = f(x, y);
           }
         }
         return quetzal::utils::divide_terms_by_row_sum(A);
@@ -95,10 +98,13 @@ namespace strategy {
 
       template<typename F>
       Interface(std::vector<point_ID_type> const& points, std::vector<coord_type> const& coords, F const& f) :
-      _matrix( make_matrix(points, f) ),
+      _matrix( make_matrix(coords, f) ),
       _points(points),
       _coords(coords)
-      {}
+      {
+        std::cout << "interface constructed" << std::endl;
+        //std::cout << _matrix << std::endl;
+      }
 
       // interface with mass-based demographic history expand method
       // TODO: memoize if performances are not good enough
@@ -501,6 +507,7 @@ public:
     {
       for(unsigned int g = 0; g < nb_generations; ++g)
       {
+        std::cout << g << std::endl;
         auto t = this->last_time();
         auto t_next = t; ++ t_next;
 
