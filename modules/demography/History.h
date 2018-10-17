@@ -87,7 +87,6 @@ namespace strategy {
           {
             auto x = coords.at(i);
             auto y = coords.at(j);
-            //std::cout << i << "/" << j << "\t" << x << y << "\t" << f(x,y) << std::endl;
             A (i, j) = f(x, y);
           }
         }
@@ -101,10 +100,7 @@ namespace strategy {
       _matrix( make_matrix(coords, f) ),
       _points(points),
       _coords(coords)
-      {
-        std::cout << "interface constructed" << std::endl;
-        //std::cout << _matrix << std::endl;
-      }
+      {}
 
       // interface with mass-based demographic history expand method
       // TODO: memoize if performances are not good enough
@@ -507,7 +503,6 @@ public:
     {
       for(unsigned int g = 0; g < nb_generations; ++g)
       {
-        std::cout << g << std::endl;
         auto t = this->last_time();
         auto t_next = t; ++ t_next;
 
