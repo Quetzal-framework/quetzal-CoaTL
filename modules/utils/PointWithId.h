@@ -8,6 +8,9 @@
 *                                                                      *
 ***************************************************************************/
 
+#ifndef __POINT_WITH_ID_H_INCLUDED__
+#define __POINT_WITH_ID_H_INCLUDED__
+
 namespace quetzal {
 namespace utils {
 
@@ -64,3 +67,5 @@ private:
 
 }
 }
+
+#endif

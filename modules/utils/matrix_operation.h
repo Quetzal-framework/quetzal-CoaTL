@@ -8,6 +8,9 @@
 *                                                                      *
 ***************************************************************************/
 
+#ifndef __MATRIX_OPERATIONS_H_INCLUDED__
+#define __MATRIX_OPERATIONS_H_INCLUDED__
+
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/matrix_sparse.hpp>
 #include <boost/numeric/ublas/io.hpp>
@@ -40,3 +43,5 @@ auto divide_terms_by_row_sum(matrix_type const& A) {
 
 }
 }
+
+#endif
