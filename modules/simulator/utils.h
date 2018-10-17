@@ -210,7 +210,7 @@ public:
   param_type param() const { return _param; }
 
   void param(unsigned int n){ _param = param_type(n); }
-  
+
     /* @brief Sample points in a discrete space, uniformely at random
    * @remark a same coordinates can be sampled several times
    *
@@ -346,7 +346,7 @@ public:
 
 };
 
-} // namespace smapling_scheme
+} // namespace sampling_scheme
 
 } // namespace quetzal
 

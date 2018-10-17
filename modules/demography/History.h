@@ -18,6 +18,7 @@
 
 #include <boost/numeric/ublas/matrix_sparse.hpp>
 #include <boost/numeric/ublas/symmetric.hpp>
+#include <boost/numeric/ublas/io.hpp>
 
 #include <vector>
 #include <memory>
@@ -66,9 +67,10 @@ namespace strategy {
       using matrix_type = M;
       using point_ID_type = quetzal::utils::PointWithId<coord_type>;
 
-      M _matrix;
+      matrix_type _matrix;
       std::vector<point_ID_type> const& _points;
       std::vector<coord_type> const& _coords;
+      mutable std::map<coord_type, std::vector<coord_type>> _cash;
 
       /*!
        * Compute a weight pairwise matrix by applying f to each pair of points
@@ -77,13 +79,15 @@ namespace strategy {
        * @return        [description]
        */
       template<typename F>
-      auto make_matrix(std::vector<point_ID_type> const& points, F f){
-        matrix_type A (points.size(), points.size());
+      matrix_type make_matrix(std::vector<coord_type> const& coords, F f){
+        matrix_type A (coords.size(), coords.size());
         for (unsigned i = 0; i < A.size1 (); ++ i)
         {
-          for (unsigned j = 0; j <= i; ++ j)
+          for (unsigned j = 0; j < A.size2(); ++ j)
           {
-            A (i, j) = f(points.at(i).getPoint(), points.at(j).getPoint());
+            auto x = coords.at(i);
+            auto y = coords.at(j);
+            A (i, j) = f(x, y);
           }
         }
         return quetzal::utils::divide_terms_by_row_sum(A);
@@ -93,14 +97,36 @@ namespace strategy {
 
       template<typename F>
       Interface(std::vector<point_ID_type> const& points, std::vector<coord_type> const& coords, F const& f) :
-      _matrix( make_matrix(points, f) ),
+      _matrix( make_matrix(coords, f) ),
       _points(points),
       _coords(coords)
       {}
 
       // interface with mass-based demographic history expand method
-      auto const& arrival_space() const {
-        return _coords;
+      // TODO: memoize if performances are not good enough
+      auto arrival_space(coord_type const& x) const {
+        auto it = _cash.find(x);
+        if(it != _cash.end())
+        {
+          return it->second;
+        }else{
+          auto p = _cash.emplace(x, retrieve_non_zero_arrival_space(x));
+          return p.first->second;
+        }
+      }
+
+      auto retrieve_non_zero_arrival_space(coord_type const& x) const {
+        using it1_t = typename matrix_type::const_iterator1;
+        using it2_t = typename matrix_type::const_iterator2;
+        auto i = quetzal::utils::getIndexOfPointInVector(x, _coords);
+        it1_t it1 = _matrix.begin1();
+        std::advance(it1, i);
+        std::vector<coord_type> v;
+        v.reserve(_matrix.size2()); // worst case
+        for (it2_t it2 = it1.begin(); it2 != it1.end(); it2++) {
+            if(*it2 > 0.0) v.push_back(_coords.at(it2.index2()));
+        }
+        return v;
       }
 
       // interface with mass-based demographic history expand method
@@ -488,7 +514,7 @@ public:
         {
           auto N_tilde = sim_growth(gen, x, t);
 
-          for(auto const& y : kernel.arrival_space() )
+          for(auto const& y : kernel.arrival_space(x) )
           {
             auto m = kernel(x, y);
             assert(m >= 0.0 && m <= 1.0);
