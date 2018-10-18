@@ -80,6 +80,10 @@ public:
 		m_quantities.cbegin()->second.export_to_geotiff(f,g, t1, t2, filename);
 	}
 
+	void export_to_shapefile(std::map<coord_type, unsigned int> counts, std::string const& filename) const {
+		m_quantities.cbegin()->second.export_to_shapefile(counts, filename);
+	}
+
 	/**
 	  * \brief Constructor
 		*
