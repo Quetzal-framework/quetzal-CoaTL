@@ -228,7 +228,7 @@ public:
 
     GDALRasterBand* p_source_band = get().GetRasterBand(1);
     double na = p_source_band->GetNoDataValue();
-    
+
     // Modify data
     for(int i = 1; i <= nBands; ++i ){
 
@@ -265,7 +265,50 @@ public:
     p_sink->SetProjection( get().GetProjectionRef() );
 
     GDALClose( (GDALDatasetH) p_sink );
+  }
 
+  void export_to_shapefile(std::map<coord_type, unsigned int> counts, std::string const& filename) const {
+    std::string driver_name = "ESRI Shapefile";
+    GDALDriver *poDriver;
+    GDALAllRegister();
+    poDriver = GetGDALDriverManager()->GetDriverByName(driver_name.c_str() );
+    assert( poDriver != NULL);
+
+    GDALDataset *poDS;
+    poDS = poDriver->Create( filename.c_str(), 0, 0, 0, GDT_Unknown, NULL );
+    assert( poDS != NULL );
+
+    OGRLayer *poLayer;
+    poLayer = poDS->CreateLayer( "sample", NULL, wkbPoint, NULL );
+    assert( poLayer != NULL );
+
+    OGRFieldDefn oField( "count", OFTInteger );
+    if( poLayer->CreateField( &oField ) != OGRERR_NONE ){
+      throw(std::string("Creating sample size field failed."));
+    }
+
+    for(auto const& it: counts){
+      double x = it.first.lon();
+      double y = it.first.lat();
+      int sample_size = it.second;
+
+      OGRFeature *poFeature;
+      poFeature = OGRFeature::CreateFeature( poLayer->GetLayerDefn() );
+
+      poFeature->SetField( "count", sample_size );
+
+      OGRPoint pt;
+      pt.setX( x );
+      pt.setY( y );
+
+      poFeature->SetGeometry( &pt );
+
+      if( poLayer->CreateFeature( poFeature ) != OGRERR_NONE ){
+        throw(std::string("Failed to create feature in shapefile."));
+      }
+      OGRFeature::DestroyFeature( poFeature );
+    }
+    GDALClose( poDS );
   }
 
 private:
