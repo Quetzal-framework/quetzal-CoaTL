@@ -15,6 +15,7 @@
 #include <cmath> // trigonometry
 #include <string> // error
 #include <ostream>
+#include <unordered_map>
 
 namespace quetzal {
 namespace geography {
@@ -79,6 +80,7 @@ public:
 		assert(d >= 0.);
 		return d;
 	}
+
 
 	/*!
 	 * \brief Gets latitude.
@@ -213,6 +215,7 @@ private:
 	decimal_degree m_lat;
 	decimal_degree m_lon;
 
+
 	// Converts decimal degrees to radians
 	double deg2rad(double deg) const {
 		double pi = 3.14159265358979323846;
@@ -265,6 +268,7 @@ std::ostream& operator <<(std::ostream& stream, GeographicCoordinates const& coo
     return stream;
 }
 
+
 template <class T>
 inline void hash_combine(std::size_t & seed, const T & v)
 {
@@ -288,6 +292,38 @@ namespace std
       return seed;
     }
   };
+}
+
+namespace quetzal{
+namespace geography{
+
+	struct MyHash
+  {
+  	std::size_t operator()(const std::pair<GeographicCoordinates, GeographicCoordinates>& param) const
+  	{
+  		static const auto hacher = std::hash<GeographicCoordinates>();
+  		const std::size_t h1 = hacher(param.first);
+  		const std::size_t h2 = hacher(param.second);
+  		return h1 ^ (h2 << 1);
+  	}
+  };
+
+	GeographicCoordinates::km memoized_great_circle_distance(GeographicCoordinates const& x, GeographicCoordinates const& y)
+	{
+		static std::unordered_map<std::pair<GeographicCoordinates, GeographicCoordinates>, GeographicCoordinates::km, MyHash> cache;
+
+		const auto pair = std::make_pair(x, y);
+		const auto it = cache.find(pair);
+		if(it != cache.end())
+			return it->second;
+		const auto pair_itNewResult_true = cache.emplace(
+			std::piecewise_construct,
+			std::forward_as_tuple(pair),
+			std::forward_as_tuple(x.great_circle_distance_to(y))
+		);
+		return pair_itNewResult_true.first->second;
+	}
+}
 }
 
 #endif
