@@ -72,7 +72,6 @@ public:
   auto apply(UnaryOperation op) const
   {
    using other_type = typename std::result_of_t<UnaryOperation(std::remove_cv_t<std::remove_reference_t<const value_type &>>)>;
-
    matrix_type<other_type> m (m_points.size(), m_points.size());
    for (unsigned i = 0; i < m.size1 (); ++ i){
      for (unsigned j = 0; j <= i; ++ j){
