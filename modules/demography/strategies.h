@@ -57,15 +57,15 @@ namespace strategy {
   class mass_based {
 
     /*!
-     * Interface for demographic expansion algorithm
+     * Implementation for demographic expansion algorithm
      * @tparam M the internal stoarage of migration coefficients
      * @tparam Cont a container containing value with getID method giving a unique integer index
      */
-    template<typename T, typename M>
-    class Interface {
+    template<typename Space, typename Matrix>
+    class Implementation {
 
-      using coord_type = T;
-      using matrix_type = M;
+      using coord_type = Space;
+      using matrix_type = Matrix;
       using point_ID_type = quetzal::utils::PointWithId<coord_type>;
 
       matrix_type _matrix;
@@ -96,8 +96,10 @@ namespace strategy {
 
     public:
 
+      Implementation(const Implementation&) = delete;
+
       template<typename F>
-      Interface(std::vector<point_ID_type> const& points, std::vector<coord_type> const& coords, F const& f) :
+      Implementation(std::vector<point_ID_type> const& points, std::vector<coord_type> const& coords, F f) :
       _matrix( make_matrix(coords, f) ),
       _points(points),
       _coords(coords)
@@ -130,10 +132,33 @@ namespace strategy {
       }
 
       // interface with mass-based demographic history expand method
-      double operator()(coord_type const& x, coord_type const& y){
+      double migration_rate(coord_type const& x, coord_type const& y){
         return _matrix(quetzal::utils::getIndexOfPointInVector(x, _coords), quetzal::utils::getIndexOfPointInVector(y, _coords) );
       }
 
+    }; // inner class Implementation
+
+    template<typename Space, typename Matrix>
+    class Interface {
+
+      using impl_type = Implementation<Space, Matrix>;
+      using coord_type = Space;
+      using point_ID_type = quetzal::utils::PointWithId<coord_type>;
+      std::shared_ptr<impl_type> m_pimpl;
+
+    public:
+
+      template<typename F>
+      Interface(std::vector<point_ID_type> const& points, std::vector<coord_type> const& coords, F f):
+      m_pimpl(std::make_shared<impl_type>(points, coords, f) ) {}
+
+      double operator()(coord_type const& x, coord_type const& y){
+        return m_pimpl->migration_rate(x,y);
+      }
+
+      auto arrival_space(coord_type const& x) const {
+        return m_pimpl->arrival_space(x);
+      }
     }; // inner class Interface
 
   public:
