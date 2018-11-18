@@ -116,13 +116,15 @@ public:
 		std::discrete_distribution<size_t> dist(_weights.begin(), _weights.end());
 		std::map<coord_type, unsigned int> sample;
     unsigned int i = 0;
-    while(i < _param.sampling_size())
+    unsigned int nb_try = 0;
+    while(i < _param.sampling_size() && nb_try < 10 * (_param.sampling_size()))
 		{
 			auto id = dist(gen);
       if(sample[_space[id]] < _population_size(_space[id]) ){
         sample[_space[id]] += 1;
         ++i;
       }
+      ++nb_try;
 		}
 		return sample;
 	}

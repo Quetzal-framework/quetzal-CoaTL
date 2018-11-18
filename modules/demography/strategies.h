@@ -58,8 +58,8 @@ namespace strategy {
 
     /*!
      * Implementation for demographic expansion algorithm
-     * @tparam M the internal stoarage of migration coefficients
-     * @tparam Cont a container containing value with getID method giving a unique integer index
+     * @tparam Space type of geographic coordinates
+     * @tparam Matrix the type of matrix used for storing migration rates
      */
     template<typename Space, typename Matrix>
     class Implementation {
@@ -71,14 +71,8 @@ namespace strategy {
       matrix_type _matrix;
       std::vector<point_ID_type> const& _points;
       std::vector<coord_type> const& _coords;
-      mutable std::map<coord_type, std::vector<coord_type>> _cash;
+      mutable std::map<coord_type, std::vector<coord_type>> m_arrival_space_cash;
 
-      /*!
-       * Compute a weight pairwise matrix by applying f to each pair of points
-       * @param  points [description]
-       * @param  f      [description]
-       * @return        [description]
-       */
       template<typename F>
       matrix_type make_matrix(std::vector<coord_type> const& coords, F f){
         matrix_type A (coords.size(), coords.size());
@@ -96,6 +90,7 @@ namespace strategy {
 
     public:
 
+      // Forbid costly copy
       Implementation(const Implementation&) = delete;
 
       template<typename F>
@@ -107,12 +102,12 @@ namespace strategy {
 
       // interface with mass-based demographic history expand method
       auto arrival_space(coord_type const& x) const {
-        auto it = _cash.find(x);
-        if(it != _cash.end())
+        auto it = m_arrival_space_cash.find(x);
+        if(it != m_arrival_space_cash.end())
         {
           return it->second;
         }else{
-          auto p = _cash.emplace(x, retrieve_non_zero_arrival_space(x));
+          auto p = m_arrival_space_cash.emplace(x, retrieve_non_zero_arrival_space(x));
           return p.first->second;
         }
       }
@@ -138,6 +133,7 @@ namespace strategy {
 
     }; // inner class Implementation
 
+    // Cheap copy interfacing the implementation with the demographic simulation
     template<typename Space, typename Matrix>
     class Interface {
 
@@ -148,14 +144,17 @@ namespace strategy {
 
     public:
 
+      // Constructor invoked by helper functions
       template<typename F>
       Interface(std::vector<point_ID_type> const& points, std::vector<coord_type> const& coords, F f):
       m_pimpl(std::make_shared<impl_type>(points, coords, f) ) {}
 
+      // migration rate interface in the demographic algorithm
       double operator()(coord_type const& x, coord_type const& y){
         return m_pimpl->migration_rate(x,y);
       }
 
+      // part of the interface in the demographic algorithm
       auto arrival_space(coord_type const& x) const {
         return m_pimpl->arrival_space(x);
       }
