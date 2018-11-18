@@ -19,7 +19,8 @@
 #include <string>
 #include <algorithm>
 #include <numeric>      // std::iota
-
+#include <stdexcept>      // std::invalid_argument
+#
 namespace quetzal {
 namespace geography {
 
@@ -233,7 +234,8 @@ public:
     for(int i = 1; i <= nBands; ++i ){
 
 
-      p_source_band->RasterIO( GF_Read, 0, 0, width(), height(), buffer.data(), width(), height(), GDT_Float32, 0, 0 );
+      auto err = p_source_band->RasterIO( GF_Read, 0, 0, width(), height(), buffer.data(), width(), height(), GDT_Float32, 0, 0 );
+      (void)err;
 
       //replace all continental cells value by 0
       auto continental_cells = get_domain(0);
@@ -253,7 +255,8 @@ public:
       //write the data
       GDALRasterBand* p_sink_band = p_sink->GetRasterBand(i);
       p_sink_band->SetNoDataValue(na);
-      p_sink_band->RasterIO( GF_Write, 0, 0, width(), height(), buffer.data(), width(), height(), GDT_Float32, 0, 0 );
+      auto err2 = p_sink_band->RasterIO( GF_Write, 0, 0, width(), height(), buffer.data(), width(), height(), GDT_Float32, 0, 0 );
+      (void)err2;
       p_sink->FlushCache();
 
     }
@@ -359,7 +362,9 @@ private:
     int nXSize = 1;
     auto line = (float *) CPLMalloc(sizeof(float)*nXSize);
     auto err = band(bandID).RasterIO( GF_Read, x, y, 1, 1, line, nXSize, 1, GDT_Float32, 0, 0 );
-    assert(err == CE_None);
+    if(err != CE_None){
+      throw std::invalid_argument( "received negative x y or band ID" );
+    };
     double val = double(*line);
     CPLFree(line);
     return(val);
