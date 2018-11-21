@@ -17,6 +17,13 @@ ENDIF()
 
 include_directories( ./ )
 
+# DOCUMENTATION
+# add_executable(two_demes documentation/two_demes/main.cpp)
+
+add_executable(expansion_1 documentation/code_examples/expansion/main_1.cpp)
+TARGET_LINK_LIBRARIES(expansion_1 LINK_PUBLIC ${GDAL_LIBRARY} )
+
+
 # creates the executables
 # add_executable(itest test/integration_test/integration.cpp)
 # add_executable(utest1 test/unit_test/simulator/simulator_test.cpp)
