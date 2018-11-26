@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_CASE( composing_functors )
 
   // NxN -> N -> string
   auto inner = use( [](int a, int b){ return a + b;} );
-  auto outer = use( [](int c ){ return "c";} );
+  auto outer = use( [](int){ return "c";} );
 
   auto composed = quetzal::expressive::compose(outer, inner);
 

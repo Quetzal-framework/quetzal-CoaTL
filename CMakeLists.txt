@@ -2,12 +2,13 @@ cmake_minimum_required(VERSION 2.8)
 
 project(quetzal)
 
-add_compile_options(-std=c++17)
+set(CMAKE_CXX_STANDARD 17)
+add_compile_options(-Wall -pedantic-errors -Wextra -DNDEBUG)
 
 FIND_PACKAGE(Boost)
 IF (Boost_FOUND)
     INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
-    ADD_DEFINITIONS( "-DHAS_BOOST" )
+    ADD_DEFINITIONS(-DBOOST_UBLAS_NDEBUG)
 ENDIF()
 
 FIND_PACKAGE(GDAL)
