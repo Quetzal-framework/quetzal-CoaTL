@@ -21,11 +21,11 @@ namespace quetzal {
 namespace simulators {
 
 template<typename Strategy>
-class Policy
+class DemographicAssumptionPolicy
 {};
 
 template<>
-class Policy<quetzal::demography::strategy::individual_based>
+class DemographicAssumptionPolicy<quetzal::demography::strategy::individual_based>
 {
 public:
   using merger_type = coalescence::SimultaneousMultipleMerger<coalescence::occupancy_spectrum::on_the_fly>;
@@ -45,7 +45,7 @@ public:
 };
 
 template<>
-class Policy<quetzal::demography::strategy::mass_based>
+class DemographicAssumptionPolicy<quetzal::demography::strategy::mass_based>
 {
 public:
   using merger_type = coalescence::BinaryMerger;
@@ -78,8 +78,10 @@ public:
 * @section Output
 * @include simulator/test/spatially_explicit_coalescence_simulator/mass_based_simulator_test.output
 */
-template<typename Space, typename Time, typename Strategy>
-class SpatiallyExplicitCoalescenceSimulator : public Policy<Strategy>
+template<typename Space, typename Time, typename Strategy, typename CoalescencePolicy>
+class SpatiallyExplicit :
+private DemographicAssumptionPolicy<Strategy>,
+public CoalescencePolicy
 {
 
 public:
@@ -107,7 +109,7 @@ public:
   * @param t_0 Initialization time.
   * @param N_0 Population size at intialization
   */
-  SpatiallyExplicitCoalescenceSimulator(coord_type x_0, time_type t_0, N_value_type N_0) : m_history(x_0, t_0, N_0){}
+  SpatiallyExplicit(coord_type x_0, time_type t_0, N_value_type N_0) : m_history(x_0, t_0, N_0){}
 
   /**
   * @brief Read-only access to the population size history.
@@ -137,7 +139,7 @@ public:
   *
   */
   template<typename Generator, typename F, typename Tree, typename U>
-  forest_type<Tree> coalesce_along_history(forest_type<Tree> forest, F binary_op, Generator& gen, U make_tree) const
+  forest_type<Tree> coalesce_along_spatial_history(forest_type<Tree> forest, F binary_op, Generator& gen, U make_tree) const
   {
 
     this->check_consistency(m_history, forest);
@@ -152,6 +154,15 @@ public:
     }
     may_coalesce_colocated(forest, t, gen, binary_op, make_tree);
     return forest;
+  }
+
+  template<typename Generator>
+  auto coalesce_to_mrca(std::map<coord_type, unsigned int> sample, time_type const& sampling_time, Generator & gen)
+  {
+    auto forest = this->make_forest(sample, sampling_time);
+    auto new_forest = coalesce_along_spatial_history(forest, this->branch(), gen, this->init() );
+    auto tree = this->find_mrca(new_forest, m_history.first_time(), gen);
+    return this->treat(tree);
   }
 
 private:
@@ -186,7 +197,7 @@ private:
       }
 
       if(v.size() >= 2){
-        auto last = Policy<strategy_type>::merger_type::merge(v.begin(), v.end(), N(x, t), make_tree(x,t), binop, gen );
+        auto last = DemographicAssumptionPolicy<strategy_type>::merger_type::merge(v.begin(), v.end(), N(x, t), make_tree(x,t), binop, gen );
         forest.erase(x);
         for(auto it = v.begin(); it != last; ++it){
           forest.insert(x, *it);

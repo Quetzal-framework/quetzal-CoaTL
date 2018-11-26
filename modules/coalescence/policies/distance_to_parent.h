@@ -22,7 +22,10 @@ namespace coalescence {
 namespace policies {
 
 template<typename Space, typename Time>
-struct distance_to_parent {
+class distance_to_parent {
+private:
+  unsigned int m_ancestral_Wright_Fisher_N;
+public:
 
   using coord_type = Space;
   using time_type = Time;
@@ -67,6 +70,10 @@ struct distance_to_parent {
     return forest;
   }
 
+  void ancestral_Wright_Fisher_N(unsigned int value){
+    m_ancestral_Wright_Fisher_N = value;
+  }
+
   static auto branch(){
     return []( auto& parent , auto const& child ){ return parent.add_child(child);};
   }
@@ -76,20 +83,20 @@ struct distance_to_parent {
   }
 
   template<typename Generator>
-  static tree_type end_in_wright_fisher(forest_type const& forest, time_type const& first_time, unsigned int N, Generator& gen){
+  tree_type find_mrca(forest_type const& forest, time_type const& first_time, Generator& gen) const {
     time_type t_curr = first_time;
     auto WF_init = [&t_curr](time_type const& t){
       t_curr -= t;
       return tree_type(t_curr);
     };
     using WF_model = quetzal::simulators::DiscreteTimeWrightFisher;
-    auto tree = WF_model::coalesce(forest, N, gen, branch(), WF_init);
+    auto tree = WF_model::coalesce(forest, m_ancestral_Wright_Fisher_N, gen, branch(), WF_init);
     treatment computer;
     tree.visit_subtrees_by_pre_order_DFS(computer);
     return tree;
   }
 
-  static std::string make_newick(tree_type & tree){
+  static std::string treat(tree_type & tree){
     std::string newick;
 
   	auto preorder = [&newick](auto const& node){
@@ -182,7 +189,7 @@ struct distance_to_parent_leaf_name {
   }
 
   template<typename Generator>
-  static tree_type end_in_wright_fisher(forest_type const& forest, time_type const& first_time, unsigned int N, Generator& gen){
+  static tree_type find_mrca(forest_type const& forest, time_type const& first_time, unsigned int N, Generator& gen){
     time_type t_curr = first_time;
     auto WF_init = [&t_curr](time_type const& t){
       t_curr -= t;
@@ -195,7 +202,7 @@ struct distance_to_parent_leaf_name {
     return tree;
   }
 
-  static std::string make_newick(tree_type & tree){
+  std::string treat(tree_type & tree) const {
     std::string newick;
 
   	auto preorder = [&newick](auto const& node){
