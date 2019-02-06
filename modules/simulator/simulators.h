@@ -165,6 +165,15 @@ public:
     return this->treat(tree);
   }
 
+  template<typename Generator, typename F>
+  auto coalesce_to_mrca(std::map<coord_type, unsigned int> sample, time_type const& sampling_time, F leaf_name, Generator & gen)
+  {
+    auto forest = this->make_forest(sample, sampling_time, leaf_name);
+    auto new_forest = coalesce_along_spatial_history(forest, this->branch(), gen, this->init() );
+    auto tree = this->find_mrca(new_forest, m_history.first_time(), gen);
+    return this->treat(tree);
+  }
+
 private:
 
   template<typename Generator, typename Forest>
