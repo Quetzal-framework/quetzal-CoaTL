@@ -74,6 +74,10 @@ public:
     m_ancestral_Wright_Fisher_N = value;
   }
 
+  unsigned int ancestral_Wright_Fisher_N() const {
+    return m_ancestral_Wright_Fisher_N;
+  }
+
   static auto branch(){
     return []( auto& parent , auto const& child ){ return parent.add_child(child);};
   }
@@ -84,11 +88,14 @@ public:
 
   template<typename Generator>
   tree_type find_mrca(forest_type const& forest, time_type const& first_time, Generator& gen) const {
+
     time_type t_curr = first_time;
+
     auto WF_init = [&t_curr](time_type const& t){
       t_curr -= t;
       return tree_type(t_curr);
     };
+
     using WF_model = quetzal::simulators::DiscreteTimeWrightFisher;
     auto tree = WF_model::coalesce(forest, m_ancestral_Wright_Fisher_N, gen, branch(), WF_init);
     treatment computer;
@@ -199,10 +206,12 @@ public:
   template<typename Generator>
   tree_type find_mrca(forest_type const& forest, time_type const& first_time, Generator& gen) const {
     time_type t_curr = first_time;
+    
     auto WF_init = [&t_curr](time_type const& t){
       t_curr -= t;
       return tree_type(t_curr);
     };
+
     using WF_model = quetzal::simulators::DiscreteTimeWrightFisher;
     auto tree = WF_model::coalesce(forest, m_ancestral_Wright_Fisher_N, gen, branch(), WF_init);
     treatment computer;
