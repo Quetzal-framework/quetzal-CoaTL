@@ -18,22 +18,12 @@ ENDIF()
 
 include_directories( ./ )
 
-# DOCUMENTATION
+### INTEGRATION TESTS
 
 add_executable(model_1 test/integration_test/spatial_expansion/model_1/main.cpp)
 TARGET_LINK_LIBRARIES(model_1 LINK_PUBLIC ${GDAL_LIBRARY} )
 
+### UNIT TESTING
+
 add_executable(expressive_test test/unit_test/expressive/expressive_test.cpp)
 add_executable(utils_test test/unit_test/utils/matrix_operation_test.cpp)
-
-# add_executable(two_demes documentation/two_demes/main.cpp)
-
-# add_executable(expansion_1 documentation/code_examples/expansion/main_1.cpp)
-# TARGET_LINK_LIBRARIES(expansion_1 LINK_PUBLIC ${GDAL_LIBRARY} )
-
-# creates the executables
-# add_executable(utest1 test/unit_test/simulator/simulator_test.cpp)
-# add_executable(utest2 test/unit_test/demography/History_test.cpp)
-
-
-#TARGET_LINK_LIBRARIES( itest LINK_PUBLIC ${GDAL_LIBRARY} )

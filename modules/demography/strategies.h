@@ -253,7 +253,7 @@ namespace strategy {
       // need a m_friction member
       // perhaps memoize the sum related to x,t
       // problem for t argument
-      double friction_weights(auto const& x, auto const& y) const {
+      double friction_weights(coord_type const& x, coord_type const& y) const {
         const auto & neighbors = m_neighborhood->at(x);
         std::vector<double> v(neighbors.size(), 0.0);
         std::transform(neighbors.begin(), neighbors.end(), v.begin(), [this](coord_type const& z) { return 1.0/(this->m_friction(z));} );
