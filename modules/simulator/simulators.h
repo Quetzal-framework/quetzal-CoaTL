@@ -48,7 +48,8 @@ template<>
 class DemographicAssumptionPolicy<quetzal::demography::strategy::mass_based>
 {
 public:
-  using merger_type = coalescence::BinaryMerger;
+  //using merger_type = coalescence::BinaryMerger;
+  using merger_type = coalescence::SimultaneousMultipleMerger<coalescence::occupancy_spectrum::on_the_fly>;
 
   template<typename T, typename U>
   void check_consistency(T const& history, U const& forest) const
@@ -159,7 +160,33 @@ public:
   template<typename Generator>
   auto coalesce_to_mrca(std::map<coord_type, unsigned int> sample, time_type const& sampling_time, Generator & gen)
   {
+    if(sample.size() == 0){
+      throw std::logic_error("Sample to coalesce is empty");
+    }else if(sample.size() == 1){
+      if(sample.begin()->second < 2){
+        throw std::logic_error("Sample to coalesce only contains one gene copy");
+      }
+    }
+
     auto forest = this->make_forest(sample, sampling_time);
+    auto new_forest = coalesce_along_spatial_history(forest, this->branch(), gen, this->init() );
+    auto tree = this->find_mrca(new_forest, m_history.first_time(), gen);
+    return this->treat(tree);
+  }
+
+  template<typename Generator, typename F>
+  auto coalesce_to_mrca(std::map<coord_type, unsigned int> sample, time_type const& sampling_time, F leaf_name, Generator & gen)
+  {
+
+    if(sample.size() == 0){
+      throw std::logic_error("Sample to coalesce is empty");
+    }else if(sample.size() == 1){
+      if(sample.begin()->second < 2){
+        throw std::logic_error("Sample to coalesce only contains one gene copy");
+      }
+    }
+
+    auto forest = this->make_forest(sample, sampling_time, leaf_name);
     auto new_forest = coalesce_along_spatial_history(forest, this->branch(), gen, this->init() );
     auto tree = this->find_mrca(new_forest, m_history.first_time(), gen);
     return this->treat(tree);
@@ -208,6 +235,8 @@ private:
 
 };
 
+// Coalesce forests or trees, sampling pairs of lineages to coaelesce uniformely at
+// random and sampling discrete coalescence times. Makes no assumption on Tree concept.
 class DiscreteTimeWrightFisher
 {
 
@@ -215,6 +244,42 @@ public:
 
   template<typename Space, typename Tree>
   using forest_type = quetzal::coalescence::Forest<Space, Tree>;
+
+  // @brief Coalesce a forest of trees in a Wrigh-Fisher population until MRCA has been found.
+  //
+  // @tparam Space the coordinate type
+  // @tparam Tree the tree type
+  // @tparam Generator a random number Generator
+  // @tparam Binop a BranchingOperation functor for coalescence
+  // @tparam TimeFun an intialization functor for coalescence
+  // @param N number of gene copies in the Wright-Fisher population
+  // @param gen a random number Generator
+  // @param branch a branching binary operation (functor usually given by the selected coalescence policy).
+  // @param make_tree a initialization functor (functor usually given by the selected coalescence policy).
+  //
+  // @return One single tree.
+  //
+  template<typename Space, typename Tree, typename Generator, typename Binop, typename TimeFun>
+  static Tree coalesce(forest_type<Space, Tree> const& forest, unsigned int N, Generator& gen, Binop branch, TimeFun make_tree)
+  {
+
+    if(forest.nb_trees() == 0){
+
+      throw std::logic_error("The forest to coalesce is empty.");
+
+    }else if(forest.nb_trees()==1){
+
+      auto range = forest.trees_at_same_position(*(forest.positions().begin()));
+      assert(std::distance(range.first, range.second) == 1);
+      return range.first->second;
+
+    }
+    assert(forest.nb_trees() >= 2 && "Trying to coalesce less than 2 nodes.");
+    auto trees = from_forest_to_vector(forest);
+    return coalesce(trees, N, gen, branch, make_tree);
+  }
+
+private:
 
   // @brief Simulates the number of generations to wait before the next coalescence event
   //
@@ -242,12 +307,26 @@ public:
   }
 
 
+  // Make sure that trees.size() >= 2
   template<typename Tree, typename Generator, typename Binop, typename TimeFun>
   static Tree coalesce(std::vector<Tree> & trees, unsigned int N, Generator& gen, Binop branch, TimeFun make_tree)
   {
+
+    assert(trees.size() >= 2 && "Trying to coalesce less than 2 nodes.");
+
+    if (trees.size() > N) // Wright Fisher assumptions clearly violated
+    {
+      // Let's do one SMM generation to fix.
+      unsigned int g = 1;
+      using smm_type = coalescence::SimultaneousMultipleMerger<coalescence::occupancy_spectrum::on_the_fly>;
+      auto last = smm_type::merge(trees.begin(), trees.end(), N, make_tree(g), branch, gen);
+      trees.erase(last, trees.end());
+    }
+
+    unsigned int k = trees.size();
+    assert( k <= N && "number of lineages greater than ancestral Wright-Fisher population size.");
     auto last = trees.end();
-    unsigned int k = std::distance(trees.begin(), last);
-    assert(k > 1);
+
     while( k > 1 ){
       unsigned int g = sample_waiting_time(k, N, gen);
       last = quetzal::coalescence::binary_merge(trees.begin(), last, make_tree(g), branch, gen);
@@ -257,25 +336,14 @@ public:
     return *(trees.begin());
   }
 
-
-  template<typename Space, typename Tree, typename Generator, typename Binop, typename TimeFun>
-  static Tree coalesce(forest_type<Space, Tree> const& forest, unsigned int N, Generator& gen, Binop branch, TimeFun make_tree)
-  {
-
-    if(forest.nb_trees()==1){
-      auto range = forest.trees_at_same_position(*(forest.positions().begin()));
-      assert(std::distance(range.first, range.second) == 1);
-      return range.first->second;
-    }
-
+  template<typename Space, typename Tree>
+  static std::vector<Tree> from_forest_to_vector(forest_type<Space, Tree> const& forest) {
     std::vector<Tree> trees;
     trees.reserve(forest.nb_trees());
     for(auto & it : forest){
       trees.push_back(it.second);
     }
-
-    return coalesce(trees, N, gen, branch, make_tree);
-
+    return trees;
   }
 
 };

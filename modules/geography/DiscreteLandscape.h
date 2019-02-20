@@ -277,8 +277,6 @@ public:
 			}
 		}
 
-
-
 	  coord_type x2(x0);
 	  x2.lat() += res.lat();
 		if(is_in_spatial_extent(x2)){
@@ -287,7 +285,6 @@ public:
 				v.push_back(x2);
 			}
 		}
-
 
 	  coord_type x3(x0);
 	  x3.lon() -= res.lon();

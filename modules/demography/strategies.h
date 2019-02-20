@@ -209,7 +209,75 @@ namespace strategy {
       return Interface<coord_type, matrix_type>(points, coords, f);
     }
 
-  };
+
+    template<typename Space, typename F1, typename F2>
+    class neighboring_migration{
+
+      using dico_type = std::unordered_map<Space, std::vector<Space>>;
+      std::shared_ptr<dico_type> m_neighborhood;
+      double m_emigrant_rate;
+      F1 m_friction;
+      F2 m_get_neighbors;
+
+    public:
+
+      using coord_type = Space;
+
+      // Constructor
+      neighboring_migration(std::vector<coord_type> const& coords, double emigrant_rate, F1 friction, F2 get_neighbors):
+      m_neighborhood(std::make_shared<dico_type>(build_neighborhood(coords, get_neighbors))),
+      m_emigrant_rate(emigrant_rate),
+      m_friction(friction),
+      m_get_neighbors(get_neighbors)
+      {}
+
+      // arrival space contains focal deme
+      std::vector<coord_type> arrival_space(coord_type const& x) const
+      {
+        auto v = m_neighborhood->at(x);
+        v.push_back(x);
+        return v;
+      }
+
+      auto operator()(coord_type const& from, coord_type const& to){
+       if(from == to){
+         return 1.0 - m_emigrant_rate;
+       }else{ // we have "ensurance" that arrival_space(x) is used, so here only neighbours.
+         return m_emigrant_rate * friction_weights(from, to);
+       }
+     }
+
+    private:
+
+      // returns weight associated to a migration from x to y
+      // need a m_friction member
+      // perhaps memoize the sum related to x,t
+      // problem for t argument
+      double friction_weights(coord_type const& x, coord_type const& y) const {
+        const auto & neighbors = m_neighborhood->at(x);
+        std::vector<double> v(neighbors.size(), 0.0);
+        std::transform(neighbors.begin(), neighbors.end(), v.begin(), [this](coord_type const& z) { return 1.0/(this->m_friction(z));} );
+        double sum = std::accumulate(v.begin(), v.end(), 0.0);
+        return 1.0/(m_friction(y)*sum);
+      }
+
+      auto build_neighborhood(std::vector<coord_type> const& coords, F2 get_neighbors){
+        std::unordered_map<coord_type, std::vector<coord_type>> dico;
+        for(auto const& x : coords){
+          dico[x] = get_neighbors(x);
+        }
+        return dico;
+      }
+
+    }; // neighboring_migration
+
+    template<typename T, typename U, typename V>
+    static auto make_neighboring_migration(std::vector<T> const& coords, double emigrant_rate, U friction, V get_neighbors)
+    {
+      return neighboring_migration<T, U, V>(coords, emigrant_rate, friction, get_neighbors);
+    }
+
+  }; // mass_based
 
 } // namespace strategy
 

@@ -47,7 +47,7 @@ namespace sampling_scheme {
   };
 
 
-//! Policy to sample coordinates uniformely at random in a space
+//! Policy to sample coordinates at random in a space
 template<typename X, typename N>
 class constrained_sampling {
 public:
@@ -117,8 +117,7 @@ public:
 		std::map<coord_type, unsigned int> sample;
     unsigned int i = 0;
     unsigned int nb_try = 0;
-    while(i < _param.sampling_size() && nb_try < 10 * (_param.sampling_size()))
-		{
+    while(i < _param.sampling_size() && nb_try < 10 * (_param.sampling_size()) ){
 			auto id = dist(gen);
       if(sample[_space[id]] < _population_size(_space[id]) ){
         sample[_space[id]] += 1;
@@ -126,6 +125,9 @@ public:
       }
       ++nb_try;
 		}
+    if(sample.empty()){
+      throw std::logic_error("Sampling scheme unable to populate a sample.");
+    }
 		return sample;
 	}
 
@@ -133,11 +135,17 @@ public:
 
 template<typename X, typename F, typename N>
 auto make_constrained_sampler(std::vector<X> const& space, F f, N pop_size, unsigned int n){
+  if(space.empty()){
+    throw std::logic_error("Space for sampling scheme is empty.");
+  }
   return constrained_sampling<X, N>(space, f, pop_size, n);
 }
 
 template<typename X, typename N>
 auto make_unif_constrained_sampler(std::vector<X> const& space, N pop_size, unsigned int n){
+  if(space.empty()){
+    throw std::logic_error("Space for sampling scheme is empty.");
+  }
   auto uniform_weighting = [](X) -> double { return 1.0; };
   return constrained_sampling<X, N>(space, uniform_weighting, pop_size, n);
 }
