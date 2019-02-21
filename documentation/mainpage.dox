@@ -1,39 +1,21 @@
 /**
  *
- * \mainpage Home
+ * \mainpage Dev Docs
  *
- *
- * # Introduction
+ * # Presentation
  *
  * QuetzalCoaTL (Coalescence Template Library), or Quetzal for shorter use, is a
  * C++ template library for simulating coalescence processes in spatially explicit
- * landscapes with complex demography.
+ * landscapes with complex demographic models.
  *
- * If you are a scientist interested in studying how populations grow and spread
- * in complex environments using Approximate Bayesian Computation (ABC),
- * this library can offer you some useful tools for building programs based on complex generative
- * models of genetic data.
+ * This section of the [Quetzal website](../../../pages/quetzal.html) is related to developers documentation
  *
- * [How to cite: check the founder article introducing the library.](https://www.biorxiv.org/content/early/2017/11/06/214767)
- *
- * - Because of ABC is computationally intensive, we wanted Quetzal to be
- *   <B>fast</B> enough to run millions of simulations in a minimal amount of time.
- *
- * - Because the set of all possible simulation models is infinite, we wanted
- *   Quetzal to be <B>modular</B>, so you could feel free to recombine the tools
- *   we offer in the way which is most desirable for your own purpose.
- *
- * - Because you will surely come with your own project bringing many
- *   specificities which would be impossible for us to foresee, we wanted Quetzal
- *   to be <B>extensible</B>, so you can develop your own tools and combine them
- *   with minimal cost with Quetzal interfaces.
- *
- * And because this project is still in development, it is naturally modest and
+ * Because this project is still in development, it is naturally modest and
  * still focused on our specific needs. This is why Quetzal lacks of what could
- * seem to you as basics : please feel free to contact us for feedbacks or
- * collaboration !
+ * seem to you as basics : please feel free to contact us for feedback or
+ * collaboration!
  *
- * # Overview
+ * # Project structure overview
  *
  * Most of the Quetzal modules (\ref geography, \ref expressive, \ref demography,
  * \ref random, \ref coalescence) will help you to implement an open-ended number of
@@ -44,31 +26,4 @@
  *
  * ![Environmental demo-genetic model framework and Quetzal modules](modules.png)
  *
- * # About
- *
- * **Maintainer:** [Arnaud Becheler](https://becheler.github.io/)
- *
- * **How to cite:** [see the founder article](https://www.biorxiv.org/content/early/2017/11/06/214767)
- *
- * **Community:** IRC channel \#quetzal on [Freenode](https://webchat.freenode.net/)
- *
- * **Supported platform:** Linux
- *
- * **Contribute:** Check [our Github repository](https://github.com/Becheler/quetzal) and use the [Pull Request system](https://help.github.com/articles/creating-a-pull-request/)
- *
- * <P><B>Clone:</B><PRE CLASS="fragment">git clone %https://github.com/Becheler/quetzal.git</PRE></P>
- *
- * # Acknowledgment
- *
- * The founding version of Quetzal was basically the implementation of the probabilistic
- * model of biological invasion developed during the PhD thesis of [Arnaud Becheler](https://becheler.github.io/) under
- * the direction of [Stephane Dupas](http://www.egce.cnrs-gif.fr/?p=3049) ([laboratoire d'Evolution, Génomes, Comportements
- * et Ecologie de Gif-sur-Yvette](http://www.egce.cnrs-gif.fr/?lang=en)) and [Camille Coron](https://www.math.u-psud.fr/~ccoron/)
- *  ([Laboratoire de Mathématiques d'Orsay](https://www.math.u-psud.fr/-Probabilites-et-Statistiques-?lang=fr)).
- *
- * Quetzal benefits from the constant support and feedbacks of Florence Jornod, who initially contributed to Quetzal as an intern.
- *
- * The PhD project was funded by the [BASC labex](https://www6.inra.fr/basc/Presentation).
- *
- * <A HRF="http://www6.inra.fr/basc"> <IMG SRC="../resources/basc_logo.png"> </A>
  */

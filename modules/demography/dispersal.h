@@ -22,67 +22,91 @@ namespace quetzal{
 namespace demography {
 namespace dispersal {
 
-
+/* Class to represent the distance matrix between each pair of points in a set.
+ *
+ * @details Useful e.g. to implement distance based dispersal kernels.
+ * @tparam Space the type of points
+ * @tparam Value the type of the distance value between pairs of points
+ */
 template<typename Space, typename Value>
 class SymmetricDistanceMatrix
 {
 
+public:
+
+  //! @typdef the type of the matrix used in the implementation
   template<typename T>
   using matrix_type = boost::numeric::ublas::symmetric_matrix<T>;
 
-  std::vector<Space> m_points;
-  matrix_type<Value> m_matrix;
-
-public:
-
+  //! @typedef point data type
   using coord_type = Space;
+
+  //! @typedef distance value type
   using value_type = Value;
 
+  /* Construct the matrix by computing distance between each pair of points in the set.
+   *
+   * @tparam F the distance function, with signature equivalent to the following:
+   *           `value_type f(const coord_type & x, const coord_type & y)`
+   */
   template<typename F>
   SymmetricDistanceMatrix(std::vector<coord_type> const& points, F f):
   m_points(points),
   m_matrix(construct_matrix(points, f))
   {}
 
-  SymmetricDistanceMatrix(std::vector<coord_type> const& points, matrix_type<value_type> const& m):
-  m_points(points),
-  m_matrix(m)
-  {}
-
+  //! Send matrix in a stream
   friend std::ostream& operator <<(std::ostream& Stream, const SymmetricDistanceMatrix & M)
   {
      Stream << M.m_matrix;
      return Stream;
   }
 
+  /* Apply a functor over the matrix and return the resulting new matrix
+   *
+   * @tparam UnaryOperation the transformation to apply to each matrix value.
+   * @param op UnaryOperation object. The signature should be equivalent to
+   *           `Ret op(value_type)`, with `Ret` being possibly any Copiable type.
+   */
   template<typename UnaryOperation>
   auto apply(UnaryOperation op) const
   {
    using other_type = typename std::result_of_t<UnaryOperation(std::remove_cv_t<std::remove_reference_t<const value_type &>>)>;
-
    matrix_type<other_type> m (m_points.size(), m_points.size());
-   for (unsigned i = 0; i < m.size1 (); ++ i)
-   {
-     for (unsigned j = 0; j <= i; ++ j)
-     {
+   for (unsigned i = 0; i < m.size1 (); ++ i){
+     for (unsigned j = 0; j <= i; ++ j){
        m (i, j) = op(m_matrix(i, j));
      }
    }
-
    return SymmetricDistanceMatrix<coord_type, other_type>(m_points, m);
   }
 
+  //! Return the set of points
   std::vector<coord_type> const& points(){return m_points;}
 
+  /* For a given point, give the distance to all other points
+   * @param x the given point
+   * @return a boost::numeric::ublas::row
+   */
   auto at(coord_type const& x) const
   {
-    auto it = std::find(m_points.begin(), m_points.end(), x);
-    assert( it != m_points.end());
-    unsigned int i = std::distance(m_points.begin(), it);
-    return boost::numeric::ublas::row(m_matrix, i);
+    return boost::numeric::ublas::row(m_matrix, ID(x));
+  }
+
+  value_type operator()(coord_type const& x, coord_type const& y) const {
+    return m_matrix(ID(x),ID(y));
   }
 
 private:
+
+  std::vector<Space> m_points;
+  matrix_type<Value> m_matrix;
+
+  unsigned int ID(coord_type const& x) const {
+    auto it = std::find(m_points.begin(), m_points.end(), x);
+    assert( it != m_points.end());
+    return std::distance(m_points.begin(), it);
+  }
 
   template<typename F>
   auto construct_matrix(std::vector<coord_type> const& points, F f) const

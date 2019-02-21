@@ -8,21 +8,7 @@
 *                                                                      *
 ***************************************************************************/
 
-// Header file including all coalescence module
 
-#include "coalescence.h"
-
-#include "random.h"
-
-#include "demography.h"
-
-#include "geography.h"
-
-#include "expressive.h"
-
-#include "abc.h"
-
-#include "genetics.h"
-
-#include "modules/simulator/simulators.h"
-#include "modules/simulator/utils.h"
+#include "modules/utils/matrix_operation.h"
+#include "modules/utils/PointWithId.h"
+#include "modules/utils/sampling_scheme.h"

@@ -19,7 +19,8 @@
 #include <string>
 #include <algorithm>
 #include <numeric>      // std::iota
-
+#include <stdexcept>      // std::invalid_argument
+#
 namespace quetzal {
 namespace geography {
 
@@ -216,6 +217,102 @@ public:
   }
 
 
+  template<typename F, typename G>
+  void export_to_geotiff(F f, G g, time_type const& t1, time_type const& t2, std::string const& filename) const {
+
+    int nBands = t2 - t1;
+    assert(nBands >= 1);
+
+    // Create a model dataset band
+    GDALDataset* p_sink = get().GetDriver()->Create(filename.c_str(), width(), height(), nBands, GDT_Float32, NULL);
+    std::vector<float> buffer(width()*height());
+
+    GDALRasterBand* p_source_band = get().GetRasterBand(1);
+    double na = p_source_band->GetNoDataValue();
+
+    // Modify data
+    for(int i = 1; i <= nBands; ++i ){
+
+
+      auto err = p_source_band->RasterIO( GF_Read, 0, 0, width(), height(), buffer.data(), width(), height(), GDT_Float32, 0, 0 );
+      (void)err;
+
+      //replace all continental cells value by 0
+      auto continental_cells = get_domain(0);
+      for(auto const& it : continental_cells){
+        buffer.at(it.x + it.y*width()) = 0.0;
+      }
+
+      // Replace all cells where F is defined by F
+      auto t_curr = t1 + i-1;
+      auto f_defined_cells = g(t_curr);
+
+      for(coord_type const& it: f_defined_cells){
+        auto xy = to_xy(it);
+        buffer.at(xy.x  + (xy.y*width()) ) = static_cast<float>(f(it, t_curr));
+      }
+
+      //write the data
+      GDALRasterBand* p_sink_band = p_sink->GetRasterBand(i);
+      p_sink_band->SetNoDataValue(na);
+      auto err2 = p_sink_band->RasterIO( GF_Write, 0, 0, width(), height(), buffer.data(), width(), height(), GDT_Float32, 0, 0 );
+      (void)err2;
+      p_sink->FlushCache();
+
+    }
+
+    // write metadata
+    std::vector<double> geo_transform(6);
+    get().GetGeoTransform( geo_transform.data() );
+    p_sink->SetGeoTransform( geo_transform.data() );
+    p_sink->SetProjection( get().GetProjectionRef() );
+
+    GDALClose( (GDALDatasetH) p_sink );
+  }
+
+  void export_to_shapefile(std::map<coord_type, unsigned int> counts, std::string const& filename) const {
+    std::string driver_name = "ESRI Shapefile";
+    GDALDriver *poDriver;
+    GDALAllRegister();
+    poDriver = GetGDALDriverManager()->GetDriverByName(driver_name.c_str() );
+    assert( poDriver != NULL);
+
+    GDALDataset *poDS;
+    poDS = poDriver->Create( filename.c_str(), 0, 0, 0, GDT_Unknown, NULL );
+    assert( poDS != NULL );
+
+    OGRLayer *poLayer;
+    poLayer = poDS->CreateLayer( "sample", NULL, wkbPoint, NULL );
+    assert( poLayer != NULL );
+
+    OGRFieldDefn oField( "count", OFTInteger );
+    if( poLayer->CreateField( &oField ) != OGRERR_NONE ){
+      throw(std::string("Creating sample size field failed."));
+    }
+
+    for(auto const& it: counts){
+      double x = it.first.lon();
+      double y = it.first.lat();
+      int sample_size = it.second;
+
+      OGRFeature *poFeature;
+      poFeature = OGRFeature::CreateFeature( poLayer->GetLayerDefn() );
+
+      poFeature->SetField( "count", sample_size );
+
+      OGRPoint pt;
+      pt.setX( x );
+      pt.setY( y );
+
+      poFeature->SetGeometry( &pt );
+
+      if( poLayer->CreateFeature( poFeature ) != OGRERR_NONE ){
+        throw(std::string("Failed to create feature in shapefile."));
+      }
+      OGRFeature::DestroyFeature( poFeature );
+    }
+    GDALClose( poDS );
+  }
 
 private:
 
@@ -240,6 +337,46 @@ private:
       }
   };
 
+  // Convert latitude/longitude to col/row indices
+  XY to_xy(GeographicCoordinates const& c) const {
+    int col = (c.lon() - m_gT[0]) / m_gT[1];
+    int row = (c.lat() - m_gT[3]) / m_gT[5];
+    return XY(col, row);
+  }
+
+  std::vector<XY> get_domain(unsigned int bandID) const {
+    assert( bandID < depth());
+    std::vector<XY> v;
+    for(unsigned int x = 0; x < width(); ++x){
+      for( unsigned int y = 0; y < height(); ++y){
+        if( read(x, y, bandID) > std::numeric_limits<value_type>::min() ){
+          v.emplace_back(x,y);
+        }
+      }
+    }
+    return v;
+  }
+
+  // Read 1 value using GDAL API. To change if access is too slow
+  double read(unsigned int x, unsigned int y, unsigned int bandID) const {
+    int nXSize = 1;
+    auto line = (float *) CPLMalloc(sizeof(float)*nXSize);
+    auto err = band(bandID).RasterIO( GF_Read, x, y, 1, 1, line, nXSize, 1, GDT_Float32, 0, 0 );
+    if(err != CE_None){
+      throw std::invalid_argument( "received negative x y or band ID" );
+    };
+    double val = double(*line);
+    CPLFree(line);
+    return(val);
+  }
+
+  // Convert row x and col y to geographic coordinate
+  GeographicCoordinates to_lat_lon(unsigned int x, unsigned int y) const {
+    auto lon = m_gT[1] * x + m_gT[2] * y + m_gT[1] * 0.5 + m_gT[2] * 0.5 + m_gT[0];
+    auto lat = m_gT[4] * x + m_gT[5] * y + m_gT[4] * 0.5 + m_gT[5] * 0.5 + m_gT[3];
+    return GeographicCoordinates(lat, lon);
+  }
+
   // Geographic coordinates of the top left corner.
   GeographicCoordinates compute_origin(std::vector<double> const& gT) const {
     return GeographicCoordinates(gT[3], gT[0]) ;
@@ -257,18 +394,13 @@ private:
     return Extent<decimal_degree>(o.lat(), lat_max, o.lon(), lon_max);
   }
 
-  std::vector<XY> get_domain(unsigned int bandID){
-    assert( bandID < depth());
-    std::vector<XY> v;
-    for(unsigned int x = 0; x < width(); ++x){
-      for( unsigned int y = 0; y < height(); ++y){
-        if( read(x, y, bandID) > std::numeric_limits<value_type>::min() ){
-          v.emplace_back(x,y);
-        }
-      }
+  std::vector<GeographicCoordinates> to_lat_lon(std::vector<XY> const& xy) const {
+    std::vector<GeographicCoordinates> out;
+    for(auto const& it : xy){
+      out.push_back(to_lat_lon(it.x, it.y));
     }
-    return v;
-  }
+    return out;
+}
 
   bool has_same_domain_at_all_times(){
     bool answer = true;
@@ -283,41 +415,6 @@ private:
       answer = std::all_of(bands.begin(), bands.end(), have_same_domain);
     }
     return answer;
-  }
-
-
-  // Read 1 value using GDAL API. To change if access is too slow
-  double read(unsigned int x, unsigned int y, unsigned int bandID) const {
-    int nXSize = 1;
-    auto line = (float *) CPLMalloc(sizeof(float)*nXSize);
-    auto err = band(bandID).RasterIO( GF_Read, x, y, 1, 1, line, nXSize, 1, GDT_Float32, 0, 0 );
-    assert(err == CE_None);
-    double val = double(*line);
-    CPLFree(line);
-    return(val);
-  }
-
-
-  // Convert row x and col y to geographic coordinate
-  GeographicCoordinates to_lat_lon(unsigned int x, unsigned int y) const {
-    auto lon = m_gT[1] * x + m_gT[2] * y + m_gT[1] * 0.5 + m_gT[2] * 0.5 + m_gT[0];
-    auto lat = m_gT[4] * x + m_gT[5] * y + m_gT[4] * 0.5 + m_gT[5] * 0.5 + m_gT[3];
-    return GeographicCoordinates(lat, lon);
-  }
-
-  // Convert latitude/longitude to col/row indices
-  XY to_xy(GeographicCoordinates const& c) const {
-    int col = (c.lon() - m_gT[0]) / m_gT[1];
-    int row = (c.lat() - m_gT[3]) / m_gT[5];
-    return XY(col, row);
-  }
-
-  std::vector<GeographicCoordinates> to_lat_lon(std::vector<XY> const& xy) const {
-    std::vector<GeographicCoordinates> out;
-    for(auto const& it : xy){
-      out.push_back(to_lat_lon(it.x, it.y));
-    }
-    return out;
   }
 
 };

@@ -13,6 +13,7 @@
 
 #include <unordered_map>
 #include <unordered_set>
+#include <vector>
 #include "assert.h"
 
 namespace quetzal{
@@ -170,7 +171,7 @@ public:
 		* \section Output
 		* \include demography/test/Populations/Populations_test.output
 		*/
-	std::unordered_set<coord_type> definition_space(time_type const& t) const;
+	std::vector<coord_type> definition_space(time_type const& t) const;
 
 private:
 
@@ -238,11 +239,11 @@ void PopulationSize<Space, Time, Value>::set(Space && x, Time && t, value_type N
 }
 
 template<typename Space, typename Time, typename Value>
-std::unordered_set<Space> PopulationSize<Space, Time, Value>::definition_space(Time const& t) const {
-	std::unordered_set<coord_type> s;
+std::vector<Space> PopulationSize<Space, Time, Value>::definition_space(Time const& t) const {
+	std::vector<coord_type> v;
 	for(auto const& it : m_populations.at(t) )
-			s.insert(it.first);
-	return s;
+			v.push_back(it.first);
+	return v;
 }
 
 } // namespace demography

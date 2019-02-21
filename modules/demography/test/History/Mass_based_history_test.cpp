@@ -23,12 +23,12 @@ struct transition_matrix {
 	using coord_type = std::string;
 	using time_type = unsigned int;
 
-	std::vector<coord_type> arrival_space(coord_type x, time_type t)
+	std::vector<coord_type> arrival_space(coord_type x)
 	{
 		return {"Paris", "Ann Arbor"};
 	}
 
-	double operator()(coord_type x, coord_type y, time_type t)
+	double operator()(coord_type x, coord_type y)
 	{
 		return 0.5; // 1/2 probability to change of location
 	}
