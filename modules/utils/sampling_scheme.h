@@ -131,7 +131,7 @@ public:
 		return sample;
 	}
 
-};
+}; // constrained_sampling
 
 template<typename X, typename F, typename N>
 auto make_constrained_sampler(std::vector<X> const& space, F f, N pop_size, unsigned int n){
