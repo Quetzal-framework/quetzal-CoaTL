@@ -31,14 +31,14 @@ namespace occupancy_spectrum {
   using boost::multiprecision::cpp_int;
   using boost::multiprecision::cpp_dec_float_50;
 
-  struct ReturnAlwaysTrue {
+  struct return_always_true {
       bool operator()(double /*param*/) const
       {
         return true;
       }
   };
 
-  struct Identity {
+  struct identity {
       using spectrum_type = Generator::occupancy_spectrum_type;
       static spectrum_type handle(spectrum_type&& M_j)
       {
@@ -46,7 +46,7 @@ namespace occupancy_spectrum {
       }
   };
 
-  struct RetrieveLastEmptyUrns {
+  struct truncate_tail {
     using spectrum_type = Generator::occupancy_spectrum_type;
     static spectrum_type handle(spectrum_type&& M_j)
     {
@@ -96,8 +96,8 @@ namespace occupancy_spectrum {
    */
   template
   <
-  class UnaryPredicate = ReturnAlwaysTrue,
-  class SpectrumHandler = Identity,
+  class UnaryPredicate = return_always_true,
+  class SpectrumHandler = identity,
   class Int = cpp_int,
   class Float = cpp_dec_float_50
   >
@@ -143,7 +143,7 @@ namespace occupancy_spectrum {
     m_N(m),
     m_pred(pred)
     {
-      auto callback = make_callback(m_k, m_N, m_pred);
+      auto callback = make_callback(m_k, m_N);
       Generator::generate(m_k, m_N, callback);
       m_dist = std::discrete_distribution<size_t>( m_probas.cbegin(), m_probas.cend() );
       assert(m_support.size() == m_probas.size());
@@ -256,7 +256,7 @@ namespace occupancy_spectrum {
 
   private:
 
-    auto make_callback(unsigned int k, unsigned int N, UnaryPredicate pred){
+    auto make_callback(unsigned int k, unsigned int N){
       return [this, k, N](spectrum_type&& M_j){
         auto p = compute_probability(k, N, M_j);
         if(this->m_pred(p)){

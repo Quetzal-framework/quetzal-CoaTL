@@ -113,6 +113,20 @@ namespace geography {
 	      return false;
 	    }
 
+		/**
+	    * \brief Unequality comparison operator
+	    *
+	    * Checks if two resolutions objects are equals
+	    * \return false if latitude and longitude have same resolution, else returns true.
+	    * \section Example
+	    * \snippet geography/test/Resolution/Resolution_test.cpp Example
+	    * \section Output
+	    * \include geography/test/Resolution/Resolution_test.output
+	    */
+	  bool operator!=(const Resolution& other) const {
+	     return !(operator==(other));
+	    }
+
 	  private:
 			value_type m_lat;
       value_type m_lon;

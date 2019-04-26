@@ -157,27 +157,76 @@ public:
     return forest;
   }
 
+  /**
+  * @brief Create a forest from a sample and coalesce it conditionally to the simulated demography.
+  *
+  * @tparam Generator a random number Generator
+  *
+  * @param sample the number of gene copies at each location
+  * @param sampling_time the time of sampling_time
+  * @gen a random number generator
+  *
+  */
   template<typename Generator>
   auto coalesce_to_mrca(std::map<coord_type, unsigned int> sample, time_type const& sampling_time, Generator & gen)
   {
-    if(sample.size() == 0){
-      throw std::logic_error("Sample to coalesce is empty");
-    }else if(sample.size() == 1){
-      if(sample.begin()->second < 2){
-        throw std::logic_error("Sample to coalesce only contains one gene copy");
-      }
-    }
-
+    test_sample_consistency(sample);
     auto forest = this->make_forest(sample, sampling_time);
     auto new_forest = coalesce_along_spatial_history(forest, this->branch(), gen, this->init() );
     auto tree = this->find_mrca(new_forest, m_history.first_time(), gen);
     return this->treat(tree);
   }
 
+  /**
+  * @brief Create a forest from a sample giving name to tips, then coalesce them conditionally to the simulated demography.
+  *
+  * @tparam Generator a random number Generator
+  * @tparam F a unary operation with signature equivalent to 'std::string fun(coord_type const& x,
+  * time_type const& t)'
+  *
+  * @param sample the number of gene copies at each location
+  * @param sampling_time the time of sampling_time
+  * @param leaf_name a functor assigning a name to a tip as a function of its location and of sampling time.
+  * @gen a random number generator
+  *
+  */
   template<typename Generator, typename F>
   auto coalesce_to_mrca(std::map<coord_type, unsigned int> sample, time_type const& sampling_time, F leaf_name, Generator & gen)
   {
+    test_sample_consistency(sample);
+    auto forest = this->make_forest(sample, sampling_time, leaf_name);
+    auto new_forest = coalesce_along_spatial_history(forest, this->branch(), gen, this->init() );
+    auto tree = this->find_mrca(new_forest, m_history.first_time(), gen);
+    return this->treat(tree);
+  }
 
+  /**
+  * @brief Create a forest from a sample then coalesce them conditionally to the simulated demography.
+  *
+  * @tparam T type of an individual
+  * @tparam F1 a unary operation with signature equivalent to 'coord_type fun(const T& i)'
+  * @tparam F2 a unary operation with signature equivalent to 'std::string fun(const T& i)'
+  * @tparam Generator a random number Generator
+  *
+  * @param sample a collection of individuals (gene copies)
+  * @param sampling_time the time of sampling_time
+  * @param get_location a unary operation taking a sampled individual of type T as an argument and returning its geographic location
+  * @param get_name a functor taking a sampled individual of type T as an argument and returning an identifier
+  * @gen a random number generator
+  *
+  */
+  template<typename T, typename F1, typename F2, typename Generator>
+  auto coalesce_to_mrca(std::vector<T> sample, time_type const& sampling_time, F1 get_location, F2 get_name, Generator & gen)
+  {
+    auto forest = this->make_forest(sample, sampling_time, get_location, get_name);
+    auto new_forest = coalesce_along_spatial_history(forest, this->branch(), gen, this->init() );
+    auto tree = this->find_mrca(new_forest, m_history.first_time(), gen);
+    return this->treat(tree);
+  }
+
+private:
+
+  void test_sample_consistency(std::map<coord_type, unsigned int> const& sample) const{
     if(sample.size() == 0){
       throw std::logic_error("Sample to coalesce is empty");
     }else if(sample.size() == 1){
@@ -185,14 +234,7 @@ public:
         throw std::logic_error("Sample to coalesce only contains one gene copy");
       }
     }
-
-    auto forest = this->make_forest(sample, sampling_time, leaf_name);
-    auto new_forest = coalesce_along_spatial_history(forest, this->branch(), gen, this->init() );
-    auto tree = this->find_mrca(new_forest, m_history.first_time(), gen);
-    return this->treat(tree);
   }
-
-private:
 
   template<typename Generator, typename Forest>
   void migrate_backward(Forest & forest, time_type t, Generator& gen) const noexcept

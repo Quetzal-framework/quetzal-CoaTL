@@ -72,6 +72,20 @@ public:
 	  }
 
 		/**
+			* \brief Unequality comparison
+			*
+			* \param other The other Extent object to be compared
+			* \return false if the two objects have same lon_min, lon_max, lat_min, lat_max. Else returns true.
+			* \section Example
+			* \snippet geography/test/Extent/Extent_test.cpp Example
+			* \section Output
+			* \include geography/test/Extent/Extent_test.output
+			*/
+		bool operator!=(const Extent& other) const {
+		    return !(operator==(other));
+		  }
+
+		/**
 			* \brief Get the minimal latitude of the spatial extent
 			*
 			* \section Example

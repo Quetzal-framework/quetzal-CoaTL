@@ -7,13 +7,13 @@
 * (at your option) any later version.                                  *
 *                                                                      *
 ***************************************************************************/
-
+#define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE expressive_test
 
-#include <expressive.h>
-
-#include <boost/test/included/unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 namespace utf = boost::unit_test;
+
+#include <expressive.h>
 
 BOOST_AUTO_TEST_SUITE( expressive )
 

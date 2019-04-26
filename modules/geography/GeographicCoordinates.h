@@ -209,6 +209,20 @@ public:
     	return false;
     }
 
+		/*!
+		 * \brief Unequality comparison operator
+		 *
+		 * Compares two coordinates by their latitude and longitude.
+		 *
+		 * \return false if longitude and latitude are equal, else returns true.
+		 * \section Example
+		 * \snippet geography/test/GeographicCoordinates/GeographicCoordinates_test.cpp Example
+		 * \section Output
+		 * \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
+		 */
+		bool operator!=(const GeographicCoordinates& other) const {
+	    	return !(operator==(other));
+	    }
 
 private:
 

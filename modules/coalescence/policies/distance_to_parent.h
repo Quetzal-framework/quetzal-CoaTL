@@ -133,18 +133,32 @@ public:
 
 };
 
+/*
+ * 0brief policy class for coalescing gene copies computing distance to parent node and naming the tips
+ * @tparam Space the coordinate type
+ * @tparam Time the time type
+ */
 template<typename Space, typename Time>
-struct distance_to_parent_leaf_name {
+class distance_to_parent_leaf_name {
+
 private:
   unsigned int m_ancestral_Wright_Fisher_N;
 
 public:
 
+  /*
+   * @brief Set the size of the putative ancestral wright fisher population preceding
+   * the spatial expansion
+   *
+   * @param value the Wright-Fisher population size
+   */
   void ancestral_Wright_Fisher_N(unsigned int value){
     m_ancestral_Wright_Fisher_N = value;
   }
 
+  //! \typedef geographic coordinate type
   using coord_type = Space;
+  //! \typedef time type
   using time_type = Time;
 
   //! Defines what data type the tree should store
@@ -195,6 +209,28 @@ public:
     return forest;
   }
 
+  /*
+  * @brief Create a forest from a sample
+  *
+  * @tparam T type of an individual
+  * @tparam F1 a unary operation with signature equivalent to 'coord_type fun(const T& i)'
+  * @tparam F2 a unary operation with signature equivalent to 'std::string fun(const T& i)'
+  *
+  * @param sample a collection of individuals (gene copies)
+  * @param sampling_time the time of sampling_time
+  * @param get_location a unary operation taking a sampled individual of type T as an argument and returning its geographic location
+  * @param get_name a functor taking a sampled individual of type T as an argument and returning an identifier
+  */
+  template<typename T, typename F1, typename F2>
+  static auto make_forest(std::vector<T> sample, time_type const& sampling_time, F1 get_location, F2 get_name){
+    forest_type forest;
+    for(auto const& it: sample){
+      cell_type c(get_name(it, sampling_time), sampling_time);
+      forest.insert(get_location(it, sampling_time), tree_type(c));
+    }
+    return forest;
+  }
+
   static auto branch(){
     return []( auto& parent , auto const& child ){ return parent.add_child(child);};
   }
@@ -206,7 +242,7 @@ public:
   template<typename Generator>
   tree_type find_mrca(forest_type const& forest, time_type const& first_time, Generator& gen) const {
     time_type t_curr = first_time;
-    
+
     auto WF_init = [&t_curr](time_type const& t){
       t_curr -= t;
       return tree_type(t_curr);
