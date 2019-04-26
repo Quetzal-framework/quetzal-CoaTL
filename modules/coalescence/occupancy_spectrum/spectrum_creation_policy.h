@@ -69,8 +69,8 @@ struct on_the_fly {
 
 template
 <
-class UnaryPredicate = ReturnAlwaysTrue,
-class SpectrumHandler = Identity,
+class UnaryPredicate = return_always_true,
+class SpectrumHandler = identity,
 class Int = cpp_int,
 class Float = cpp_dec_float_50
 >

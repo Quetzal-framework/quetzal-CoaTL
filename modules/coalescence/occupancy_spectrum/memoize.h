@@ -35,13 +35,13 @@ namespace utils{
 
   template
   <
-  class UnaryPredicate = ReturnAlwaysTrue,
-  class SpectrumHandler = Identity,
+  class UnaryPredicate = return_always_true,
+  class SpectrumHandler = identity,
   class Int = cpp_int,
   class Float = cpp_dec_float_50
   >
   const OccupancySpectrumDistribution<UnaryPredicate, SpectrumHandler, Int, Float>&
-  memoize_OSD(unsigned int k, unsigned int N, UnaryPredicate pred = UnaryPredicate())
+  memoize_OSD(unsigned int k, unsigned int N)
   {
   	static std::unordered_map<std::pair<unsigned int, unsigned int>, OccupancySpectrumDistribution<UnaryPredicate, SpectrumHandler, Int, Float>, MyHash> cache;
   	const auto pair_k_N = std::make_pair(k, N);
