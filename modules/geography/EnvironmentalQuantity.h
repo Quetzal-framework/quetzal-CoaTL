@@ -314,6 +314,43 @@ public:
     GDALClose( poDS );
   }
 
+  void export_to_shapefile(std::vector<coord_type> coords, std::string const& filename) const {
+    std::string driver_name = "ESRI Shapefile";
+    GDALDriver *poDriver;
+    GDALAllRegister();
+    poDriver = GetGDALDriverManager()->GetDriverByName(driver_name.c_str() );
+    assert( poDriver != NULL);
+
+    GDALDataset *poDS;
+    poDS = poDriver->Create( filename.c_str(), 0, 0, 0, GDT_Unknown, NULL );
+    assert( poDS != NULL );
+
+    OGRLayer *poLayer;
+    poLayer = poDS->CreateLayer( "sample", NULL, wkbPoint, NULL );
+    assert( poLayer != NULL );
+
+    for(auto const& it: coords){
+      double x = it.lon();
+      double y = it.lat();
+
+      OGRFeature *poFeature;
+      poFeature = OGRFeature::CreateFeature( poLayer->GetLayerDefn() );
+
+      OGRPoint pt;
+      pt.setX( x );
+      pt.setY( y );
+
+      poFeature->SetGeometry( &pt );
+
+      if( poLayer->CreateFeature( poFeature ) != OGRERR_NONE ){
+        throw(std::string("Failed to create feature in shapefile."));
+      }
+      OGRFeature::DestroyFeature( poFeature );
+    }
+    GDALClose( poDS );
+  }
+
+
 private:
 
   std::vector<time_type> m_times;

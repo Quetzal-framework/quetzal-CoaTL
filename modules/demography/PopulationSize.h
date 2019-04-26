@@ -241,8 +241,9 @@ void PopulationSize<Space, Time, Value>::set(Space && x, Time && t, value_type N
 template<typename Space, typename Time, typename Value>
 std::vector<Space> PopulationSize<Space, Time, Value>::definition_space(Time const& t) const {
 	std::vector<coord_type> v;
-	for(auto const& it : m_populations.at(t) )
-			v.push_back(it.first);
+	for(auto const& it : m_populations.at(t) ){
+		if(it.second > 0 ){v.push_back(it.first);}
+	}
 	return v;
 }
 
