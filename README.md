@@ -2,7 +2,7 @@
 
 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/Becheler/quetzal/graphs/commit-activity) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Tests](https://img.shields.io/badge/tests-passed-green.svg)](https://en.wikipedia.org/wiki/Unit_testing) [![Doc](https://img.shields.io/badge/doc-latest-blue.svg)](https://becheler.github.io/quetzalAPI/html/index.html)
-[![Website becheler.github.io](https://img.shields.io/website-up-down-green-red/https/becheler.github.io.svg)](https://becheler.github.io/)
+[![Website becheler.github.io](https://img.shields.io/website-up-down-green-red/https/becheler.github.io.svg)](https://becheler.github.io/pages/quetzal.html)
 
 # Overview
 
@@ -16,15 +16,18 @@ However if you are working on developing some border case simulation model, or i
 
 Quetzal can help you doing so by offering atomic components (structures, algorithms, concepts) that can be easily reused to build a new program. The template mechanism allow to adapt them efficiently to each particular situation you may encounter.
 
-![library schema](documentation/schema_library.png)
+# Website
+
+Please visit [Quetzal website](https://becheler.github.io/pages/quetzal.html) for more details and:
+ - [step-by-step installation instructions](https://becheler.github.io/pages/getting_started.html)
+ - [user tutorials](https://becheler.github.io/pages/tutorials.html)
+ - [developer documentation](https://becheler.github.io/quetzalAPI/html/index.html)
 
 # Getting Started
 
 ## Installing
 
 Quetzal is a header-only library. Just clone the project and include the files you need.
-
-Have a look on the [documentation](https://becheler.github.io/quetzalAPI/html/index.html) to know more about quetzal modules and architecture !
 
 ## Prerequisites
 
@@ -49,9 +52,15 @@ The present project was tested with the following OS:
 - Release: 16.04
 - Codename: xenial
 
-## Test Driven Development
-For Test Driven Development, bash scripts allow to run all the tests of the module at once, ensuring they are no regression. The sub-modules tests can be run independently.
-Run the executable ```UTest<...>``` : this will recursively execute the test of the sub-modules.
+## Tests
+Run in a terminal at quetzal project root:
+```
+mkdir build
+cd build
+cmake ..
+make
+make test
+```
 
 ## Acknowledgements
 
@@ -68,13 +77,11 @@ This github repository is basically the implementation of the probabilistic mode
 
 ## How to cite:
 
-Quetzal - an open source C++ template library for coalescence-based environmental demogenetic models inference
-Arnaud Becheler, Camille Coron, Stephane Dupas
-bioRxiv 214767; doi: https://doi.org/10.1101/214767
+ Becheler, A, Coron, C, Dupas, S. The Quetzal Coalescence template library: A C++ programmers resource for integrating distributional, demographic and coalescent models. Mol Ecol Resour. 2019; 19: 788– 793. https://doi.org/10.1111/1755-0998.12992
 
 # Acknowledgements
 
 - Florence Jornod who was a tremendous intern and add much to the project.
 - Ambre Marques for his help, tips and the implementation of the expressive library.
 - Arnaud Le Rouzic for help and tips.
-- The developpez.com community, for his large help. This project would have failed without the constant support of Bousk, ternel, Koala, dalfab, Medinoc, jo_link_noir and many others...
+- The developpez.com community, for his large help. This project would have failed without the constant support of Bousk, ternel, Koala, bacelar, dalfab, Medinoc, jo_link_noir and many others...
