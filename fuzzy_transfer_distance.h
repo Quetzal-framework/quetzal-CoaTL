@@ -9,8 +9,4 @@
 ***************************************************************************/
 
 
-#include "modules/demography/Flow.h"
-
-#include "modules/demography/PopulationSize.h"
-
-#include "modules/demography/History.h"
+#include "modules/fuzzy_transfer_distance/FuzzyPartition.h"

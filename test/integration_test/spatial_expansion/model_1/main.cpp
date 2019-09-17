@@ -157,7 +157,7 @@ int main(int argc, char* argv[])
 
   std::cout << "8 ... Begining coalescence" << std::endl;
 
-  auto results = simulator.coalesce_to_mrca(sample, t_sampling, gen);
+  auto results = simulator.coalesce_to_mrca<>(sample, t_sampling, gen);
 
   std::ofstream file;
   file.open ("trees.txt");

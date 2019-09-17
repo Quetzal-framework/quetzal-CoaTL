@@ -24,5 +24,7 @@
 
 #include "genetics.h"
 
+#include "fuzzy_transfer_distance.h"
+
 #include "modules/simulator/simulators.h"
 #include "modules/simulator/utils.h"

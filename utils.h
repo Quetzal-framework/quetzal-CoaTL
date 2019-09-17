@@ -10,5 +10,4 @@
 
 
 #include "modules/utils/matrix_operation.h"
-#include "modules/utils/PointWithId.h"
 #include "modules/utils/sampling_scheme.h"

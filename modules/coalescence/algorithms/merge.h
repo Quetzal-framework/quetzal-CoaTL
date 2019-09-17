@@ -17,6 +17,8 @@
 #include <iterator> // std::advance
 #include <cassert>
 #include <functional> // std::plus
+#include <type_traits> // std::is_invocable
+#include <iostream>
 
 namespace quetzal{
 namespace coalescence {
@@ -46,12 +48,16 @@ namespace coalescence {
    * \include coalescence/algorithms/test/binary_merge_test.output
    */
   template<class BidirectionalIterator, class T, class BinaryOperation, class Generator>
-  BidirectionalIterator binary_merge(BidirectionalIterator first, BidirectionalIterator last,
-                                     T init, BinaryOperation op, Generator& g) {
-      assert(std::distance(first, last) > 1 && "Coalescence should operate on a range containing more than one element.");
-      std::shuffle(first, last, g);
+  BidirectionalIterator binary_merge(BidirectionalIterator first, BidirectionalIterator last, T init, BinaryOperation op, Generator& g)
+  {
+    assert(std::distance(first, last) > 1 && "Coalescence should operate on a range containing more than one element.");
+    std::shuffle(first, last, g);
+    if constexpr (std::is_invocable<T>::value){
+      *first = op(init(), *first);
+    } else {
       *first = op(init, *first);
-      *first = op(*first, *(--last));
+    }
+    *first = op(*first, *(--last));
     return last;
   }
 
@@ -124,7 +130,11 @@ namespace coalescence {
 
       while(m_it != sp.cend()){
         for(unsigned int i = 1; i <= *m_it; ++i){ // loop on the m_j parents
-          *first = op(init, *first);
+          if constexpr (std::is_invocable<T>::value){
+            *first = op(init(), *first);
+          }else {
+            *first = op(init, *first);
+          }
           for(int k = 1; k < j; ++k){ // loop on the others children
             *first = op(*first, *(--last));
           }

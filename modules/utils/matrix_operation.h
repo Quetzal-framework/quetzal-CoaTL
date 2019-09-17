@@ -31,12 +31,12 @@ auto divide_terms_by_row_sum(matrix_type const& A) {
     assert( a > 0);
     w(i) = 1.0 / a ;
   }
-  compressed_matrix<double> S( w.size(), w.size() );
+  compressed_matrix<double> S( w.size(), w.size(), 0.0 );
   assert(S.size2() == A.size1());
   for(unsigned int i = 0; i < v.size(); ++i ){
     S(i,i) = w(i);
   }
-  matrix_type M(A.size1(),A.size2(), 0.0);
+  matrix_type M(A.size1(),A.size2());
   axpy_prod(S, A, M);
   return M;
 }

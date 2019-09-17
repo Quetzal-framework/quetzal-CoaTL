@@ -30,31 +30,6 @@ struct transition_matrix {
 
 BOOST_AUTO_TEST_SUITE( demography )
 
-BOOST_AUTO_TEST_CASE( dispersal )
-{
-  using generator_type = std::mt19937;
-	using coord_type = double;
-
-	std::vector<coord_type> demes {0.0, 12.0, 30.0};
-	auto distance = [](coord_type x, coord_type y){return std::abs(x-y);};
-	auto D = quetzal::demography::dispersal::make_symmetric_distance_matrix(demes, distance);
-
-	using law_type = quetzal::demography::dispersal::Gaussian;
-	using quetzal::demography::dispersal::make_discrete_location_sampler;
-
-	law_type::param_type p;
-	p.a(20.0);
-	auto sampler = make_discrete_location_sampler<law_type>(D, p);
-	generator_type gen;
-	std::vector<coord_type> path;
-	path.push_back(demes.front());
-	for(unsigned int t = 0; t < 10; ++t)
-	{
-		path.push_back(sampler(path.back(),gen));
-	}
-	std::copy(path.begin(), path.end(), std::ostream_iterator<coord_type>(std::cout, " -> "));
-}
-
 BOOST_AUTO_TEST_CASE( flow )
 {
   using coord_type = std::string;
@@ -97,7 +72,7 @@ BOOST_AUTO_TEST_CASE( ind_based_history )
   // Random number generation
   generator_type gen;
   // Stochastic dispersal kernel, which geographic sampling space is {-1 , 1}
-  auto sample_location = [](auto& gen, coord_type x, time_type){
+  auto sample_location = [](auto& gen, coord_type x){
    std::bernoulli_distribution d(0.5);
    if(d(gen)){ x = -x; }
    return x;
@@ -153,34 +128,6 @@ BOOST_AUTO_TEST_CASE( pop_size )
 
 	auto X = N.definition_space(t0);
 	std::copy(X.begin(), X.end(), std::ostream_iterator<coord_type>(std::cout, " "));
-}
-
-BOOST_AUTO_TEST_CASE ( symmetric_distance_matrix )
-{
-  using coord_type = int;
-  std::vector<coord_type> points {1,2,3,4};
-  auto distance = [](coord_type a, coord_type b){return std::abs(a - b);};
-  auto D = quetzal::demography::dispersal::make_symmetric_distance_matrix(points, distance);
-  std::cout << D << std::endl;
-
-  auto M = D.apply([](auto a){return a * 0.5;});
-  std::cout << M << std::endl;
-
-  auto X = D.apply([](coord_type a){return a <= 2;});
-  std::cout << X << std::endl;
-
-  using quetzal::demography::dispersal::Gaussian;
-  Gaussian::param_type p;
-  p.a(1.);
-  using quetzal::demography::dispersal::make_discrete_location_sampler;
-  auto k = make_discrete_location_sampler<Gaussian>(D, p);
-
-  std::mt19937 rng;
-  int position = 1;
-  for(unsigned int i = 0; i < 10 ; ++i){
-    position = k(position, rng);
-    std::cout << position << " -> ";
-  }
 }
 
 BOOST_AUTO_TEST_SUITE_END()
