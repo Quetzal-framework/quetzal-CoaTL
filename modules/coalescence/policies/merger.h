@@ -67,11 +67,12 @@ namespace coalescence {
      */
     template<class BidirectionalIterator, class T, class BinaryOperation, class Generator>
     static auto
-    merge(BidirectionalIterator first, BidirectionalIterator last, unsigned int N, T const& init, BinaryOperation const& binop, Generator& g)
+    merge(BidirectionalIterator first, BidirectionalIterator last, unsigned int N, T init, BinaryOperation const& binop, Generator& g)
     {
       assert(N >= 1 && "Population size should be more than 1 for evaluating coalescence probability" );
       assert(std::distance(first, last) > 1 && "Coalescence should operate on a range containing more than one element.");
-      double coal_proba = 1/static_cast<double>(N);
+      double k = static_cast<double>(std::distance(first, last));
+      double coal_proba = (k*(k-1.0))/static_cast<double>(2*N);
       std::bernoulli_distribution d(coal_proba);
       if( d(g) ){
         last = binary_merge(first, last, init, binop, g);

@@ -11,8 +11,9 @@
 #ifndef __HISTORY_STRATEGIES_H_INCLUDED__
 #define __HISTORY_STRATEGIES_H_INCLUDED__
 
+#include "PointWithId.h"
+#include "dispersal.h"
 #include "../../utils.h"
-
 #include <boost/numeric/ublas/matrix_sparse.hpp>
 #include <boost/numeric/ublas/symmetric.hpp>
 
@@ -37,10 +38,149 @@ namespace strategy {
    *          individuals in a proability distribution.
    */
   class individual_based {
+
+  private:
+
+    /*!
+     * Implementation for demographic expansion algorithm
+     * @tparam Space type of geographic coordinates
+     * @tparam Matrix the type of matrix used for storing migration rates
+     */
+    template<typename Space, typename Matrix>
+    class Implementation {
+
+      using coord_type = Space;
+      // distance matrix type, can be sparse or symmetric
+      using matrix_type = Matrix;
+      // for easier access to matrix row/columns ID
+      using point_ID_type = PointWithId<coord_type>;
+      // owe the matrix, heavy object
+      matrix_type _matrix;
+      // don't owe the vector
+      std::vector<point_ID_type> const& _points;
+      // don't owe the space
+      std::vector<coord_type> const& _coords;
+
+      // specific to individual-based:
+      // store discrete distributions centered on departure
+      using distribution_type = std::discrete_distribution<size_t>;
+      mutable std::vector<distribution_type> _distributions;
+
+      /*!
+       * make a weight matrix
+       * @tparam F functor with signature matrix_type::value_type (coord_type const& x, coord_type const&y)
+       * @param  coords vector of coordinates to compute distance between
+       * @param  w      functor F, usually a transform of geographic distance between two coordinates
+       * @return        a weight matrix
+       */
+      template<typename F>
+      matrix_type make_weight_matrix(std::vector<coord_type> const& coords, F w){
+        matrix_type A (coords.size(), coords.size());
+        for (unsigned i = 0; i < A.size1 (); ++ i)
+        {
+          auto x = coords.at(i);
+          for (unsigned j = 0; j < A.size2(); ++ j)
+          {
+            auto y = coords.at(j);
+            A (i, j) = w(x, y);
+          }
+        }
+        return A; // will be used in discrete_distribution: no need to divide_terms_by_row_sum
+      }
+
+      /*!
+       * Builds the discrete distributions for sampling coords IDs
+       * @return a vector of discrete distributions
+       */
+      std::vector<distribution_type> make_distributions() const
+      {
+        std::vector<distribution_type> dists;
+        dists.reserve(_matrix.size1());
+        for (unsigned i = 0; i < _matrix.size1 (); ++ i)
+        {
+          std::vector<double> weights;
+          weights.reserve(_matrix.size2());
+          for (unsigned j = 0; j < _matrix.size2(); ++ j)
+          {
+            weights.push_back(_matrix(i, j));
+          }
+          dists.emplace_back(weights.cbegin(), weights.cend());
+        }
+        return dists;
+      }
+
+    public:
+
+      // Forbid costly copy
+      Implementation(const Implementation&) = delete;
+
+      template<typename F>
+      Implementation(std::vector<point_ID_type> const& points, std::vector<coord_type> const& coords, F f) :
+      _matrix( make_weight_matrix(coords, f) ),
+      _points(points),
+      _coords(coords),
+      _distributions(make_distributions())
+      {}
+
+      // interface with indidividual-based demographic history expand method
+      template<typename Generator>
+      coord_type sample_arrival(Generator& gen, coord_type const& x) const
+      {
+        return _coords[_distributions[getIndexOfPointInVector(x, _coords)].operator()(gen)];
+      }
+
+    }; // inner class Implementation
+
+    // Cheap copy interfacing the implementation with the demographic simulation
+    template<typename Space, typename Matrix>
+    class Interface {
+
+      using impl_type = Implementation<Space, Matrix>;
+      using coord_type = Space;
+      using point_ID_type = PointWithId<coord_type>;
+      //copying the interface is kind ok
+      std::shared_ptr<impl_type> m_pimpl;
+
+    public:
+
+      // Constructor invoked by helper functions
+      template<typename F>
+      Interface(std::vector<point_ID_type> const& points, std::vector<coord_type> const& coords, F f):
+      m_pimpl(std::make_shared<impl_type>(points, coords, f) ) {}
+
+      // migration rate interface in the demographic algorithm
+      template<typename Generator>
+      coord_type operator()( Generator& gen, coord_type const& x){
+        return m_pimpl->sample_arrival(gen, x);
+      }
+    }; // inner class Interface
+
   public:
 
     //! \typedef type used to represent effective population size and flows
     using value_type = unsigned int;
+
+    /*!
+     * Contruct a dispersal kernel compatible with the mass-based strategy
+     *
+     * @param  coords a vector of geographic points
+     * @param  f      a functor giving the migration probability of an individual between two points
+     *                The signature should be equivalent to double f(T const& x, T const& Y)
+     * @return        A dispersal kernel
+     */
+    template<typename T, typename F>
+    static auto make_distance_based_dispersal(std::vector<T> const& coords, F f)
+    {
+      using coord_type = T;
+      std::vector<PointWithId<coord_type>> points;
+      points.reserve(coords.size());
+      const auto& ref = coords;
+      std::transform(coords.begin(), coords.end(), std::back_inserter(points),
+                     [ref](coord_type const& x){ return PointWithId<coord_type>(ref, x); });
+      using matrix_type = boost::numeric::ublas::symmetric_matrix<double>;
+      return Interface<coord_type, matrix_type>(points, coords, f);
+    }
+
   };
 
 
@@ -65,16 +205,28 @@ namespace strategy {
     class Implementation {
 
       using coord_type = Space;
+      // distance matrix type, can be sparse or symmetric
       using matrix_type = Matrix;
-      using point_ID_type = quetzal::utils::PointWithId<coord_type>;
-
+      // for easier access to matrix row/columns ID
+      using point_ID_type = PointWithId<coord_type>;
+      // owe the matrix, heavy object
       matrix_type _matrix;
+      // don't owe the vector
       std::vector<point_ID_type> const& _points;
+      // don't owe the space
       std::vector<coord_type> const& _coords;
+      // oops what was that again ?
       mutable std::map<coord_type, std::vector<coord_type>> m_arrival_space_cash;
 
+      /*!
+       * make a weight matrix
+       * @tparam F functor with signature matrix_type::value_type (coord_type const& x, coord_type const&y)
+       * @param  coords vector of coordinates to compute distance between
+       * @param  w      functor F, usually a transform of geographic distance between two coordinates
+       * @return        a weight matrix
+       */
       template<typename F>
-      matrix_type make_matrix(std::vector<coord_type> const& coords, F f){
+      matrix_type make_weight_matrix(std::vector<coord_type> const& coords, F w){
         matrix_type A (coords.size(), coords.size());
         for (unsigned i = 0; i < A.size1 (); ++ i)
         {
@@ -82,7 +234,7 @@ namespace strategy {
           {
             auto x = coords.at(i);
             auto y = coords.at(j);
-            A (i, j) = f(x, y);
+            A (i, j) = w(x, y);
           }
         }
         return quetzal::utils::divide_terms_by_row_sum(A);
@@ -100,7 +252,12 @@ namespace strategy {
       _coords(coords)
       {}
 
-      // interface with mass-based demographic history expand method
+      /*!
+       * interface with mass-based demographic history expand method that iterates
+       * on the locations that are reachable from x.
+       * @param  x departure coordinate
+       * @return   a std::vector of reachable coordinates from x.
+       */
       auto arrival_space(coord_type const& x) const {
         auto it = m_arrival_space_cash.find(x);
         if(it != m_arrival_space_cash.end())
@@ -115,7 +272,7 @@ namespace strategy {
       auto retrieve_non_zero_arrival_space(coord_type const& x) const {
         using it1_t = typename matrix_type::const_iterator1;
         using it2_t = typename matrix_type::const_iterator2;
-        auto i = quetzal::utils::getIndexOfPointInVector(x, _coords);
+        auto i = getIndexOfPointInVector(x, _coords);
         it1_t it1 = _matrix.begin1();
         std::advance(it1, i);
         std::vector<coord_type> v;
@@ -128,7 +285,7 @@ namespace strategy {
 
       // interface with mass-based demographic history expand method
       double migration_rate(coord_type const& x, coord_type const& y){
-        return _matrix(quetzal::utils::getIndexOfPointInVector(x, _coords), quetzal::utils::getIndexOfPointInVector(y, _coords) );
+        return _matrix(getIndexOfPointInVector(x, _coords), getIndexOfPointInVector(y, _coords) );
       }
 
     }; // inner class Implementation
@@ -139,7 +296,8 @@ namespace strategy {
 
       using impl_type = Implementation<Space, Matrix>;
       using coord_type = Space;
-      using point_ID_type = quetzal::utils::PointWithId<coord_type>;
+      using point_ID_type = PointWithId<coord_type>;
+      //copying the interface is kind ok
       std::shared_ptr<impl_type> m_pimpl;
 
     public:
@@ -177,11 +335,11 @@ namespace strategy {
     static auto make_distance_based_dispersal(std::vector<T> const& coords, F f)
     {
       using coord_type = T;
-      std::vector<quetzal::utils::PointWithId<coord_type>> points;
+      std::vector<PointWithId<coord_type>> points;
       points.reserve(coords.size());
       const auto& ref = coords;
       std::transform(coords.begin(), coords.end(), std::back_inserter(points),
-                     [ref](coord_type const& x){ return quetzal::utils::PointWithId<coord_type>(ref, x); });
+                     [ref](coord_type const& x){ return PointWithId<coord_type>(ref, x); });
       using matrix_type = boost::numeric::ublas::symmetric_matrix<double>;
       return Interface<coord_type, matrix_type>(points, coords, f);
     }
@@ -200,11 +358,11 @@ namespace strategy {
     template<typename T, typename F>
     static auto make_sparse_distance_based_dispersal(std::vector<T> const& coords, F f){
       using coord_type = T;
-      std::vector<quetzal::utils::PointWithId<coord_type>> points;
+      std::vector<PointWithId<coord_type>> points;
       points.reserve(coords.size());
       const auto& ref = coords;
       std::transform(coords.begin(), coords.end(), std::back_inserter(points),
-                     [ref](coord_type const& x){ return quetzal::utils::PointWithId<coord_type>(ref, x); });
+                     [ref](coord_type const& x){ return PointWithId<coord_type>(ref, x); });
       using matrix_type = boost::numeric::ublas::compressed_matrix<double>;
       return Interface<coord_type, matrix_type>(points, coords, f);
     }
