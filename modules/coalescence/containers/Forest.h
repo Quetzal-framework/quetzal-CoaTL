@@ -267,8 +267,19 @@ public:
 	  */
 	std::set<Position> positions() const;
 
+	/**
+	  * \brief copies all trees in the forest
+		* \return a vector of trees.
+	  */
+  std::vector<Tree> get_all_trees() const {
+    std::vector<Tree> trees;
+    trees.reserve(this->nb_trees());
+    for(auto & it : *this){
+      trees.push_back(it.second);
+    }
+    return trees;
+  }
 };
-
 
 
 template<typename Position, typename Tree>

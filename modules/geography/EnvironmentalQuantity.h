@@ -20,7 +20,8 @@
 #include <algorithm>
 #include <numeric>      // std::iota
 #include <stdexcept>      // std::invalid_argument
-#
+#include <cmath>
+
 namespace quetzal {
 namespace geography {
 
@@ -220,7 +221,7 @@ public:
   template<typename F, typename G>
   void export_to_geotiff(F f, G g, time_type const& t1, time_type const& t2, std::string const& filename) const {
 
-    int nBands = t2 - t1;
+    int nBands = std::abs(t2 - t1);
     assert(nBands >= 1);
 
     // Create a model dataset band

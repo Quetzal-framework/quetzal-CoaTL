@@ -13,7 +13,7 @@
 
 #include "Flow.h"
 #include "PopulationSize.h"
-#include "strategies.h"
+#include "strategy.h"
 
 #include "../../random.h"
 
@@ -60,8 +60,6 @@ public:
 
   //! \typedef Backward dispersal kernel type
   using backward_kernel_type = quetzal::random::TransitionKernel<time_type, discrete_distribution_type>;
-
-public:
 
   /**
   * @brief Constructor initializing the demographic database.
@@ -219,7 +217,7 @@ private:
   class History<Space, Time, strategy::individual_based> : public BaseHistory<Space, Time, strategy::individual_based>
   {
     using BaseHistory<Space, Time, strategy::individual_based>::BaseHistory;
-
+    using coord_type = Space;
   public:
 
     /**
@@ -269,7 +267,7 @@ private:
           {
             for(unsigned int ind = 1; ind <= N_tilde; ++ind)
             {
-              auto y = kernel(gen, x, t);
+              coord_type y = kernel(gen, x);
               this->m_flows->add_to_flux_from_to(x, y, t, 1);
               this->m_sizes->operator()(y, t_next) += 1;
             }
@@ -359,7 +357,7 @@ public:
             if(nb_migrants >= 0){
               landscape_individuals_count += nb_migrants;
               this->m_flows->set_flux_from_to(x, y, t, nb_migrants);
-              this->m_sizes->operator()(y, t_next) += nb_migrants;  
+              this->m_sizes->operator()(y, t_next) += nb_migrants;
             }
           }
         }

@@ -12,7 +12,8 @@
 #define __POINT_WITH_ID_H_INCLUDED__
 
 namespace quetzal {
-namespace utils {
+namespace demography{
+namespace strategy {
 
 /*!
  * Find the index of a point in a vector
@@ -65,6 +66,7 @@ private:
 	size_t                    m_index;
 };
 
+}
 }
 }
 

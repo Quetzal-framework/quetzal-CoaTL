@@ -9,8 +9,4 @@
 ***************************************************************************/
 
 
-#include "modules/demography/Flow.h"
-
-#include "modules/demography/PopulationSize.h"
-
-#include "modules/demography/History.h"
+#include "modules/simulator/simulators.h"
