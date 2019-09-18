@@ -18,21 +18,24 @@
 #include <map>
 
 namespace quetzal {
-namespace simulators {
+namespace simulator {
 
 /**
 * @brief Coalescence simulator in a spatially explicit landscape.
 *
 * @tparam Space deme identifiers (like the populations geographic coordinates)
 * @tparam Time time identifier (like an integer representing the year)
-* @tparam Strategy a politic for the demographic expansion (e.g. individual_based)
+* @tparam Strategy a template class argument (e.g. mass_based, individual_based)
+*                  that indicates how dispersal should be defined in terms of
+*                  demographic expansion algorithms. Strategy class
+*                  implements the details (computing migrations probabilites as a function of the
+*                  distance for example) whereas template specialization of the
+*                  internal history_type class defines different migration algorithms.
+*                  for the demographic expansion (e.g. individual_based)
+* @tparam CoalescencePolicy a politic for the demographic expansion (e.g. individual_based)
 *
 * @ingroup simulator
 *
-* @section Example
-* @include simulator/test/spatially_explicit_coalescence_simulator/mass_based_simulator_test.cpp
-* @section Output
-* @include simulator/test/spatially_explicit_coalescence_simulator/mass_based_simulator_test.output
 */
 template<typename Space, typename Time, typename Strategy, typename CoalescencePolicy>
 class SpatiallyExplicit :
@@ -40,14 +43,18 @@ public CoalescencePolicy
 {
 
 public:
-
+  //! \typedef space type
   using coord_type = Space;
+  //! \typedef time type
   using time_type = Time;
+  //! \typedef strategy type
   using strategy_type = Strategy;
+  //! \typedef value type to represent populations size
   using N_value_type = typename strategy_type::value_type;
 
-  template<typename Tree>
-  using forest_type = quetzal::coalescence::Forest<coord_type, Tree>;
+  //! \typedef time type
+  template<typename tree_type>
+  using forest_type = quetzal::coalescence::Forest<coord_type, tree_type>;
 
 private:
 
@@ -140,10 +147,11 @@ public:
   /**
   * @brief Create a forest from a sample and coalesce it conditionally to the simulated demography.
   *
+  * @tparam Merger a coalescence merger to use
   * @tparam Generator a random number Generator
   *
   * @param sample the number of gene copies at each location
-  * @param sampling_time the time of sampling_time
+  * @param sampling_time the time of sampling_time to build the make_forest coalescence policy function
   * @gen a random number generator
   *
   */
@@ -155,16 +163,32 @@ public:
   auto coalesce_to_mrca(std::map<coord_type, unsigned int> sample, time_type const& sampling_time, Generator & gen)
   {
     test_sample_consistency(sample);
+    // sampling_time used to initialize the forest
     auto forest = this->make_forest(sample, sampling_time);
     auto new_forest = coalesce_along_spatial_history<Merger>(forest, this->branch(), gen, this->init() );
     auto tree = this->find_mrca(new_forest, m_history.first_time(), gen);
     return this->treat(tree);
   }
 
-  template<typename Merger, typename Generator>
+  /**
+  * @brief Create a forest from a sample and coalesce it conditionally to the simulated demography.
+  *
+  * @tparam Merger a coalescence merger to use
+  * @tparam Generator a random number Generator
+  *
+  * @param sample the number of gene copies at each location
+  * @gen a random number generator
+  *
+  */
+  template
+  <
+    typename Merger=quetzal::coalescence::SimultaneousMultipleMerger<quetzal::coalescence::occupancy_spectrum::on_the_fly>,
+    typename Generator
+  >
   auto coalesce_to_mrca(std::map<coord_type, unsigned int> sample, Generator & gen)
   {
     test_sample_consistency(sample);
+    // no need of sampling time to initalize the forest
     auto forest = this->make_forest(sample);
     auto new_forest = coalesce_along_spatial_history<Merger>(forest, this->branch(), gen, this->init() );
     auto tree = this->find_mrca(new_forest, m_history.first_time(), gen);
@@ -453,7 +477,7 @@ public:
 
 };
 
-    } // namespace simulators
+    } // namespace simulator
   } // namespace quetzal
 
   #endif
