@@ -21,8 +21,18 @@ namespace quetzal {
 namespace simulator {
 
 /**
-* @brief Coalescence simulator in a spatially explicit landscape.
+* @brief Discrete-time coalescence simulator in a discrete spatially explicit landscape.
 *
+* @details This simulator consists in a forward demographic simulation of population
+*          growth and migration, after what a backward coalescent simulation is performed
+*          that traces back the ancestry of a sample of gene copies sampled in one
+*          or more populations. Most Recent Common ancestor is not always fond in the
+*          time span of the spatial history, so if the chosen CoalescencePolicy implements
+*          the required behavior, ancestry can be simulated in the more distant past using another model
+*          like the DiscreteTimeWrightFisher model, to find the MRCA.
+*          Details concerning the mergers (binary mergers, simultaneous multiple mergers)
+*          can be controlled using the relevant Merger policy class when calling a
+*          coalescence function of the class interface.
 * @tparam Space deme identifiers (like the populations geographic coordinates)
 * @tparam Time time identifier (like an integer representing the year)
 * @tparam Strategy a template class argument (e.g. mass_based, individual_based)
@@ -31,8 +41,7 @@ namespace simulator {
 *                  implements the details (computing migrations probabilites as a function of the
 *                  distance for example) whereas template specialization of the
 *                  internal history_type class defines different migration algorithms.
-*                  for the demographic expansion (e.g. individual_based)
-* @tparam CoalescencePolicy a politic for the demographic expansion (e.g. individual_based)
+* @tparam CoalescencePolicy a policy class for the demographic expansion.
 *
 * @ingroup simulator
 *
@@ -208,7 +217,12 @@ public:
   * @gen a random number generator
   *
   */
-  template<typename Merger, typename Generator, typename F>
+  template
+  <
+    typename Merger=quetzal::coalescence::SimultaneousMultipleMerger<quetzal::coalescence::occupancy_spectrum::on_the_fly>,
+    typename Generator,
+    typename F
+  >
   auto coalesce_to_mrca(std::map<coord_type, unsigned int> sample, time_type const& sampling_time, F leaf_name, Generator & gen)
   {
     test_sample_consistency(sample);
@@ -233,7 +247,14 @@ public:
   * @gen a random number generator
   *
   */
-  template<typename Merger, typename T, typename F1, typename F2, typename Generator>
+  template
+  <
+  typename Merger=quetzal::coalescence::SimultaneousMultipleMerger<quetzal::coalescence::occupancy_spectrum::on_the_fly>,
+  typename T,
+  typename F1,
+  typename F2,
+  typename Generator
+  >
   auto coalesce_to_mrca(std::vector<T> sample, time_type const& sampling_time, F1 get_location, F2 get_name, Generator & gen)
   {
     auto forest = this->make_forest(sample, sampling_time, get_location, get_name);
@@ -309,14 +330,21 @@ private:
 };
 
 /**
-* @brief Class to coalesce lineages by sampling their parents uniformely at random
-*        in the previous generation.
+* @brief Discrete time simulation in a Wright-Fisher Population.
+* @details This simulator consists in a backward coalescent simulation
+*          that traces back the ancestry of a sample of gene copies sampled in a
+*          populations. Either the user wants to perform generation-by-generation
+*          coalescence during a given number of generations (leading to a Forest of
+*          coalescent trees rather a single genealogy), or the user would be interested
+*          in coalescing lineages until MRCA has been found.
+* @ingroup simulator
 */
 class DiscreteTimeWrightFisher
 {
 
 public:
 
+  //! \typedef forest type
   template<typename Space, typename Tree>
   using forest_type = quetzal::coalescence::Forest<Space, Tree>;
 

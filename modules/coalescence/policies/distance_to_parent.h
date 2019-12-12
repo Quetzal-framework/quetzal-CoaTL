@@ -96,7 +96,7 @@ public:
       return tree_type(t_curr);
     };
 
-    using WF_model = quetzal::simulators::DiscreteTimeWrightFisher;
+    using WF_model = quetzal::simulator::DiscreteTimeWrightFisher;
     auto tree = WF_model::coalesce(forest, m_ancestral_Wright_Fisher_N, gen, branch(), WF_init);
     treatment computer;
     tree.visit_subtrees_by_pre_order_DFS(computer);
