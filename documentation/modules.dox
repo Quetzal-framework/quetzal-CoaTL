@@ -142,6 +142,13 @@
   * probability or backward migration probabilities of gene copies.
   *
   *
+  * \defgroup simulator simulator
+  * \brief Template classes for simulating discrete-time coalescence processes
+  *
+  * These classes are useful for defining stochastic processes that enable coalescence
+  * simulation of a sample.
+  *
+  *
   * \defgroup random random
   * \brief Template classes for building non-number discrete distribution and markovian transition kernels.
   *
@@ -149,7 +156,7 @@
   * as random distribution. For example, a simulated demographic flux can be converted to a
   * markovian kernel to be used inside a spatialized coalescence algorithm as a backward
   * transition kernel.
-  *
+
   * \defgroup coalescence coalescence
   * \brief Template algorithms for operating coalescence operations on data sequences.
   *
@@ -195,7 +202,7 @@
   *
   * \defgroup simulator simulator
   * \brief Template classes to simulate coalescence in complex frameworks
-  *  
+  *
   * \defgroup abc abc
   * \brief Template classes for embedding simulation model objects into an Approximate Bayesian Computation framework.
   *

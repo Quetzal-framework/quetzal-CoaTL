@@ -84,6 +84,10 @@ public:
 		m_quantities.cbegin()->second.export_to_shapefile(counts, filename);
 	}
 
+	void export_to_shapefile(std::vector<coord_type> points, std::string const& filename) const {
+		m_quantities.cbegin()->second.export_to_shapefile(points, filename);
+	}
+	
 	/**
 	  * \brief Constructor
 		*

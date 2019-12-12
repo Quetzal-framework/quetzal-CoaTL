@@ -26,5 +26,5 @@
 
 #include "fuzzy_transfer_distance.h"
 
-#include "modules/simulator/simulators.h"
+#include "modules/simulator/simulator.h"
 #include "modules/simulator/utils.h"

@@ -21,7 +21,7 @@
 // Namespace shortnames
 namespace geo = quetzal::geography;
 namespace demo = quetzal::demography;
-namespace sim = quetzal::simulators;
+namespace sim = quetzal::simulator;
 namespace schemes = quetzal::sampling_scheme;
 namespace coal = quetzal::coalescence;
 namespace expr = quetzal::expressive;
