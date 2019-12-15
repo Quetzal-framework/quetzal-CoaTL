@@ -9,9 +9,4 @@
 ***************************************************************************/
 
 
-#include "modules/coalescence/policies/merger.h"
-#include "modules/coalescence/policies/distance_to_parent.h"
-
-#include "modules/coalescence/containers/Tree.h"
-
-#include "modules/coalescence/containers/Forest.h"
+#include "fuzzy_transfer_distance/FuzzyPartition.h"

@@ -8,5 +8,23 @@
 *                                                                      *
 ***************************************************************************/
 
+// Header file including all coalescence module
 
-#include "modules/simulator/simulator.h"
+#include "coalescence.h"
+
+#include "random.h"
+
+#include "demography.h"
+
+#include "geography.h"
+
+#include "expressive.h"
+
+#include "abc.h"
+
+#include "genetics.h"
+
+#include "fuzzy_transfer_distance.h"
+
+#include "simulator/simulator.h"
+#include "simulator/utils.h"

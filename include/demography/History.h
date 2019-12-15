@@ -15,7 +15,7 @@
 #include "PopulationSize.h"
 #include "strategy.h"
 
-#include "../../random.h"
+#include "../random.h"
 
 #include <vector>
 #include <memory> // unique_ptr

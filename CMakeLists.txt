@@ -1,60 +1,44 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.12)
 
-project(quetzal)
+project("QUETZAL" VERSION 1.0.1
+             DESCRIPTION "A header only c++ library for spatially explicit coalescence simulation."
+             HOMEPAGE_URL "https://github.com/becheler/quetzal")
 
-set(CMAKE_CXX_STANDARD 17)
-add_compile_options(-Wall -pedantic-errors -Wextra -DNDEBUG)
+include(GNUInstallDirs)
 
-FIND_PACKAGE(Boost COMPONENTS unit_test_framework system filesystem REQUIRED)
-IF (Boost_FOUND)
-    INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
-    ADD_DEFINITIONS(-DBOOST_UBLAS_NDEBUG)
-ENDIF()
+add_library(${PROJECT_NAME} INTERFACE)
 
-FIND_PACKAGE(GDAL)
-IF (GDAL_FOUND)
-    INCLUDE_DIRECTORIES(${GDAL_INCLUDE_DIR})
-ENDIF()
+target_include_directories(
+  ${PROJECT_NAME}
+  INTERFACE $<BUILD_INTERFACE:${${PROJECT_NAME}_SOURCE_DIR}/include>
+            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
-include_directories( ./ )
+target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_17)
 
-### TESTS
+install(TARGETS ${PROJECT_NAME}
+        EXPORT ${PROJECT_NAME}_Targets
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
-enable_testing()
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file("${PROJECT_NAME}ConfigVersion.cmake"
+                                 VERSION ${PROJECT_VERSION}
+                                 COMPATIBILITY SameMajorVersion)
 
-## INTEGRATION
+configure_package_config_file(
+ "${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}Config.cmake.in"
+ "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+ INSTALL_DESTINATION
+ ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake)
 
-add_executable(model_1 test/integration_test/spatial_expansion/model_1/main.cpp)
-TARGET_LINK_LIBRARIES(model_1 LINK_PUBLIC ${GDAL_LIBRARY} )
-add_test(SpatialExpansion model_1 ${CMAKE_CURRENT_SOURCE_DIR}/test/data/europe_temp.tif)
+install(EXPORT ${PROJECT_NAME}_Targets
+       FILE ${PROJECT_NAME}Targets.cmake
+       NAMESPACE ${PROJECT_NAME}::
+       DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake)
 
-## UNIT
+install(FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+             "${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+       DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake)
 
-# Keep test files in a separate source directory called test
-file(GLOB TEST_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} test/unit_test/*.cpp)
-
-#Run through each source
-foreach(testSrc ${TEST_SRCS})
-        #Extract the filename without an extension (NAME_WE)
-        get_filename_component(testName ${testSrc} NAME_WE)
-
-        #Add compile target
-        add_executable(${testName} ${testSrc})
-
-        #link to Boost libraries AND your targets and dependencies
-        target_link_libraries(${testName}
-                                ${Boost_LIBRARIES}
-                                ${Boost_FILESYSTEM_LIBRARY}
-                                ${Boost_SYSTEM_LIBRARY}
-                                ${GDAL_LIBRARY})
-
-        #I like to move testing binaries into a testBin directory
-        set_target_properties(${testName} PROPERTIES
-            RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_CURRENT_SOURCE_DIR}/build/testBin)
-
-        #Finally add it to test execution -
-        #Notice the WORKING_DIRECTORY and COMMAND
-        add_test(NAME ${testName}
-                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build/testBin
-                 COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/build/testBin/${testName} )
-endforeach(testSrc)
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/include DESTINATION include)

@@ -8,8 +8,10 @@
 *                                                                      *
 ***************************************************************************/
 
-// Header file including all coalescence module
 
-#include "modules/random/DiscreteDistribution.h"
+#include "coalescence/policies/merger.h"
+#include "coalescence/policies/distance_to_parent.h"
 
-#include "modules/random/TransitionKernel.h"
+#include "coalescence/containers/Tree.h"
+
+#include "coalescence/containers/Forest.h"
