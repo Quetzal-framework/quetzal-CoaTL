@@ -12,7 +12,7 @@
 #define BOOST_TEST_MODULE geography_test
 #include <boost/test/unit_test.hpp>
 
-#include <geography.h>
+#include <quetzal/geography.h>
 #include <iostream>
 
 //#include <filesystem>

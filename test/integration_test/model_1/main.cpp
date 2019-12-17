@@ -8,7 +8,7 @@
 *                                                                      *
 ************************************************************************/
 
-#include "quetzal.h"
+#include "quetzal/quetzal.h"
 
 #include <boost/math/special_functions/binomial.hpp> // binomial coefficient
 #include <random>

@@ -1,37 +1,24 @@
-cmake_minimum_required(VERSION 2.8)
-
-project(quetzal)
+cmake_minimum_required(VERSION 3.12)
 
 set(CMAKE_CXX_STANDARD 17)
 add_compile_options(-Wall -pedantic-errors -Wextra -DNDEBUG)
 
-FIND_PACKAGE(Boost COMPONENTS unit_test_framework system filesystem REQUIRED)
-IF (Boost_FOUND)
-    INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
-    ADD_DEFINITIONS(-DBOOST_UBLAS_NDEBUG)
-ENDIF()
+### INTEGRATION TESTS
 
-FIND_PACKAGE(GDAL)
-IF (GDAL_FOUND)
-    INCLUDE_DIRECTORIES(${GDAL_INCLUDE_DIR})
-ENDIF()
+add_executable(model_1 integration_test/model_1/main.cpp)
 
-include_directories( ./ )
+target_link_libraries(model_1 LINK_PUBLIC ${GDAL_LIBRARY} )
 
-### TESTS
+target_include_directories(model_1
+  PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
 
-enable_testing()
+add_test(SpatialExpansion model_1 ${CMAKE_CURRENT_SOURCE_DIR}/data/europe_temp.tif)
 
-## INTEGRATION
-
-add_executable(model_1 test/integration_test/spatial_expansion/model_1/main.cpp)
-TARGET_LINK_LIBRARIES(model_1 LINK_PUBLIC ${GDAL_LIBRARY} )
-add_test(SpatialExpansion model_1 ${CMAKE_CURRENT_SOURCE_DIR}/test/data/europe_temp.tif)
-
-## UNIT
+### UNIT TEST
 
 # Keep test files in a separate source directory called test
-file(GLOB TEST_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} test/unit_test/*.cpp)
+file(GLOB TEST_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} unit_test/*.cpp)
 
 #Run through each source
 foreach(testSrc ${TEST_SRCS})
@@ -51,6 +38,10 @@ foreach(testSrc ${TEST_SRCS})
         #I like to move testing binaries into a testBin directory
         set_target_properties(${testName} PROPERTIES
             RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_CURRENT_SOURCE_DIR}/build/testBin)
+
+        target_include_directories(
+          ${testName} PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+                                  $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
 
         #Finally add it to test execution -
         #Notice the WORKING_DIRECTORY and COMMAND
