@@ -9,4 +9,5 @@
 ***************************************************************************/
 
 
-#include "modules/fuzzy_transfer_distance/FuzzyPartition.h"
+#include "utils/matrix_operation.h"
+#include "utils/sampling_scheme.h"

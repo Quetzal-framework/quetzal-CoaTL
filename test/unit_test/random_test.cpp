@@ -13,7 +13,7 @@
 #include <boost/test/unit_test.hpp>
 namespace utf = boost::unit_test;
 
-#include <random.h>
+#include <quetzal/random.h>
 #include <iostream>
 
 BOOST_AUTO_TEST_SUITE( random_suite )

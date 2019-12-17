@@ -7,7 +7,7 @@
 * (at your option) any later version.                                  *
 *                                                                      *
 ***************************************************************************/
-#include "../../expressive.h"
+#include "../expressive.h"
 
 #include <vector>
 #include <algorithm>

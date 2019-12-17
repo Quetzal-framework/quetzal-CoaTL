@@ -13,7 +13,7 @@
 #include <boost/test/unit_test.hpp>
 namespace utf = boost::unit_test;
 
-#include <demography.h>
+#include <quetzal/demography.h>
 
 struct transition_matrix {
 	using coord_type = std::string;

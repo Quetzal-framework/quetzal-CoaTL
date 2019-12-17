@@ -8,4 +8,8 @@
 *                                                                      *
 ***************************************************************************/
 
-#include "modules/expressive/expressive.h"
+
+#include "genetics/marker_traits.h"
+#include "genetics/Allele.h"
+#include "genetics/DiploidIndividual.h"
+#include "genetics/SpatialGeneticSampleLoader.h"
