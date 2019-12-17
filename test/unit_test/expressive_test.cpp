@@ -13,7 +13,7 @@
 #include <boost/test/unit_test.hpp>
 namespace utf = boost::unit_test;
 
-#include <expressive.h>
+#include <quetzal/expressive.h>
 
 BOOST_AUTO_TEST_SUITE( expressive )
 

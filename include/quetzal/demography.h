@@ -8,23 +8,9 @@
 *                                                                      *
 ***************************************************************************/
 
-// Header file including all coalescence module
 
-#include "coalescence.h"
+#include "demography/Flow.h"
 
-#include "random.h"
+#include "demography/PopulationSize.h"
 
-#include "demography.h"
-
-#include "geography.h"
-
-#include "expressive.h"
-
-#include "abc.h"
-
-#include "genetics.h"
-
-#include "fuzzy_transfer_distance.h"
-
-#include "modules/simulator/simulator.h"
-#include "modules/simulator/utils.h"
+#include "demography/History.h"

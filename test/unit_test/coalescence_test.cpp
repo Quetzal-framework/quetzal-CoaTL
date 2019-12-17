@@ -13,7 +13,7 @@
 #include <boost/test/unit_test.hpp>
 namespace utf = boost::unit_test;
 
-#include <coalescence.h>
+#include <quetzal/coalescence.h>
 
 BOOST_AUTO_TEST_SUITE( coalescence )
 

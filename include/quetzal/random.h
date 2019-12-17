@@ -8,8 +8,8 @@
 *                                                                      *
 ***************************************************************************/
 
+// Header file including all coalescence module
 
-#include "modules/genetics/marker_traits.h"
-#include "modules/genetics/Allele.h"
-#include "modules/genetics/DiploidIndividual.h"
-#include "modules/genetics/SpatialGeneticSampleLoader.h"
+#include "random/DiscreteDistribution.h"
+
+#include "random/TransitionKernel.h"
