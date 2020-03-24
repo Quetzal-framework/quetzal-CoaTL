@@ -1,8 +1,4 @@
-# This top-level CMake file is there to bring all modules into scope.
-# That means, adding the subdirectories for all CMake projects in this tree,
-# and finding external libraries and turning them into imported targets.
-
-cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
 project(
   "quetzal"
@@ -11,31 +7,30 @@ project(
   DESCRIPTION "A header only c++ library for spatially explicit coalescence simulation."
   HOMEPAGE_URL "https://github.com/becheler/quetzal")
 
-add_library(${PROJECT_NAME} INTERFACE)
-# add alias so the project can be uses with add_subdirectory
-add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Must use GNUInstallDirs to install libraries into correct
-# locations on all platforms.
+message(STATUS "Project will be installed to ${CMAKE_INSTALL_PREFIX}")
+
 include(GNUInstallDirs)
 
+add_library(${PROJECT_NAME} INTERFACE)
+# add alias so the project can be used with add_subdirectory
+add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+
 # Include Boost as an imported target
-FIND_PACKAGE(Boost COMPONENTS unit_test_framework system filesystem REQUIRED)
-IF (Boost_FOUND)
-    INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
-    ADD_DEFINITIONS(-DBOOST_UBLAS_NDEBUG)
-ENDIF()
+find_package(Boost 1.61 REQUIRED COMPONENTS unit_test_framework filesystem)
 
 # Include Gdal
-FIND_PACKAGE(GDAL)
+find_package(GDAL REQUIRED)
 IF (GDAL_FOUND)
     INCLUDE_DIRECTORIES(${GDAL_INCLUDE_DIR})
 ENDIF()
 
 # Adding the install interface generator expression makes sure that the include
 # files are installed to the proper location (provided by GNUInstallDirs)
-target_include_directories(
-  ${PROJECT_NAME}
+target_include_directories(${PROJECT_NAME}
   INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
             $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
