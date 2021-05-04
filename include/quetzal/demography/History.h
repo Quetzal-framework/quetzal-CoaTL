@@ -353,7 +353,8 @@ public:
             auto m = kernel(x, y);
             assert(m >= 0.0 && m <= 1.0);
 
-            double nb_migrants = std::floor(m * static_cast<double>(N_tilde));
+            // TODO : I changed floor to ceil for oversea migration
+            double nb_migrants = std::ceil(m * static_cast<double>(N_tilde));
             if(nb_migrants >= 0){
               landscape_individuals_count += nb_migrants;
               this->m_flows->set_flux_from_to(x, y, t, nb_migrants);

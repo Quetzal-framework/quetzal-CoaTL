@@ -11,14 +11,9 @@
 #ifndef __OCCUPANCY_SPECTRUM_SAMPLER_H_INCLUDED__
 #define __OCCUPANCY_SPECTRUM_SAMPLER_H_INCLUDED__
 
-
-#include "OccupancySpectrumDistribution.h"
-#include "memoize.h"
-#include <boost/multiprecision/cpp_int.hpp>
-#include <boost/multiprecision/cpp_dec_float.hpp>
-
 #include <vector>
 #include <random>
+#include <utility> // std::forward, std::move
 
 namespace quetzal{
 namespace coalescence {
@@ -42,47 +37,37 @@ bool test_number_of_urns_conservation(unsigned int m, Spectrum const& M_j){
   return(sum == m);
 }
 
-struct on_the_fly {
-  template<typename Generator>
-  static auto sample(unsigned int k, unsigned int N, Generator& g){
-
-    std::vector<unsigned int> M_j(k+1);
-    std::vector<unsigned int> parents(N);
-
-    std::uniform_int_distribution<unsigned int> dist(0,N-1);
-    for(unsigned int i = 1; i <=k; ++i){
-      parents[dist(g)] +=1;
+struct return_always_true {
+    bool operator()(double /*param*/) const
+    {
+      return true;
     }
-
-    for(unsigned int it : parents){
-        M_j[it] += 1;
-    }
-
-    assert(M_j.size() == k+1);
-    assert(test_number_of_balls_conservation(k, M_j));
-    assert(test_number_of_urns_conservation(N, M_j));
-
-    return M_j;
-  }
 };
 
+template<class Spectrum>
+struct identity {
+    static Spectrum handle(Spectrum&& M_j)
+    {
+        return std::move(M_j);
+    }
+};
 
-template
-<
-class UnaryPredicate = return_always_true,
-class SpectrumHandler = identity,
-class Int = cpp_int,
-class Float = cpp_dec_float_50
->
-struct in_memoized_distribution{
-  template<typename Generator>
-  static auto const& sample(unsigned int k, unsigned int N, Generator& g){
-    return utils::memoize_OSD<UnaryPredicate, SpectrumHandler, Int, Float>(k,N)(g);
+template<class Spectrum>
+struct truncate_tail {
+  static Spectrum handle(Spectrum&& M_j)
+  {
+    auto first = --(M_j.end());
+    while (first != M_j.begin() && *first == 0)
+    {
+      --first;
+    }
+    M_j.erase(++first, M_j.end());
+    return std::move(M_j);
   }
 };
 
 } // namespace occupancy_spectrum
-} //namespace coalescence
-} //namespace quetzal
+} // namespace coalescence
+} // namespace quetzal
 
 #endif

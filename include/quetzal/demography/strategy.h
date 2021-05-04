@@ -367,7 +367,8 @@ namespace strategy {
       return Interface<coord_type, matrix_type>(points, coords, f);
     }
 
-
+    // TODO
+//    [[deprecated("inefficient design: stores all cells in landscape and their neighbors")]]
     template<typename Space, typename F1, typename F2>
     class neighboring_migration{
 
@@ -429,10 +430,69 @@ namespace strategy {
 
     }; // neighboring_migration
 
+    // TODO
+    //[[deprecated("memoize all the neighbors for each coord in the landscape: inefficient")]]
     template<typename T, typename U, typename V>
     static auto make_neighboring_migration(std::vector<T> const& coords, double emigrant_rate, U friction, V get_neighbors)
     {
       return neighboring_migration<T, U, V>(coords, emigrant_rate, friction, get_neighbors);
+    }
+
+    template<typename Space, typename F1, typename F2>
+    class light_neighboring_migration{
+
+      double m_emigrant_rate;
+      F1 m_friction;
+      F2 m_get_neighbors;
+
+    public:
+
+      using coord_type = Space;
+
+      // Constructor
+      light_neighboring_migration(double emigrant_rate, F1 friction, F2 get_neighbors):
+      m_emigrant_rate(emigrant_rate),
+      m_friction(friction),
+      m_get_neighbors(get_neighbors)
+      {}
+
+      // arrival space contains focal deme
+      std::vector<coord_type> arrival_space(coord_type const& x) const
+      {
+        auto v = m_get_neighbors(x);
+        v.push_back(x);
+        return v;
+      }
+
+      auto operator()(coord_type const& from, coord_type const& to){
+       if(from == to){
+         return 1.0 - m_emigrant_rate;
+       }else{ // we have "ensurance" that arrival_space(x) is used, so here only neighbours.
+         return m_emigrant_rate * friction_weights(from, to);
+       }
+     }
+
+    private:
+
+      // returns weight associated to a migration from x to y
+      // need a m_friction member
+      // perhaps memoize the sum related to x,t
+      // problem for t argument
+      double friction_weights(coord_type const& x, coord_type const& y) const {
+        auto neighbors = m_get_neighbors(x);
+        std::vector<double> v(neighbors.size(), 0.0);
+        std::transform(neighbors.begin(), neighbors.end(), v.begin(), [this](coord_type const& z) { return 1.0/(this->m_friction(z));} );
+        double sum = std::accumulate(v.begin(), v.end(), 0.0);
+        return 1.0/(m_friction(y)*sum);
+      }
+
+    }; // light_neighboring_migration
+
+    // TODO
+    template<typename T, typename U, typename V>
+    static light_neighboring_migration<T, U, V> make_light_neighboring_migration(T, double emigrant_rate, U friction, V get_neighbors)
+    {
+      return light_neighboring_migration<T, U, V>(emigrant_rate, friction, get_neighbors);
     }
 
   }; // mass_based

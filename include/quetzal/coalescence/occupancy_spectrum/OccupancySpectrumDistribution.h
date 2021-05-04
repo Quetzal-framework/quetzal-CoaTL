@@ -12,6 +12,7 @@
 #define __OCCUPANCY_SPECTRUM_DISTRIBUTION_H_INCLUDED__
 
 #include "Generator.h"
+#include "utils.h"
 
 #include <random> // discrete_distribution
 #include <utility> // std::forward, std::move
@@ -28,37 +29,9 @@ namespace quetzal{
 namespace coalescence{
 namespace occupancy_spectrum {
 
-  using boost::multiprecision::cpp_int;
-  using boost::multiprecision::cpp_dec_float_50;
+using boost::multiprecision::cpp_int;
+using boost::multiprecision::cpp_dec_float_50;
 
-  struct return_always_true {
-      bool operator()(double /*param*/) const
-      {
-        return true;
-      }
-  };
-
-  struct identity {
-      using spectrum_type = Generator::occupancy_spectrum_type;
-      static spectrum_type handle(spectrum_type&& M_j)
-      {
-          return std::move(M_j);
-      }
-  };
-
-  struct truncate_tail {
-    using spectrum_type = Generator::occupancy_spectrum_type;
-    static spectrum_type handle(spectrum_type&& M_j)
-    {
-      auto first = --(M_j.end());
-      while (first != M_j.begin() && *first == 0)
-      {
-        --first;
-      }
-      M_j.erase(++first, M_j.end());
-      return std::move(M_j);
-    }
-  };
 
   /*!
    * \ingroup coal_spectrum
@@ -97,7 +70,7 @@ namespace occupancy_spectrum {
   template
   <
   class UnaryPredicate = return_always_true,
-  class SpectrumHandler = identity,
+  class SpectrumHandler = identity<Generator::occupancy_spectrum_type>,
   class Int = cpp_int,
   class Float = cpp_dec_float_50
   >

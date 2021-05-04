@@ -87,7 +87,7 @@ public:
 	void export_to_shapefile(std::vector<coord_type> points, std::string const& filename) const {
 		m_quantities.cbegin()->second.export_to_shapefile(points, filename);
 	}
-	
+
 	/**
 	  * \brief Constructor
 		*
@@ -263,6 +263,8 @@ public:
 		return m_quantities.cbegin()->second.reproject_to_centroid(c);
 	}
 
+	// TODO
+	[[deprecated("Relies on the use of geographic_definition_space")]]
 	std::vector<coord_type> four_nearest_defined_cells(coord_type const& x) const {
 		auto const& X = geographic_definition_space();
 

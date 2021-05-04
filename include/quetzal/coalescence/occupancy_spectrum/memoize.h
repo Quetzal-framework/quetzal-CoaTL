@@ -36,7 +36,7 @@ namespace utils{
   template
   <
   class UnaryPredicate = return_always_true,
-  class SpectrumHandler = identity,
+  class SpectrumHandler = identity<Generator::occupancy_spectrum_type>,
   class Int = cpp_int,
   class Float = cpp_dec_float_50
   >

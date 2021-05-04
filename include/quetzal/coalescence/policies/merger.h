@@ -12,11 +12,11 @@
 #define __COALESCENCE_MERGERS_H_INCLUDED__
 
 #include "../algorithms/merge.h"
-#include "../occupancy_spectrum/spectrum_creation_policy.h" // default policies
 
 #include <iterator> // std::distance
 #include <cassert>
 #include <functional> // std::plus
+#include <random> // bernoulli_distribution
 
 namespace quetzal{
 namespace coalescence {

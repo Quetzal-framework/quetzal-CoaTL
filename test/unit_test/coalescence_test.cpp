@@ -235,7 +235,9 @@ BOOST_AUTO_TEST_CASE (occupancy_spectrum_distribution)
   // Truncate the empty spectrum for memory optimization
   using quetzal::coalescence::occupancy_spectrum::truncate_tail;
   using quetzal::coalescence::occupancy_spectrum::return_always_true;
-  OccupancySpectrumDistribution<return_always_true, truncate_tail> dist2(n, m);
+  using occupancy_spectrum_type = quetzal::coalescence::occupancy_spectrum::Generator::occupancy_spectrum_type;
+  OccupancySpectrumDistribution<return_always_true, truncate_tail<occupancy_spectrum_type>> dist2(n, m);
+
   std::cout << "Shorten spectra:\n" << dist2 << "\n" << std::endl;
 
   // Filter the occupancy spectrum with small probability.
@@ -248,7 +250,7 @@ BOOST_AUTO_TEST_CASE (occupancy_spectrum_distribution)
   std::cout << "Approximated distribution:\n" << dist3 << "\n" << std::endl;
 
   // Combine strategies
-  OccupancySpectrumDistribution<decltype(pred), truncate_tail> dist4(n, m, pred);
+  OccupancySpectrumDistribution<decltype(pred), truncate_tail<occupancy_spectrum_type>> dist4(n, m, pred);
   std::cout << "Combined strategies:\n" << dist4 << "\n" << std::endl;
 }
 

@@ -11,7 +11,7 @@
 
 #include "coalescence/policies/merger.h"
 #include "coalescence/policies/distance_to_parent.h"
-
 #include "coalescence/containers/Tree.h"
-
 #include "coalescence/containers/Forest.h"
+#include "coalescence/occupancy_spectrum/in_memoized_distribution.h"
+#include "coalescence/occupancy_spectrum/on_the_fly.h"

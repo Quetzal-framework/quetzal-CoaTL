@@ -151,6 +151,15 @@ public:
 		return freq;
 	}
 
+	// TODO UPDATE
+  friend std::ostream& operator<<(std::ostream& os, const SpatialGeneticSample& dt){
+		for(auto const& it: dt.m_dictionnary)
+		{
+			os << it.first << "\t" << it.second.size() << "\n";
+		}
+		return os;
+	}
+
 private:
 
 	std::set<typename individual_type::locus_ID_type> m_loci;
