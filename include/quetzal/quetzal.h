@@ -26,5 +26,6 @@
 
 #include "fuzzy_transfer_distance.h"
 
-#include "simulator/simulator.h"
+#include "simulator/DiscreteTimeWrightFisher.h"
+#include "simulator/ForwardBackwardSpatiallyExplicit.h"
 #include "simulator/utils.h"
