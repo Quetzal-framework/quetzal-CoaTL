@@ -343,7 +343,7 @@ namespace quetzal
             return m_pimpl->migration_rate(x,y);
           }
           ///
-          /// @brief Defines arrival space (that is, vecinity) from coordinate x.
+          /// @brief Defines arrival space (that is, vecinity plus focal deme) from focal deme x.
           ///
           /// @remark Interface required in expansion algorithm.
           ///
@@ -429,14 +429,22 @@ namespace quetzal
           m_get_neighbors(get_neighbors)
           {}
 
-          // arrival space contains focal deme
+            ///
+            /// @brief Defines arrival space (that is in this class case, vecinity plus focal deme) from coordinate x.
+            ///
+            /// @remark Interface required in expansion algorithm.
+            ///
           std::vector<coord_type> arrival_space(coord_type const& x) const
           {
             auto v = m_get_neighbors(x);
+            // let's add focal deme to have all possible arrival demes
             v.push_back(x);
             return v;
           }
 
+          ///
+          /// @brief Migration rate, operator interfaceable with \ref History algorithm.
+          ///
           auto operator()(coord_type const& from, coord_type const& to)
           {
             if(from == to)
@@ -445,15 +453,10 @@ namespace quetzal
             }
             else
             {
-              // we have "ensurance" that arrival_space(x) is used, so here only neighbours.
               return m_emigrant_rate * friction_weights(from, to);
             }
           }
         private:
-          // returns weight associated to a migration from x to y
-          // need a m_friction member
-          // perhaps memoize the sum related to x,t
-          // problem for t argument
           double friction_weights(coord_type const& x, coord_type const& y) const
           {
             // TODO does it copy the whole vector?
