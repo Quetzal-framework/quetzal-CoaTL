@@ -13,7 +13,7 @@
 
 #include "../containers/Tree.h"
 #include "../containers/Forest.h"
-#include "../../simulator/simulator.h"
+#include "../../simulator/DiscreteTimeWrightFisher.h"
 
 namespace quetzal {
 
@@ -96,7 +96,7 @@ public:
       return tree_type(t_curr);
     };
 
-    using WF_model = quetzal::simulator::DiscreteTimeWrightFisher;
+    using WF_model = quetzal::DiscreteTimeWrightFisher;
     auto tree = WF_model::coalesce(forest, m_ancestral_Wright_Fisher_N, gen, branch(), WF_init);
     treatment computer;
     tree.visit_subtrees_by_pre_order_DFS(computer);
@@ -248,7 +248,7 @@ public:
       return tree_type(t_curr);
     };
 
-    using WF_model = quetzal::simulator::DiscreteTimeWrightFisher;
+    using WF_model = quetzal::DiscreteTimeWrightFisher;
     auto tree = WF_model::coalesce(forest, m_ancestral_Wright_Fisher_N, gen, branch(), WF_init);
     treatment computer;
     tree.visit_subtrees_by_pre_order_DFS(computer);
