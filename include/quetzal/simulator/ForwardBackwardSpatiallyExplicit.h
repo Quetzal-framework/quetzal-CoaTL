@@ -51,7 +51,6 @@ template<typename Space, typename Time, typename Strategy, typename CoalescenceP
 class ForwardBackwardSpatiallyExplicit :
 public CoalescencePolicy
 {
-
 public:
   //! \typedef space type
   using coord_type = Space;
@@ -61,19 +60,13 @@ public:
   using strategy_type = Strategy;
   //! \typedef value type to represent populations size
   using N_value_type = typename strategy_type::value_type;
-
   //! \typedef time type
   template<typename tree_type>
   using forest_type = quetzal::coalescence::Forest<coord_type, tree_type>;
-
 private:
-
   using history_type = demography::History<coord_type, time_type, strategy_type>;
   history_type m_history;
-
 public:
-
-
   /**
   * @brief Constructor
   *
@@ -82,7 +75,6 @@ public:
   * @param N_0 Population size at intialization
   */
   ForwardBackwardSpatiallyExplicit(coord_type x_0, time_type t_0, N_value_type N_0) : m_history(x_0, t_0, N_0){}
-
   /**
   * @brief Read-only access to the population size history.
   *
@@ -94,7 +86,6 @@ public:
   {
     return std::cref(m_history.pop_sizes());
   }
-
   /**
   * @brief Simulate the forward-in-time demographic expansion.
   *
@@ -105,20 +96,24 @@ public:
     time_type nb_generations = t_sampling - m_history.first_time() ;
     m_history.expand(nb_generations, growth, kernel, gen);
   }
-
-  template<
-  typename Merger,// = quetzal::coalescence::SimultaneousMultipleMerger<quetzal::coalescence::occupancy_spectrum::on_the_fly>,
-  typename Generator>
+  /**
+  * @brief Initlize a forest based on sample counts then coalesce the forest along the spatial
+  *        history, then stops and return an incomplete forest.
+  * @return A possibly incompletely coalesced forest.
+  */
+  template<typename Merger, typename Generator>
   auto make_forest_and_coalesce_along_spatial_history(std::map<coord_type, unsigned int> sample, Generator &gen)
   {
     test_sample_consistency(sample);
     auto forest = this->make_forest(sample);
     return coalesce_along_spatial_history<Merger>(forest, this->branch(), gen, this->init() );
   }
-
-  template<
-  typename Merger,// = quetzal::coalescence::SimultaneousMultipleMerger<quetzal::coalescence::occupancy_spectrum::on_the_fly>,
-  typename Generator>
+  /**
+  * @brief Initlize a forest based on sample counts, forwarding the sampling time to the forest contructor. Then coalesce the forest along the spatial
+  *        history, then stops and return an incomplete forest.
+  * @return A possibly incompletely coalesced forest.
+  */
+  template<typename Merger, typename Generator>
   auto make_forest_using_sampling_time_and_coalesce_along_spatial_history(std::map<coord_type, unsigned int> sample, time_type const& sampling_time, Generator & gen)
   {
     test_sample_consistency(sample);
@@ -130,20 +125,11 @@ public:
   * @brief Coalesce a forest of nodes conditionally to the simulated demography.
   *
   */
-  template<
-  typename Merger, // = quetzal::coalescence::SimultaneousMultipleMerger<quetzal::coalescence::occupancy_spectrum::on_the_fly>,
-  typename Generator,
-  typename F,
-  typename Tree,
-  typename U
-  >
+  template<typename Merger,typename Generator, typename F, typename Tree, typename U>
   auto coalesce_along_spatial_history(forest_type<Tree> forest, F binary_op, Generator& gen, U make_tree) const
   {
-
     this->check_consistency(m_history, forest);
-
     auto t = m_history.last_time();
-
     while( (forest.nb_trees() > 1) && (t > m_history.first_time()) )
     {
       may_coalesce_colocated<Merger>(forest, t, gen, binary_op, make_tree);
@@ -307,29 +293,28 @@ private:
   void may_coalesce_colocated(forest_type<Tree>& forest, time_type const& t, Generator& gen, F binop, U make_tree) const noexcept
   {
     auto N = pop_size_history();
-
     for(auto const & x : forest.positions())
     {
       auto range = forest.trees_at_same_position(x);
       std::vector<Tree> v;
-
       for(auto it = range.first; it != range.second; ++it)
       {
         v.push_back(it->second);
       }
-
-      if(v.size() >= 2){
+      if(v.size() >= 2)
+      {
         assert(N(x,t) >= 1 && "Population size should be positive for evaluating coalescence probability" );
         auto last = Merger::merge(v.begin(), v.end(), N(x, t), make_tree(x,t), binop, gen );
         forest.erase(x);
-        for(auto it = v.begin(); it != last; ++it){
+        for(auto it = v.begin(); it != last; ++it)
+        {
           forest.insert(x, *it);
         }
       }
     }
   }
 
-};
+}; // end ForwardBackwardSpatiallyExplicit
 
 } // namespace quetzal
 
