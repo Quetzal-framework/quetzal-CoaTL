@@ -11,9 +11,7 @@
 #ifndef __HISTORY_H_INCLUDED__
 #define __HISTORY_H_INCLUDED__
 
-#include "Flow.h"
-#include "PopulationSize.h"
-#include "strategy.h"
+#include "BaseHistory.h"
 
 #include "../random.h"
 
@@ -22,181 +20,21 @@
 
 
 namespace quetzal {
-
 namespace demography {
 
-/*!
-* @brief Base class for spatially explicit and forward-in time population history simulators.
-*
-* @tparam Space    Demes identifiers.
-* @tparam Time     EqualityComparable, CopyConstructible.
-* @tparam Strategy    Strategy use for simulating populations dynamics
-*
-* @ingroup demography
-*
-*/
-template<typename Space, typename Time, typename Strategy>
-class BaseHistory {
-
-public:
-
-  //! \typedef strategy used for simulating populations dynamics
-  using strategy_type = Strategy;
-
-  //! \typedef type of the population flows database
-  using flow_type = Flow<Space, Time, typename strategy_type::value_type>;
-
-  //! \typedef type of the population size database
-  using pop_sizes_type = PopulationSize<Space, Time, typename strategy_type::value_type>;
-
-  //! \typedef space type
-  using coord_type = Space;
-
-  //! \typedef time type
-  using time_type = Time;
-
-  //! \typedef type of the discrete distribution used inside the backward dispersal kernel
-  using discrete_distribution_type = quetzal::random::DiscreteDistribution<coord_type>;
-
-  //! \typedef Backward dispersal kernel type
-  using backward_kernel_type = quetzal::random::TransitionKernel<time_type, discrete_distribution_type>;
-
-  /**
-  * @brief Constructor initializing the demographic database.
-  *
-  * @param x the coordinate of introduction
-  * @param t the introduction time
-  * @param N the population size at coordinate x at time t
-  *
-  * \section Example
-  * \snippet demography/test/History/History_test.cpp Example
-  * \section Output
-  * \include demography/test/History/History_test.output
-  */
-  BaseHistory(coord_type const& x, time_type const& t, typename strategy_type::value_type N):
-  m_sizes(std::make_unique<pop_sizes_type>()),
-  m_flows(std::make_unique<flow_type>()),
-  m_kernel(std::make_unique<backward_kernel_type>())
-  {
-    m_sizes->operator()(x,t) = N;
-    m_times.push_back(t);
-  }
-
-  /**
-  * @brief Read-only access to the demographic flows database
-  */
-  flow_type const& flows() const
-  {
-    return *m_flows;
-  }
-
-  /**
-  * @brief Read and write access to the demographic flows database
-  */
-  flow_type & flows()
-  {
-    return *m_flows;
-  }
-
-  /**
-  * @brief Read-only access to the demographic sizes database.
-  * \remark Can be used for composition into time dependent growth functions.
-  */
-  const pop_sizes_type & pop_sizes() const
-  {
-    return *m_sizes;
-  }
-
-  /**
-  * @brief Read-and-write access to the demographic sizes database
-  */
-  pop_sizes_type & pop_sizes()
-  {
-    return *m_sizes;
-  }
-
-  /**
-  * @brief First time recorded in the foward-in-time database history.
-  */
-  time_type const& first_time() const
-  {
-    return m_times.front();
-  }
-
-  /**
-  * @brief Last time recorded in the foward-in-time database history.
-  */
-  time_type const& last_time() const
-  {
-    return m_times.back();
-  }
-
-  /**
-  * @brief Samples a coordinate from the backward-in-time transition matrix
-  *
-  * \details The transition matrix is computed from the demographic flows
-  * database. The returned coordinate object will basically answer the question:
-  * when an individual is found in \f$x\f$ at time \f$t\f$, where could it
-  * have been at time \f$t-1\f$ ?
-  */
-  template<typename Generator>
-  coord_type backward_kernel(coord_type const& x, time_type t, Generator& gen) const
-  {
-    --t;
-    assert(m_flows->flux_to_is_defined(x,t));
-    if( ! m_kernel->has_distribution(x, t))
-    {
-      m_kernel->set(x, t, make_backward_distribution(x, t));
-    }
-    return m_kernel->operator()(gen, x, t);
-  }
-
-protected:
-
-  // Need to be accessed by the expand method
-  std::unique_ptr<pop_sizes_type> m_sizes;
-  std::unique_ptr<flow_type> m_flows;
-  std::vector<Time> m_times;
-
-  // mutable because sampling backward kernel can update the state
-  mutable std::unique_ptr<backward_kernel_type> m_kernel;
-
-private:
-
-  auto make_backward_distribution(coord_type const& x, time_type const& t) const
-  {
-
-    std::vector<double> weights;
-    std::vector<coord_type> support;
-
-    weights.reserve(m_flows->flux_to(x,t).size());
-    support.reserve(m_flows->flux_to(x,t).size());
-
-    for(auto const& it : m_flows->flux_to(x,t) )
-    {
-      support.push_back(it.first);
-      weights.push_back(static_cast<double>(it.second));
-    }
-
-    return discrete_distribution_type(std::move(support),std::move(weights));
-  }
-
-};
-
   /*!
-  * @brief Unspecialized class.
+  * @brief Unspecialized class (CRTP design pattern)
   *
   * @tparam Space    Demes identifiers.
   * @tparam Time     EqualityComparable, CopyConstructible.
-  * @tparam Strategy    Strategy used for simulating populations dynamics
+  * @tparam policy    policy used for simulating populations dynamics
   *
   * @ingroup demography
   *
   */
-  template<typename Space, typename Time, typename Strategy>
-  class History : public BaseHistory<Space, Time, Strategy>
-  {
-  };
+  template<typename Space, typename Time, typename policy>
+  class History : public BaseHistory<Space, Time, policy>
+  {};
 
 
 /** @brief Partial specialization where each individual is dispersed individually.
@@ -214,9 +52,9 @@ private:
   *
   */
   template<typename Space, typename Time>
-  class History<Space, Time, strategy::individual_based> : public BaseHistory<Space, Time, strategy::individual_based>
+  class History<Space, Time, policy::individual_based> : public BaseHistory<Space, Time, policy::individual_based>
   {
-    using BaseHistory<Space, Time, strategy::individual_based>::BaseHistory;
+    using BaseHistory<Space, Time, policy::individual_based>::BaseHistory;
     using coord_type = Space;
   public:
 
@@ -299,9 +137,9 @@ private:
   * @include demography/test/History/Mass_based_history_test.output
   */
   template<typename Space, typename Time>
-  class History<Space, Time, strategy::mass_based> : public BaseHistory<Space, Time, strategy::mass_based>{
+  class History<Space, Time, policy::mass_based> : public BaseHistory<Space, Time, policy::mass_based>{
 
-    using BaseHistory<Space, Time, strategy::mass_based>::BaseHistory;
+    using BaseHistory<Space, Time, policy::mass_based>::BaseHistory;
 
 public:
 

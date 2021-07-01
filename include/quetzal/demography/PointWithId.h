@@ -13,7 +13,7 @@
 
 namespace quetzal {
 namespace demography{
-namespace strategy {
+namespace policy {
 
 /*!
  * Find the index of a point in a vector

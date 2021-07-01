@@ -8,8 +8,8 @@
 *                                                                      *
 ***************************************************************************/
 
-#ifndef __SIMULATORS_H_INCLUDED__
-#define __SIMULATORS_H_INCLUDED__
+#ifndef __SPATIALLY_EXPLICIT_H_INCLUDED__
+#define __SPATIALLY_EXPLICIT_H_INCLUDED__
 
 #include "../demography/History.h"
 #include "../coalescence/containers/Forest.h"
