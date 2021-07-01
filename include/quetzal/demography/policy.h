@@ -23,32 +23,32 @@ namespace quetzal
 {
   namespace demography
   {
-    /*!
-    * Various implementations of dispersal process implementing an interface
-    * compatible with the requirements of the \ref quetzal::demography::History simulation algorithm.
-    */
+    ///
+    /// Various implementations of dispersal process implementing an interface
+    /// compatible with the requirements of the \ref quetzal::demography::History simulation algorithm.
+    ///
     namespace policy
     {
-      /*!
-      * @brief Policy class to specialize the \ref quetzal::demography::History class for expansion of populations with very low densities.
-      *
-      * @remark Meant to be used through its helper function \ref individual_based::make_distance_based_dispersal()
-      *
-      * @ingroup demography
-      *
-      * @details Simulate the demographic history by sampling the next location of each migrant in a proability distribution.
-      */
+      ///
+      /// @brief Policy class to specialize the \ref quetzal::demography::History class for expansion of populations with very low densities.
+      ///
+      /// @remark Meant to be used through its helper function \ref individual_based::make_distance_based_dispersal()
+      ///
+      /// @ingroup demography
+      ///
+      /// @details Simulate the demographic history by sampling the next location of each migrant in a proability distribution.
+      ///
       class individual_based
       {
       private:
-        /*!
-        * @brief Inner class implementing details of the individual-based expansion algorithm
-        *
-        * @remark Contains a heavy matrix, not meant to be copied around.
-        *
-        * @tparam Space type of geographic coordinates
-        * @tparam Matrix the type of matrix used for storing migration rates
-        */
+        ///
+        /// @brief Inner class implementing details of the individual-based expansion algorithm
+        ///
+        /// @remark Contains a heavy matrix, not meant to be copied around.
+        ///
+        /// @tparam Space type of geographic coordinates
+        /// @tparam Matrix the type of matrix used for storing migration rates
+        ///
         template<typename Space, typename Matrix>
         class Implementation
         {
@@ -67,16 +67,16 @@ namespace quetzal
           // specific to individual-based: stores discrete distributions centered on departure
           using distribution_type = std::discrete_distribution<size_t>;
           mutable std::vector<distribution_type> m_distributions;
-          /*!
-          * @brief Make a weight matrix
-          *
-          * @remark The resulting matrix is meant to be used in discrete_distribution: no need to divide terms by row sum
-          *
-          * @tparam F functor with signature matrix_type::value_type (coord_type const& x, coord_type const&y)
-          * @param  coords vector of coordinates to compute distance between
-          * @param  w      functor F, usually a transform of geographic distance between two coordinates
-          * @return        a weight matrix
-          */
+          ///
+          /// @brief Make a weight matrix
+          ///
+          /// @remark The resulting matrix is meant to be used in discrete_distribution: no need to divide terms by row sum
+          ///
+          /// @tparam F functor with signature matrix_type::value_type (coord_type const& x, coord_type const&y)
+          /// @param  coords vector of coordinates to compute distance between
+          /// @param  w      functor F, usually a transform of geographic distance between two coordinates
+          /// @return        a weight matrix
+          ///
           template<typename F>
           matrix_type make_weightm_matrix(std::vector<coord_type> const& coords, F w){
             matrix_type A (coords.size(), coords.size());
@@ -91,11 +91,11 @@ namespace quetzal
             }
             return A;
           }
-          /*!
-          * @brief Builds the discrete distributions for sampling coords IDs
-          *
-          * @return a vector of discrete distributions
-          */
+          ///
+          /// @brief Builds the discrete distributions for sampling coords IDs
+          ///
+          /// @return a vector of discrete distributions
+          ///
           std::vector<distribution_type> make_distributions() const
           {
             std::vector<distribution_type> dists;
@@ -113,15 +113,15 @@ namespace quetzal
             return dists;
           }
         public:
-          /*
-          * @brief Forbid costly copy
-          */
+          ///
+          /// @brief Forbid costly copy
+          ///
           Implementation(const Implementation&) = delete;
-          /*
-          * @brief Constructor
-          *
-          * @tparam F functor with signature matrix_type::value_type (coord_type const& x, coord_type const&y)
-          */
+          ///
+          /// @brief Constructor
+          ///
+          /// @tparam F functor with signature matrix_type::value_type (coord_type const& x, coord_type const&y)
+          ///
           template<typename F>
           Implementation(std::vector<point_ID_type> const& points, std::vector<coord_type> const& coords, F f):
           m_matrix( make_weight_matrix(coords, f) ),
@@ -377,17 +377,17 @@ namespace quetzal
           return Interface<coord_type, matrix_type>(points, coords, f);
         }
 
-        /*!
-        * Contruct a dispersal kernel compatible with the mass-based policy
-        *
-        * @details This implementation should be chosen when the migration coefficients
-        *          are expect to be null over the major part of the landscape.
-        *
-        * @param  coords a container of geopgrahic points
-        * @param  f      a functor giving the migration coefficient between two points
-        *                The signature should be equivalent to double f(T const& x, T const& Y)
-        * @return        A dispersal kernel
-        */
+        ///
+        /// @brief Contruct a dispersal kernel compatible with the mass-based policy
+        ///
+        /// @details This implementation should be chosen when the migration coefficients
+        ///          are expected to be null over most of the landscape.
+        ///
+        /// @param  coords a container of geopgrahic points
+        /// @param  f      a functor giving the migration coefficient between two points
+        ///                The signature should be equivalent to double f(T const& x, T const& Y)
+        /// @return        A dispersal kernel
+        ///
         template<typename T, typename F>
         static auto make_sparse_distance_based_dispersal(std::vector<T> const& coords, F f)
         {
@@ -401,19 +401,19 @@ namespace quetzal
           return Interface<coord_type, matrix_type>(points, coords, f);
         }
 
-        /*!
-        * Dispersal kernel compatible with the mass-based policy, but that restricts migration to the vecinity of each deme.
-        *
-        * @remark For more flexibility, vecinity is defined by an external callable (does not have to be only the four nearest neighbours)
-        *
-        * @details This implementation should be chosen when the scale of the migration is much less than the scale of a deme.
-        *          This class is not meant to be used directly, but instanciated through the use of the helper function \ref make_neighboring_migration()
-        *
-        * @param  coords a container of geopgrahic points
-        * @param  f      a functor giving the migration coefficient between two points
-        *                The signature should be equivalent to double f(T const& x, T const& Y)
-        * @return        A dispersal kernel
-        */
+        ///
+        /// @brief Dispersal kernel compatible with the mass-based policy, but that restricts migration to the vecinity of each deme.
+        //////
+        /// @remark For more flexibility, vecinity is defined by an external callable (does not have to be only the four nearest neighbours)
+        ///
+        /// @details This implementation should be chosen when the scale of the migration is much less than the scale of a deme.
+        ///          This class is not meant to be used directly, but instanciated through the use of the helper function \ref make_neighboring_migration()
+        ///
+        /// @param  coords a container of geopgrahic points
+        /// @param  f      a functor giving the migration coefficient between two points
+        ///                The signature should be equivalent to double f(T const& x, T const& Y)
+        /// @return        A dispersal kernel
+        ///
         template<typename Space, typename F1, typename F2>
         class neighboring_migration
         {
