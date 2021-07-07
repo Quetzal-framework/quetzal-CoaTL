@@ -1,19 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 
 set(CMAKE_CXX_STANDARD 17)
-add_compile_options(-Wall -pedantic-errors -Wextra -DNDEBUG)
-
-### INTEGRATION TESTS
-
-add_executable(model_1 integration_test/model_1/main.cpp)
-
-target_link_libraries(model_1 LINK_PUBLIC ${GDAL_LIBRARY} )
-
-target_include_directories(model_1
-  PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
-
-add_test(SpatialExpansion model_1 ${CMAKE_CURRENT_SOURCE_DIR}/data/europe_temp.tif)
 
 ### UNIT TEST
 
@@ -49,3 +36,15 @@ foreach(testSrc ${TEST_SRCS})
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build/testBin
                  COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/build/testBin/${testName} )
 endforeach(testSrc)
+
+### INTEGRATION TESTS
+
+add_executable(model_1 integration_test/model_1/main.cpp)
+
+target_link_libraries(model_1 LINK_PUBLIC ${GDAL_LIBRARY} )
+
+target_include_directories(model_1
+  PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
+
+add_test(SpatialExpansion model_1 ${CMAKE_CURRENT_SOURCE_DIR}/data/europe_temp.tif)

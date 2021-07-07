@@ -13,7 +13,6 @@
 
 #include "Flow.h"
 #include "PopulationSize.h"
-#include "policy.h"
 
 #include "../random.h"
 
@@ -32,24 +31,24 @@ namespace demography {
 *
 * @tparam Space    Demes identifiers.
 * @tparam Time     EqualityComparable, CopyConstructible.
-* @tparam Strategy    Strategy use for simulating populations dynamics
+* @tparam DispersalPolicy    Policy use for populations dynamics simulation algorithms, see dispersal_policy
 *
 * @ingroup demography
 *
 */
-template<typename Space, typename Time, typename Strategy>
+template<typename Space, typename Time, typename DispersalPolicy>
 class BaseHistory {
 
 public:
 
   //! \typedef strategy used for simulating populations dynamics
-  using strategy_type = Strategy;
+  using dispersal_policy_type = DispersalPolicy;
 
   //! \typedef type of the population flows database
-  using flow_type = Flow<Space, Time, typename strategy_type::value_type>;
+  using flow_type = Flow<Space, Time, typename dispersal_policy_type::value_type>;
 
   //! \typedef type of the population size database
-  using pop_sizes_type = PopulationSize<Space, Time, typename strategy_type::value_type>;
+  using pop_sizes_type = PopulationSize<Space, Time, typename dispersal_policy_type::value_type>;
 
   //! \typedef space type
   using coord_type = Space;
@@ -75,7 +74,7 @@ public:
   * \section Output
   * \include demography/test/History/History_test.output
   */
-  BaseHistory(coord_type const& x, time_type const& t, typename strategy_type::value_type N):
+  BaseHistory(coord_type const& x, time_type const& t, typename dispersal_policy_type::value_type N):
   m_sizes(std::make_unique<pop_sizes_type>()),
   m_flows(std::make_unique<flow_type>()),
   m_kernel(std::make_unique<backward_kernel_type>())

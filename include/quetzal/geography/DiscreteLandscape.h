@@ -259,61 +259,49 @@ public:
 		* \section Output
 		* \include geography/test/DiscreteLandscape/DiscreteLandscape_test.output
 		*/
-	coord_type reproject_to_centroid(coord_type const& c) const {
+	coord_type reproject_to_centroid(coord_type const& c) const
+	{
 		return m_quantities.cbegin()->second.reproject_to_centroid(c);
 	}
-
-	// TODO
-	[[deprecated("Relies on the use of geographic_definition_space")]]
-	std::vector<coord_type> four_nearest_defined_cells(coord_type const& x) const {
-		auto const& X = geographic_definition_space();
-
-		auto x0 = reproject_to_centroid(x);
-	  assert( std::find(X.begin(), X.end(), x0) != X.end());
-
+	/*!
+	   \brief Get the four neighbors of a cell - or less if on the border of the grid
+	   \param x0 the coordinates of the cell to get the four neighbors from
+		 \pre x0 is in the landscape spatial extent
+		 \post At least 2 neighbors (x0 is a corner) or 3 (x_0 on the landscape boundary)
+	   \return A vector with no more than 4 coordinates.
+	*/
+	std::vector<coord_type> direct_neighbors(coord_type const& x0) const {
+		assert(is_in_spatial_extent(x0));
 		auto res = resolution();
-	  std::vector<coord_type> v;
-
-	  coord_type x1(x0);
-	  x1.lon() += res.lon();
-		if(is_in_spatial_extent(x1)){
-			x1 = reproject_to_centroid(x1);
-		  if(std::find(X.begin(), X.end(), x1) != X.end()){
-				v.push_back(x1);
-			}
+		std::vector<coord_type> v;
+		coord_type x1(x0);
+		x1.lon() += res.lon();
+		if(is_in_spatial_extent(x1))
+		{
+			v.push_back(reproject_to_centroid(x1));
 		}
-
-	  coord_type x2(x0);
-	  x2.lat() += res.lat();
-		if(is_in_spatial_extent(x2)){
-			x2 = reproject_to_centroid(x2);
-		  if(std::find(X.begin(), X.end(), x2) != X.end()){
-				v.push_back(x2);
-			}
+		coord_type x2(x0);
+		x2.lat() += res.lat();
+		if(is_in_spatial_extent(x2))
+		{
+			v.push_back(reproject_to_centroid(x2));
 		}
-
-	  coord_type x3(x0);
-	  x3.lon() -= res.lon();
-		if(is_in_spatial_extent(x3)){
-			x3 = reproject_to_centroid(x3);
-		  if(std::find(X.begin(), X.end(), x3) != X.end()){
-				v.push_back(x3);
-			}
+		coord_type x3(x0);
+		x3.lon() -= res.lon();
+		if(is_in_spatial_extent(x3))
+		{
+			v.push_back(reproject_to_centroid(x3));
 		}
-
-	  coord_type x4(x0);
-	  x4.lat() -= res.lat() ;
-		if(is_in_spatial_extent(x4)){
-			x4 = reproject_to_centroid(x4);
-		  if(std::find(X.begin(), X.end(), x4) != X.end()){
-				v.push_back(x4);
-			}
+		coord_type x4(x0);
+		x4.lat() -= res.lat();
+		if(is_in_spatial_extent(x4))
+		{
+			v.push_back(reproject_to_centroid(x4));
 		}
-
+		assert(v.size() >= 2);
+		assert(v.size() <= 4);
 	  return v;
 	}
-
-
 };
 
 } // geography

@@ -29,3 +29,5 @@
 #include "simulator/DiscreteTimeWrightFisher.h"
 #include "simulator/ForwardBackwardSpatiallyExplicit.h"
 #include "simulator/utils.h"
+
+#include "utils.h"

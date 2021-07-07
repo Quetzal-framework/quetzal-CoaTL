@@ -15,6 +15,8 @@
 #include "../containers/Forest.h"
 #include "../../simulator/DiscreteTimeWrightFisher.h"
 
+#include <map>
+
 namespace quetzal {
 
 namespace coalescence {

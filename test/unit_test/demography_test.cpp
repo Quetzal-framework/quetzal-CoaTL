@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE( ind_based_history )
   using time_type = unsigned int;
   using generator_type = std::mt19937;
   // Initialize an individual-based history: 10 individuals introduced at x=1, t=2018
-  using quetzal::demography::strategy::individual_based;
+  using quetzal::demography::dispersal_policy::individual_based;
   quetzal::demography::History<coord_type, time_type, individual_based> history(1, 2018, 10);
   // Growth function
   auto N = std::cref(history.pop_sizes());
@@ -89,7 +89,7 @@ BOOST_AUTO_TEST_CASE( mass_based_history )
   using time_type = unsigned int;
   using generator_type = std::mt19937;
   // Initialize history: 10 individuals introduced at x=1, t=2018
-  using quetzal::demography::strategy::mass_based;
+  using quetzal::demography::dispersal_policy::mass_based;
   quetzal::demography::History<coord_type, time_type, mass_based> history("Paris", 2018, 10);
   // Growth function
   auto N = std::cref(history.pop_sizes());

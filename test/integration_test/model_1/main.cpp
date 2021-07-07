@@ -21,7 +21,6 @@
 // Namespace shortnames
 namespace geo = quetzal::geography;
 namespace demo = quetzal::demography;
-namespace sim = quetzal::simulator;
 namespace schemes = quetzal::sampling_scheme;
 namespace coal = quetzal::coalescence;
 namespace expr = quetzal::expressive;
@@ -49,9 +48,9 @@ int main(int argc, char* argv[])
    *****************************/
    std::cout << "2 ... Initializing spatial coalescence simulator" << std::endl;
 
-  using demographic_policy = demo::strategy::mass_based;
+  using demographic_policy = demo::dispersal_policy::mass_based;
   using coalescence_policy = coal::policies::distance_to_parent<coord_type, time_type>;
-  using simulator_type = sim::SpatiallyExplicit<coord_type, time_type, demographic_policy, coalescence_policy>;
+  using simulator_type = quetzal::ForwardBackwardSpatiallyExplicit<coord_type, time_type, demographic_policy, coalescence_policy>;
 
   // Introduction deme
   coord_type x_0 = env.reproject_to_centroid(coord_type(40.0, -3.0));
@@ -109,9 +108,6 @@ int main(int argc, char* argv[])
    * Dispersal
    ******************/
   std::cout << "4 ... Initializing dispersal kernel" << std::endl;
-
-  // Retrieve the demic structure
-  auto const& space = env.geographic_definition_space();
   // Define an emigrant rate
   double emigrant_rate = 0.1;
   // Define the friction according to environmental features
@@ -119,9 +115,9 @@ int main(int argc, char* argv[])
   auto friction = [is_temp_high](coord_type const& x){return is_temp_high(x,0) ? 0.3 : 0.7 ;};
   // Capture an expression to find nearest neighbours
   auto env_ref = std::cref(env);
-  auto get_neighbors = [env_ref](coord_type const& x){return env_ref.get().four_nearest_defined_cells(x);};
+  auto get_neighbors = [env_ref](coord_type const& x){return env_ref.get().direct_neighbors(x);};
   // Build a dispersal kernel object
-  auto dispersal = demographic_policy::make_neighboring_migration(space, emigrant_rate, friction, get_neighbors);
+  auto dispersal = demographic_policy::make_neighboring_migration(coord_type(), emigrant_rate, friction, get_neighbors);
 
   /**************************
   * Demographic expansion

@@ -11,3 +11,4 @@
 
 #include "utils/matrix_operation.h"
 #include "utils/sampling_scheme.h"
+#include "utils/PointWithId.h"

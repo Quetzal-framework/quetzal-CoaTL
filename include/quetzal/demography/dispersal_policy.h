@@ -8,26 +8,29 @@
 *                                                                      *
 ***************************************************************************/
 
-#ifndef __HISTORY_STRATEGIES_H_INCLUDED__
-#define __HISTORY_STRATEGIES_H_INCLUDED__
+#ifndef __DISPERSAL_POLICY_H_INCLUDED__
+#define __DISPERSAL_POLICY_H_INCLUDED__
 
-#include "PointWithId.h"
-#include "dispersal.h"
-#include "../utils.h"
+#include "../utils/PointWithId.h"
+#include "../utils/matrix_operation.h"
+
 #include <boost/numeric/ublas/matrix_sparse.hpp>
 #include <boost/numeric/ublas/symmetric.hpp>
 
 #include <vector>
+#include <memory> // make_shared
+#include <random> // std::discrete_distribution
+#include <numeric> // std::transform std::accumulate
 
 namespace quetzal
 {
   namespace demography
   {
     ///
-    /// Various implementations of dispersal process implementing an interface
+    /// @brief Various implementations of dispersal process implementing an interface
     /// compatible with the requirements of the \ref quetzal::demography::History simulation algorithm.
     ///
-    namespace policy
+    namespace dispersal_policy
     {
       ///
       /// @brief Policy class to specialize the \ref quetzal::demography::History class for expansion of populations with very low densities.
@@ -57,7 +60,7 @@ namespace quetzal
           // distance matrix type, can be sparse or symmetric
           using matrix_type = Matrix;
           // for easier access to matrix row/columns ID
-          using point_ID_type = PointWithId<coord_type>;
+          using point_ID_type = quetzal::utils::PointWithId<coord_type>;
           // owe the matrix, heavy object
           matrix_type m_matrix;
           // don't owe the vector
@@ -78,7 +81,7 @@ namespace quetzal
           /// @return        a weight matrix
           ///
           template<typename F>
-          matrix_type make_weightm_matrix(std::vector<coord_type> const& coords, F w){
+          matrix_type make_weight_matrix(std::vector<coord_type> const& coords, F w){
             matrix_type A (coords.size(), coords.size());
             for (unsigned i = 0; i < A.size1 (); ++ i)
             {
@@ -148,7 +151,7 @@ namespace quetzal
         private:
           using impl_type = Implementation<Space, Matrix>;
           using coord_type = Space;
-          using point_ID_type = PointWithId<coord_type>;
+          using point_ID_type = quetzal::utils::PointWithId<coord_type>;
           // makes copy of the interface is ok
           std::shared_ptr<impl_type> m_pimpl;
         public:
@@ -188,11 +191,12 @@ namespace quetzal
           static auto make_distance_based_dispersal(std::vector<T> const& coords, F f)
           {
             using coord_type = T;
-            std::vector<PointWithId<coord_type>> points;
+            using point_ID_type = quetzal::utils::PointWithId<coord_type>;
+            std::vector<point_ID_type> points;
             points.reserve(coords.size());
             const auto& ref = coords;
             std::transform(coords.begin(), coords.end(), std::back_inserter(points),
-            [ref](coord_type const& x){ return PointWithId<coord_type>(ref, x); });
+            [ref](coord_type const& x){ return point_ID_type(ref, x); });
             using matrix_type = boost::numeric::ublas::symmetric_matrix<double>;
             return Interface<coord_type, matrix_type>(points, coords, f);
           }
@@ -221,7 +225,7 @@ namespace quetzal
           // distance matrix type, can be sparse or symmetric
           using matrix_type = Matrix;
           // for easier access to matrix row/columns ID
-          using point_ID_type = PointWithId<coord_type>;
+          using point_ID_type = quetzal::utils::PointWithId<coord_type>;
           // owe the matrix, heavy object
           matrix_type m_matrix;
           // don't owe the vector
@@ -325,7 +329,7 @@ namespace quetzal
         private:
           using impl_type = Implementation<Space, Matrix>;
           using coord_type = Space;
-          using point_ID_type = PointWithId<coord_type>;
+          using point_ID_type = quetzal::utils::PointWithId<coord_type>;
           std::shared_ptr<impl_type> m_pimpl;
         public:
           ///
@@ -368,11 +372,12 @@ namespace quetzal
         static auto make_distance_based_dispersal(std::vector<T> const& coords, F f)
         {
           using coord_type = T;
-          std::vector<PointWithId<coord_type>> points;
+          using point_ID_type = quetzal::utils::PointWithId<coord_type>;
+          std::vector<point_ID_type> points;
           points.reserve(coords.size());
           const auto& ref = coords;
           std::transform(coords.begin(), coords.end(), std::back_inserter(points),
-          [ref](coord_type const& x){ return PointWithId<coord_type>(ref, x); });
+          [ref](coord_type const& x){ return point_ID_type(ref, x); });
           using matrix_type = boost::numeric::ublas::symmetric_matrix<double>;
           return Interface<coord_type, matrix_type>(points, coords, f);
         }
@@ -392,11 +397,12 @@ namespace quetzal
         static auto make_sparse_distance_based_dispersal(std::vector<T> const& coords, F f)
         {
           using coord_type = T;
-          std::vector<PointWithId<coord_type>> points;
+          using point_ID_type = quetzal::utils::PointWithId<coord_type>;
+          std::vector<point_ID_type> points;
           points.reserve(coords.size());
           const auto& ref = coords;
           std::transform(coords.begin(), coords.end(), std::back_inserter(points),
-          [ref](coord_type const& x){ return PointWithId<coord_type>(ref, x); });
+          [ref](coord_type const& x){ return point_ID_type(ref, x); });
           using matrix_type = boost::numeric::ublas::compressed_matrix<double>;
           return Interface<coord_type, matrix_type>(points, coords, f);
         }
@@ -484,7 +490,7 @@ namespace quetzal
           return neighboring_migration<T, U, V>(emigrant_rate, friction, get_neighbors);
         }
       }; // end class mass_based
-    } // end namespace policy
+    } // end namespace dispersal_policy
   } // end namespace demography
 } // end namespace quetzal
 
