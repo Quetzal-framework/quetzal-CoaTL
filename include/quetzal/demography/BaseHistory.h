@@ -36,19 +36,22 @@ namespace demography {
 * @ingroup demography
 *
 */
-template<typename Space, typename Time, typename DispersalPolicy>
+template<typename Space, typename Time, typename DispersalPolicy, typename StoragePolicy>
 class BaseHistory {
 
 public:
 
   //! \typedef strategy used for simulating populations dynamics
-  using dispersal_policy_type = DispersalPolicy;
+  using dispersal_policy = DispersalPolicy;
+
+  //! \typedef strategy used for simulating populations dynamics
+  using storage_policy = StoragePolicy;
 
   //! \typedef type of the population flows database
-  using flow_type = Flow<Space, Time, typename dispersal_policy_type::value_type>;
+  using flow_type = Flow<Space, Time, typename dispersal_policy::value_type>;
 
   //! \typedef type of the population size database
-  using pop_sizes_type = PopulationSize<Space, Time, typename dispersal_policy_type::value_type>;
+  using pop_sizes_type = storage_policy::pop_sizes_type<Space, Time, typename dispersal_policy::value_type>;
 
   //! \typedef space type
   using coord_type = Space;
@@ -74,7 +77,7 @@ public:
   * \section Output
   * \include demography/test/History/History_test.output
   */
-  BaseHistory(coord_type const& x, time_type const& t, typename dispersal_policy_type::value_type N):
+  BaseHistory(coord_type const& x, time_type const& t, typename dispersal_policy::value_type N):
   m_sizes(std::make_unique<pop_sizes_type>()),
   m_flows(std::make_unique<flow_type>()),
   m_kernel(std::make_unique<backward_kernel_type>())

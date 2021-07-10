@@ -8,8 +8,8 @@
 *                                                                      *
 ***************************************************************************/
 
-#ifndef __POPULATIONS_2_H_INCLUDED__
-#define __POPULATIONS_2_H_INCLUDED__
+#ifndef __POPULATIONS_VECTOR_H_INCLUDED__
+#define __POPULATIONS_VECTOR_H_INCLUDED__
 
 #include <vector>
 #include "assert.h"
@@ -55,7 +55,7 @@ namespace quetzal
 			\param g number of generations simulation is supposed to run
 			\remark pre-allocates a std::vector<double> of n*g elements
 			*/
-			PopulationSize_2(unsigned int nb_demes, unsigned_int nb_generations):
+			PopulationSizeVectorImplementation(unsigned int nb_demes, unsigned_int nb_generations):
 			m_nb_demes(nb_demes),
 			m_nb_generations(nb_generations),
 			m_populations(nb_demes*nb_generations, value_type())

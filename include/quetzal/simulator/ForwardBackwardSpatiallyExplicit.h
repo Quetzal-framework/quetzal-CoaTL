@@ -47,7 +47,7 @@ namespace quetzal
   * @ingroup simulator
   *
   */
-  template<typename Space, typename Time, typename DispersalPolicy, typename CoalescencePolicy>
+  template<typename Space, typename Time, typename DispersalPolicy, typename CoalescencePolicy, typename StoragePolicy>
   class ForwardBackwardSpatiallyExplicit :
   public CoalescencePolicy
   {
@@ -59,28 +59,29 @@ namespace quetzal
     //! \typedef strategy type
     using dispersal_policy_type = DispersalPolicy;
     //! \typedef value type to represent populations size
-    using N_value_type = typename dispersal_policy_type::value_type;
+    using N_value_type = typename DispersalPolicy::value_type;
     //! \typedef time type
     template<typename tree_type>
     using forest_type = quetzal::coalescence::Forest<coord_type, tree_type>;
   private:
-    using history_type = demography::History<coord_type, time_type, dispersal_policy_type>;
+    using history_type = demography::History<coord_type, time_type, DispersalPolicy, StoragePolicy>;
     history_type m_history;
   public:
     /**
     * @brief Constructor
     *
     * @param x_0 Initialization coordinate.
-    * @param t_0 Initialization time.
     * @param N_0 Population size at intialization
+    * @param nb_generations number of generations of the spatial process
     */
-    ForwardBackwardSpatiallyExplicit(coord_type x_0, time_type t_0, N_value_type N_0) : m_history(x_0, t_0, N_0){}
+    ForwardBackwardSpatiallyExplicit(coord_type x_0, N_value_type N_0, unsigned int nb_generations):
+    m_history(x_0, N_0, nb_generations)
+    {}
     /**
     * @brief Read-only access to the population size history.
-    *
-    * @return a functor with signature 'N_value_type fun(coord_type const& x,
-    * time_type const& t)' giving the population size in deme \f$x\f$ at time \f$t\f$.
-    *
+    * @detail Designed to be used for composing growth expression.
+    * @return a functor with signature `N_value_type fun(coord_type const& x,
+    * time_type const& t)` giving the population size in deme \f$x\f$ at time \f$t\f$.
     */
     auto pop_size_history() const noexcept
     {
@@ -88,13 +89,21 @@ namespace quetzal
     }
     /**
     * @brief Simulate the forward-in-time demographic expansion.
-    *
+    * \tparam Growth a growth functor, see param growth for details.
+    * \tparam Dispersal a dispersal kernel, see param kernel for details.
+    * @param growth a functor simulating \f$\tilde{N}_{x}^{t}\f$. The functor
+    *                   can possibly make use of pop_size_history. The signature
+    *                   of the function should be equivalent to the following:
+    *                   `unsigned int sim_growth(V &gen, const coord_type &x, const time_type &t);`
+    * @param kernel a functor representing the dispersal location kernel that
+    *               simulates the coordinate of the next location conditionally
+    *               to the current location \f$x\f$. The signature should be equivalent
+    *               to `coord_type kernel(V &gen, const coord_type &x, const time_type &t);`
     */
     template<typename Generator, typename Growth, typename Dispersal>
-    void expand_demography(time_type t_sampling, Growth growth, Dispersal kernel, Generator& gen )
+    void simulate_forward_demography(Growth growth, Dispersal kernel, Generator& gen)
     {
-      time_type nb_generations = t_sampling - m_history.first_time() ;
-      m_history.expand(nb_generations, growth, kernel, gen);
+      m_history.simulate_forward(growth, kernel, gen);
     }
     /**
     * @brief Initlize a forest based on sample counts then coalesce the forest along the spatial
@@ -109,8 +118,9 @@ namespace quetzal
       return coalesce_along_spatial_history<Merger>(forest, this->branch(), gen, this->init() );
     }
     /**
-    * @brief Initlize a forest based on sample counts, forwarding the sampling time to the forest contructor. Then coalesce the forest along the spatial
-    *        history, then stops and return an incomplete forest.
+    * @brief Initlize a forest based on sample counts, forwarding the sampling time
+    *        to the forest contructor. Then coalesce the forest along the spatial
+    *        history, then stops and return a possibly incomplete forest.
     * @return A possibly incompletely coalesced forest.
     */
     template<typename Merger, typename Generator>

@@ -8,10 +8,19 @@
 *                                                                      *
 ***************************************************************************/
 
+#ifndef __STORAGE_POLICY_H_INCLUDED__
+#define __STORAGE_POLICY_H_INCLUDED__
 
-#include "demography/Flow.h"
+namespace quetzal
+{
+  namespace demography
+  {
+    struct storage_policy
+    {
+      using map_based = PopulationSize
+      using vector_based = PopulationSize2
+    }
+  } // end namespace demography
+} // end namespace quetzal
 
-#include "demography/PopulationSizeMapImplementation.h"
-#include "demography/PopulationSizeVectorImplementation.h"
-
-#include "demography/History.h"
+#endif

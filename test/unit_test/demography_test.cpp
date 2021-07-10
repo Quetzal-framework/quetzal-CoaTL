@@ -30,6 +30,50 @@ struct transition_matrix {
 
 BOOST_AUTO_TEST_SUITE( demography )
 
+// Allows for arbitrary coordinate type and arbitrary origin date.
+// Does not require to reserve all the necessary space before hand.
+BOOST_AUTO_TEST_CASE( population_size_default )
+{
+  using coord_type = std::string;
+	using time_type = unsigned int;
+	using size_type = int;
+
+	time_type t0 = 2017;
+	coord_type x0 = "Paris";
+	size_type N0 = 12;
+
+	quetzal::demography::PopulationSize<coord_type, time_type, size_type> N;
+	BOOST_TEST(N.is_defined(x0, t0) == false );
+
+	N(x0,t0) = N0;
+	BOOST_TEST(N.is_defined(x0, t0) );
+	BOOST_CHECK_EQUAL( N.get(x0,t0) , N0 );
+
+	BOOST_CHECK_EQUAL( N.definition_space(t0).size() , 1 );
+
+	N.set("Bordeaux", t0, 2*N0);
+
+	auto X = N.definition_space(t0);
+	std::copy(X.begin(), X.end(), std::ostream_iterator<coord_type>(std::cout, " "));
+}
+
+// Allows only unsigned int demes (ie requires an order relation of demes), origin date has to be 0, and the total
+// number of generations has to be known beforehand.
+BOOST_AUTO_TEST_CASE( population_size_optimized )
+{
+	unsigned int nb_demes = 50;
+	unsigned int duration = 10;
+	double N_0 = 1000;
+	unsigned int x_0 = 0;
+
+	quetzal::demography::PopulationSizeOptimized N(nb_demes, duration, x_0, N_0);
+	assert( N(0,0) == 1000) );
+
+	N(1,0) = 200;
+	assert(N(1,0) == 200);
+
+}
+
 BOOST_AUTO_TEST_CASE( flow )
 {
   using coord_type = std::string;
@@ -55,35 +99,42 @@ BOOST_AUTO_TEST_CASE( flow )
 	}
 }
 
-BOOST_AUTO_TEST_CASE( ind_based_history )
+BOOST_AUTO_TEST_CASE( individual_based_history_default_storage )
 {
-  // Here we simulate a population expansion through a 2 demes landscape.
+	 //! [individual_based_history_default_storage example]
+  // Here we simulate a population oscillation between 2 demes: -1 and 1
   using coord_type = int;
   using time_type = unsigned int;
   using generator_type = std::mt19937;
-  // Initialize an individual-based history: 10 individuals introduced at x=1, t=2018
+  // Declaresan individual-based history
   using quetzal::demography::dispersal_policy::individual_based;
+	// 10 individuals introduced at x=1, t=2018
   quetzal::demography::History<coord_type, time_type, individual_based> history(1, 2018, 10);
-  // Growth function
-  auto N = std::cref(history.pop_sizes());
+  // Declares a growth function
+  auto N = std::cref(history.pop_sizes()); // light copiable for capture
   auto growth = [N](auto&, coord_type x, time_type t){ return 2*N(x,t) ; };
   // Number of non-overlapping generations for the demographic simulation
   unsigned int nb_generations = 3;
   // Random number generation
   generator_type gen;
-  // Stochastic dispersal kernel, which geographic sampling space is {-1 , 1}
-  auto sample_location = [](auto& gen, coord_type x){
+  // Dispersal kernel in {-1,1}
+  auto sample_location = [](auto& gen, coord_type x)
+	{
    std::bernoulli_distribution d(0.5);
    if(d(gen)){ x = -x; }
    return x;
   };
+	// Expand the history
   history.expand(nb_generations, growth, sample_location, gen);
+	// Print the migration history
   std::cout << "Population flows from x to y at time t:\n\n" << history.flows() << std::endl;
   std::cout << "\nKnowing an indiviual was in deme 1 in 2021, where could it have been just before dispersal ?\n";
   std::cout << "Answer: it could have been in deme " << history.backward_kernel(1, 2021, gen) << std::endl;
+	//! [individual_based_history_default_storage example]
+
 }
 
-BOOST_AUTO_TEST_CASE( mass_based_history )
+BOOST_AUTO_TEST_CASE( mass_based_history_default_storage )
 {
   using coord_type = std::string;
   using time_type = unsigned int;
@@ -105,29 +156,6 @@ BOOST_AUTO_TEST_CASE( mass_based_history )
   std::cout << "Answer: it could have been in " << history.backward_kernel("Paris", 2021, gen) << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE( pop_size )
-{
-  using coord_type = std::string;
-	using time_type = unsigned int;
-	using size_type = int;
 
-	time_type t0 = 2017;
-	coord_type x0 = "Paris";
-	size_type N0 = 12;
-
-	quetzal::demography::PopulationSize<coord_type, time_type, size_type> N;
-	BOOST_TEST(N.is_defined(x0, t0) == false );
-
-	N(x0,t0) = N0;
-	BOOST_TEST(N.is_defined(x0, t0) );
-	BOOST_CHECK_EQUAL( N.get(x0,t0) , N0 );
-
-	BOOST_CHECK_EQUAL( N.definition_space(t0).size() , 1 );
-
-	N.set("Bordeaux", t0, 2*N0);
-
-	auto X = N.definition_space(t0);
-	std::copy(X.begin(), X.end(), std::ostream_iterator<coord_type>(std::cout, " "));
-}
 
 BOOST_AUTO_TEST_SUITE_END()
