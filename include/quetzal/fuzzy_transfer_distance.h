@@ -10,3 +10,4 @@
 
 
 #include "fuzzy_transfer_distance/FuzzyPartition.h"
+#include "fuzzy_transfer_distance/Partitioner.h"

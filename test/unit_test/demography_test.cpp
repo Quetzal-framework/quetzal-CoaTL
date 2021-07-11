@@ -59,20 +59,19 @@ BOOST_AUTO_TEST_CASE( population_size_default )
 
 // Allows only unsigned int demes (ie requires an order relation of demes), origin date has to be 0, and the total
 // number of generations has to be known beforehand.
-BOOST_AUTO_TEST_CASE( population_size_optimized )
-{
-	unsigned int nb_demes = 50;
-	unsigned int duration = 10;
-	double N_0 = 1000;
-	unsigned int x_0 = 0;
-
-	quetzal::demography::PopulationSizeOptimized N(nb_demes, duration, x_0, N_0);
-	assert( N(0,0) == 1000) );
-
-	N(1,0) = 200;
-	assert(N(1,0) == 200);
-
-}
+// BOOST_AUTO_TEST_CASE( population_size_optimized )
+// {
+// 	unsigned int nb_demes = 50;
+// 	unsigned int duration = 10;
+// 	double N_0 = 1000;
+// 	unsigned int x_0 = 0;
+// 	// Constructor
+// 	quetzal::demography::PopulationSizeOptimized N(nb_demes, duration, x_0, N_0);
+// 	assert( N(0,0) == 1000) );
+// 	// Assignment
+// 	N(1,0) = 200;
+// 	assert(N(1,0) == 200);
+// }
 
 BOOST_AUTO_TEST_CASE( flow )
 {

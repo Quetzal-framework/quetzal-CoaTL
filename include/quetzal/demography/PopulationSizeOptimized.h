@@ -11,6 +11,8 @@
 #ifndef __POPULATIONS_VECTOR_H_INCLUDED__
 #define __POPULATIONS_VECTOR_H_INCLUDED__
 
+#include "../utils/PointWithId.h"
+
 #include <vector>
 #include "assert.h"
 
@@ -24,8 +26,17 @@ namespace quetzal
 		* \ingroup demography
 		*/
 		template<typename Space>
-		class PopulationSizeVectorImplementation
+		class PopulationSizeOptimized
 		{
+		public:
+			//! \typedef geographic coordinates type
+			using coord_type = Space;
+			//! \typedef indexable wrapper around coordinates
+			using point_type = quetzal::utils::PointWithId<Space>;
+			//! \typedef time type
+			using time_type = unsigned int;
+			//! \typedef type of the population size variable
+			using value_type = double;
 		private:
 			unsigned int m_nb_demes;
 			unsigned int m_nb_generations;
@@ -37,25 +48,16 @@ namespace quetzal
 			*/
 			size_t get_index(const point_type& x, const time_type& g ) const
 			{
-				return m_nb_demes*g + x.getId()
+				return m_nb_demes*g + x.getId();
 			}
-
 		public:
-			//! \typedef geographic coordinates type
-			using coord_type = Space;
-			//! \typedef indexable wrapper around coordinates
-			using point_type = quetzal::utils::PointWithId<Space>;
-			//! \typedef time type
-			using time_type = unsigned int;
-			//! \typedef type of the population size variable
-			using value_type = double;
 			/*!
 			\brief Distribution of population size in space and time
 			\param n number of demes in the landscape
 			\param g number of generations simulation is supposed to run
 			\remark pre-allocates a std::vector<double> of n*g elements
 			*/
-			PopulationSizeVectorImplementation(unsigned int nb_demes, unsigned_int nb_generations):
+			PopulationSizeOptimized(unsigned int nb_demes, unsigned int nb_generations):
 			m_nb_demes(nb_demes),
 			m_nb_generations(nb_generations),
 			m_populations(nb_demes*nb_generations, value_type())

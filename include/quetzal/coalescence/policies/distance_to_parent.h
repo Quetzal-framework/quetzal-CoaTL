@@ -30,6 +30,7 @@ namespace quetzal
     * @tparam Space coordinate type
     * @tparam Time time type
     *
+    * @ingroup API
     */
     template<typename Space, typename Time>
     class newick_with_distance_to_parent
@@ -209,6 +210,7 @@ namespace quetzal
     * @tparam Space coordinate type
     * @tparam Time time type
     *
+    * @ingroup API
     */
     template<typename Space, typename Time>
     class newick_with_distance_to_parent_and_leaf_name

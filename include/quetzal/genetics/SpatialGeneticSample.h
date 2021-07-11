@@ -16,6 +16,7 @@
 #include <vector>
 #include <map>
 #include <assert.h>
+#include <numeric> // std::accumulate
 
 namespace quetzal{
 namespace genetics{

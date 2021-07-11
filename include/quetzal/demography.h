@@ -10,8 +10,6 @@
 
 
 #include "demography/Flow.h"
-
-#include "demography/PopulationSizeMapImplementation.h"
-#include "demography/PopulationSizeVectorImplementation.h"
-
+#include "demography/PopulationSize.h"
+#include "demography/PopulationSizeOptimized.h"
 #include "demography/History.h"

@@ -10,7 +10,8 @@
 
 // g++ -o Partitioner_test Partitioner_test.cpp -std=c++14 -Wall
 
-#include "Partitioner.h"
+#include "quetzal/fuzzy_transfer_distance.h"
+
 #include <vector>
 #include "assert.h"
 #include <iostream>

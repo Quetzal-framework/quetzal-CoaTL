@@ -10,8 +10,7 @@
 
 // g++ -o FuzzyPartition_test FuzzyPartition_test.cpp -std=c++14 -Wall
 
-#include "FuzzyPartition.h"
-#include "RestrictedGrowthString.h"
+#include "quetzal/fuzzy_transfer_distance.h"
 
 #include <map>
 #include <set>
