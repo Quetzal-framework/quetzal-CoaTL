@@ -1,4 +1,7 @@
 /**
+ * \defgroup API API
+ * \brief Surface-level functions and classes.
+ *
  * \defgroup geography geography
  * \brief Template classes for building spatially explicit representations of spatio-temporal quantities
  *
