@@ -1,4 +1,4 @@
-// Copyright 2016 Arnaud Becheler    <Arnaud.Becheler@egce.cnrs-gif.fr>
+// Copyright 2021 Arnaud Becheler    <abechele@umich.edu>
 
 /***********************************************************************                                                                         *
 * This program is free software; you can redistribute it and/or modify *
@@ -79,7 +79,7 @@ namespace quetzal
     {}
     /**
     * @brief Read-only access to the population size history.
-    * @detail Designed to be used for composing growth expression.
+    * @details Designed to be used for composing growth expression.
     * @return a functor with signature `N_value_type fun(coord_type const& x,
     * time_type const& t)` giving the population size in deme \f$x\f$ at time \f$t\f$.
     */

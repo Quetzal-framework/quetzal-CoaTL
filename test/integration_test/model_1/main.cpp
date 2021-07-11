@@ -1,4 +1,4 @@
-// Copyright 2018 Arnaud Becheler    <Arnaud.Becheler@egce.cnrs-gif.fr>
+// Copyright 2018 Arnaud Becheler    <abechele@umich.edu>
 
 /***********************************************************************                                                                         *
 * This program is free software; you can redistribute it and/or modify *

@@ -1,4 +1,4 @@
-// Copyright 2016 Arnaud Becheler    <Arnaud.Becheler@egce.cnrs-gif.fr>
+// Copyright 2021 Arnaud Becheler    <abechele@umich.edu>
 
 /***********************************************************************                                                                         *
 * This program is free software; you can redistribute it and/or modify *
@@ -38,7 +38,7 @@ public:
 	//! \typedef time type
 	using time_type = Time;
 
-	//! \typedf space type
+	//! \typedef space type
 	using coord_type = Space;
 
 	//! \typedef type of the population size variable

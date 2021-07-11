@@ -1,4 +1,4 @@
-// Copyright 2016 Arnaud Becheler    <Arnaud.Becheler@egce.cnrs-gif.fr>
+// Copyright 2021 Arnaud Becheler    <abechele@umich.edu>
 
 /***********************************************************************                                                                         *
 * This program is free software; you can redistribute it and/or modify *
@@ -138,13 +138,7 @@ namespace coalescence {
    * \brief merges randomly selected elements in a range according to an occupancy spectrum.
    * \param first iterator at the begin of the range
    * \param last iterator to the past-the-end element.
-   * \param init the value at which parent is initialized
    * \param sp occupancy spectrum giving the merging configuration
-   * \param op binary operation function object that will be applied for branching a
-               child to its parent. The binary operator takes the parent value a
-               (initialized to init) and the value of the child b. The signature
-               of the function should be equivalent to the following:
-               `Ret fun(const Type1 &parent, const Type2 &child);`
    * \param g a random generator that must meet the requirements of UniformRandomBitGenerator concept.
    * \return An iterator to the element that follows the last element of the nodes remaining after coalescence.
              The function cannot alter the properties of the object containing the range of elements
