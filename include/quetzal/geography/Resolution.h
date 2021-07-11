@@ -17,10 +17,6 @@ namespace geography {
 	 * \brief %Resolution of a spatial grid
 	 *
 	 * \ingroup geography
-	 * \section Example
-	 * \snippet geography/test/Resolution/Resolution_test.cpp Example
-	 * \section Output
-	 * \include geography/test/Resolution/Resolution_test.output
 	 */
 	template<typename T>
 	class Resolution{
@@ -35,20 +31,12 @@ namespace geography {
 	    *
 			* \param lat the resolution of the spatial grid latitude
 	    * \param lon the resolution of the spatial grid longitude
-	    * \section Example
-	    * \snippet geography/test/Resolution/Resolution_test.cpp Example
-	    * \section Output
-	    * \include geography/test/Resolution/Resolution_test.output
 	    */
 	  explicit Resolution(value_type lat, value_type lon) : m_lat(lat), m_lon(lon) {}
 
 	  /**
 	    * \brief Gets latitude resolution
 	    *
-	    * \section Example
-	    * \snippet geography/test/Resolution/Resolution_test.cpp Example
-	    * \section Output
-	    * \include geography/test/Resolution/Resolution_test.output
 	    */
 	  value_type lat() const {
 	    return m_lat;
@@ -56,11 +44,6 @@ namespace geography {
 
 		/**
 	    * \brief Gets longitude resolution
-	    *
-	    * \section Example
-	    * \snippet geography/test/Resolution/Resolution_test.cpp Example
-	    * \section Output
-	    * \include geography/test/Resolution/Resolution_test.output
 	    */
 	  value_type lon() const {
 	    return m_lon;
@@ -71,11 +54,6 @@ namespace geography {
 	    *
 			* \param value the new value for latitude resolution.
 			* \return a reference on the Resolution object.
-			*
-	    * \section Example
-	    * \snippet geography/test/Resolution/Resolution_test.cpp Example
-	    * \section Output
-	    * \include geography/test/Resolution/Resolution_test.output
 	    */
 	  Resolution& lat(value_type value) {
 	    m_lat = value;
@@ -87,11 +65,6 @@ namespace geography {
 	    *
 			* \param value the new value for longitude resolution.
 			* \return a reference on the Resolution object.
-			*
-	    * \section Example
-	    * \snippet geography/test/Resolution/Resolution_test.cpp Example
-	    * \section Output
-	    * \include geography/test/Resolution/Resolution_test.output
 	    */
 	  Resolution& lon(value_type value) {
 	    m_lon = value;
@@ -103,10 +76,6 @@ namespace geography {
 	    *
 	    * Checks if two resolutions objects are equals
 	    * \return true if latitude and longitude have same resolution, else returns false.
-	    * \section Example
-	    * \snippet geography/test/Resolution/Resolution_test.cpp Example
-	    * \section Output
-	    * \include geography/test/Resolution/Resolution_test.output
 	    */
 	  bool operator==(const Resolution& other) const {
 	      if(m_lat == other.lat() && m_lon == other.lon() ) return true;
@@ -118,10 +87,6 @@ namespace geography {
 	    *
 	    * Checks if two resolutions objects are equals
 	    * \return false if latitude and longitude have same resolution, else returns true.
-	    * \section Example
-	    * \snippet geography/test/Resolution/Resolution_test.cpp Example
-	    * \section Output
-	    * \include geography/test/Resolution/Resolution_test.output
 	    */
 	  bool operator!=(const Resolution& other) const {
 	     return !(operator==(other));

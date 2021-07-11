@@ -33,10 +33,6 @@ namespace geography {
  *
  * \tparam Time     Time type
  * \ingroup geography
- * \section Example
- * \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
- * \section Output
- * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
  */
 template<typename Time>
 class EnvironmentalQuantity : public gdalcpp::Dataset {
@@ -65,10 +61,6 @@ public:
 		* \remark the size of times argument should be equal to the depth of the given dataset
 		* \remark times vector should be sorted
 		* \remark values should be defined for same coordinates at all times"
-		* \section Example
-	  * \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
-	  * \section Output
-	  * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
 		*/
   EnvironmentalQuantity(const std::string& dataset_name, std::vector<time_type> const& times):
   gdalcpp::Dataset(dataset_name),
@@ -103,11 +95,6 @@ public:
 
 	/**
 		* \brief Gets the origin of the spatial grid
-		*
-		* \section Example
-	  * \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
-	  * \section Output
-	  * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
 		*/
   const GeographicCoordinates & origin() const {
     return m_origin;
@@ -115,11 +102,6 @@ public:
 
 	/**
 		* \brief Gets the resolution of the spatial grid
-		*
-		* \section Example
-	  * \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
-	  * \section Output
-	  * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
 		*/
   const Resolution<decimal_degree> & resolution() const {
     return m_resolution;
@@ -128,10 +110,6 @@ public:
 	/**
 		* \brief Gets the extent of the spatial grid
 		*
-		* \section Example
-	  * \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
-	  * \section Output
-	  * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
 		*/
   const Extent<decimal_degree>& extent() const {
     return m_extent;
@@ -142,10 +120,6 @@ public:
 		*
 		* \remark possibly slow
 		* \remark checks if the given time is in the temporal extent
-		* \section Example
-	  * \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
-	  * \section Output
-	  * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
 		*/
   value_type at(GeographicCoordinates const& c, Time const& t) const {
     auto xy = to_xy(c);
@@ -160,11 +134,6 @@ public:
 		* Returns the geographic coordinates of the centroids of the demes for which values are defined at all times.
 		* Values can be read from other coordinates, but this function provides a natural
 		* way to construct the geographic support for a demic structure (for example for demographic simulations).
-		*
-		* \section Example
-	  * \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
-	  * \section Output
-	  * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
 		*/
   // TODO
   const std::vector<GeographicCoordinates>& geographic_definition_space() const {
@@ -174,10 +143,6 @@ public:
 	/**
 		* \brief read the times at which quantity is defined.
 		*
-		* \section Example
-	  * \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
-	  * \section Output
-	  * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
 		*/
   const std::vector<time_type>& temporal_definition_space() const {
     return m_times;
@@ -187,10 +152,6 @@ public:
 	/**
 		* \brief Checks if a given geographic coordinate is in the landscape spatial extent
 		*
-		* \section Example
-		* \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
-		* \section Output
-		* \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
 		*/
   bool is_in_spatial_extent(GeographicCoordinates const& c) const {
     bool is_in_spatial_extent = false;
@@ -205,10 +166,6 @@ public:
 	/**
 		* \brief Coordinate of the centroid of the deme to which the given coordinate belongs
 		*
-		* \section Example
-		* \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
-		* \section Output
-		* \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
 		*/
   GeographicCoordinates reproject_to_centroid(GeographicCoordinates const& c) const {
     if( ! is_in_spatial_extent(c)){

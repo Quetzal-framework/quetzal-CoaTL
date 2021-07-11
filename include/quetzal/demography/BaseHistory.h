@@ -72,10 +72,6 @@ public:
   * @param t the introduction time
   * @param N the population size at coordinate x at time t
   *
-  * \section Example
-  * \snippet demography/test/History/History_test.cpp Example
-  * \section Output
-  * \include demography/test/History/History_test.output
   */
   BaseHistory(coord_type const& x, time_type const& t, typename dispersal_policy::value_type N):
   m_sizes(std::make_unique<pop_sizes_type>()),

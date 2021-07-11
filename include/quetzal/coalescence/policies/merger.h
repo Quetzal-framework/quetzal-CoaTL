@@ -29,10 +29,6 @@ namespace coalescence {
    *  with other merger policies.
    *
    * \ingroup coal_policies
-   * \section Example
-   * \snippet coalescence/policies/test/BinaryMerger/test.cpp Example
-   * \section Output
-   * \include coalescence/policies/test/BinaryMerger/test.output
    */
   struct BinaryMerger{
 
@@ -60,10 +56,6 @@ namespace coalescence {
                this iterator includes all the remaining nodes in the sequence.
      *
      * \remark BidirectionalIterator must meet the requirements of ValueSwappable and RandomAccessIterator.
-     * \section Example
-     * \snippet coalescence/policies/test/BinaryMerger/test.cpp Example
-     * \section Output
-     * \include coalescence/policies/test/BinaryMerger/test.output
      */
     template<class BidirectionalIterator, class T, class BinaryOperation, class Generator>
     static auto
@@ -100,10 +92,6 @@ namespace coalescence {
      * \remark the `T` default constructor is used to set the value at which the parent is initialized.
      * \remark With `a` and `b` two objects of type `T`, the expression `a + B` must be defined.
      * \remark BidirectionalIterator must meet the requirements of ValueSwappable and RandomAccessIterator.
-     * \section Example
-     * \snippet coalescence/policies/test/BinaryMerger/test.cpp Example
-     * \section Output
-     * \include coalescence/policies/test/BinaryMerger/test.output
      */
     template<class BidirectionalIterator, class Generator>
     static auto
@@ -126,10 +114,6 @@ namespace coalescence {
    *
    * \ingroup coal_policies
    * \tparam SpectrumCreationPolicy The policy used to generate an OccupancySpectrum.
-   * \section Example
-   * \snippet coalescence/policies/test/SimultaneousMultipleMerger/test.cpp Example
-   * \section Output
-   * \include coalescence/policies/test/SimultaneousMultipleMerger/test.output
    */
   template<class SpectrumCreationPolicy>
   struct SimultaneousMultipleMerger {
@@ -156,10 +140,6 @@ namespace coalescence {
                that should be considered its new past-the-end element. The range between first and
                this iterator includes all the remaining nodes in the sequence.
      * \remark BidirectionalIterator must meet the requirements of ValueSwappable and RandomAccessIterator.
-     * \section Example
-     * \snippet coalescence/policies/test/SimultaneousMultipleMerger/test.cpp Example
-     * \section Output
-     * \include coalescence/policies/test/SimultaneousMultipleMerger/test.output
      */
     template<class BidirectionalIterator, class T, class BinaryOperation, class Generator>
     static auto
@@ -191,10 +171,6 @@ namespace coalescence {
      * \remark the `T` default constructor is used to set the value at which the parent is initialized.
      * \remark With `a` and `b` two objects of type `T`, the expression `a + B` must be defined.
      * \remark BidirectionalIterator must meet the requirements of ValueSwappable and RandomAccessIterator.
-     * \section Example
-     * \snippet coalescence/policies/test/SimultaneousMultipleMerger/test.cpp Example
-     * \section Output
-     * \include coalescence/policies/test/SimultaneousMultipleMerger/test.output
      */
     template<class BidirectionalIterator, class Generator>
     static auto

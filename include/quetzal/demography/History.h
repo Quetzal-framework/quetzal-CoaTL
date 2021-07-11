@@ -41,12 +41,6 @@ namespace quetzal
     *
     * @ingroup demography
     *
-    * @section Example
-    * @snippet demography/test/History/Individual_based_history_test.cpp Example
-    *
-    * @section Output
-    * @include demography/test/History/Individual_based_history_test.output
-    *
     */
     template<typename Space, typename Time>
     class History<Space, Time, dispersal_policy::individual_based> : public BaseHistory<Space, Time, dispersal_policy::individual_based>
@@ -74,12 +68,6 @@ namespace quetzal
       *               to `coord_type kernel(V &gen, const coord_type &x, const time_type &t);`
       *
       * @exception std::domain_error if the population goes extincted before the simulation is completed.
-      *
-      * \section Example
-      * \snippet demography/test/History/Individual_based_history_test.cpp Example
-      *
-      * \section Output
-      * \include demography/test/History/Individual_based_history_test.output
       */
       template<typename T, typename U, typename V>
       void expand(unsigned int nb_generations, T sim_growth, U kernel, V& gen)
@@ -126,12 +114,6 @@ namespace quetzal
     * @tparam Time     EqualityComparable, CopyConstructible.
     *
     * @ingroup demography
-    *
-    * @section Example
-    * @snippet demography/test/History/Mass_based_history_test.cpp Example
-    *
-    * @section Output
-    * @include demography/test/History/Mass_based_history_test.output
     */
     template<typename Space, typename Time>
     class History<Space, Time, dispersal_policy::mass_based> : public BaseHistory<Space, Time, dispersal_policy::mass_based>{
@@ -160,12 +142,6 @@ namespace quetzal
       *               The expression `kernel.arrival_state()` must be valid
       *               and returns an iterable container of geographic coordinates
       *               indicating the transition kernel state space.
-      *
-      * @section Example
-      * @snippet demography/test/History/Mass_based_history_test.cpp Example
-      *
-      * @section Output
-      * @include demography/test/History/Mass_based_history_test.output
       */
       template<typename T, typename U, typename V>
       void expand(unsigned int nb_generations, T sim_growth, U kernel, V& gen)

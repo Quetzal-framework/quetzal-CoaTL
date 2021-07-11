@@ -62,10 +62,6 @@ using boost::multiprecision::cpp_dec_float_50;
    *         empty, making later iteration over a spectrum faster.
    * \tparam Int A big integer class for probability computation
    * \tparam FLoat A big float class for probability computation
-   * \section Example
-   * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.cpp Example
-   * \section Output
-   * \include coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.output
    */
   template
   <
@@ -93,10 +89,6 @@ using boost::multiprecision::cpp_dec_float_50;
     /**
   	  * \brief Default constructor
   	  * \remark Position and Tree must be default constructible
-      * \section Example
-  		* \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.cpp Example
-  		* \section Output
-      * \include coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.output
   		*/
     OccupancySpectrumDistribution() = default;
 
@@ -106,10 +98,6 @@ using boost::multiprecision::cpp_dec_float_50;
       * \param n number of balls
       * \param m number of urns
       * \param pred UnaryPredicate
-      * \section Example
-  		* \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.cpp Example
-  		* \section Output
-      * \include coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.output
   		*/
     OccupancySpectrumDistribution(unsigned int n, unsigned int m, UnaryPredicate pred = UnaryPredicate()) :
     m_k(n),
@@ -125,39 +113,23 @@ using boost::multiprecision::cpp_dec_float_50;
     /**
   	  * \brief Copy constructor
   	  * \remark Position and Tree must be default constructible
-      * \section Example
-  		* \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.cpp Example
-  		* \section Output
-      * \include coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.output
   		*/
     OccupancySpectrumDistribution(const SelfType&) = delete;
 
     /**
   	  * \brief Move constructor
   	  * \remark Position and Tree must be default constructible
-      * \section Example
-  		* \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.cpp Example
-  		* \section Output
-      * \include coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.output
   		*/
     OccupancySpectrumDistribution(SelfType&&) = default;
 
     /**
   	  * \brief Move assignment operator
-  		* \section Example
-  		* \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.cpp Example
-  		* \section Output
-      * \include coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.output
   		*/
     SelfType & operator= (SelfType&& ) = default;
 
     /**
   	  * \brief Deleted copy assignment operator
       * \remark Deleted for avoiding copying huge amount of data.
-  		* \section Example
-  		* \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.cpp Example
-  		* \section Output
-      * \include coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/initialization_test.output
   		*/
     SelfType & operator= (const SelfType& ) = delete;
 
@@ -165,10 +137,6 @@ using boost::multiprecision::cpp_dec_float_50;
     * \brief Generates random occupancy spectrum that are distributed according
     *        to the associated probability function given by von Mises (1939).
     *        The entropy is acquired by calling g.operator().
-    * \section Example
-    * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.cpp Example
-    * \section Output
-    * \include coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.output
     */
     template<typename Generator>
     const spectrum_type & operator()(Generator& g) const {
@@ -177,37 +145,21 @@ using boost::multiprecision::cpp_dec_float_50;
 
     /**
       * \brief Gives the number of balls that are thrown in the random experience
-      * \section Example
-      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.cpp Example
-      * \section Output
-      * \include coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.output
       */
     unsigned int n() const {return m_k; }
 
     /**
       * \brief Gives the number of urns used in the random experience
-      * \section Example
-      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.cpp Example
-      * \section Output
-      * \include coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.output
       */
     unsigned int m() const {return m_N; }
 
     /**
       * \brief Retrieve occupancy spectra constituting the support of the distribution
-      * \section Example
-      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.cpp Example
-      * \section Output
-      * \include coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.output
       */
     const support_type& support() const {return m_support; }
 
     /**
       * \brief Retrieve the weights associated to the random experience. They do not necessarily sum to 1.
-      * \section Example
-      * \snippet coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.cpp Example
-      * \section Output
-      * \include coalescence/occupancy_spectrum/test/OccupancySpectrumDistribution/OccupancySpectrumDistribution_test.output
       */
     const probabilities_type & weights() const {return m_probas; }
 
