@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 ### UNIT TEST
 
@@ -14,7 +14,7 @@ foreach(testSrc ${TEST_SRCS})
 
         #Add compile target
         add_executable(${testName} ${testSrc})
-
+        target_compile_options(${testName} PRIVATE "-fconcepts")
         #link to Boost libraries AND your targets and dependencies
         target_link_libraries(${testName}
                                 ${Boost_LIBRARIES}

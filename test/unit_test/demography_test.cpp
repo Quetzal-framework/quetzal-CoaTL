@@ -15,6 +15,16 @@ namespace utf = boost::unit_test;
 
 #include <quetzal/demography.h>
 
+//#include <concepts>
+
+template<typename T>
+concept bool MyConcept(){
+    return requires(T a, T b) {
+        { a == b } -> bool;
+        { a != b } -> bool;
+   };
+}
+
 struct transition_matrix {
 	using coord_type = std::string;
 	using time_type = unsigned int;

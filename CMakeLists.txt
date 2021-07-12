@@ -7,7 +7,7 @@ project(
   DESCRIPTION "A header only c++ library for spatially explicit coalescence simulation."
   HOMEPAGE_URL "https://github.com/becheler/quetzal")
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -35,7 +35,7 @@ target_include_directories(${PROJECT_NAME}
             $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 # If we have compiler requirements for this library, list them here
-target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_17)
+target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
 
 # Targets that we develop here
 enable_testing()
