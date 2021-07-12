@@ -35,7 +35,6 @@ namespace quetzal
   *          can be controlled using the relevant Merger policy class when calling a
   *          coalescence function of the class interface.
   * @tparam Space deme identifiers (like the populations geographic coordinates)
-  * @tparam Time time identifier (like an integer representing the year)
   * @tparam Strategy a template class argument (e.g. mass_based, individual_based)
   *                  that indicates how dispersal should be defined in terms of
   *                  demographic expansion algorithms. Strategy class
@@ -47,24 +46,21 @@ namespace quetzal
   * @ingroup simulator
   *
   */
-  template<typename Space, typename Time, typename DispersalPolicy, typename CoalescencePolicy, typename StoragePolicy>
+  template<typename Space, typename DispersalPolicy, typename CoalescencePolicy>
   class ForwardBackwardSpatiallyExplicit :
   public CoalescencePolicy
   {
   public:
     //! \typedef space type
     using coord_type = Space;
-    //! \typedef time type
-    using time_type = Time;
     //! \typedef strategy type
     using dispersal_policy_type = DispersalPolicy;
     //! \typedef value type to represent populations size
     using N_value_type = typename DispersalPolicy::value_type;
     //! \typedef time type
-    template<typename tree_type>
-    using forest_type = quetzal::coalescence::Forest<coord_type, tree_type>;
+    template<typename tree_type> using forest_type = quetzal::coalescence::Forest<coord_type, tree_type>;
   private:
-    using history_type = demography::History<coord_type, time_type, DispersalPolicy, StoragePolicy>;
+    using history_type = demography::History<coord_type, DispersalPolicy>;
     history_type m_history;
   public:
     /**
@@ -81,11 +77,11 @@ namespace quetzal
     * @brief Read-only access to the population size history.
     * @details Designed to be used for composing growth expression.
     * @return a functor with signature `N_value_type fun(coord_type const& x,
-    * time_type const& t)` giving the population size in deme \f$x\f$ at time \f$t\f$.
+    * unsigned int t)` giving the population size in deme \f$x\f$ at time \f$t\f$.
     */
     auto pop_size_history() const noexcept
     {
-      return std::cref(m_history.pop_sizes());
+      return std::cref(m_history.expose_pop_size());
     }
     /**
     * @brief Simulate the forward-in-time demographic expansion.
@@ -94,11 +90,11 @@ namespace quetzal
     * @param growth a functor simulating \f$\tilde{N}_{x}^{t}\f$. The functor
     *                   can possibly make use of pop_size_history. The signature
     *                   of the function should be equivalent to the following:
-    *                   `unsigned int sim_growth(V &gen, const coord_type &x, const time_type &t);`
+    *                   `unsigned int sim_growth(V &gen, const coord_type &x, unsigned int t);`
     * @param kernel a functor representing the dispersal location kernel that
     *               simulates the coordinate of the next location conditionally
     *               to the current location \f$x\f$. The signature should be equivalent
-    *               to `coord_type kernel(V &gen, const coord_type &x, const time_type &t);`
+    *               to `coord_type kernel(V &gen, const coord_type &x, unsigned int t);`
     */
     template<typename Generator, typename Growth, typename Dispersal>
     void simulate_forward_demography(Growth growth, Dispersal kernel, Generator& gen)
@@ -124,7 +120,7 @@ namespace quetzal
     * @return A possibly incompletely coalesced forest.
     */
     template<typename Merger, typename Generator>
-    auto make_forest_using_sampling_time_and_coalesce_along_spatial_history(std::map<coord_type, unsigned int> sample, time_type const& sampling_time, Generator & gen)
+    auto make_forest_using_sampling_time_and_coalesce_along_spatial_history(std::map<coord_type, unsigned int> sample, unsigned int sampling_time, Generator & gen)
     {
       test_sample_consistency(sample);
       auto forest = this->make_forest(sample, sampling_time);
@@ -139,8 +135,8 @@ namespace quetzal
     auto coalesce_along_spatial_history(forest_type<Tree> forest, F binary_op, Generator& gen, U make_tree) const
     {
       this->check_consistency(m_history, forest);
-      auto t = m_history.last_time();
-      while( (forest.nb_trees() > 1) && (t > m_history.first_time()) )
+      auto t = m_history.nb_generations();
+      while( (forest.nb_trees() > 1) && (t > 0) )
       {
         may_coalesce_colocated<Merger>(forest, t, gen, binary_op, make_tree);
         migrate_backward(forest, t, gen);
@@ -166,13 +162,13 @@ namespace quetzal
     typename Merger=quetzal::coalescence::SimultaneousMultipleMerger<quetzal::coalescence::occupancy_spectrum::on_the_fly>,
     typename Generator
     >
-    auto coalesce_to_mrca(std::map<coord_type, unsigned int> sample, time_type const& sampling_time, Generator & gen)
+    auto coalesce_to_mrca(std::map<coord_type, unsigned int> sample, unsigned int sampling_time, Generator & gen)
     {
       test_sample_consistency(sample);
       // sampling_time used to initialize the forest
       auto forest = this->make_forest(sample, sampling_time);
       auto new_forest = coalesce_along_spatial_history<Merger>(forest, this->branch(), gen, this->init() );
-      auto tree = this->find_mrca(new_forest, m_history.first_time(), gen);
+      auto tree = this->find_mrca(new_forest, 0, gen);
       return this->treat(tree);
     }
 
@@ -194,10 +190,9 @@ namespace quetzal
     auto coalesce_to_mrca(std::map<coord_type, unsigned int> sample, Generator & gen)
     {
       test_sample_consistency(sample);
-      // no need of sampling time to initalize the forest
       auto forest = this->make_forest(sample);
       auto new_forest = coalesce_along_spatial_history<Merger>(forest, this->branch(), gen, this->init() );
-      auto tree = this->find_mrca(new_forest, m_history.first_time(), gen);
+      auto tree = this->find_mrca(new_forest, 0, gen);
       return this->treat(tree);
     }
 
@@ -206,7 +201,7 @@ namespace quetzal
     *
     * @tparam Generator a random number Generator
     * @tparam F a unary operation with signature equivalent to 'std::string fun(coord_type const& x,
-    * time_type const& t)'
+    * unsigned int t)'
     *
     * @param sample the number of gene copies at each location
     * @param sampling_time the time of sampling_time
@@ -220,12 +215,12 @@ namespace quetzal
     typename Generator,
     typename F
     >
-    auto coalesce_to_mrca(std::map<coord_type, unsigned int> sample, time_type const& sampling_time, F leaf_name, Generator & gen)
+    auto coalesce_to_mrca(std::map<coord_type, unsigned int> sample, unsigned int sampling_time, F leaf_name, Generator & gen)
     {
       test_sample_consistency(sample);
       auto forest = this->make_forest(sample, sampling_time, leaf_name);
       auto new_forest = coalesce_along_spatial_history<Merger>(forest, this->branch(), gen, this->init() );
-      auto tree = this->find_mrca(new_forest, m_history.first_time(), gen);
+      auto tree = this->find_mrca(new_forest, 0, gen);
       return this->treat(tree);
     }
 
@@ -252,11 +247,11 @@ namespace quetzal
     typename F2,
     typename Generator
     >
-    auto coalesce_to_mrca(std::vector<T> sample, time_type const& sampling_time, F1 get_location, F2 get_name, Generator & gen)
+    auto coalesce_to_mrca(std::vector<T> sample, unsigned int sampling_time, F1 get_location, F2 get_name, Generator & gen)
     {
       auto forest = this->make_forest(sample, sampling_time, get_location, get_name);
       auto new_forest = coalesce_along_spatial_history<Merger>(forest, this->branch(), gen, this->init() );
-      auto tree = this->find_mrca(new_forest, m_history.first_time(), gen);
+      auto tree = this->find_mrca(new_forest, 0, gen);
       return this->treat(tree);
     }
 
@@ -265,10 +260,10 @@ namespace quetzal
     template<typename T, typename U>
     void check_consistency(T const& history, U const& forest) const
     {
-      auto t = history.last_time();
+      auto t = history.nb_generations();
       for(auto const& it : forest.positions())
       {
-        if( !history.pop_sizes().is_defined(it, t) || history.pop_sizes()(it, t) < forest.nb_trees(it))
+        if( !history.expose_pop_size().is_defined(it, t) || history.expose_pop_size()(it, t) < forest.nb_trees(it))
         {
           throw std::domain_error("Simulated population size inferior to sampling size");
         }
@@ -286,7 +281,7 @@ namespace quetzal
     }
 
     template<typename Generator, typename Forest>
-    void migrate_backward(Forest & forest, time_type t, Generator& gen) const noexcept
+    void migrate_backward(Forest & forest, unsigned int t, Generator& gen) const noexcept
     {
       Forest new_forest;
       for(auto const it : forest)
@@ -300,7 +295,7 @@ namespace quetzal
 
 
     template<typename Merger, typename Generator, typename Tree, typename F, typename U>
-    void may_coalesce_colocated(forest_type<Tree>& forest, time_type const& t, Generator& gen, F binop, U make_tree) const noexcept
+    void may_coalesce_colocated(forest_type<Tree>& forest, unsigned int t, Generator& gen, F binop, U make_tree) const noexcept
     {
       auto N = pop_size_history();
       for(auto const & x : forest.positions())

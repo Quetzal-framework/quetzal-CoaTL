@@ -23,32 +23,29 @@ namespace quetzal
     * @brief Unspecialized class (CRTP design pattern)
     *
     * @tparam Space    Demes identifiers.
-    * @tparam Time     EqualityComparable, CopyConstructible.
     * @tparam dispersal_policy    policy used for simulating populations dynamics
     *
     * @ingroup demography
     *
     */
-    template<typename Space, typename Time, typename DispersalPolicy>
-    class History : public BaseHistory<Space, Time, DispersalPolicy>
+    template<typename Space, typename DispersalPolicy>
+    class History : public BaseHistory<Space, DispersalPolicy>
     {};
 
 
     /** @brief Partial specialization where each individual is dispersed individually.
     *
     * @tparam Space    Demes identifiers.
-    * @tparam Time     EqualityComparable, CopyConstructible.
     *
     * @ingroup demography
     *
     */
-    template<typename Space, typename Time>
-    class History<Space, Time, dispersal_policy::individual_based> : public BaseHistory<Space, Time, dispersal_policy::individual_based>
+    template<typename Space>
+    class History<Space, dispersal_policy::individual_based> : public BaseHistory<Space, dispersal_policy::individual_based>
     {
-      using BaseHistory<Space, Time, dispersal_policy::individual_based>::BaseHistory;
-      using coord_type = Space;
+      // Using the BaseHistory class constructor
+      using BaseHistory<Space, dispersal_policy::individual_based>::BaseHistory;
     public:
-
       /**
       * @brief Expands the demographic database.
       *
@@ -56,33 +53,25 @@ namespace quetzal
       * @tparam U a functor for representing the dispersal process.
       * @tparam V a random number generator.
       *
-      * @param nb_generations the number of generations to simulate
       * @param sim_growth a functor simulating \f$\tilde{N}_{x}^{t}\f$. The functor
       *                   can possibly internally use a reference on the population
       *                   sizes to represent the time dependency. The signature
       *                   of the function should be equivalent to the following:
-      *                   `unsigned int sim_growth(V &gen, const coord_type &x, const time_type &t);`
+      *                   `unsigned int sim_growth(V &gen, const coord_type &x, unsigned int t);`
       * @param kernel a functor representing the dispersal location kernel that
       *               simulates the coordinate of the next location conditionally
       *               to the current location \f$x\f$. The signature should be equivalent
-      *               to `coord_type kernel(V &gen, const coord_type &x, const time_type &t);`
+      *               to `coord_type kernel(V &gen, const coord_type &x, unsigned int t);`
       *
       * @exception std::domain_error if the population goes extincted before the simulation is completed.
       */
       template<typename T, typename U, typename V>
-      void expand(unsigned int nb_generations, T sim_growth, U kernel, V& gen)
+      void simulate_forward(T sim_growth, U kernel, V& gen)
       {
-        for(unsigned int g = 0; g < nb_generations; ++g)
+        for(unsigned int t = 0; t < this->nb_generations(); ++t)
         {
-          auto t = this->last_time();
-          auto t_next = t; ++ t_next;
-
-          this->m_times.push_back(t_next);
-
           unsigned int landscape_individuals_count = 0;
-
-          // TODO : optimize the definition_space function (for loop)
-          for(auto x : this->m_sizes->definition_space(t) )
+          for(auto x : this->expose_pop_size().definition_space(t) )
           {
             auto N_tilde = sim_growth(gen, x, t);
             landscape_individuals_count += N_tilde;
@@ -90,101 +79,79 @@ namespace quetzal
             {
               for(unsigned int ind = 1; ind <= N_tilde; ++ind)
               {
-                coord_type y = kernel(gen, x);
+                auto y = kernel(gen, x);
                 this->m_flows->add_to_flux_from_to(x, y, t, 1);
-                this->m_sizes->operator()(y, t_next) += 1;
+                this->pop_size(y, t+1) += 1;
               }
             }
           }
-
           if(landscape_individuals_count == 0)
           {
             throw std::domain_error("Landscape populations went extinct before sampling");
           }
-
         }
       }
-
     };
-
-
     /** @brief Partial specialization where populations levels are assumed high enough to be considered as divisible masses.
     *
     * @tparam Space    Demes identifiers.
-    * @tparam Time     EqualityComparable, CopyConstructible.
     *
     * @ingroup demography
     */
-    template<typename Space, typename Time>
-    class History<Space, Time, dispersal_policy::mass_based> : public BaseHistory<Space, Time, dispersal_policy::mass_based>{
-
-      using BaseHistory<Space, Time, dispersal_policy::mass_based>::BaseHistory;
-
+    template<typename Space>
+    class History<Space, dispersal_policy::mass_based> : public BaseHistory<Space, dispersal_policy::mass_based>{
+      // Using the BaseHistory constructor
+      using BaseHistory<Space, dispersal_policy::mass_based>::BaseHistory;
     public:
-
-      /** @brief Expands the demographic history through space and time.
+      /** @brief Simulate forward the demographic history.
       *
       * @tparam T a functor for representing the growth process.
       * @tparam U a functor for representing the dispersal process.
       * @tparam V a random number generator.
       *
-      * @param nb_generations the number of generations to simulate.
       * @param sim_growth a functor simulating \f$\tilde{N}_{x}^{t}\f$. The functor
       *        can possibly internally use a reference on the population sizes database
       *        to represent the time dependency. The signature of the function should
       *        be equivalent to the following:
-      *        `unsigned int sim_growth(V &gen, const coord_type &x, const time_type &t);`.
+      *        `unsigned int sim_growth(V &gen, const coord_type &x, unsigned int t);`.
       * @param kernel a functor representing the dispersal transition matrix.
       *               The signature of the function should be equivalent to
       *               `double kernel( const coord_type & x, const coord_type &y);`
       *               and the function should return the probability for an individual
-      *               to disperse from \f$x\f$ to \f$y\f$ at time \f$t\f$.
+      *               to disperse from \f$x\f$ to \f$y\f$ at generation \f$t\f$.
       *               The expression `kernel.arrival_state()` must be valid
       *               and returns an iterable container of geographic coordinates
       *               indicating the transition kernel state space.
       */
       template<typename T, typename U, typename V>
-      void expand(unsigned int nb_generations, T sim_growth, U kernel, V& gen)
+      void simulate_forward(T sim_growth, U kernel, V& gen)
       {
-        for(unsigned int g = 0; g < nb_generations; ++g)
+        for(unsigned int t = 0; t < this->nb_generations(); ++t)
         {
-          auto t = this->last_time();
-          auto t_next = t; ++ t_next;
-
-          this->m_times.push_back(t_next);
-
           unsigned int landscape_individuals_count = 0;
-
-          for(auto x : this->m_sizes->definition_space(t) )
+          for(auto x : this->expose_pop_size().definition_space(t) )
           {
             auto N_tilde = sim_growth(gen, x, t);
-
             for(auto const& y : kernel.arrival_space(x) )
             {
               auto m = kernel(x, y);
               assert(m >= 0.0 && m <= 1.0);
-
-              // TODO : I changed floor to ceil for oversea migration
+              // Use of std::ceil to allow oversea migration
               double nb_migrants = std::ceil(m * static_cast<double>(N_tilde));
               if(nb_migrants >= 0){
                 landscape_individuals_count += nb_migrants;
                 this->m_flows->set_flux_from_to(x, y, t, nb_migrants);
-                this->m_sizes->operator()(y, t_next) += nb_migrants;
+                this->pop_size(y, t+1) += nb_migrants;
               }
             }
           }
-
           if(landscape_individuals_count == 0)
           {
             throw std::domain_error("Landscape populations went extinct before sampling");
           }
-
         }
       }
-
-
     };
-
   } // namespace demography
 } // namespace quetzal
 

@@ -27,7 +27,6 @@ concept bool MyConcept(){
 
 struct transition_matrix {
 	using coord_type = std::string;
-	using time_type = unsigned int;
 	std::vector<coord_type> arrival_space(coord_type)
 	{
 		return {"Paris", "Ann Arbor"};
@@ -115,15 +114,16 @@ BOOST_AUTO_TEST_CASE( individual_based_history_default_storage )
   using coord_type = int;
   using time_type = unsigned int;
   using generator_type = std::mt19937;
+  // Number of non-overlapping generations for the demographic simulation
+  unsigned int nb_generations = 3;
   // Declaresan individual-based history
   using quetzal::demography::dispersal_policy::individual_based;
 	// 10 individuals introduced at x=1, t=2018
-  quetzal::demography::History<coord_type, time_type, individual_based> history(1, 2018, 10);
+  quetzal::demography::History<coord_type, individual_based> history(1, 10, 3);
   // Declares a growth function
-  auto N = std::cref(history.pop_sizes()); // light copiable for capture
+  auto N = std::cref(history.expose_pop_size()); // light copiable for capture
   auto growth = [N](auto&, coord_type x, time_type t){ return 2*N(x,t) ; };
-  // Number of non-overlapping generations for the demographic simulation
-  unsigned int nb_generations = 3;
+
   // Random number generation
   generator_type gen;
   // Dispersal kernel in {-1,1}
@@ -134,9 +134,8 @@ BOOST_AUTO_TEST_CASE( individual_based_history_default_storage )
    return x;
   };
 	// Expand the history
-  history.expand(nb_generations, growth, sample_location, gen);
+  history.simulate_forward(growth, sample_location, gen);
 	// Print the migration history
-  std::cout << "Population flows from x to y at time t:\n\n" << history.flows() << std::endl;
   std::cout << "\nKnowing an indiviual was in deme 1 in 2021, where could it have been just before dispersal ?\n";
   std::cout << "Answer: it could have been in deme " << history.backward_kernel(1, 2021, gen) << std::endl;
 	//! [individual_based_history_default_storage example]
@@ -148,19 +147,18 @@ BOOST_AUTO_TEST_CASE( mass_based_history_default_storage )
   using coord_type = std::string;
   using time_type = unsigned int;
   using generator_type = std::mt19937;
-  // Initialize history: 10 individuals introduced at x=1, t=2018
-  using quetzal::demography::dispersal_policy::mass_based;
-  quetzal::demography::History<coord_type, time_type, mass_based> history("Paris", 2018, 10);
-  // Growth function
-  auto N = std::cref(history.pop_sizes());
-  auto growth = [N](auto&, coord_type x, time_type t){ return 2*N(x,t) ; };
   // Number of non-overlapping generations for the demographic simulation
-  unsigned int nb_generations = 3;
+  unsigned int nb_generations = 5;
+  // Initialize history: 10 individuals introduced at x=1, simulate during 50 generations
+  using quetzal::demography::dispersal_policy::mass_based;
+  quetzal::demography::History<coord_type, mass_based> history("Paris", 10, nb_generations);
+  // Growth function
+  auto N = std::cref(history.expose_pop_size());
+  auto growth = [N](auto&, coord_type x, time_type t){ return 2*N(x,t) ; };
   // Random number generation
   generator_type gen;
   transition_matrix M;
-  history.expand(nb_generations, growth, M, gen);
-  std::cout << "Population flows from x to y at time t:\n\n" << history.flows() << std::endl;
+  history.simulate_forward(growth, M, gen);
   std::cout << "\nKnowing an indiviual was in Paris in 2021, where could it have been just before dispersal ?\n";
   std::cout << "Answer: it could have been in " << history.backward_kernel("Paris", 2021, gen) << std::endl;
 }
