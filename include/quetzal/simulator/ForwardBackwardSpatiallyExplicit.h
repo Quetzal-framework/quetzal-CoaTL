@@ -138,8 +138,11 @@ namespace quetzal
       auto t = m_history.nb_generations();
       while( (forest.nb_trees() > 1) && (t > 0) )
       {
+        std::cout << "t=" << t << std::endl;
         may_coalesce_colocated<Merger>(forest, t, gen, binary_op, make_tree);
+        std::cout << "colocated coalesced" << std::endl;
         migrate_backward(forest, t, gen);
+        std::cout << "backward migration" << std::endl;
         --t;
       }
       may_coalesce_colocated<Merger>(forest, t, gen, binary_op, make_tree);
@@ -164,11 +167,15 @@ namespace quetzal
     >
     auto coalesce_to_mrca(std::map<coord_type, unsigned int> sample, unsigned int sampling_time, Generator & gen)
     {
+      std::cout << "A" << std::endl;
       test_sample_consistency(sample);
-      // sampling_time used to initialize the forest
+      std::cout << "B" << std::endl;
       auto forest = this->make_forest(sample, sampling_time);
+      std::cout << "C" << std::endl;
       auto new_forest = coalesce_along_spatial_history<Merger>(forest, this->branch(), gen, this->init() );
+      std::cout << "D" << std::endl;
       auto tree = this->find_mrca(new_forest, 0, gen);
+      std::cout << "E" << std::endl;
       return this->treat(tree);
     }
 

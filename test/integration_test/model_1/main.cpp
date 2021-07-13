@@ -26,7 +26,7 @@ namespace expr = quetzal::expressive;
 // Parameter 1 : path to geoTiff environmental dataset
 int main(int argc, char* argv[])
 {
-  std::cout << "Reading " << argc << " input parameters" << std::endl;
+  std::cout << "0 ... Reading " << argc << " input parameters" << std::endl;
   /******************************
    * Geospatial dataset
    *****************************/

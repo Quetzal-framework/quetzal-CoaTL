@@ -31,6 +31,7 @@ namespace quetzal
 		template<typename Space, typename Time, typename Value>
 		class PopulationSize
 		{
+			std::unordered_map<Time, std::unordered_map<Space, Value> > m_populations;
 		public:
 			//! \typedef time type
 			using time_type = Time;
@@ -46,132 +47,104 @@ namespace quetzal
 			* \brief Checks if population size is defined at deme x at time t
 			* \return True  if variable is defined, else false.
 			*/
-			bool is_defined(coord_type const& x, time_type const& t) const;
+			bool is_defined(coord_type const& x, time_type const& t) const
+			{
+				return 	   (!m_populations.empty())
+				&& (m_populations.find(t) != m_populations.end())
+				&& (m_populations.at(t).find(x) != m_populations.at(t).end());
+			}
 			/**
 			* \brief Get population size value at deme x at time t
 			*/
-			value_type get(coord_type const& x, time_type const& t) const;
+			value_type get(coord_type const& x, time_type const& t) const{
+				assert( is_defined(x,t) );
+				return m_populations.at(t).at(x);
+			}
 			/**
 			* \brief Get population size at deme x at time t.
 			* \remark operator allows for more expressive mathematical style in client code
 			*/
-			value_type operator()(coord_type const& x, time_type const& t) const;
+			value_type operator()(coord_type const& x, time_type const& t) const
+			{
+				return get(x,t);
+			}
 			/**
 			* \brief Population size at deme x at time t.
 			* \return a reference to the value, initialized with value_type default constructor
 			* \remark operator allows for more expressive mathematical style in client code
 			*/
-			value_type & operator()(coord_type const& x, time_type const& t);
+			value_type & operator()(coord_type const& x, time_type const& t)
+			{
+				return m_populations[t][x];
+			}
 			/**
 			* \brief Population size at deme x at time t.
 			* \return a reference to the value, initialized with value_type default constructor
 			* \remark operator allows for more expressive mathematical style in client code
 			*/
-			value_type & operator()(coord_type && x, time_type const& t);
+			value_type & operator()(coord_type && x, time_type const& t)
+			{
+				return m_populations[t][std::move(x)];
+			}
 			/**
 			* \brief Population size at deme x at time t.
 			* \return a reference to the value, initialized with value_type default constructor
 			* \remark operator allows for more expressive mathematical style in client code
 			*/
-			value_type & operator()(coord_type const& x, time_type && t);
+			value_type & operator()(coord_type const& x, time_type && t)
+			{
+				return m_populations[std::move(t)][x];
+			}
 			/**
 			* \brief Population size at deme x at time t.
 			* \return a reference to the value, initialized with value_type default constructor
 			* \remark operator allows for more expressive mathematical style in client code
 			*/
-			value_type & operator()(coord_type && x, time_type && t);
+			value_type & operator()(coord_type && x, time_type && t)
+			{
+				return m_populations[std::move(t)][std::move(x)];
+			}
 			/**
 			* \brief Set population size value at deme x at time t
 			*/
-			void set(coord_type const& x, time_type const& t, value_type N);
+			void set(coord_type const& x, time_type const& t, value_type N)
+			{
+				m_populations[t][x] = N;
+			}
 			/**
 			* \brief Set population size value at deme x at time t
 			*/
-			void set(coord_type && x, time_type const& t, value_type N);
+			void set(coord_type && x, time_type const& t, value_type N)
+			{
+				m_populations[t][std::move(x)] = N;
+			}
 			/**
 			* \brief Set population size value at deme x at time t
 			*/
-			void set(coord_type const& x, time_type && t, value_type N);
+			void set(coord_type const& x, time_type && t, value_type N)
+			{
+				m_populations[std::move(t)][x] = N;
+			}
 			/**
 			* \brief Set population size value at deme x at time t
 			*/
-			void set(coord_type && x, time_type && t, value_type N);
+			void set(coord_type && x, time_type && t, value_type N)
+			{
+				m_populations[std::move(t)][std::move(x)] = N;
+			}
 			/**
 			* \brief Return the demes at which the population size was defined at time t.
 			*/
-			std::vector<coord_type> definition_space(time_type const& t) const;
-		private:
-			std::unordered_map<time_type, std::unordered_map<coord_type, value_type> > m_populations;
-		};
-
-
-		template<typename Space, typename Time, typename Value>
-		Value PopulationSize<Space, Time, Value>::operator()(Space const& x, Time const& t) const {
-			return get(x,t);
-		}
-
-		template<typename Space, typename Time, typename Value>
-		Value & PopulationSize<Space, Time, Value>::operator()(Space const& x, Time const& t) {
-			return m_populations[t][x];
-		}
-
-		template<typename Space, typename Time, typename Value>
-		Value & PopulationSize<Space, Time, Value>::operator()(Space && x, Time const& t) {
-			return m_populations[t][std::move(x)];
-		}
-
-		template<typename Space, typename Time, typename Value>
-		Value & PopulationSize<Space, Time, Value>::operator()(Space const& x, Time && t) {
-			return m_populations[std::move(t)][x];
-		}
-
-		template<typename Space, typename Time, typename Value>
-		Value & PopulationSize<Space, Time, Value>::operator()(Space && x, Time && t) {
-			return m_populations[std::move(t)][std::move(x)];
-		}
-
-		template<typename Space, typename Time, typename Value>
-		bool PopulationSize<Space, Time, Value>::is_defined(Space const& x, Time const& t) const {
-			return 	   (!m_populations.empty())
-			&& (m_populations.find(t) != m_populations.end())
-			&& (m_populations.at(t).find(x) != m_populations.at(t).end());
-		}
-
-		template<typename Space, typename Time, typename Value>
-		Value PopulationSize<Space, Time, Value>::get(Space const& x, Time const& t) const {
-			assert( is_defined(x,t) );
-			return m_populations.at(t).at(x);
-		}
-
-		template<typename Space, typename Time, typename Value>
-		void PopulationSize<Space, Time, Value>::set(Space const& x, Time const& t, value_type N) {
-			m_populations[t][x] = N;
-		}
-
-		template<typename Space, typename Time, typename Value>
-		void PopulationSize<Space, Time, Value>::set(Space && x, Time const& t, value_type N) {
-			m_populations[t][std::move(x)] = N;
-		}
-
-		template<typename Space, typename Time, typename Value>
-		void PopulationSize<Space, Time, Value>::set(Space const& x, Time && t, value_type N) {
-			m_populations[std::move(t)][x] = N;
-		}
-
-		template<typename Space, typename Time, typename Value>
-		void PopulationSize<Space, Time, Value>::set(Space && x, Time && t, value_type N) {
-			m_populations[std::move(t)][std::move(x)] = N;
-		}
-
-		template<typename Space, typename Time, typename Value>
-		std::vector<Space> PopulationSize<Space, Time, Value>::definition_space(Time const& t) const {
-			std::vector<coord_type> v;
-			for(auto const& it : m_populations.at(t) ){
-				if(it.second > 0 ){v.push_back(it.first);}
+			std::vector<coord_type> definition_space(time_type const& t) const
+			{
+				std::vector<coord_type> v;
+				for(auto const& it : m_populations.at(t) )
+				{
+					if(it.second > 0 ){v.push_back(it.first);}
+				}
+				return v;
 			}
-			return v;
-		}
-
+		};
 	} // namespace demography
 } // namespace quetzal
 
