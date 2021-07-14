@@ -1,4 +1,4 @@
-// Copyright 2016 Arnaud Becheler    <Arnaud.Becheler@egce.cnrs-gif.fr>
+// Copyright 2021 Arnaud Becheler    <abechele@umich.edu>
 
 /***********************************************************************                                                                         *
 * This program is free software; you can redistribute it and/or modify *
@@ -10,7 +10,7 @@
 
 
 #include "demography/Flow.h"
-
 #include "demography/PopulationSize.h"
-
+#include "demography/PopulationSizeOptimized.h"
 #include "demography/History.h"
+#include "demography/dispersal_kernel.h"

@@ -1,4 +1,4 @@
-// Copyright 2016 Arnaud Becheler    <Arnaud.Becheler@egce.cnrs-gif.fr> Florence Jornod <florence@jornod.com>
+// Copyright 2021 Arnaud Becheler    <abechele@umich.edu> Florence Jornod <florence@jornod.com>
 
 /***********************************************************************                                                                         *
 * This program is free software; you can redistribute it and/or modify *
@@ -16,6 +16,7 @@
 #include <vector>
 #include <map>
 #include <assert.h>
+#include <numeric> // std::accumulate
 
 namespace quetzal{
 namespace genetics{

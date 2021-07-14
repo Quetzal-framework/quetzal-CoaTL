@@ -1,4 +1,4 @@
-// Copyright 2016 Arnaud Becheler    <Arnaud.Becheler@egce.cnrs-gif.fr>
+// Copyright 2021 Arnaud Becheler    <abechele@umich.edu>
 
 /***********************************************************************                                                                         *
 * This program is free software; you can redistribute it and/or modify *
@@ -10,7 +10,8 @@
 
 // g++ -o Partitioner_test Partitioner_test.cpp -std=c++14 -Wall
 
-#include "Partitioner.h"
+#include "quetzal/fuzzy_transfer_distance.h"
+
 #include <vector>
 #include "assert.h"
 #include <iostream>

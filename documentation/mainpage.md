@@ -1,0 +1,5 @@
+
+# Welcome, developers!
+
+This section of the [Quetzal website](../../../pages/quetzal/home) is meant for
+C++ developers who want to include the library in their own code project.

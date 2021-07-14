@@ -1,4 +1,4 @@
-// Copyright 2016 Arnaud Becheler    <Arnaud.Becheler@egce.cnrs-gif.fr>
+// Copyright 2021 Arnaud Becheler    <abechele@umich.edu>
 
 /***********************************************************************                                                                         *
 * This program is free software; you can redistribute it and/or modify *
@@ -28,10 +28,6 @@ namespace demography {
  * \tparam Time     EqualityComparable, CopyConstructible.
  * \tparam Value    The type of the population size variable (int, unsigned int, double...)
  * \ingroup demography
- * \section Example
- * \snippet demography/test/Flow/Flow_test.cpp Example
- * \section Output
- * \include demography/test/Flow/Flow_test.output
  */
 template<typename Space, typename Time, typename Value>
 class Flow
@@ -42,7 +38,7 @@ public:
 	//! \typedef time type
 	using time_type = Time;
 
-	//! \typedf space type
+	//! \typedef space type
 	using coord_type = Space;
 
 	//! \typedef type of the population size variable
@@ -50,19 +46,11 @@ public:
 
 	/**
 	  * \brief Default constructor
-		* \section Example
-	  * \snippet demography/test/Flow/Flow_test.cpp Example
-	  * \section Output
-	  * \include demography/test/Flow/Flow_test.output
 		*/
 	Flow() = default;
 
 	/**
 	  * \brief Retrieves value of the flux from deme i to deme j at time t.
-		* \section Example
-	  * \snippet demography/test/Flow/Flow_test.cpp Example
-	  * \section Output
-	  * \include demography/test/Flow/Flow_test.output
 		*/
 	value_type flux_from_to(coord_type const& from, coord_type const& to, time_type t) const
 	{
@@ -73,10 +61,6 @@ public:
 	/**
 	  * \brief Retrieves value of the flux from deme i to deme j at time t.
 		* \return a reference on the value, initialized with value_type default constructor
-		* \section Example
-	  * \snippet demography/test/Flow/Flow_test.cpp Example
-	  * \section Output
-	  * \include demography/test/Flow/Flow_test.output
 		*/
 	void set_flux_from_to(coord_type const& from, coord_type const& to, time_type t, value_type v){
 		m_flows[key_type(t, from, to)] = v;
@@ -93,10 +77,6 @@ public:
 	  * \brief Retrieves the distribution of the value of the flux converging to deme x at time t.
 		* \return a const reference on an unordered_map with giving the origin deme and the value
 		*         giving the value of the flux
-		* \section Example
-	  * \snippet demography/test/Flow/Flow_test.cpp Example
-	  * \section Output
-	  * \include demography/test/Flow/Flow_test.output
 		*/
 	std::unordered_map<coord_type, value_type> const & flux_to(coord_type const& x, time_type t) const
 	{
@@ -107,10 +87,6 @@ public:
 	/**
 	  * \brief Check if the distribution of the value of the flux converging to deme x at time t is defined
 		* \return true if the distribution is defined, else returns false
-		* \section Example
-	  * \snippet demography/test/Flow/Flow_test.cpp Example
-	  * \section Output
-	  * \include demography/test/Flow/Flow_test.output
 		*/
 	bool flux_to_is_defined(coord_type const& to, time_type const& t) const
 	{
@@ -121,10 +97,6 @@ public:
 	/**
 		* \brief A class representing the spatio-temporal coordinates of the flow vector (time, origin and destination)
 		* \return An iterator on an object of type map_type
-		* \section Example
-		* \snippet demography/test/Flow/Flow_test.cpp Example
-		* \section Output
-		* \include demography/test/Flow/Flow_test.output
 		*/
 	struct key_type
 	{
@@ -156,10 +128,6 @@ public:
 	/**
 	  * \brief Read-only access to the migration history.
 		* \return An iterator on an object of type map_type
-		* \section Example
-	  * \snippet demography/test/Flow/Flow_test.cpp Example
-	  * \section Output
-	  * \include demography/test/Flow/Flow_test.output
 		*/
 	auto begin() const
 	{
@@ -169,10 +137,6 @@ public:
 	/**
 	  * \brief Read-only access to the migration history.
 		* \return An iterator on an object of type map_type
-		* \section Example
-	  * \snippet demography/test/Flow/Flow_test.cpp Example
-	  * \section Output
-	  * \include demography/test/Flow/Flow_test.output
 		*/
 	auto end() const
 	{

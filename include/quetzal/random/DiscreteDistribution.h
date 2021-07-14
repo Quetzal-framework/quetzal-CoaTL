@@ -1,4 +1,4 @@
-// Copyright 2016 Arnaud Becheler    <Arnaud.Becheler@egce.cnrs-gif.fr>
+// Copyright 2021 Arnaud Becheler    <abechele@umich.edu>
 
 /***********************************************************************                                                                         *
 * This program is free software; you can redistribute it and/or modify *
@@ -26,10 +26,6 @@ namespace random {
  *
  * \ingroup random
  * \tparam State is the support of the probability distribution.
- * \section Example
- * \snippet random/test/DiscreteDistribution/DiscreteDistribution_test.cpp Example
- * \section Output
- * \include random/test/DiscreteDistribution/DiscreteDistribution_test.output
  */
 template<typename State>
 class DiscreteDistribution{
@@ -91,46 +87,26 @@ public:
 		* \remark result_type should be DefaultConstructible
 		*
 		* Construct a probability distribution which is a Dirac in the default-constructed object.
-		* \section Example
-	  * \snippet random/test/DiscreteDistribution/initialization_test.cpp Example
-	  * \section Output
-	  * \include random/test/DiscreteDistribution/initialization_test.output
 		*/
 	DiscreteDistribution() = default;
 
 	/**
 	  * \brief Constructor
-		* \section Example
-	  * \snippet random/test/DiscreteDistribution/initialization_test.cpp Example
-	  * \section Output
-	  * \include random/test/DiscreteDistribution/initialization_test.output
 		*/
 	explicit DiscreteDistribution(const param_type & p ) : m_param(p) {}
 
 	/**
 	  * \brief Copy constructor.
-		* \section Example
-	  * \snippet random/test/DiscreteDistribution/initialization_test.cpp Example
-	  * \section Output
-	  * \include random/test/DiscreteDistribution/initialization_test.output
 		*/
 	DiscreteDistribution(DiscreteDistribution<State> const& other) = default;
 
 	/**
 	  * \brief Move constructor.
-		* \section Example
-	  * \snippet random/test/DiscreteDistribution/initialization_test.cpp Example
-	  * \section Output
-	  * \include random/test/DiscreteDistribution/initialization_test.output
 		*/
 	DiscreteDistribution(DiscreteDistribution<State>&& other) = default;
 
 	/**
 		* \brief Constructor.
-		* \section Example
-		* \snippet random/test/DiscreteDistribution/initialization_test.cpp Example
-		* \section Output
-		* \include random/test/DiscreteDistribution/initialization_test.output
 		*/
 	DiscreteDistribution(std::vector<result_type> const& support, std::vector<double> const& weights) :
 	m_param(support, weights)
@@ -138,10 +114,6 @@ public:
 
 	/**
 		* \brief Constructor.
-		* \section Example
-		* \snippet random/test/DiscreteDistribution/initialization_test.cpp Example
-		* \section Output
-		* \include random/test/DiscreteDistribution/initialization_test.output
 		*/
 	DiscreteDistribution(std::vector<result_type> && support, std::vector<double> && weights) noexcept :
 	m_param(std::move(support), std::move(weights))
@@ -149,29 +121,17 @@ public:
 
 	/**
 	  * \brief Copy assignment operator.
-		* \section Example
-	  * \snippet random/test/DiscreteDistribution/initialization_test.cpp Example
-	  * \section Output
-	  * \include random/test/DiscreteDistribution/initialization_test.output
 		*/
 	DiscreteDistribution<State>& operator=(DiscreteDistribution<State> const& other) = default;
 
 	/**
 	  * \brief Move assignment operator.
-		* \section Example
-	  * \snippet random/test/DiscreteDistribution/initialization_test.cpp Example
-	  * \section Output
-	  * \include random/test/DiscreteDistribution/initialization_test.output
 		*/
 	DiscreteDistribution<State>& operator=(DiscreteDistribution<State>&& other) = default;
 
   /** \brief Generates random objects that are distributed according to the associated parameter set. The entropy is acquired by calling g.operator().
 		* \tparam Generator must meet the requirements of <a href="http://en.cppreference.com/w/cpp/concept/UniformRandomBitGenerator">UniformRandomBitGenerator</a>.
 		* \param g an uniform random bit generator object
-		* \section Example
-		* \snippet random/test/DiscreteDistribution/DiscreteDistribution_test.cpp Example
-		* \section Output
-		* \include random/test/DiscreteDistribution/DiscreteDistribution_test.output
 		*/
 	template<typename Generator>
 	result_type operator()(Generator& g) const
@@ -185,10 +145,6 @@ public:
 		* \tparam Generator must meet the requirements of <a href="http://en.cppreference.com/w/cpp/concept/UniformRandomBitGenerator">UniformRandomBitGenerator</a>.
 		* \param g an uniform random bit generator object
 		* \param params	distribution parameter set to use instead of the associated one
-		* \section Example
-		* \snippet random/test/DiscreteDistribution/DiscreteDistribution_test.cpp Example
-		* \section Output
-		* \include random/test/DiscreteDistribution/DiscreteDistribution_test.output
 		*/
 	template<typename Generator>
 	result_type operator()(Generator& g, const param_type & params) const

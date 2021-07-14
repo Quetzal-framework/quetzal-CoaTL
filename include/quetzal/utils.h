@@ -1,4 +1,4 @@
-// Copyright 2016 Arnaud Becheler    <Arnaud.Becheler@egce.cnrs-gif.fr>
+// Copyright 2021 Arnaud Becheler    <abechele@umich.edu>
 
 /***********************************************************************                                                                         *
 * This program is free software; you can redistribute it and/or modify *
@@ -11,3 +11,4 @@
 
 #include "utils/matrix_operation.h"
 #include "utils/sampling_scheme.h"
+#include "utils/PointWithId.h"

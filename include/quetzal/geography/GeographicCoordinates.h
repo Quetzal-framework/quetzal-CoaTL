@@ -1,4 +1,4 @@
-// Copyright 2016 Arnaud Becheler    <Arnaud.Becheler@egce.cnrs-gif.fr>
+// Copyright 2021 Arnaud Becheler    <abechele@umich.edu>
 
 /***********************************************************************                                                                         *
 * This program is free software; you can redistribute it and/or modify *
@@ -26,10 +26,6 @@ namespace geography {
  * Geographic coordinates (longitude and latitude) in decimal degree.
  *
  * \ingroup geography
- * \section Example
- * \snippet geography/test/GeographicCoordinates/GeographicCoordinates_test.cpp Example
- * \section Output
- * \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
  */
 class GeographicCoordinates{
 
@@ -51,10 +47,6 @@ public:
 	 * \param lat the latitude value
 	 * \param lon the longitude value
 	 * \remark Exception will be thrown if the given values are aberrant.
-	 * \section Example
-	 * \snippet geography/test/GeographicCoordinates/GeographicCoordinates_test.cpp Example
-	 * \section Output
-	 * \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
 	 */
 	 GeographicCoordinates(decimal_degree lat, decimal_degree lon) : m_lat(lat), m_lon(lon){
 		if( (m_lat > 90.) || (m_lat < -90.) || (m_lon < -180.) || (m_lon > 180.))
@@ -70,10 +62,6 @@ public:
 	 *
 	 * \param other the other coordinate
 	 * \return the distance in kilometers
-	 * \section Example
-	 * \snippet geography/test/GeographicCoordinates/GeographicCoordinates_test.cpp Example
-	 * \section Output
-	 * \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
 	 */
 	km great_circle_distance_to(GeographicCoordinates const& other) const {
 		km d = distanceEarth(this->m_lat, this->m_lon, other.m_lat, other.m_lon);
@@ -88,10 +76,6 @@ public:
 	 * Gets latitude value.
 	 *
 	 * \return the latitude value
-	 * \section Example
-	 * \snippet geography/test/GeographicCoordinates/GeographicCoordinates_test.cpp Example
-	 * \section Output
-	 * \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
 	 */
 	 decimal_degree lat() const {return m_lat;}
 
@@ -101,10 +85,6 @@ public:
  	 * Gets latitude value reference.
  	 *
  	 * \return a reference the latitude value
- 	 * \section Example
- 	 * \snippet geography/test/GeographicCoordinates/GeographicCoordinates_test.cpp Example
- 	 * \section Output
- 	 * \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
  	 */
 	 decimal_degree& lat() {return m_lat;}
 
@@ -115,10 +95,6 @@ public:
 		* Set latitude value.
 		*
 		* \return a reference on the modified object
-		* \section Example
-		* \snippet geography/test/GeographicCoordinates/GeographicCoordinates_test.cpp Example
-		* \section Output
-		* \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
 		*/
 	 GeographicCoordinates& lat(decimal_degree value) {
 		 m_lat = value;
@@ -131,10 +107,6 @@ public:
 	 * Get longitude value.
 	 *
 	 * \return the longitude value
-	 * \section Example
-	 * \snippet geography/test/GeographicCoordinates/GeographicCoordinates_test.cpp Example
-	 * \section Output
-	 * \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
 	 */
 	decimal_degree lon() const {return m_lon;}
 
@@ -144,10 +116,6 @@ public:
 	 * Get reference on longitude value.
 	 *
 	 * \return a reference on the longitude value
-	 * \section Example
-	 * \snippet geography/test/GeographicCoordinates/GeographicCoordinates_test.cpp Example
-	 * \section Output
-	 * \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
 	 */
 	decimal_degree& lon() {return m_lon;}
 
@@ -157,10 +125,6 @@ public:
 	 * Set longitude value.
 	 *
 	 * \return a reference on the modified object
-	 * \section Example
-	 * \snippet geography/test/GeographicCoordinates/GeographicCoordinates_test.cpp Example
-	 * \section Output
-	 * \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
 	 */
 	GeographicCoordinates& lon(decimal_degree value) {
 		m_lon = value;
@@ -173,10 +137,6 @@ public:
 	 * Establishes a strict total order relation between geographic coordinates.
 	 *
 	 * \remark allow GeographicCoordinates to be used in map
-	 * \section Example
-	 * \snippet geography/test/GeographicCoordinates/GeographicCoordinates_test.cpp Example
-	 * \section Output
-	 * \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
 	 */
 	bool operator<(const GeographicCoordinates& other) const {
 
@@ -199,10 +159,6 @@ public:
 	 * Compares two coordinates by their latitude and longitude.
 	 *
 	 * \return true if longitude and latitude are equal, else returns false.
-	 * \section Example
-	 * \snippet geography/test/GeographicCoordinates/GeographicCoordinates_test.cpp Example
-	 * \section Output
-	 * \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
 	 */
 	bool operator==(const GeographicCoordinates& other) const {
     	if(m_lat == other.m_lat && m_lon == other.m_lon) return true;
@@ -215,10 +171,6 @@ public:
 		 * Compares two coordinates by their latitude and longitude.
 		 *
 		 * \return false if longitude and latitude are equal, else returns true.
-		 * \section Example
-		 * \snippet geography/test/GeographicCoordinates/GeographicCoordinates_test.cpp Example
-		 * \section Output
-		 * \include geography/test/GeographicCoordinates/GeographicCoordinates_test.output
 		 */
 		bool operator!=(const GeographicCoordinates& other) const {
 	    	return !(operator==(other));

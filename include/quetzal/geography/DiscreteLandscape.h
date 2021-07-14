@@ -1,4 +1,4 @@
-// Copyright 2016 Arnaud Becheler    <Arnaud.Becheler@egce.cnrs-gif.fr>
+// Copyright 2021 Arnaud Becheler    <abechele@umich.edu>
 
 /***********************************************************************                                                                         *
 * This program is free software; you can redistribute it and/or modify *
@@ -36,10 +36,6 @@ namespace quetzal {
  * \tparam Key      Ecological quantities identifier
  * \tparam Time     Time type
  * \ingroup geography
- * \section Example
- * \snippet geography/test/DiscreteLandscape/DiscreteLandscape_test.cpp Example
- * \section Output
- * \include geography/test/DiscreteLandscape/DiscreteLandscape_test.output
  */
 template<typename Key, typename Time>
 class DiscreteLandscape
@@ -100,10 +96,6 @@ public:
 		* \remark error will be thrown if data do not have same geographic definition space
 		*         (coordinates of cells with defined value)
 		* \remark All quantities types are casted to double.
-		* \section Example
-		* \snippet geography/test/DiscreteLandscape/DiscreteLandscape_test.cpp Example
-		* \section Output
-		* \include geography/test/DiscreteLandscape/DiscreteLandscape_test.output
 		*/
 	DiscreteLandscape(std::map<key_type, std::string> const& files, std::set<Time> const& times){
 
@@ -143,10 +135,6 @@ public:
 	/**
 	  * \brief Retrieves the number of ecological quantities.
 		* \return the number of ecological quantities.
-		* \section Example
-		* \snippet geography/test/DiscreteLandscape/DiscreteLandscape_test.cpp Example
-		* \section Output
-		* \include geography/test/DiscreteLandscape/DiscreteLandscape_test.output
 		*/
 	auto quantities_nbr() const {
 		return m_quantities.size();
@@ -159,10 +147,6 @@ public:
 		* \param k the identifier of teh quantity to be retrieved
 		* \remark the function-obect is invalidated if the DiscreteLandscape is destroyed.
 		* \remark the returned lightweight object can be used for mathematical function composition using the expressive module.
-		* \section Example
-		* \snippet geography/test/DiscreteLandscape/DiscreteLandscape_test.cpp Example
-		* \section Output
-		* \include geography/test/DiscreteLandscape/DiscreteLandscape_test.output
 		*/
 	auto operator [](key_type const& k) const {
 		assert(m_quantities.find(k) != m_quantities.end());
@@ -173,10 +157,6 @@ public:
 	/**
 		* \brief read the times at which quantity is defined.
 		* \return the ordered times that have been specified at construction
-		* \section Example
-		* \snippet geography/test/DiscreteLandscape/DiscreteLandscape_test.cpp Example
-		* \section Output
-		* \include geography/test/DiscreteLandscape/DiscreteLandscape_test.output
 		*/
 		const std::vector<time_type>& temporal_definition_space() const {
 		return m_quantities.cbegin()->second.temporal_definition_space();
@@ -191,10 +171,6 @@ public:
 		* Values can be read from other coordinates, but this function provides a natural
 		* way to construct the geographic support for a demic structure (for example for demographic simulations).
 		*
-		* \section Example
-		* \snippet geography/test/DiscreteLandscape/DiscreteLandscape_test.cpp Example
-		* \section Output
-		* \include geography/test/DiscreteLandscape/DiscreteLandscape_test.output
 		*/
 	const std::vector<coord_type> & geographic_definition_space() const {
 		return m_quantities.cbegin()->second.geographic_definition_space();
@@ -203,10 +179,6 @@ public:
 	/**
 		* \brief Retrieves the geographic coordinate of the top left corner of the landscape
 		* \return the geographic coordinate of the top left corner of the landscape
-		* \section Example
-		* \snippet geography/test/DiscreteLandscape/DiscreteLandscape_test.cpp Example
-		* \section Output
-		* \include geography/test/DiscreteLandscape/DiscreteLandscape_test.output
 		*/
 	const coord_type & origin() const {
 		return m_quantities.cbegin()->second.origin();
@@ -215,10 +187,6 @@ public:
 	/**
 		* \brief Gets the resolution (pixel dimensions) of the grid landscape
 		* \return a Resolution object
-		* \section Example
-		* \snippet geography/test/DiscreteLandscape/DiscreteLandscape_test.cpp Example
-		* \section Output
-		* \include geography/test/DiscreteLandscape/DiscreteLandscape_test.output
 		*/
 	const Resolution<decimal_degree> & resolution() const {
 		return m_quantities.cbegin()->second.resolution();
@@ -227,10 +195,6 @@ public:
 	/**
 		* \brief Gets the geographic extent of the landscape
 		* \return an Extent object
-		* \section Example
-		* \snippet geography/test/DiscreteLandscape/DiscreteLandscape_test.cpp Example
-		* \section Output
-		* \include geography/test/DiscreteLandscape/DiscreteLandscape_test.output
 		*/
 	const Extent<decimal_degree> & extent() const {
 		return m_quantities.cbegin()->second.extent();
@@ -240,10 +204,6 @@ public:
 		* \brief  Check if a given geographic coordinate is in the landscpae spatial extent
 		* \return true if `c` is in the landscape limits, else false
 		* \param c the coordinate to be tested
-		* \section Example
-		* \snippet geography/test/DiscreteLandscape/DiscreteLandscape_test.cpp Example
-		* \section Output
-		* \include geography/test/DiscreteLandscape/DiscreteLandscape_test.output
 		*/
 	bool is_in_spatial_extent(coord_type const& c) const {
 		return m_quantities.cbegin()->second.is_in_spatial_extent(c);
@@ -254,66 +214,51 @@ public:
 		* \return the geograhic coordinate of the cell centroid
 		* \param c the coordinate to be reprojected
 		* \remark the given coordinate must be in the landscape spatial extent
-		* \section Example
-		* \snippet geography/test/DiscreteLandscape/DiscreteLandscape_test.cpp Example
-		* \section Output
-		* \include geography/test/DiscreteLandscape/DiscreteLandscape_test.output
 		*/
-	coord_type reproject_to_centroid(coord_type const& c) const {
+	coord_type reproject_to_centroid(coord_type const& c) const
+	{
 		return m_quantities.cbegin()->second.reproject_to_centroid(c);
 	}
-
-	// TODO
-	[[deprecated("Relies on the use of geographic_definition_space")]]
-	std::vector<coord_type> four_nearest_defined_cells(coord_type const& x) const {
-		auto const& X = geographic_definition_space();
-
-		auto x0 = reproject_to_centroid(x);
-	  assert( std::find(X.begin(), X.end(), x0) != X.end());
-
+	/*!
+	   \brief Get the four neighbors of a cell - or less if on the border of the grid
+	   \param x0 the coordinates of the cell to get the four neighbors from
+		 \pre x0 is in the landscape spatial extent
+		 \post At least 2 neighbors (x0 is a corner) or 3 (x_0 on the landscape boundary)
+	   \return A vector with no more than 4 coordinates.
+	*/
+	std::vector<coord_type> direct_neighbors(coord_type x) const {
+		assert(is_in_spatial_extent(x));
+		x = reproject_to_centroid(x);
 		auto res = resolution();
-	  std::vector<coord_type> v;
-
-	  coord_type x1(x0);
-	  x1.lon() += res.lon();
-		if(is_in_spatial_extent(x1)){
-			x1 = reproject_to_centroid(x1);
-		  if(std::find(X.begin(), X.end(), x1) != X.end()){
-				v.push_back(x1);
-			}
+		std::vector<coord_type> v;
+		coord_type x1(x);
+		x1.lon() += res.lon();
+		if(is_in_spatial_extent(x1))
+		{
+			v.push_back(reproject_to_centroid(x1));
 		}
-
-	  coord_type x2(x0);
-	  x2.lat() += res.lat();
-		if(is_in_spatial_extent(x2)){
-			x2 = reproject_to_centroid(x2);
-		  if(std::find(X.begin(), X.end(), x2) != X.end()){
-				v.push_back(x2);
-			}
+		coord_type x2(x);
+		x2.lat() += res.lat();
+		if(is_in_spatial_extent(x2))
+		{
+			v.push_back(reproject_to_centroid(x2));
 		}
-
-	  coord_type x3(x0);
-	  x3.lon() -= res.lon();
-		if(is_in_spatial_extent(x3)){
-			x3 = reproject_to_centroid(x3);
-		  if(std::find(X.begin(), X.end(), x3) != X.end()){
-				v.push_back(x3);
-			}
+		coord_type x3(x);
+		x3.lon() -= res.lon();
+		if(is_in_spatial_extent(x3))
+		{
+			v.push_back(reproject_to_centroid(x3));
 		}
-
-	  coord_type x4(x0);
-	  x4.lat() -= res.lat() ;
-		if(is_in_spatial_extent(x4)){
-			x4 = reproject_to_centroid(x4);
-		  if(std::find(X.begin(), X.end(), x4) != X.end()){
-				v.push_back(x4);
-			}
+		coord_type x4(x);
+		x4.lat() -= res.lat();
+		if(is_in_spatial_extent(x4))
+		{
+			v.push_back(reproject_to_centroid(x4));
 		}
-
+		assert(v.size() >= 2);
+		assert(v.size() <= 4);
 	  return v;
 	}
-
-
 };
 
 } // geography

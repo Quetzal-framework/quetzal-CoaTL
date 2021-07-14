@@ -1,4 +1,4 @@
-// Copyright 2016 Arnaud Becheler    <Arnaud.Becheler@egce.cnrs-gif.fr>
+// Copyright 2021 Arnaud Becheler    <abechele@umich.edu>
 
 /***********************************************************************                                                                         *
 * This program is free software; you can redistribute it and/or modify *
@@ -18,10 +18,6 @@ namespace geography {
  * \brief %Extent of a raster grid object
  *
  * \ingroup geography
- * \section Example
- * \snippet geography/test/Extent/Extent_test.cpp Example
- * \section Output
- * \include geography/test/Extent/Extent_test.output
  */
 template<typename T>
 class Extent{
@@ -38,10 +34,6 @@ public:
 		* \param lon_max the mmaximal longitude of the spatial grid
 		* \param lat_min the minimal latitude of the spatial grid
 		* \param lat_max the minimal longitude of the spatial grid
-		* \section Example
-		* \snippet geography/test/Extent/Extent_test.cpp Example
-		* \section Output
-		* \include geography/test/Extent/Extent_test.output
 		*/
 	Extent(value_type lat_min, value_type lat_max, value_type lon_min, value_type lon_max):
 	m_lat_min(lat_min),
@@ -55,10 +47,6 @@ public:
 		*
 		* \param other The other Extent object to be compared
 		* \return true if the two objects have same lon_min, lon_max, lat_min, lat_max. Else returns false.
-		* \section Example
-		* \snippet geography/test/Extent/Extent_test.cpp Example
-		* \section Output
-		* \include geography/test/Extent/Extent_test.output
 		*/
 	bool operator==(const Extent& other) const {
 	    if(lon_min() == other.lon_min() &&
@@ -76,10 +64,6 @@ public:
 			*
 			* \param other The other Extent object to be compared
 			* \return false if the two objects have same lon_min, lon_max, lat_min, lat_max. Else returns true.
-			* \section Example
-			* \snippet geography/test/Extent/Extent_test.cpp Example
-			* \section Output
-			* \include geography/test/Extent/Extent_test.output
 			*/
 		bool operator!=(const Extent& other) const {
 		    return !(operator==(other));
@@ -88,40 +72,21 @@ public:
 		/**
 			* \brief Get the minimal latitude of the spatial extent
 			*
-			* \section Example
-			* \snippet geography/test/Extent/Extent_test.cpp Example
-			* \section Output
-			* \include geography/test/Extent/Extent_test.output
 			*/
 		value_type lat_min() const {return m_lat_min; }
 
 		/**
 			* \brief Get the maximal latitude of the spatial extent
-			*
-			* \section Example
-			* \snippet geography/test/Extent/Extent_test.cpp Example
-			* \section Output
-			* \include geography/test/Extent/Extent_test.output
 			*/
 		value_type lat_max() const {return m_lat_max; }
 
 		/**
 			* \brief Get the minimal longitude of the spatial extent
-			*
-			* \section Example
-			* \snippet geography/test/Extent/Extent_test.cpp Example
-			* \section Output
-			* \include geography/test/Extent/Extent_test.output
 			*/
 		value_type lon_min() const {return m_lon_min; }
 
 		/**
 			* \brief Get the maximal longitude of the spatial extent
-			*
-			* \section Example
-			* \snippet geography/test/Extent/Extent_test.cpp Example
-			* \section Output
-			* \include geography/test/Extent/Extent_test.output
 			*/
 		value_type lon_max() const {return m_lon_max; }
 
@@ -130,11 +95,6 @@ public:
 			* \brief Set the minimal latitude of the spatial extent
 			*
 			* \return a reference on the Extent object
-			*
-			* \section Example
-			* \snippet geography/test/Extent/Extent_test.cpp Example
-			* \section Output
-			* \include geography/test/Extent/Extent_test.output
 			*/
 		Extent& lat_min(value_type val) {
 			m_lat_min = val;
@@ -145,11 +105,6 @@ public:
 			* \brief Set the maximal longitude of the spatial extent
 			*
 			* \return a reference on the Extent object
-			*
-			* \section Example
-			* \snippet geography/test/Extent/Extent_test.cpp Example
-			* \section Output
-			* \include geography/test/Extent/Extent_test.output
 			*/
 		Extent& lat_max(value_type val) {
 			m_lat_max = val ;
@@ -160,11 +115,6 @@ public:
 			* \brief Set the minimal longitude of the spatial extent
 			*
 			* \return a reference on the Extent object
-			*
-			* \section Example
-			* \snippet geography/test/Extent/Extent_test.cpp Example
-			* \section Output
-			* \include geography/test/Extent/Extent_test.output
 			*/
 		Extent& lon_min(value_type val) {
 			m_lon_min = val ;
@@ -175,11 +125,6 @@ public:
 			* \brief Set the maximal longitude of the spatial extent
 			*
 			* \return a reference on the Extent object
-			*
-			* \section Example
-			* \snippet geography/test/Extent/Extent_test.cpp Example
-			* \section Output
-			* \include geography/test/Extent/Extent_test.output
 			*/
 		Extent& lon_max(value_type val) {
 			m_lon_max = val ;

@@ -185,10 +185,6 @@ constexpr auto expression(F f) {return make_expression_t<F>(f);}
  *
  * \param f a function object
  * \ingroup expressive
- * \section Example
- * \snippet expressive/test/expressive_test.cpp Example
- * \section Output
- * \include expressive/test/expressive_test.output
  */
 template <typename F>
 constexpr auto use(F f) {return make_expression_t<F>(f);}
@@ -216,10 +212,6 @@ struct literal_t {
  * \tparam T the literal type
  * \tparam Args the callable interface arguments to which the literal should be transformed
  * \ingroup expressive
- * \section Example
- * \snippet expressive/test/expressive_test.cpp Example
- * \section Output
- * \include expressive/test/expressive_test.output
  */
  template <typename... Args, typename T>
 constexpr auto literal(T t) {return literal_t<T, Args...>{t};}
@@ -236,10 +228,6 @@ constexpr auto literal(T t) {return literal_t<T, Args...>{t};}
  * \tparam T the literal type
  * \tparam Args the callable interface arguments to which the literal should be transformed
  * \ingroup expressive
- * \section Example
- * \snippet expressive/test/expressive_test.cpp Example
- * \section Output
- * \include expressive/test/expressive_test.output
  */
 template <typename... Args>
 struct literal_factory {
@@ -508,10 +496,6 @@ struct compose_t<Outer>: public composite_functor<Outer> {
  * \param f the outer function
  * \param fs the inner functions
  * \ingroup expressive
- * \section Example
- * \snippet expressive/test/expressive_test.cpp Example
- * \section Output
- * \include expressive/test/expressive_test.output
  */
 template<typename F, typename... Fs>
 constexpr auto compose(F f, Fs... fs) {return compose_t<F, Fs...>(f, fs...);}
@@ -529,10 +513,6 @@ constexpr auto chain(F f) {return expression(f);}
  * \param inner the inner function
  * \param outer the inner functions
  * \ingroup expressive
- * \section Example
- * \snippet expressive/test/expressive_test.cpp Example
- * \section Output
- * \include expressive/test/expressive_test.output
  */
 template<typename Inner, typename Outer>
 constexpr auto operator>>(Inner inner, Outer outer) {return compose(outer, inner);}
@@ -545,10 +525,6 @@ constexpr auto operator>>(Inner inner, Outer outer) {return compose(outer, inner
  * \param outer the outer function
  * \param inner the inner function
  * \ingroup expressive
- * \section Example
- * \snippet expressive/test/expressive_test.cpp Example
- * \section Output
- * \include expressive/test/expressive_test.output
  */
 template<typename Inner, typename Outer>
 constexpr auto operator<<(Outer outer, Inner inner) {return compose(outer, inner);}
@@ -562,10 +538,6 @@ constexpr auto operator<<(Outer outer, Inner inner) {return compose(outer, inner
  * \param f2 the inner function: its output is the input of f1
  * \param fs the inner functions: their output are the input of f2
  * \ingroup expressive
- * \section Example
- * \snippet expressive/test/expressive_test.cpp Example
- * \section Output
- * \include expressive/test/expressive_test.output
  */
 template<typename F1, typename F2, typename... Fs>
 constexpr auto chain(F1 f1, F2 f2, Fs... fs) {return f1 >> chain(f2, fs...);}

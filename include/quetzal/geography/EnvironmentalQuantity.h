@@ -1,4 +1,4 @@
-// Copyright 2016 Arnaud Becheler    <Arnaud.Becheler@egce.cnrs-gif.fr>
+// Copyright 2021 Arnaud Becheler    <abechele@umich.edu>
 
 /***********************************************************************                                                                         *
 * This program is free software; you can redistribute it and/or modify *
@@ -33,10 +33,6 @@ namespace geography {
  *
  * \tparam Time     Time type
  * \ingroup geography
- * \section Example
- * \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
- * \section Output
- * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
  */
 template<typename Time>
 class EnvironmentalQuantity : public gdalcpp::Dataset {
@@ -65,10 +61,6 @@ public:
 		* \remark the size of times argument should be equal to the depth of the given dataset
 		* \remark times vector should be sorted
 		* \remark values should be defined for same coordinates at all times"
-		* \section Example
-	  * \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
-	  * \section Output
-	  * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
 		*/
   EnvironmentalQuantity(const std::string& dataset_name, std::vector<time_type> const& times):
   gdalcpp::Dataset(dataset_name),
@@ -103,11 +95,6 @@ public:
 
 	/**
 		* \brief Gets the origin of the spatial grid
-		*
-		* \section Example
-	  * \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
-	  * \section Output
-	  * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
 		*/
   const GeographicCoordinates & origin() const {
     return m_origin;
@@ -115,11 +102,6 @@ public:
 
 	/**
 		* \brief Gets the resolution of the spatial grid
-		*
-		* \section Example
-	  * \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
-	  * \section Output
-	  * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
 		*/
   const Resolution<decimal_degree> & resolution() const {
     return m_resolution;
@@ -128,10 +110,6 @@ public:
 	/**
 		* \brief Gets the extent of the spatial grid
 		*
-		* \section Example
-	  * \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
-	  * \section Output
-	  * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
 		*/
   const Extent<decimal_degree>& extent() const {
     return m_extent;
@@ -142,10 +120,6 @@ public:
 		*
 		* \remark possibly slow
 		* \remark checks if the given time is in the temporal extent
-		* \section Example
-	  * \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
-	  * \section Output
-	  * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
 		*/
   value_type at(GeographicCoordinates const& c, Time const& t) const {
     auto xy = to_xy(c);
@@ -160,11 +134,6 @@ public:
 		* Returns the geographic coordinates of the centroids of the demes for which values are defined at all times.
 		* Values can be read from other coordinates, but this function provides a natural
 		* way to construct the geographic support for a demic structure (for example for demographic simulations).
-		*
-		* \section Example
-	  * \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
-	  * \section Output
-	  * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
 		*/
   // TODO
   const std::vector<GeographicCoordinates>& geographic_definition_space() const {
@@ -174,10 +143,6 @@ public:
 	/**
 		* \brief read the times at which quantity is defined.
 		*
-		* \section Example
-	  * \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
-	  * \section Output
-	  * \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
 		*/
   const std::vector<time_type>& temporal_definition_space() const {
     return m_times;
@@ -187,10 +152,6 @@ public:
 	/**
 		* \brief Checks if a given geographic coordinate is in the landscape spatial extent
 		*
-		* \section Example
-		* \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
-		* \section Output
-		* \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
 		*/
   bool is_in_spatial_extent(GeographicCoordinates const& c) const {
     bool is_in_spatial_extent = false;
@@ -205,10 +166,6 @@ public:
 	/**
 		* \brief Coordinate of the centroid of the deme to which the given coordinate belongs
 		*
-		* \section Example
-		* \snippet geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.cpp Example
-		* \section Output
-		* \include geography/test/EnvironmentalQuantity/EnvironmentalQuantity_test.output
 		*/
   GeographicCoordinates reproject_to_centroid(GeographicCoordinates const& c) const {
     if( ! is_in_spatial_extent(c)){
@@ -221,56 +178,55 @@ public:
   }
 
 
+  /*!
+     \brief Export EnvironmentalQuantity to GeoTiff file
+     \param f functor giving the quantity to print. Signature equivalent to `double f(coord_type, time_type)`
+     \param g functor giving the set of demes where f is defined at every time. Signature equivalent to `std::vector<coord_type> g(time_type)`
+     \param t1 first time (first band) to print
+     \param t2 last time (last band) to print
+     \param filename the file name where to save
+  */
   template<typename F, typename G>
   void export_to_geotiff(F f, G g, time_type const& t1, time_type const& t2, std::string const& filename) const {
-
-    int nBands = std::abs(t2 - t1);
+    // Number of bands to create:
+    int nBands = std::abs(t2 - t1) + 1;
     assert(nBands >= 1);
-
-    // Create a model dataset band
+    // Create a model dataset with  default values
     GDALDataset* p_sink = get().GetDriver()->Create(filename.c_str(), width(), height(), nBands, GDT_Float32, NULL);
     std::vector<float> buffer(width()*height());
-
+    // RasterBands begins at 1
     GDALRasterBand* p_source_band = get().GetRasterBand(1);
     double na = p_source_band->GetNoDataValue();
-
-    // Modify data
+    // Modify the defaut data in every band
     for(int i = 1; i <= nBands; ++i ){
-
-
       auto err = p_source_band->RasterIO( GF_Read, 0, 0, width(), height(), buffer.data(), width(), height(), GDT_Float32, 0, 0 );
       (void)err;
-
       //replace all continental cells value by 0
       auto continental_cells = get_domain(0);
-      for(auto const& it : continental_cells){
+      for(auto const& it : continental_cells)
+      {
         buffer.at(it.x + it.y*width()) = 0.0;
       }
-
       // Replace all cells where F is defined by F
       auto t_curr = t1 + i-1;
       auto f_defined_cells = g(t_curr);
-
-      for(coord_type const& it: f_defined_cells){
+      for(coord_type const& it: f_defined_cells)
+      {
         auto xy = to_xy(it);
         buffer.at(xy.x  + (xy.y*width()) ) = static_cast<float>(f(it, t_curr));
       }
-
       //write the data
       GDALRasterBand* p_sink_band = p_sink->GetRasterBand(i);
       p_sink_band->SetNoDataValue(na);
       auto err2 = p_sink_band->RasterIO( GF_Write, 0, 0, width(), height(), buffer.data(), width(), height(), GDT_Float32, 0, 0 );
       (void)err2;
       p_sink->FlushCache();
-
-    }
-
+    } // end modify data
     // write metadata
     std::vector<double> geo_transform(6);
     get().GetGeoTransform( geo_transform.data() );
     p_sink->SetGeoTransform( geo_transform.data() );
     p_sink->SetProjection( get().GetProjectionRef() );
-
     GDALClose( (GDALDatasetH) p_sink );
   }
 

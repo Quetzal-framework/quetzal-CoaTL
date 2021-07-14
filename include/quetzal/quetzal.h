@@ -1,4 +1,4 @@
-// Copyright 2016 Arnaud Becheler    <Arnaud.Becheler@egce.cnrs-gif.fr>
+// Copyright 2021 Arnaud Becheler    <abechele@umich.edu>
 
 /***********************************************************************                                                                         *
 * This program is free software; you can redistribute it and/or modify *
@@ -19,9 +19,6 @@
 #include "geography.h"
 
 #include "expressive.h"
-
-#include "abc.h"
-
 #include "genetics.h"
 
 #include "fuzzy_transfer_distance.h"
@@ -29,3 +26,5 @@
 #include "simulator/DiscreteTimeWrightFisher.h"
 #include "simulator/ForwardBackwardSpatiallyExplicit.h"
 #include "simulator/utils.h"
+
+#include "utils.h"

@@ -1,4 +1,4 @@
-// Copyright 2016 Arnaud Becheler    <Arnaud.Becheler@egce.cnrs-gif.fr>
+// Copyright 2021 Arnaud Becheler    <abechele@umich.edu>
 
 /***********************************************************************                                                                         *
 * This program is free software; you can redistribute it and/or modify *
@@ -8,4 +8,19 @@
 *                                                                      *
 ***************************************************************************/
 
-#include "Fuzzifier.h"
+#ifndef __STORAGE_POLICY_H_INCLUDED__
+#define __STORAGE_POLICY_H_INCLUDED__
+
+namespace quetzal
+{
+  namespace demography
+  {
+    struct storage_policy
+    {
+      using map_based = PopulationSize
+      using vector_based = PopulationSize2
+    }
+  } // end namespace demography
+} // end namespace quetzal
+
+#endif
