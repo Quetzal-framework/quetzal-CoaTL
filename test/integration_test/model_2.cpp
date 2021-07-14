@@ -7,15 +7,11 @@
 * (at your option) any later version.                                  *
 *                                                                      *
 ************************************************************************/
-
+//! [Demonstrate use]
 #include "quetzal/quetzal.h"
-
-#include <boost/math/special_functions/binomial.hpp> // binomial coefficient
-#include <random>
+#include <random> // rng
 #include <iostream>
 #include <fstream>
-#include <algorithm>
-#include <cassert>
 #include <vector>
 
 // Namespace shortnames
@@ -27,6 +23,10 @@ namespace expr = quetzal::expressive;
 int main(int argc, char* argv[])
 {
   std::cout << "0 ... Reading " << argc << " input parameters" << std::endl;
+  // Initalize RNG
+  std::random_device rd;
+  std::mt19937 gen(rd());
+
   /******************************
    * Geospatial dataset
    *****************************/
@@ -35,10 +35,12 @@ int main(int argc, char* argv[])
   using landscape_type = geo::DiscreteLandscape<std::string,time_type>;
   using coord_type = landscape_type::coord_type;
   landscape_type env( {{"temp", argv[1]}},   {time_type(0)} );
+
   /******************************
    * Simulator configuration
    *****************************/
    std::cout << "2 ... Initializing spatial coalescence simulator" << std::endl;
+   // Declaring simulation policies (policy-based design)
   using demographic_policy = quetzal::demography::dispersal_policy::individual_based;
   using coalescence_policy = quetzal::coalescence::newick_with_distance_to_parent<coord_type, time_type>;
   using simulator_type = quetzal::ForwardBackwardSpatiallyExplicit<coord_type, demographic_policy, coalescence_policy>;
@@ -54,8 +56,7 @@ int main(int argc, char* argv[])
   simulator_type simulator(x_0, N_0, nb_generations);
   // Ancestral wright-fisher population size
   simulator.ancestral_Wright_Fisher_N(N_0);
-  // Sampling size
-  unsigned int n = 50;
+
   /******************************
    * Niche and growth functions
    *****************************/
@@ -72,57 +73,68 @@ int main(int argc, char* argv[])
   auto s = [temp](coord_type x, time_type){return temp(x, 0) >= 0.0 ? temp(x,0) : 0.0 ;};
   // Compose it to get a carrying capacity expression
   auto K = use(s)*lit(5);
-  // Retrieve the population size function
+  // Retrieve the population size functor
   auto N = simulator.get_functor_N();
   // Compose everything in a logistic growth expression
   auto g = N * ( lit(1) + r ) / ( lit(1) + ( (r * N)/K ));
+  // Add random fluctuations
   auto sim_children = [g](auto& gen, coord_type const&x, time_type t){
     std::poisson_distribution<unsigned int> poisson(g(x,t));
     return poisson(gen);
   };
-  // Initalize RNG
-  std::random_device rd;
-  std::mt19937 gen(rd());
+
   /******************
    * Dispersal
    ******************/
   std::cout << "4 ... Initializing dispersal kernel" << std::endl;
   // Retrieve the demic structure
   auto const& demes = env.geographic_definition_space();
-  // Build a dispersal kernel object
+  // Build a gaussian dispersal kernel object: many others available
   using quetzal::demography::dispersal_kernel::Gaussian;
   auto f = [](coord_type const& x, coord_type const& y)
   {
     return Gaussian::pdf(x.great_circle_distance_to(y), Gaussian::param_type(100.0));
   };
   auto dispersal = demographic_policy::make_distance_based_dispersal(demes, f);
+
   /**************************
   * Demographic expansion
   **************************/
   std::cout << "5 ... Simulating demographic expansion" << std::endl;
   simulator.simulate_forward_demography(sim_children, dispersal, gen);
+
   /************************************************************
   *  Sample uniformely at random across the distribution area
   ************************************************************/
   std::cout << "6 ... Simulating sampling scheme" << std::endl;
+  // Sampling size
+  unsigned int n = 50;
   // Retrieve the non-empty demes at sampling time
   std::vector<coord_type> distribution_area = simulator.distribution_area(sampling_time);
-  // Retrieve the last expression
+  // Declare a functor to get the population size at sampling time
   auto last_N = [N, sampling_time](coord_type const& x){return N(x, sampling_time);};
+  // Give the required information to the sampling scheme simulator
   auto unif_sampler = quetzal::sampling_scheme::make_unif_constrained_sampler(distribution_area, last_N, n);
+  // Generate a random sample
   auto sample = unif_sampler(gen);
+
   /**********************
    *  Data visualization
    **********************/
   std::cout << "7 ... Exporting GIS data for visualization" << std::endl;
   std::string N_filename = "N.tif";
+  // Make it easy to visualize using eg the R package raster
   env.export_to_geotiff(N, t_0, sampling_time, [&simulator](time_type const& t){return simulator.distribution_area(t);}, N_filename);
+  // Easy to visualize with eg readOGR R function
   env.export_to_shapefile(sample, "sample.shp");
+
   /**********************
    *  Coalescence
    **********************/
   std::cout << "8 ... Begining coalescence" << std::endl;
+  // Coalesce sampled gene copies aaaaall the way to the MRCA
   auto results = simulator.coalesce_to_mrca<>(sample, sampling_time, gen);
+  // Output trees newick formulas
   std::ofstream file;
   file.open ("trees.txt");
   file << results;
@@ -130,3 +142,4 @@ int main(int argc, char* argv[])
   std::cout << "Done" << std::endl;
   return 0;
 }
+//! [Demonstrate use]
