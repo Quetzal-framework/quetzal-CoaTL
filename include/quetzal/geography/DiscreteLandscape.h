@@ -226,29 +226,30 @@ public:
 		 \post At least 2 neighbors (x0 is a corner) or 3 (x_0 on the landscape boundary)
 	   \return A vector with no more than 4 coordinates.
 	*/
-	std::vector<coord_type> direct_neighbors(coord_type const& x0) const {
-		assert(is_in_spatial_extent(x0));
+	std::vector<coord_type> direct_neighbors(coord_type x) const {
+		assert(is_in_spatial_extent(x));
+		x = reproject_to_centroid(x);
 		auto res = resolution();
 		std::vector<coord_type> v;
-		coord_type x1(x0);
+		coord_type x1(x);
 		x1.lon() += res.lon();
 		if(is_in_spatial_extent(x1))
 		{
 			v.push_back(reproject_to_centroid(x1));
 		}
-		coord_type x2(x0);
+		coord_type x2(x);
 		x2.lat() += res.lat();
 		if(is_in_spatial_extent(x2))
 		{
 			v.push_back(reproject_to_centroid(x2));
 		}
-		coord_type x3(x0);
+		coord_type x3(x);
 		x3.lon() -= res.lon();
 		if(is_in_spatial_extent(x3))
 		{
 			v.push_back(reproject_to_centroid(x3));
 		}
-		coord_type x4(x0);
+		coord_type x4(x);
 		x4.lat() -= res.lat();
 		if(is_in_spatial_extent(x4))
 		{

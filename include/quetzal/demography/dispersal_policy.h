@@ -423,6 +423,7 @@ namespace quetzal
         template<typename Space, typename F1, typename F2>
         class neighboring_migration
         {
+        private:
           double m_emigrant_rate;
           F1 m_friction;
           F2 m_get_neighbors;
@@ -434,12 +435,11 @@ namespace quetzal
           m_friction(friction),
           m_get_neighbors(get_neighbors)
           {}
-
-            ///
-            /// @brief Defines arrival space (that is in this class case, vecinity plus focal deme) from coordinate x.
-            ///
-            /// @remark Interface required in expansion algorithm.
-            ///
+          ///
+          /// @brief Defines arrival space (that is in this class case, vecinity plus focal deme) from coordinate x.
+          ///
+          /// @remark Interface required in expansion algorithm.
+          ///
           std::vector<coord_type> arrival_space(coord_type const& x) const
           {
             auto v = m_get_neighbors(x);
@@ -447,7 +447,6 @@ namespace quetzal
             v.push_back(x);
             return v;
           }
-
           ///
           /// @brief Migration rate, operator interfaceable with \ref History algorithm.
           ///
@@ -473,7 +472,6 @@ namespace quetzal
             return 1.0/(m_friction(y)*sum);
           }
         }; // end neighboring_migration
-
         ///
         /// @brief Helper function to create a dispersal kernel compatible with \ref History specialized for the mass-based policy, but that restricts migration to the vecinity of each deme.
         ///

@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
   // Retrieve temperature function of space (homogeneous across time)
   auto temp = env["temp"];
   // Wrap it to ignore time argument
-  auto s = [temp](coord_type x, time_type){return temp(x, 0);};
+  auto s = [temp](coord_type x, time_type){return temp(x, 0) >= 0.0 ? temp(x,0) : 0.0 ;};
   // Compose it to get a carrying capacity expression
   auto K = use(s)*lit(5);
   // Retrieve the population size function
@@ -87,6 +87,8 @@ int main(int argc, char* argv[])
    * Dispersal
    ******************/
   std::cout << "4 ... Initializing dispersal kernel" << std::endl;
+  // Retrieve the demic structure
+  //auto const& space = env.geographic_definition_space();
   // Define an emigrant rate
   double emigrant_rate = 0.1;
   // Define the friction according to environmental features
