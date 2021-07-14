@@ -138,7 +138,7 @@ namespace quetzal
           template<typename Generator>
           coord_type sample_arrival(Generator& gen, coord_type const& x) const
           {
-            return m_coords[m_distributions[getIndexOfPointInVector(x, m_coords)].operator()(gen)];
+            return m_coords[m_distributions[quetzal::utils::getIndexOfPointInVector(x, m_coords)].operator()(gen)];
           }
         }; // end inner class Implementation
 
@@ -300,7 +300,7 @@ namespace quetzal
           {
             using it1_t = typename matrix_type::const_iterator1;
             using it2_t = typename matrix_type::const_iterator2;
-            auto i = getIndexOfPointInVector(x, m_coords);
+            auto i = quetzal::utils::getIndexOfPointInVector(x, m_coords);
             it1_t it1 = m_matrix.begin1();
             std::advance(it1, i);
             std::vector<coord_type> v;
@@ -316,7 +316,7 @@ namespace quetzal
           ///
           double migration_rate(coord_type const& x, coord_type const& y)
           {
-            return m_matrix(getIndexOfPointInVector(x, m_coords), getIndexOfPointInVector(y, m_coords) );
+            return m_matrix(quetzal::utils::getIndexOfPointInVector(x, m_coords), quetzal::utils::getIndexOfPointInVector(y, m_coords) );
           }
         }; // end of inner class Implementation
 

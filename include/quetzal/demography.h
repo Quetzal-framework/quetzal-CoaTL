@@ -13,3 +13,4 @@
 #include "demography/PopulationSize.h"
 #include "demography/PopulationSizeOptimized.h"
 #include "demography/History.h"
+#include "demography/dispersal_kernel.h"
