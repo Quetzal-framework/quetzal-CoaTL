@@ -44,19 +44,18 @@ namespace quetzal
 			*/
 			PopulationSize() = default;
 			/**
-			* \brief Checks if population size is defined at deme x at time t
-			* \return True  if variable is defined, else false.
+			* \brief Set population size value at deme x at time t
 			*/
-			bool is_defined(coord_type const& x, time_type const& t) const
+			void set(coord_type const& x, time_type const& t, value_type N)
 			{
-				return 	   (!m_populations.empty())
-				&& (m_populations.find(t) != m_populations.end())
-				&& (m_populations.at(t).find(x) != m_populations.at(t).end());
+				assert(N >= 0);
+				m_populations[t][x] = N;
 			}
 			/**
 			* \brief Get population size value at deme x at time t
 			*/
-			value_type get(coord_type const& x, time_type const& t) const{
+			value_type get(coord_type const& x, time_type const& t) const
+			{
 				assert( is_defined(x,t) );
 				return m_populations.at(t).at(x);
 			}
@@ -73,67 +72,12 @@ namespace quetzal
 			* \return a reference to the value, initialized with value_type default constructor
 			* \remark operator allows for more expressive mathematical style in client code
 			*/
-			value_type & operator()(coord_type const& x, time_type const& t)
+			value_type& operator()(coord_type const& x, time_type const& t)
 			{
 				return m_populations[t][x];
 			}
 			/**
-			* \brief Population size at deme x at time t.
-			* \return a reference to the value, initialized with value_type default constructor
-			* \remark operator allows for more expressive mathematical style in client code
-			*/
-			value_type & operator()(coord_type && x, time_type const& t)
-			{
-				return m_populations[t][std::move(x)];
-			}
-			/**
-			* \brief Population size at deme x at time t.
-			* \return a reference to the value, initialized with value_type default constructor
-			* \remark operator allows for more expressive mathematical style in client code
-			*/
-			value_type & operator()(coord_type const& x, time_type && t)
-			{
-				return m_populations[std::move(t)][x];
-			}
-			/**
-			* \brief Population size at deme x at time t.
-			* \return a reference to the value, initialized with value_type default constructor
-			* \remark operator allows for more expressive mathematical style in client code
-			*/
-			value_type & operator()(coord_type && x, time_type && t)
-			{
-				return m_populations[std::move(t)][std::move(x)];
-			}
-			/**
-			* \brief Set population size value at deme x at time t
-			*/
-			void set(coord_type const& x, time_type const& t, value_type N)
-			{
-				m_populations[t][x] = N;
-			}
-			/**
-			* \brief Set population size value at deme x at time t
-			*/
-			void set(coord_type && x, time_type const& t, value_type N)
-			{
-				m_populations[t][std::move(x)] = N;
-			}
-			/**
-			* \brief Set population size value at deme x at time t
-			*/
-			void set(coord_type const& x, time_type && t, value_type N)
-			{
-				m_populations[std::move(t)][x] = N;
-			}
-			/**
-			* \brief Set population size value at deme x at time t
-			*/
-			void set(coord_type && x, time_type && t, value_type N)
-			{
-				m_populations[std::move(t)][std::move(x)] = N;
-			}
-			/**
-			* \brief Return the demes at which the population size was defined at time t.
+			* \brief Return the demes at which the population size was defined (>0) at time t.
 			*/
 			std::vector<coord_type> definition_space(time_type const& t) const
 			{
@@ -143,6 +87,16 @@ namespace quetzal
 					if(it.second > 0 ){v.push_back(it.first);}
 				}
 				return v;
+			}
+			/**
+			* \brief Checks if population size is defined at deme x at time t
+			* \return True  if variable is defined, else false.
+			*/
+			bool is_defined(coord_type const& x, time_type const& t) const
+			{
+				return 	   (!m_populations.empty())
+				&& (m_populations.find(t) != m_populations.end())
+				&& (m_populations.at(t).find(x) != m_populations.at(t).end());
 			}
 		};
 	} // namespace demography

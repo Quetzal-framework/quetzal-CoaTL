@@ -71,7 +71,7 @@ namespace quetzal
         for(unsigned int t = 0; t < this->nb_generations(); ++t)
         {
           unsigned int landscape_individuals_count = 0;
-          for(auto x : this->expose_pop_size().definition_space(t) )
+          for(auto x : this->distribution_area(t) )
           {
             auto N_tilde = sim_growth(gen, x, t);
             landscape_individuals_count += N_tilde;
@@ -129,7 +129,7 @@ namespace quetzal
         for(unsigned int t = 0; t < this->nb_generations(); ++t)
         {
           unsigned int landscape_individuals_count = 0;
-          for(auto x : this->expose_pop_size().definition_space(t) )
+          for(auto x : this->distribution_area(t) )
           {
             auto N_tilde = sim_growth(gen, x, t);
             for(auto const& y : kernel.arrival_space(x) )

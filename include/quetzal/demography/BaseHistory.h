@@ -15,7 +15,7 @@
 
 #include <vector>
 #include <memory> // unique_ptr
-
+#include <functional> // std::cref
 
 namespace quetzal
 {
@@ -45,17 +45,15 @@ namespace quetzal
       using time_type = unsigned int;
       //! \typedef strategy used for simulating populations dynamics
       using dispersal_policy = DispersalPolicy;
-      //! \typedef strategy used for simulating populations dynamics
+      using value_type = dispersal_policy::value_type;
       //! \typedef type of the population flows database
-      using flow_type = Flow<coord_type, time_type, typename dispersal_policy::value_type>;
+      using flow_type = Flow<coord_type, time_type, value_type>;
       //! \typedef type of the population size database
-      using pop_sizes_type = PopulationSize<coord_type, time_type, typename dispersal_policy::value_type>;
+      using pop_sizes_type = PopulationSize<coord_type, time_type, value_type>;
       //                     PopulationSizeOptimized<Space>;
       //                     typename storage_policy::population_size_t<Space, Time, dispersal::policy::value_type>
       //! \typedef type of the discrete distribution used inside the backward dispersal kernel
       using discrete_distribution_type = quetzal::random::DiscreteDistribution<coord_type>;
-      //! \typedef Backward dispersal kernel type
-      using backward_kernel_type = quetzal::random::TransitionKernel<time_type, discrete_distribution_type>;
       /**
       * @brief Constructor initializing the demographic database.
       *
@@ -63,27 +61,50 @@ namespace quetzal
       * @param N the population size at coordinate x at time 0
       * @param nb_generations the number of generations history is supposed to last
       */
-      BaseHistory(coord_type const& x, typename dispersal_policy::value_type N, unsigned int nb_generations):
+      BaseHistory(coord_type const& x, value_type N, unsigned int nb_generations):
       m_nb_generations(nb_generations),
       m_sizes(std::make_unique<pop_sizes_type>()),
-      m_flows(std::make_unique<flow_type>()),
-      m_kernel(std::make_unique<backward_kernel_type>())
+      m_flows(std::make_unique<flow_type>())
       {
-        m_sizes->operator()(x,0) = N;
+        m_sizes->set(x, 0, N);
+      }
+      /*!
+         \brief Retrieve demes where N > 0 at time t.
+      */
+      auto distribution_area(time_type t) const
+      {
+        return m_sizes->definition_space(t);
       }
       /**
-      * @brief Used in derived class History to increment migrants
+      * \brief Population size at deme x at time t.
+      * \return a reference to the value, initialized with value_type default constructor
+      * \remark operator allows for more expressive mathematical style in client code
       */
       auto& pop_size(coord_type const& x, time_type const& t)
       {
         return m_sizes->operator()(x,t);
       }
       /**
-      * @brief Used in ForwardBackwardSpatiallyExplicit::pop_size_history to create a cref and functor composition
+      * @brief Read-only functor
       */
-      const pop_sizes_type & expose_pop_size() const
+      auto get_functor_N() const noexcept
       {
-        return *m_sizes;
+        auto N_ref = std::cref(this->m_sizes);
+        return [N_ref](coord_type const& x, time_type t){return N_ref.get()->get(x,t);};
+      }
+      /**
+      * @brief Read-only
+      */
+      auto get_pop_size(coord_type const& x, time_type const& t)
+      {
+        return m_sizes->get(x,t);
+      }
+      /**
+      * @brief Used in derived class History to increment migrants
+      */
+      void set_pop_size(coord_type const& x, time_type const& t, value_type N)
+      {
+        m_sizes->set(x,t,N);
       }
       /**
       * @brief Last time recorded in the foward-in-time database history.
@@ -105,20 +126,18 @@ namespace quetzal
       {
         --t;
         assert(m_flows->flux_to_is_defined(x,t));
-        if( ! m_kernel->has_distribution(x, t))
-        {
-          m_kernel->set(x, t, make_backward_distribution(x, t));
-        }
-        return m_kernel->operator()(gen, x, t);
+        auto k = make_backward_distribution(x, t);
+        return k(gen);
       }
     protected:
       // Need to be accessed by the expand method
       std::unique_ptr<flow_type> m_flows;
-      // mutable because sampling backward kernel can update the state
-      mutable std::unique_ptr<backward_kernel_type> m_kernel;
     private:
       unsigned int m_nb_generations;
       std::unique_ptr<pop_sizes_type> m_sizes;
+      /*!
+         \brief Return a backward migration discrete distribution
+      */
       auto make_backward_distribution(coord_type const& x, time_type const& t) const
       {
         std::vector<double> weights;

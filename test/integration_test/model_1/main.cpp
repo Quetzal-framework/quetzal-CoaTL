@@ -47,13 +47,15 @@ int main(int argc, char* argv[])
   // Number of introduced gene copies
   demographic_policy::value_type N_0 = 100;
   // Number of generations
-  unsigned int nb_generations = 300;
+  unsigned int t_0 = 0;
+  unsigned int nb_generations = 30;
+  unsigned int sampling_time = 29;
   // Simulator initialization
   simulator_type simulator(x_0, N_0, nb_generations);
   // Ancestral wright-fisher population size
   simulator.ancestral_Wright_Fisher_N(N_0);
   // Sampling size
-  unsigned int n = 200;
+  unsigned int n = 50;
   /******************************
    * Niche and growth functions
    *****************************/
@@ -69,12 +71,9 @@ int main(int argc, char* argv[])
   // Wrap it to ignore time argument
   auto s = [temp](coord_type x, time_type){return temp(x, 0);};
   // Compose it to get a carrying capacity expression
-	unsigned int factor = 5;
-  auto K = use(s)*lit(factor);
+  auto K = use(s)*lit(5);
   // Retrieve the population size function
-  auto pop_sizes = simulator.pop_size_history();
-  // Tranform it into an expression
-  auto N = use( [pop_sizes](coord_type x, time_type t){ return pop_sizes(x,t);} );
+  auto N = simulator.get_functor_N();
   // Compose everything in a logistic growth expression
   auto g = N * ( lit(1) + r ) / ( lit(1) + ( (r * N)/K ));
   auto sim_children = [g](auto& gen, coord_type const&x, time_type t){
@@ -108,9 +107,9 @@ int main(int argc, char* argv[])
   ************************************************************/
   std::cout << "6 ... Simulating sampling scheme" << std::endl;
   // Retrieve the non-empty demes at sampling time
-  std::vector<coord_type> distribution_area = pop_sizes.get().definition_space(nb_generations);
+  std::vector<coord_type> distribution_area = simulator.distribution_area(sampling_time);
   // Retrieve the last expression
-  auto last_N = [N, nb_generations](coord_type const& x){return N(x, nb_generations);};
+  auto last_N = [N, sampling_time](coord_type const& x){return N(x, sampling_time);};
   auto unif_sampler = quetzal::sampling_scheme::make_unif_constrained_sampler(distribution_area, last_N, n);
   auto sample = unif_sampler(gen);
   /**********************
@@ -118,13 +117,13 @@ int main(int argc, char* argv[])
    **********************/
   std::cout << "7 ... Exporting GIS data for visualization" << std::endl;
   std::string N_filename = "N.tif";
-  env.export_to_geotiff(N, 0, nb_generations, [&pop_sizes](time_type const& t){return pop_sizes.get().definition_space(t);}, N_filename);
+  env.export_to_geotiff(N, t_0, sampling_time, [&simulator](time_type const& t){return simulator.distribution_area(t);}, N_filename);
   env.export_to_shapefile(sample, "sample.shp");
   /**********************
    *  Coalescence
    **********************/
   std::cout << "8 ... Begining coalescence" << std::endl;
-  auto results = simulator.coalesce_to_mrca<>(sample, nb_generations, gen);
+  auto results = simulator.coalesce_to_mrca<>(sample, sampling_time, gen);
   std::ofstream file;
   file.open ("trees.txt");
   file << results;

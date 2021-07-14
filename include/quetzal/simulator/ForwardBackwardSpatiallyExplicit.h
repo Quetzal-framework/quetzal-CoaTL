@@ -73,22 +73,30 @@ namespace quetzal
     ForwardBackwardSpatiallyExplicit(coord_type x_0, N_value_type N_0, unsigned int nb_generations):
     m_history(x_0, N_0, nb_generations)
     {}
+    /*!
+       \brief Return demes with non-zero population size
+    */
+    auto distribution_area(unsigned int t) const
+    {
+      assert(t >= 0 && t < m_history.nb_generations());
+      return m_history.distribution_area(t);
+    }
     /**
     * @brief Read-only access to the population size history.
     * @details Designed to be used for composing growth expression.
     * @return a functor with signature `N_value_type fun(coord_type const& x,
     * unsigned int t)` giving the population size in deme \f$x\f$ at time \f$t\f$.
     */
-    auto pop_size_history() const noexcept
+    auto get_functor_N() const noexcept
     {
-      return std::cref(m_history.expose_pop_size());
+      return m_history.get_functor_N();
     }
     /**
     * @brief Simulate the forward-in-time demographic expansion.
     * \tparam Growth a growth functor, see param growth for details.
     * \tparam Dispersal a dispersal kernel, see param kernel for details.
     * @param growth a functor simulating \f$\tilde{N}_{x}^{t}\f$. The functor
-    *                   can possibly make use of pop_size_history. The signature
+    *                   can possibly make use of get_functor_N. The signature
     *                   of the function should be equivalent to the following:
     *                   `unsigned int sim_growth(V &gen, const coord_type &x, unsigned int t);`
     * @param kernel a functor representing the dispersal location kernel that
@@ -114,7 +122,7 @@ namespace quetzal
       return coalesce_along_spatial_history<Merger>(forest, this->branch(), gen, this->init() );
     }
     /**
-    * @brief Initlize a forest based on sample counts, forwarding the sampling time
+    * @brief Initialize a forest based on sample counts, forwarding the sampling time
     *        to the forest contructor. Then coalesce the forest along the spatial
     *        history, then stops and return a possibly incomplete forest.
     * @return A possibly incompletely coalesced forest.
@@ -132,23 +140,19 @@ namespace quetzal
     *
     */
     template<typename Merger,typename Generator, typename F, typename Tree, typename U>
-    auto coalesce_along_spatial_history(forest_type<Tree> forest, F binary_op, Generator& gen, U make_tree) const
+    auto coalesce_along_spatial_history(forest_type<Tree> forest, F binary_op, Generator& gen, U make_tree)
     {
       this->check_consistency(m_history, forest);
       auto t = m_history.nb_generations();
       while( (forest.nb_trees() > 1) && (t > 0) )
       {
-        std::cout << "t=" << t << std::endl;
         may_coalesce_colocated<Merger>(forest, t, gen, binary_op, make_tree);
-        std::cout << "colocated coalesced" << std::endl;
         migrate_backward(forest, t, gen);
-        std::cout << "backward migration" << std::endl;
         --t;
       }
       may_coalesce_colocated<Merger>(forest, t, gen, binary_op, make_tree);
       return forest;
     }
-
     /**
     * @brief Create a forest from a sample and coalesce it conditionally to the simulated demography.
     *
@@ -167,15 +171,10 @@ namespace quetzal
     >
     auto coalesce_to_mrca(std::map<coord_type, unsigned int> sample, unsigned int sampling_time, Generator & gen)
     {
-      std::cout << "A" << std::endl;
       test_sample_consistency(sample);
-      std::cout << "B" << std::endl;
       auto forest = this->make_forest(sample, sampling_time);
-      std::cout << "C" << std::endl;
       auto new_forest = coalesce_along_spatial_history<Merger>(forest, this->branch(), gen, this->init() );
-      std::cout << "D" << std::endl;
       auto tree = this->find_mrca(new_forest, 0, gen);
-      std::cout << "E" << std::endl;
       return this->treat(tree);
     }
 
@@ -265,12 +264,12 @@ namespace quetzal
   private:
 
     template<typename T, typename U>
-    void check_consistency(T const& history, U const& forest) const
+    void check_consistency(T& history, U const& forest)
     {
       auto t = history.nb_generations();
       for(auto const& it : forest.positions())
       {
-        if( !history.expose_pop_size().is_defined(it, t) || history.expose_pop_size()(it, t) < forest.nb_trees(it))
+        if( history.pop_size(it, t) < forest.nb_trees(it))
         {
           throw std::domain_error("Simulated population size inferior to sampling size");
         }
@@ -304,7 +303,7 @@ namespace quetzal
     template<typename Merger, typename Generator, typename Tree, typename F, typename U>
     void may_coalesce_colocated(forest_type<Tree>& forest, unsigned int t, Generator& gen, F binop, U make_tree) const noexcept
     {
-      auto N = pop_size_history();
+      auto N = get_functor_N();
       for(auto const & x : forest.positions())
       {
         auto range = forest.trees_at_same_position(x);

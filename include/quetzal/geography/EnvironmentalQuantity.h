@@ -178,56 +178,55 @@ public:
   }
 
 
+  /*!
+     \brief Export EnvironmentalQuantity to GeoTiff file
+     \param f functor giving the quantity to print. Signature equivalent to `double f(coord_type, time_type)`
+     \param g functor giving the set of demes where f is defined at every time. Signature equivalent to `std::vector<coord_type> g(time_type)`
+     \param t1 first time (first band) to print
+     \param t2 last time (last band) to print
+     \param filename the file name where to save
+  */
   template<typename F, typename G>
   void export_to_geotiff(F f, G g, time_type const& t1, time_type const& t2, std::string const& filename) const {
-
-    int nBands = std::abs(t2 - t1);
+    // Number of bands to create:
+    int nBands = std::abs(t2 - t1) + 1;
     assert(nBands >= 1);
-
-    // Create a model dataset band
+    // Create a model dataset with  default values
     GDALDataset* p_sink = get().GetDriver()->Create(filename.c_str(), width(), height(), nBands, GDT_Float32, NULL);
     std::vector<float> buffer(width()*height());
-
+    // RasterBands begins at 1
     GDALRasterBand* p_source_band = get().GetRasterBand(1);
     double na = p_source_band->GetNoDataValue();
-
-    // Modify data
+    // Modify the defaut data in every band
     for(int i = 1; i <= nBands; ++i ){
-
-
       auto err = p_source_band->RasterIO( GF_Read, 0, 0, width(), height(), buffer.data(), width(), height(), GDT_Float32, 0, 0 );
       (void)err;
-
       //replace all continental cells value by 0
       auto continental_cells = get_domain(0);
-      for(auto const& it : continental_cells){
+      for(auto const& it : continental_cells)
+      {
         buffer.at(it.x + it.y*width()) = 0.0;
       }
-
       // Replace all cells where F is defined by F
       auto t_curr = t1 + i-1;
       auto f_defined_cells = g(t_curr);
-
-      for(coord_type const& it: f_defined_cells){
+      for(coord_type const& it: f_defined_cells)
+      {
         auto xy = to_xy(it);
         buffer.at(xy.x  + (xy.y*width()) ) = static_cast<float>(f(it, t_curr));
       }
-
       //write the data
       GDALRasterBand* p_sink_band = p_sink->GetRasterBand(i);
       p_sink_band->SetNoDataValue(na);
       auto err2 = p_sink_band->RasterIO( GF_Write, 0, 0, width(), height(), buffer.data(), width(), height(), GDT_Float32, 0, 0 );
       (void)err2;
       p_sink->FlushCache();
-
-    }
-
+    } // end modify data
     // write metadata
     std::vector<double> geo_transform(6);
     get().GetGeoTransform( geo_transform.data() );
     p_sink->SetGeoTransform( geo_transform.data() );
     p_sink->SetProjection( get().GetProjectionRef() );
-
     GDALClose( (GDALDatasetH) p_sink );
   }
 
