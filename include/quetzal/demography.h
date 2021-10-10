@@ -8,9 +8,6 @@
 *                                                                      *
 ***************************************************************************/
 
-
-#include "demography/Flow.h"
-#include "demography/PopulationSize.h"
-#include "demography/PopulationSizeOptimized.h"
-#include "demography/History.h"
 #include "demography/dispersal_kernel.h"
+#include "demography/memory_policy.h"
+#include "demography/History.h"

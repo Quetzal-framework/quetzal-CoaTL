@@ -18,7 +18,6 @@ namespace quetzal
 {
   namespace demography
   {
-
     /*!
     * @brief Unspecialized class (CRTP design pattern)
     *
@@ -28,8 +27,8 @@ namespace quetzal
     * @ingroup demography
     *
     */
-    template<typename Space, typename DispersalPolicy>
-    class History : public BaseHistory<Space, DispersalPolicy>
+    template<typename Space, typename DispersalPolicy, typename MemoryPolicy>
+    class History : public BaseHistory<Space, DispersalPolicy, MemoryPolicy>
     {};
 
 
@@ -40,11 +39,11 @@ namespace quetzal
     * @ingroup demography
     *
     */
-    template<typename Space>
-    class History<Space, dispersal_policy::individual_based> : public BaseHistory<Space, dispersal_policy::individual_based>
+    template<typename Space, typename Memory>
+    class History<Space, dispersal_policy::individual_based, Memory> : public BaseHistory<Space, dispersal_policy::individual_based, Memory>
     {
       // Using the BaseHistory class constructor
-      using BaseHistory<Space, dispersal_policy::individual_based>::BaseHistory;
+      using BaseHistory<Space, dispersal_policy::individual_based, Memory>::BaseHistory;
     public:
       /**
       * @brief Expands the demographic database.
@@ -98,10 +97,11 @@ namespace quetzal
     *
     * @ingroup demography
     */
-    template<typename Space>
-    class History<Space, dispersal_policy::mass_based> : public BaseHistory<Space, dispersal_policy::mass_based>{
+    template<typename Space, typename Memory>
+    class History<Space, dispersal_policy::mass_based, Memory> : public BaseHistory<Space, dispersal_policy::mass_based, Memory>
+    {
       // Using the BaseHistory constructor
-      using BaseHistory<Space, dispersal_policy::mass_based>::BaseHistory;
+      using BaseHistory<Space, dispersal_policy::mass_based, Memory>::BaseHistory;
     public:
       /** @brief Simulate forward the demographic history.
       *

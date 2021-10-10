@@ -11,8 +11,10 @@
 #ifndef __POINT_WITH_ID_H_INCLUDED__
 #define __POINT_WITH_ID_H_INCLUDED__
 
-namespace quetzal {
-	namespace utils {
+namespace quetzal
+{
+	namespace utils
+	{
 		///
 		/// @brief Find the index of a point in a vector
 		/// @param  p    the point to find
@@ -45,7 +47,8 @@ namespace quetzal {
 			*/
 			PointWithId(std::vector<Point> const& vect, size_t index) :
 			m_vector{vect}, m_index{index}
-			{}
+			{
+			}
 			/*!
 			\brief Constructor
 			\param vect reference to the vector of coordinates
@@ -54,7 +57,8 @@ namespace quetzal {
 			*/
 			PointWithId(std::vector<Point> const& vect, Point const& p) :
 			m_vector{vect}, m_index{getIndexOfPointInVector(p, vect)}
-			{}
+			{
+			}
 			/*!
 			\brief Getter
 			\return the underlying Point object
@@ -89,7 +93,7 @@ namespace quetzal {
 			}
 		private:
 			std::vector<Point> const& m_vector;
-			size_t                    m_index;
+			size_t m_index;
 		}; // end PointWithId
 	} // namespace utils
 } // namespace quetzal

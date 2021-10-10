@@ -29,7 +29,7 @@ namespace quetzal
 		* \ingroup demography
 		*/
 		template<typename Space, typename Time, typename Value>
-		class PopulationSize
+		class PopulationSizeHashMapImplementation
 		{
 			std::unordered_map<Time, std::unordered_map<Space, Value> > m_populations;
 		public:
@@ -42,7 +42,7 @@ namespace quetzal
 			/**
 			* \brief Default constructor
 			*/
-			PopulationSize() = default;
+			PopulationSizeHashMapImplementation() = default;
 			/**
 			* \brief Set population size value at deme x at time t
 			*/
