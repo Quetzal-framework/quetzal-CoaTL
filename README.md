@@ -1,11 +1,10 @@
 # Quetzal-CoalTL <img align="right" width="200" src="https://github.com/Becheler/Becheler.github.io/blob/master/draw/logos/quetzal.png">
-# The Coalescence Template Libary
 
 [![Becheler](https://circleci.com/gh/Becheler/quetzal.svg?style=shield)](https://app.circleci.com/pipelines/github/Becheler)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Website becheler.github.io](https://img.shields.io/website-up-down-green-red/https/becheler.github.io.svg)](https://becheler.github.io/pages/quetzal.html)
 
-# Overview
+# The Coalescence Template Libary
 
 Quetzal-CoalTL is a C++ template scientific library for simulating gene genealogies in explicit landscapes.
 
