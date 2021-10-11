@@ -1,0 +1,41 @@
+version: 2.1
+
+executors:
+  exectr:
+    docker:
+      - image: arnaudbecheler/quetzal-eggs:latest
+
+jobs:
+  build-quetzal:
+    executor: exectr
+    steps:
+      - checkout
+      - run: |
+          mkdir build
+          cd build
+          cmake ..
+          cmake --build .
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  test-quetzal:
+    executor: exectr
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Execute tests
+          command: |
+            cd build
+            ctest
+
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - build-quetzal
+      - test-quetzal:
+          requires:
+            - build-quetzal

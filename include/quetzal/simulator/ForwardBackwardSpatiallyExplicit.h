@@ -46,7 +46,7 @@ namespace quetzal
   * @ingroup simulator
   *
   */
-  template<typename Space, typename DispersalPolicy, typename CoalescencePolicy>
+  template<typename Space, typename DispersalPolicy, typename CoalescencePolicy, typename Memory = quetzal::memory::on_demand>
   class ForwardBackwardSpatiallyExplicit :
   public CoalescencePolicy
   {
@@ -57,10 +57,12 @@ namespace quetzal
     using dispersal_policy_type = DispersalPolicy;
     //! \typedef value type to represent populations size
     using N_value_type = typename DispersalPolicy::value_type;
-    //! \typedef time type
+    //! \typedef Memory policy type
+    using memory_policy = Memory;
+    //! \typedef forest type
     template<typename tree_type> using forest_type = quetzal::coalescence::Forest<coord_type, tree_type>;
   private:
-    using history_type = demography::History<coord_type, DispersalPolicy>;
+    using history_type = demography::History<coord_type, DispersalPolicy, memory_policy>;
     history_type m_history;
   public:
     /**

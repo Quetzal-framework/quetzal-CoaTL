@@ -11,7 +11,7 @@
 #ifndef __BASE_HISTORY_H_INCLUDED__
 #define __BASE_HISTORY_H_INCLUDED__
 
-#include "../random.h" // BackwardKernel
+#include "../random/DiscreteDistribution.h" // BackwardKernel
 
 #include <vector>
 #include <memory> // unique_ptr
@@ -35,7 +35,7 @@ namespace quetzal
     * @ingroup demography
     *
     */
-    template<typename Space, typename DispersalPolicy>
+    template<typename Space, typename DispersalPolicy, typename MemoryPolicy>
     class BaseHistory
     {
     public:
@@ -43,15 +43,15 @@ namespace quetzal
       using coord_type = Space;
       //! \typedef time type
       using time_type = unsigned int;
+      using my_memory_policy = MemoryPolicy;
       //! \typedef strategy used for simulating populations dynamics
       using dispersal_policy = DispersalPolicy;
-      using value_type = dispersal_policy::value_type;
+      //! \typedef value stored, usually double
+      using value_type = typename dispersal_policy::value_type;
       //! \typedef type of the population flows database
-      using flow_type = Flow<coord_type, time_type, value_type>;
+      using flow_type = typename my_memory_policy::template flow_type<coord_type, time_type, value_type>;
       //! \typedef type of the population size database
-      using pop_sizes_type = PopulationSize<coord_type, time_type, value_type>;
-      //                     PopulationSizeOptimized<Space>;
-      //                     typename storage_policy::population_size_t<Space, Time, dispersal::policy::value_type>
+      using pop_sizes_type = typename my_memory_policy::template pop_sizes_type<coord_type, time_type, value_type>;
       //! \typedef type of the discrete distribution used inside the backward dispersal kernel
       using discrete_distribution_type = quetzal::random::DiscreteDistribution<coord_type>;
       /**
@@ -69,7 +69,7 @@ namespace quetzal
         m_sizes->set(x, 0, N);
       }
       /*!
-         \brief Retrieve demes where N > 0 at time t.
+      \brief Retrieve demes where N > 0 at time t.
       */
       auto distribution_area(time_type t) const
       {
@@ -136,7 +136,7 @@ namespace quetzal
       unsigned int m_nb_generations;
       std::unique_ptr<pop_sizes_type> m_sizes;
       /*!
-         \brief Return a backward migration discrete distribution
+      \brief Return a backward migration discrete distribution
       */
       auto make_backward_distribution(coord_type const& x, time_type const& t) const
       {

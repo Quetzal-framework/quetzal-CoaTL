@@ -18,14 +18,17 @@ namespace utf = boost::unit_test;
 //#include <concepts>
 
 template<typename T>
-concept bool MyConcept(){
-    return requires(T a, T b) {
+concept bool MyConcept()
+{
+    return requires(T a, T b)
+    {
         { a == b } -> bool;
         { a != b } -> bool;
    };
 }
 
-struct transition_matrix {
+struct transition_matrix
+{
 	using coord_type = std::string;
 	std::vector<coord_type> arrival_space(coord_type)
 	{
@@ -52,7 +55,7 @@ BOOST_AUTO_TEST_CASE( population_size_default )
 	coord_type x0 = "A";
 	size_type N0 = 12;
 
-	quetzal::demography::PopulationSize<coord_type, time_type, size_type> N;
+	quetzal::demography::PopulationSizeHashMapImplementation<coord_type, time_type, size_type> N;
 	BOOST_TEST( !N.is_defined(x0, t0) );
   // Set first population size
 	N.set(x0, t0, N0);
@@ -69,20 +72,19 @@ BOOST_AUTO_TEST_CASE( population_size_default )
   std::cout << "}\n" << std::endl;
 }
 
-// Allows only unsigned int demes (ie requires an order relation of demes), origin date has to be 0, and the total
-// number of generations has to be known beforehand.
 // BOOST_AUTO_TEST_CASE( population_size_optimized )
 // {
-// 	unsigned int nb_demes = 50;
+//   using coord_type = unsigned int;
+// 	std::vector<coord_type> demes = {0,1,2,3,4,5,6};
 // 	unsigned int duration = 10;
 // 	double N_0 = 1000;
-// 	unsigned int x_0 = 0;
+// 	coord_type x_0 = 0;
 // 	// Constructor
-// 	quetzal::demography::PopulationSizeOptimized N(nb_demes, duration, x_0, N_0);
-// 	assert( N(0,0) == 1000) );
+// 	quetzal::demography::PopulationSizeVectorImplementation N(demes, duration);
+// 	assert( N(0,0) == 1000 );
 // 	// Assignment
-// 	N(1,0) = 200;
-// 	assert(N(1,0) == 200);
+// 	N(x_0, 0) = N_0;
+// 	assert(N(0,0) == N_0);
 // }
 
 BOOST_AUTO_TEST_CASE( flow )
@@ -105,7 +107,8 @@ BOOST_AUTO_TEST_CASE( flow )
 	BOOST_TEST(Phi.flux_from_to(j,j,t) == 1);
 
   std::cout << "Flows converging to " << j << " at time t=" << t << ":" <<std::endl;
-	for(auto const& it : Phi.flux_to(j,t)){
+	for(auto const& it : Phi.flux_to(j,t))
+  {
 		std::cout << "From "<< it.first << " to " << j << " = " << it.second << std::endl;
 	}
 }
@@ -115,20 +118,21 @@ BOOST_AUTO_TEST_CASE( individual_based_history_default_storage )
 	 //! [individual_based_history_default_storage example]
   // Here we simulate a population oscillation between 2 demes: -1 and 1
   using coord_type = int;
-  using time_type = unsigned int;
   using generator_type = std::mt19937;
   generator_type gen;
   // Number of non-overlapping generations for the demographic simulation
   coord_type x_0 = 1;
   unsigned int nb_generations = 3; // times: 0 - 1 - 2
   unsigned int N_0 = 10;
-  // Declaresan individual-based history
+  // Declare an individual-based history where each gene copy is dispersed independently
   using quetzal::demography::dispersal_policy::individual_based;
+  // Declare memory should be allocated only on demand: ideal for very short histories
+  using quetzal::memory::on_demand;
 	// 10 individuals introduced at x=1, t=0
-  quetzal::demography::History<coord_type, individual_based> history(x_0, N_0, nb_generations);
+  quetzal::demography::History<coord_type, individual_based, on_demand> history(x_0, N_0, nb_generations);
   // Declare a growth function
   auto N = history.get_functor_N(); // light copiable for capture
-  auto growth = [N](auto& gen, coord_type x, time_type t){ return 2*N(x,t) ; };
+  auto growth = [N](auto& gen, coord_type x, auto t){ return 2*N(x,t) ; };
   // Dispersal kernel, samples arrival location in {-1,1}
   auto sample_location = [](auto& gen, coord_type x)
 	{
@@ -145,25 +149,32 @@ BOOST_AUTO_TEST_CASE( individual_based_history_default_storage )
 
 }
 
-BOOST_AUTO_TEST_CASE( mass_based_history_default_storage )
-{
-  using coord_type = std::string;
-  using time_type = unsigned int;
-  using generator_type = std::mt19937;
-  // Number of non-overlapping generations for the demographic simulation
-  unsigned int nb_generations = 5;
-  // Initialize history: 10 individuals introduced at x=1, simulate during n generations
-  using quetzal::demography::dispersal_policy::mass_based;
-  quetzal::demography::History<coord_type, mass_based> history("Paris", 10, nb_generations);
-  // Growth function
-  auto N = history.get_functor_N();
-  auto growth = [N](auto&, coord_type x, time_type t){ return 2*N(x,t) ; };
-  // Random number generation
-  generator_type gen;
-  transition_matrix M;
-  history.simulate_forward(growth, M, gen);
-  std::cout << "\nKnowing an indiviual was in deme A at time 4, simulate its location at time 3?\n";
-  std::cout << "Location at t=3: " << history.backward_kernel("A", 4, gen) << std::endl;
-}
+// const bool pre_allocated_implemented = false;
+//
+// BOOST_AUTO_TEST_CASE( mass_based_history_default_storage, * utf::enable_if<pre_allocated_implemented>() )
+// {
+//   using time_type = unsigned int;
+//   using coord_type = std::string;
+//   using generator_type = std::mt19937;
+//   // Number of non-overlapping generations for the demographic simulation
+//   unsigned int nb_generations = 5;
+//   std::vector<coord_type> demes {"A","B"};
+//   unsigned int N0 = 10;
+//   coord_type x0 = "A";
+//   // Declare a mass-based history, where gene copies are assumed to be divisible quantities
+//   using quetzal::demography::dispersal_policy::mass_based;
+//   // Declare memory should be pre-allocated: best for long histories
+//   using quetzal::memory::pre_allocated;
+//   quetzal::demography::History<coord_type, mass_based, pre_allocated> history(x0, N0, nb_generations, demes);
+//   // Growth function
+//   auto N = history.get_functor_N();
+//   auto growth = [N](auto&, coord_type x, time_type t){ return 2*N(x,t) ; };
+//   // Random number generation
+//   generator_type gen;
+//   transition_matrix M;
+//   history.simulate_forward(growth, M, gen);
+//   std::cout << "\nKnowing an indiviual was in deme A at time 4, simulate its location at time 3?\n";
+//   std::cout << "Location at t=3: " << history.backward_kernel("A", 4, gen) << std::endl;
+// }
 
 BOOST_AUTO_TEST_SUITE_END()

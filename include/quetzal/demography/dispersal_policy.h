@@ -131,7 +131,8 @@ namespace quetzal
           m_points(points),
           m_coords(coords),
           m_distributions(make_distributions())
-          {}
+          {
+          }
           ///
           /// @brief Sample arrival coordinate conditionally to departure
           ///
@@ -161,7 +162,8 @@ namespace quetzal
           template<typename F>
           Interface(std::vector<point_ID_type> const& points, std::vector<coord_type> const& coords, F f):
           m_pimpl(std::make_shared<impl_type>(points, coords, f) )
-          {}
+          {
+          }
           ///
           /// @brief Sample an arrival coordinate in the dispersal distribution conditionally to departure x
           ///
@@ -176,31 +178,31 @@ namespace quetzal
           }
         }; // end inner class Interface
 
-        public:
-          /// \typedef type used to represent effective population size and flows
-          using value_type = unsigned int;
-          ///
-          /// @brief Build a dispersal kernel usable with class History specialized for individual-based policy
-          ///
-          /// @param  coords a vector of geographic points
-          /// @param  f      a functor giving the migration probability of an individual between two points
-          ///                The signature should be equivalent to double f(T const& x, T const& Y)
-          /// @return        A dispersal kernel that is cheap to copy
-          ///
-          template<typename T, typename F>
-          static auto make_distance_based_dispersal(std::vector<T> const& coords, F f)
-          {
-            using coord_type = T;
-            using point_ID_type = quetzal::utils::PointWithId<coord_type>;
-            std::vector<point_ID_type> points;
-            points.reserve(coords.size());
-            const auto& ref = coords;
-            std::transform(coords.begin(), coords.end(), std::back_inserter(points),
-            [ref](coord_type const& x){ return point_ID_type(ref, x); });
-            using matrix_type = boost::numeric::ublas::symmetric_matrix<double>;
-            return Interface<coord_type, matrix_type>(points, coords, f);
-          }
-        }; // end individual_based
+      public:
+        /// \typedef type used to represent effective population size and flows
+        using value_type = unsigned int;
+        ///
+        /// @brief Build a dispersal kernel usable with class History specialized for individual-based policy
+        ///
+        /// @param  coords a vector of geographic points
+        /// @param  f      a functor giving the migration probability of an individual between two points
+        ///                The signature should be equivalent to double f(T const& x, T const& Y)
+        /// @return        A dispersal kernel that is cheap to copy
+        ///
+        template<typename T, typename F>
+        static auto make_distance_based_dispersal(std::vector<T> const& coords, F f)
+        {
+          using coord_type = T;
+          using point_ID_type = quetzal::utils::PointWithId<coord_type>;
+          std::vector<point_ID_type> points;
+          points.reserve(coords.size());
+          const auto& ref = coords;
+          std::transform(coords.begin(), coords.end(), std::back_inserter(points),
+          [ref](coord_type const& x){ return point_ID_type(ref, x); });
+          using matrix_type = boost::numeric::ublas::symmetric_matrix<double>;
+          return Interface<coord_type, matrix_type>(points, coords, f);
+        }
+      }; // end individual_based
 
       ///
       /// @brief Policy class to specialize the \ref quetzal::demography::History class for simulation of population with large density.
@@ -272,7 +274,8 @@ namespace quetzal
           m_matrix( make_matrix(coords, f) ),
           m_points(points),
           m_coords(coords)
-          {}
+          {
+          }
           ///
           /// @brief Allows the policy to be interfaceable with the \ref quetzal::demography::History simulation algorithm.
           ///
@@ -338,7 +341,8 @@ namespace quetzal
           template<typename F>
           Interface(std::vector<point_ID_type> const& points, std::vector<coord_type> const& coords, F f):
           m_pimpl(std::make_shared<impl_type>(points, coords, f) )
-          {}
+          {
+          }
           ///
           /// @brief Migration rate, operator interfaceable with \ref History algorithm.
           ///
@@ -434,7 +438,8 @@ namespace quetzal
           m_emigrant_rate(emigrant_rate),
           m_friction(friction),
           m_get_neighbors(get_neighbors)
-          {}
+          {
+          }
           ///
           /// @brief Defines arrival space (that is in this class case, vecinity plus focal deme) from coordinate x.
           ///
