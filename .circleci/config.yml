@@ -11,8 +11,8 @@ jobs:
     steps:
       - checkout
       - run: |
-          mkdir quetzal/build
-          cd quetzal/build
+          mkdir build
+          cd build
           cmake ..
           cmake --build .
       - persist_to_workspace:
@@ -28,7 +28,7 @@ jobs:
       - run:
           name: Execute tests
           command: |
-            cd quetzal/build
+            cd build
             ctest
 
 workflows:
