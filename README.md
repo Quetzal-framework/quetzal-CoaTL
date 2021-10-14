@@ -1,4 +1,4 @@
-# Quetzal-CoalTL <img align="right" width="200" src="https://github.com/Becheler/Becheler.github.io/blob/master/draw/logos/quetzal.png">
+# Quetzal-CoalTL <img align="right" width="200" src="https://github.com/Becheler/quetzal-CoalTL/blob/media/quetzal.png">
 
 [![Becheler](https://circleci.com/gh/Becheler/quetzal-CoalTL.svg?style=shield)](https://app.circleci.com/pipelines/github/Becheler/quetzal-CoalTL)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
@@ -22,6 +22,8 @@ However if you are working on developing some border case simulation model, or i
 - :email: You are interested? Want to contribute? Want to give some feedback? Don't be shy, [contact me!](https://github.com/Becheler)
 - :star: You think this is a cool project? Drop a star on GitHub :point_up:
 - :bug: A bug? Oopsie daisy! I'll fix it asap if you [email me](https://github.com/Becheler) or open an issue :point_up:
+
+![Quetzal-CoalTL concepts](https://github.com/Becheler/quetzal-CoalTL/blob/media/quetzal_scheme.png)
 
 # Website
 
