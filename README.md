@@ -14,11 +14,11 @@ Quetzal-CoalTL is a C++ template scientific library for simulating gene genealog
 
 Existing softwares like [SPLATCHE](http://splatche.com/), [simcoal2](http://cmpg.unibe.ch/software/simcoal2/), [egglib](http://mycor.nancy.inra.fr/egglib/index.html), or [msprime](http://msprime.readthedocs.io/en/stable/index.html) are very useful and user-friendly resources that should be used whenever possible to achieve this task.
 
-However if you are working on developing some border case simulation model, or if you are not comfortable with hypothesis of the existing software solutions, you will surely consider to build your own program :grimacing: 
+However if you are working on developing some border case simulation model, or if you are not comfortable with hypothesis of the existing software solutions, you will surely consider to build your own program :grimacing:
 
 :v: Quetzal can help you doing so by offering atomic components (structures, algorithms, concepts) that can be easily reused to build a new program. The template mechanism allow to adapt them efficiently to each particular situation you may encounter.
 
-- :crystal_ball: looking forward, we expect to develop the library related to genetic simulation.
+- :crystal_ball: looking forward, we expect to develop the library related to genetic simulation and C++20 constraints and concepts!
 - :email: You are interested? Want to contribute? Want to give some feedback? Don't be shy, [contact me!](https://github.com/Becheler)
 - :star: You think this is a cool project? Drop a star on GitHub :point_up:
 - :bug: A bug? Oopsie daisy! I'll fix it asap if you [email me](https://github.com/Becheler) or open an issue :point_up:
