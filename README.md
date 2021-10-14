@@ -19,7 +19,7 @@ However if you are working on developing some border case simulation model, or i
 :v: Quetzal can help you doing so by offering atomic components (structures, algorithms, concepts) that can be easily reused to build a new program. The template mechanism allow to adapt them efficiently to each particular situation you may encounter.
 
 - :crystal_ball: looking forward, we expect to develop the library related to genetic simulation and [C++20 concepts!](https://en.cppreference.com/w/cpp/language/constraints)
-- :email: You are interested? Want to contribute? Want to give some feedback? Don't be shy, [contact me!](https://github.com/Becheler)
+- :email: You are interested? Want to contribute? Want to give some feedback? Don't be shy, [contact me!](https://lsa.umich.edu/eeb/people/postdoctoral-fellows/arnaud-becheler.html)
 - :star: You think this is a cool project? Drop a star on GitHub :point_up:
 - :bug: A bug? Oopsie daisy! I'll fix it asap if you [email me](https://github.com/Becheler) or open an issue :point_up:
 
