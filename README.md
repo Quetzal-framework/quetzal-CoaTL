@@ -4,19 +4,19 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Website becheler.github.io](https://img.shields.io/website-up-down-green-red/https/becheler.github.io.svg)](https://becheler.github.io/pages/quetzal/home)
 
-# The Coalescence Template Libary
+# A Coalescence Template Libary
 
 Quetzal-CoalTL is a C++ template scientific library for simulating gene genealogies in explicit landscapes.
 
-:egg: If you're a non-programmer, you may be interested by [Quetzal-EGGS simulators](https://github.com/Becheler/quetzal-EGGS)!
+:egg::egg::egg:  If you're a non-programmer, you may be interested by [Quetzal-EGGS simulators](https://github.com/Becheler/quetzal-EGGS)!
 
-Infering populations ecological features (such as migration or growth patterns) from genetic datasets can be a complex task. Is some settings it is actually a mathematically intractable problem, so simulations methods are needed ! Approximate Bayesian Computation (ABC) can be used to update your knowledge about the processes shaping your genetic dataset by simulating the underlying gene genealogies (coalescents) in an explicit geographic space.
+:seedling: Infering populations ecological features (such as migration or growth patterns) from genetic datasets can be a complex task. In some settings it is actually a mathematically intractable problem, so simulations methods are needed ! Approximate Bayesian Computation (ABC) can be used to update your knowledge about the processes shaping your genetic dataset by simulating the underlying gene trees (coalescents) in an explicit geographic space.
 
-Existing softwares like [SPLATCHE](http://splatche.com/), [simcoal2](http://cmpg.unibe.ch/software/simcoal2/), [egglib](http://mycor.nancy.inra.fr/egglib/index.html), or [msprime](http://msprime.readthedocs.io/en/stable/index.html) are very useful and user-friendly resources that should be used whenever possible to achieve this task.
+:grey_exclamation: Existing softwares like [SPLATCHE](http://splatche.com/), [simcoal2](http://cmpg.unibe.ch/software/simcoal2/), [egglib](http://mycor.nancy.inra.fr/egglib/index.html), or [msprime](http://msprime.readthedocs.io/en/stable/index.html) are very useful and user-friendly resources that should be used whenever possible to achieve this task.
 
-However if you are working on developing some border case simulation model, or if you are not comfortable with hypothesis of the existing software solutions, you will surely consider to build your own program.
+:grimacing: However if you are working on developing some border case simulation model, or if you are not comfortable with hypothesis of the existing software solutions, you will surely consider to build your own program.
 
-Quetzal can help you doing so by offering atomic components (structures, algorithms, concepts) that can be easily reused to build a new program. The template mechanism allow to adapt them efficiently to each particular situation you may encounter.
+:v: Quetzal can help you doing so by offering atomic components (structures, algorithms, concepts) that can be easily reused to build a new program. The template mechanism allow to adapt them efficiently to each particular situation you may encounter.
 
 - :crystal_ball: looking forward, we expect to develop the library related to genetic simulation.
 - :email: You are interested? Want to contribute? Want to give some feedback? Don't be shy, [contact me!](https://github.com/Becheler)
