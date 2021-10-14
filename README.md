@@ -21,7 +21,7 @@ However if you are working on developing some border case simulation model, or i
 - :crystal_ball: looking forward, we expect to develop the library related to genetic simulation and [C++20 concepts!](https://en.cppreference.com/w/cpp/language/constraints)
 - :email: You are interested? Want to contribute? Want to give some feedback? Don't be shy, [contact me!](https://lsa.umich.edu/eeb/people/postdoctoral-fellows/arnaud-becheler.html)
 - :star: You think this is a cool project? Drop a star on GitHub :point_up:
-- :bug: A bug? Oopsie daisy! I'll fix it asap if you [email me](https://github.com/Becheler) or open an issue :point_up:
+- :bug: A bug? Oopsie daisy! I'll fix it asap if you [email me](https://lsa.umich.edu/eeb/people/postdoctoral-fellows/arnaud-becheler.html) or open an issue :point_up:
 
 ![Quetzal-CoalTL concepts](https://github.com/Becheler/quetzal-CoalTL/blob/media/quetzal_scheme.png)
 
