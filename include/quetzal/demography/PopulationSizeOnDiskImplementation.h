@@ -124,7 +124,7 @@ namespace quetzal
 			{
 				const std::string prefix = "N-";
 				const std::string extension = ".archive";
-				return prefix + to_string(t) + extension;
+				return prefix + std::to_string(t) + extension;
 			}
 
 			void serialize_layer(time_type t)
