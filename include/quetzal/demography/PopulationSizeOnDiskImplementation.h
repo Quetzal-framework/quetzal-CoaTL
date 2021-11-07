@@ -82,7 +82,6 @@ namespace quetzal
 			*/
 			value_type operator()(coord_type const& x, time_type const& t) const
 			{
-				maybe_slide_window(t);
 				return get(x,t);
 			}
 			/**
@@ -116,14 +115,14 @@ namespace quetzal
 			*/
 			bool is_defined(coord_type const& x, time_type const& t) const
 			{
-				maybe_slide_window(t);
 				return 	   (!m_populations.empty())
 				&& (m_populations.find(t) != m_populations.end())
 				&& (m_populations.at(t).find(x) != m_populations.at(t).end());
 			}
+
 			std::string get_archive_name(time_type t) const
 			{
-				const std::string prefix = "N_";
+				const std::string prefix = "N-";
 				const std::string extension = ".archive";
 				return prefix + to_string(t) + extension;
 			}
@@ -178,7 +177,8 @@ namespace quetzal
 					m_last_flagged_time = t;
 				}
 			}
-		};
+
+		}; // PopulationSizeOnDiskImplementation
 	} // namespace demography
 } // namespace quetzal
 

@@ -36,7 +36,7 @@ namespace quetzal
 
       template<typename Space, typename Time, typename Value>
       using flow_type = quetzal::demography::Flow<Space, Time, Value>;
-    }
+    };
     // struct pre_allocated
     // {
     //   template<typename Space, typename Time, typename Value>
