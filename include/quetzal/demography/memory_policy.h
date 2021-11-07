@@ -12,7 +12,8 @@
 #define __MEMORY_TRAIT_H_INCLUDED__
 
 #include "PopulationSizeHashMapImplementation.h"
-// #include "PopulationSizeVectorImplementation.h"
+#include "PopulationSizeOnDiskImplementation.h"
+
 #include "Flow.h"
 
 namespace quetzal
