@@ -47,64 +47,6 @@ namespace quetzal
 			// only stores 2 time keys at the time, other are serialized
 			std::unordered_map<Time, std::unordered_map<Space, Value> > m_populations;
 
-			std::string get_archive_name(time_type t) const
-			{
-				const std::string prefix = "N_";
-				const std::string extension = ".archive";
-				return prefix + to_string(t) + extension;
-			}
-
-			void serialize_layer(time_type t)
-			{
-				const std::string filename = get_archive_name(t);
-				// create and open a binary archive for output
-				std::ofstream ofs(filename);
-				// save data to archive
-				boost::archive::binary_oarchive oa(ofs);
-				// write class instance to archive
-				oa << m_populations.at(t);
-				// archive and stream closed when destructors are called, clear map
-				m_populations.erase(t);
-			}
-
-			void deserialize_layer(time_type t)
-			{
-				std::string filename = get_archive_name(t);
-				 // create and open an archive for input
-				 std::ifstream ifs(filename);
-				 boost::archive::binary_iarchive ia(ifs);
-				 // read class state from archive
-				 ia >> m_populations[t];
-				 // archive and stream closed when destructors are called
-			}
-
-			void maybe_slide_window(time_type t)
-			{
-				// when the context just jumped forward in time:
-				if( t > m_last_flagged_time)
-				{
-					// N(x, t) is being computed based in N(x, m_last_flagged_time) & m_last_flagged_time = t - 1
-					if( t >= 2)
-					{
-						// you can serialize N(x, t - 2) because don't need it anymore
-						serialize_layer( t - 2 );
-					}
-					// Remember that the context jumped
-					m_last_flagged_time = t;
-				}
-				// when the context just jumped backward in time
-				else if( t < m_last_flagged_time)
-				{
-					// N(x, t) is being computed based in N(x, current_time) & m_last_flagged_time = t - 1
-					// You have to deserialize N(t) because you gonna need it
-					deserialize_layer(t);
-					// You can serialize the "previous" layer because you don't need it anymore
-					serialize_layer( m_last_flagged_time ); // should always exists: ranges from 0 to t_sampling
-					// Remember that the context jumped
-					m_last_flagged_time = t;
-				}
-			}
-
 		public:
 			//! \typedef time type
 			using time_type = Time;
@@ -166,6 +108,8 @@ namespace quetzal
 				}
 				return v;
 			}
+
+		private:
 			/**
 			* \brief Checks if population size is defined at deme x at time t
 			* \return True  if variable is defined, else false.
@@ -177,6 +121,62 @@ namespace quetzal
 				&& (m_populations.find(t) != m_populations.end())
 				&& (m_populations.at(t).find(x) != m_populations.at(t).end());
 			}
+			std::string get_archive_name(time_type t) const
+			{
+				const std::string prefix = "N_";
+				const std::string extension = ".archive";
+				return prefix + to_string(t) + extension;
+			}
+
+			void serialize_layer(time_type t)
+			{
+				const std::string filename = get_archive_name(t);
+				// create and open a binary archive for output
+				std::ofstream ofs(filename);
+				// save data to archive
+				boost::archive::binary_oarchive oa(ofs);
+				// write class instance to archive
+				oa << m_populations.at(t);
+				// archive and stream closed when destructors are called, clear map
+				m_populations.erase(t);
+			}
+
+			void deserialize_layer(time_type t)
+			{
+				std::string filename = get_archive_name(t);
+				 // create and open an archive for input
+				 std::ifstream ifs(filename);
+				 boost::archive::binary_iarchive ia(ifs);
+				 // read class state from archive
+				 ia >> m_populations[t];
+				 // archive and stream closed when destructors are called
+			}
+
+			void maybe_slide_window(time_type t)
+			{
+				// when the context just jumped forward in time:
+				if( t > m_last_flagged_time)
+				{
+					// N(x, t) is being computed based in N(x, m_last_flagged_time) & m_last_flagged_time = t - 1
+					if( t >= 2)
+					{
+						// you can serialize N(x, t - 2) because don't need it anymore
+						serialize_layer( t - 2 );
+					}
+					// Remember that the context jumped
+					m_last_flagged_time = t;
+				}
+				// when the context just jumped backward in time
+				else if( t < m_last_flagged_time)
+				{
+					// N(x, t) is being computed based in N(x, current_time) & m_last_flagged_time = t - 1
+					// You have to deserialize N(t) because you gonna need it
+					deserialize_layer(t);
+					// You can serialize the "previous" layer because you don't need it anymore
+					serialize_layer( m_last_flagged_time ); // should always exists: ranges from 0 to t_sampling
+					// Remember that the context jumped
+					m_last_flagged_time = t;
+				}
 			}
 		};
 	} // namespace demography
