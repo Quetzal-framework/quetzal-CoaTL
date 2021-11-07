@@ -127,7 +127,7 @@ namespace quetzal
 				return prefix + std::to_string(t) + extension;
 			}
 
-			void serialize_layer(time_type t)
+			void serialize_layer(time_type t) const
 			{
 				const std::string filename = get_archive_name(t);
 				// create and open a binary archive for output
@@ -140,7 +140,7 @@ namespace quetzal
 				m_populations.erase(t);
 			}
 
-			void deserialize_layer(time_type t)
+			void deserialize_layer(time_type t) const
 			{
 				std::string filename = get_archive_name(t);
 				 // create and open an archive for input
