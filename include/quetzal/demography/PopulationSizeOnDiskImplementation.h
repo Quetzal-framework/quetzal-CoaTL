@@ -43,7 +43,7 @@ namespace quetzal
 		{
 		private:
 
-			Time m_last_flagged_time = 0;
+			mutable Time m_last_flagged_time = 0;
 			// only stores 2 time keys at the time, other are serialized
 			mutable std::unordered_map<Time, std::unordered_map<Space, Value> > m_populations;
 
