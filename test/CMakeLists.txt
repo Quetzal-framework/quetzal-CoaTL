@@ -59,4 +59,4 @@ target_link_libraries(model_3 LINK_PUBLIC ${GDAL_LIBRARY} ${Boost_SERIALIZATION_
 target_include_directories(model_3
   PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
-add_test(SpatialExpansionIndividualBased model_3 ${CMAKE_CURRENT_SOURCE_DIR}/data/europe_temp.tif)
+add_test(SpatialExpansionMassBasedSeialized model_3 ${CMAKE_CURRENT_SOURCE_DIR}/data/europe_temp.tif)
