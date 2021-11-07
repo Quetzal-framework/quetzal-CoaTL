@@ -45,7 +45,7 @@ namespace quetzal
 
 			Time m_last_flagged_time = 0;
 			// only stores 2 time keys at the time, other are serialized
-			std::unordered_map<Time, std::unordered_map<Space, Value> > m_populations;
+			mutable std::unordered_map<Time, std::unordered_map<Space, Value> > m_populations;
 
 		public:
 			//! \typedef time type
@@ -151,7 +151,7 @@ namespace quetzal
 				 // archive and stream closed when destructors are called
 			}
 
-			void maybe_slide_window(time_type t)
+			void maybe_slide_window(time_type t) const
 			{
 				// when the context just jumped forward in time:
 				if( t > m_last_flagged_time)
