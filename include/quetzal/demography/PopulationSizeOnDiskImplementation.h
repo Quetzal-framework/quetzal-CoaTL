@@ -31,7 +31,7 @@ namespace quetzal
 	namespace demography
 	{
 		/*!
-		* \brief Population size distribution in time and space.
+		* \brief Population size distribution in time and space, serialized in a sliding windows to limit RAM usage.
 		*
 		* \tparam Space    Demes identifiers.
 		* \tparam Time     EqualityComparable, CopyConstructible.
@@ -44,35 +44,37 @@ namespace quetzal
 		private:
 
 			Time m_last_flagged_time = 0;
-			std::unordered_map<Space, Value> m_layer_1;
-			std::unordered_map<Space, Value> m_layer_2;
-			std::vector<std::string> m_archives; // t_0 to t_sampling
+			// only stores 2 time keys at the time, other are serialized
+			std::unordered_map<Time, std::unordered_map<Space, Value> > m_populations;
 
 			std::string get_archive_name(time_type t) const
 			{
-				std::string prefix = "N_";
-				std::string extension = ".archive";
+				const std::string prefix = "N_";
+				const std::string extension = ".archive";
 				return prefix + to_string(t) + extension;
 			}
 
 			void serialize_layer(time_type t)
 			{
-				// create and open a character archive for output
-				std::ofstream ofs(get_archive_name(t));
+				const std::string filename = get_archive_name(t);
+				// create and open a binary archive for output
+				std::ofstream ofs(filename);
 				// save data to archive
 				boost::archive::binary_oarchive oa(ofs);
 				// write class instance to archive
-				oa << layer;
-				// archive and stream closed when destructors are called
+				oa << m_populations.at(t);
+				// archive and stream closed when destructors are called, clear map
+				m_populations.erase(t);
 			}
 
 			void deserialize_layer(time_type t)
 			{
+				std::string filename = get_archive_name(t);
 				 // create and open an archive for input
-				 std::ifstream ifs(get_archive_name(t));
+				 std::ifstream ifs(filename);
 				 boost::archive::binary_iarchive ia(ifs);
 				 // read class state from archive
-				 ia >> layer;
+				 ia >> m_populations[t];
 				 // archive and stream closed when destructors are called
 			}
 
@@ -121,13 +123,14 @@ namespace quetzal
 			{
 				assert(N >= 0);
 				maybe_slide_window(t);
-				m_layer_1[x] = N;
+				m_populations[t][x] = N;
 			}
 			/**
 			* \brief Get population size value at deme x at time t
 			*/
 			value_type get(coord_type const& x, time_type const& t) const
 			{
+				maybe_slide_window(t);
 				assert( is_defined(x,t) );
 				return m_populations.at(t).at(x);
 			}
@@ -137,6 +140,7 @@ namespace quetzal
 			*/
 			value_type operator()(coord_type const& x, time_type const& t) const
 			{
+				maybe_slide_window(t);
 				return get(x,t);
 			}
 			/**
@@ -146,6 +150,7 @@ namespace quetzal
 			*/
 			value_type& operator()(coord_type const& x, time_type const& t)
 			{
+				maybe_slide_window(t);
 				return m_populations[t][x];
 			}
 			/**
@@ -153,6 +158,7 @@ namespace quetzal
 			*/
 			std::vector<coord_type> definition_space(time_type const& t) const
 			{
+				maybe_slide_window(t);
 				std::vector<coord_type> v;
 				for(auto const& it : m_populations.at(t) )
 				{
@@ -166,12 +172,11 @@ namespace quetzal
 			*/
 			bool is_defined(coord_type const& x, time_type const& t) const
 			{
+				maybe_slide_window(t);
 				return 	   (!m_populations.empty())
 				&& (m_populations.find(t) != m_populations.end())
 				&& (m_populations.at(t).find(x) != m_populations.at(t).end());
 			}
-
-
 			}
 		};
 	} // namespace demography
