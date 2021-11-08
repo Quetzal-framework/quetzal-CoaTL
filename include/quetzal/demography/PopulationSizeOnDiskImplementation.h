@@ -147,8 +147,10 @@ namespace quetzal
 				 std::ifstream ifs(filename);
 				 boost::archive::binary_iarchive ia(ifs);
 				 // read class state from archive
-				 ia >> m_populations[t];
+				 std::unordered_map<Space, Value> layer;
+				 ia >> layer;
 				 // archive and stream closed when destructors are called
+				 m_populations[t] = layer;
 			}
 
 			void maybe_slide_window(time_type t) const
