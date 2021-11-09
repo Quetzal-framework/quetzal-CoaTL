@@ -79,11 +79,17 @@ namespace quetzal
 				{
 					slide_reading_window_to(t);
 				}
-				else if( t <= 1 && m_reading_window.first == t + 1)
+				else if( t == 1 && m_reading_window.first == 2)
 				{
 					// means we are going backward
-					slide_reading_window_to(t);
+					slide_reading_window_to(1);
 				}
+				else if( t == 0 && m_reading_window.first == 1)
+				{
+					// means we are going backward
+					slide_reading_window_to(0);
+				}
+				std::cout << t << " " << m_reading_window.first << " " << m_reading_window.second <<  std::endl;
 				assert( is_defined(x,t) );
 				return m_populations.at(t).at(x);
 			}
