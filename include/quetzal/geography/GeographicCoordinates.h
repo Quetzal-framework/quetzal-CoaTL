@@ -11,6 +11,8 @@
 #ifndef __GEOGRAPHIC_COORDINATES_H_INCLUDED__
 #define __GEOGRAPHIC_COORDINATES_H_INCLUDED__
 
+#include <boost/archive/text_oarchive.hpp>
+
 #include <assert.h>
 #include <cmath> // trigonometry
 #include <string> // error
@@ -223,6 +225,15 @@ private:
 	assert(d >= 0);
 
   	return d;
+	}
+
+	friend class boost::serialization::access;
+
+	template<class Archive>
+	void serialize(Archive & ar, const unsigned int version)
+	{
+			ar & m_lat;
+			ar & m_lon;
 	}
 
 };

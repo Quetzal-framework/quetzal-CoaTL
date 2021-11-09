@@ -12,7 +12,8 @@
 #define __MEMORY_TRAIT_H_INCLUDED__
 
 #include "PopulationSizeHashMapImplementation.h"
-// #include "PopulationSizeVectorImplementation.h"
+#include "PopulationSizeOnDiskImplementation.h"
+
 #include "Flow.h"
 
 namespace quetzal
@@ -23,6 +24,15 @@ namespace quetzal
     {
       template<typename Space, typename Time, typename Value>
       using pop_sizes_type = quetzal::demography::PopulationSizeHashMapImplementation<Space, Time, Value>;
+
+      template<typename Space, typename Time, typename Value>
+      using flow_type = quetzal::demography::Flow<Space, Time, Value>;
+    };
+
+    struct on_disk
+    {
+      template<typename Space, typename Time, typename Value>
+      using pop_sizes_type = quetzal::demography::PopulationSizeOnDiskImplementation<Space, Time, Value>;
 
       template<typename Space, typename Time, typename Value>
       using flow_type = quetzal::demography::Flow<Space, Time, Value>;

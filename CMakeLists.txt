@@ -20,7 +20,7 @@ add_library(${PROJECT_NAME} INTERFACE)
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 # Include Boost as an imported target
-find_package(Boost 1.61 REQUIRED COMPONENTS unit_test_framework filesystem)
+find_package(Boost 1.61 REQUIRED COMPONENTS unit_test_framework filesystem serialization)
 
 # Include Gdal
 find_package(GDAL REQUIRED)
