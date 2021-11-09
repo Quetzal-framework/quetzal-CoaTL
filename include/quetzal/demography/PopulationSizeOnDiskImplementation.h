@@ -16,15 +16,15 @@
 
 #include <boost/serialization/serialization.hpp>
 #include <boost/serialization/unordered_map.hpp>
-#include <boost/serialization/unordered_set.hpp>
 
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
 
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
 #include "assert.h"
+#include <iostream>
 
 namespace quetzal
 {
@@ -63,6 +63,7 @@ namespace quetzal
 			*/
 			void set(coord_type const& x, time_type const& t, value_type N)
 			{
+				std::cout << m_last_flagged_time << " " << t << std::endl;
 				assert(N >= 0);
 				maybe_slide_window(t);
 				m_populations[t][x] = N;
@@ -72,6 +73,8 @@ namespace quetzal
 			*/
 			value_type get(coord_type const& x, time_type const& t) const
 			{
+				std::cout << m_last_flagged_time << " " << t << std::endl;
+
 				maybe_slide_window(t);
 				assert( is_defined(x,t) );
 				return m_populations.at(t).at(x);
@@ -82,6 +85,8 @@ namespace quetzal
 			*/
 			value_type operator()(coord_type const& x, time_type const& t) const
 			{
+				std::cout << m_last_flagged_time << " " << t << std::endl;
+
 				return get(x,t);
 			}
 			/**
@@ -91,6 +96,8 @@ namespace quetzal
 			*/
 			value_type& operator()(coord_type const& x, time_type const& t)
 			{
+				std::cout << m_last_flagged_time << " " << t << std::endl;
+
 				maybe_slide_window(t);
 				return m_populations[t][x];
 			}
@@ -99,6 +106,8 @@ namespace quetzal
 			*/
 			std::vector<coord_type> definition_space(time_type const& t) const
 			{
+				std::cout << m_last_flagged_time << " " << t << std::endl;
+
 				maybe_slide_window(t);
 				std::vector<coord_type> v;
 				for(auto const& it : m_populations.at(t) )
@@ -133,7 +142,7 @@ namespace quetzal
 				// create and open a binary archive for output
 				std::ofstream ofs(filename);
 				// save data to archive
-				boost::archive::binary_oarchive oa(ofs);
+				boost::archive::text_oarchive oa(ofs);
 				// write class instance to archive
 				oa << m_populations.at(t);
 				// archive and stream closed when destructors are called, clear map
@@ -144,8 +153,8 @@ namespace quetzal
 			{
 				std::string filename = get_archive_name(t);
 				 // create and open an archive for input
-				 std::ifstream ifs(filename);
-				 boost::archive::binary_iarchive ia(ifs);
+				 std::ifstream ifs(filename, std::ios::binary);
+				 boost::archive::text_iarchive ia(ifs);
 				 // read class state from archive
 				 std::unordered_map<Space, Value> layer;
 				 ia >> layer;
@@ -167,16 +176,15 @@ namespace quetzal
 					// Remember that the context jumped
 					m_last_flagged_time = t;
 				}
-				// when the context just jumped backward in time
-				else if( t < m_last_flagged_time)
+				// when the context jumped backward in time
+				else if( t >= 2 && t <= m_last_flagged_time - 2)
 				{
-					// N(x, t) is being computed based in N(x, current_time) & m_last_flagged_time = t - 1
 					// You have to deserialize N(t) because you gonna need it
 					deserialize_layer(t);
 					// You can serialize the "previous" layer because you don't need it anymore
 					serialize_layer( m_last_flagged_time ); // should always exists: ranges from 0 to t_sampling
 					// Remember that the context jumped
-					m_last_flagged_time = t;
+					m_last_flagged_time -= 1;
 				}
 			}
 

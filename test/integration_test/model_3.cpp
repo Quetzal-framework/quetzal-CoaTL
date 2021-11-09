@@ -121,16 +121,6 @@ int main(int argc, char* argv[])
   auto sample = unif_sampler(gen);
 
   /**********************
-  *  Data visualization
-  **********************/
-  std::cout << "7 ... Exporting GIS data for visualization" << std::endl;
-  std::string N_filename = "N.tif";
-  // Make it easy to visualize using eg the R package raster
-  env.export_to_geotiff(N, t_0, sampling_time, [&simulator](time_type const& t){return simulator.distribution_area(t);}, N_filename);
-  // Easy to visualize with eg readOGR R function
-  env.export_to_shapefile(sample, "sample.shp");
-
-  /**********************
   *  Coalescence
   **********************/
   std::cout << "8 ... Begining coalescence" << std::endl;
@@ -142,6 +132,17 @@ int main(int argc, char* argv[])
   file << results;
   file.close();
   std::cout << "Done" << std::endl;
+
+  /**********************
+  *  Data visualization
+  **********************/
+  std::cout << "7 ... Exporting GIS data for visualization" << std::endl;
+  std::string N_filename = "N.tif";
+  // Make it easy to visualize using eg the R package raster
+  env.export_to_geotiff(N, t_0, sampling_time, [&simulator](time_type const& t){return simulator.distribution_area(t);}, N_filename);
+  // Easy to visualize with eg readOGR R function
+  env.export_to_shapefile(sample, "sample.shp");
+  
   return 0;
 }
 //! [Demonstrate use]
