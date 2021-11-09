@@ -42,8 +42,8 @@ namespace quetzal
 		class PopulationSizeOnDiskImplementation
 		{
 		private:
-
-			mutable Time m_last_flagged_time = 0;
+			mutable std::pair<Time, Time> m_writing_window = {0,1};
+			mutable std::pair<Time, Time> m_reading_window = {0,1};
 			// only stores 2 time keys at the time, other are serialized
 			mutable std::unordered_map<Time, std::unordered_map<Space, Value> > m_populations;
 
@@ -63,9 +63,11 @@ namespace quetzal
 			*/
 			void set(coord_type const& x, time_type const& t, value_type N)
 			{
-				std::cout << m_last_flagged_time << " " << t << std::endl;
 				assert(N >= 0);
-				maybe_slide_window(t);
+				if(t > 1)
+				{
+					slide_writing_window_to(t);
+				}
 				m_populations[t][x] = N;
 			}
 			/**
@@ -73,9 +75,15 @@ namespace quetzal
 			*/
 			value_type get(coord_type const& x, time_type const& t) const
 			{
-				std::cout << m_last_flagged_time << " " << t << std::endl;
-
-				maybe_slide_window(t);
+				if(t > 1)
+				{
+					slide_reading_window_to(t);
+				}
+				else if( t <= 1 && m_reading_window.first == t + 1)
+				{
+					// means we are going backward
+					slide_reading_window_to(t);
+				}
 				assert( is_defined(x,t) );
 				return m_populations.at(t).at(x);
 			}
@@ -85,8 +93,6 @@ namespace quetzal
 			*/
 			value_type operator()(coord_type const& x, time_type const& t) const
 			{
-				std::cout << m_last_flagged_time << " " << t << std::endl;
-
 				return get(x,t);
 			}
 			/**
@@ -96,9 +102,10 @@ namespace quetzal
 			*/
 			value_type& operator()(coord_type const& x, time_type const& t)
 			{
-				std::cout << m_last_flagged_time << " " << t << std::endl;
-
-				maybe_slide_window(t);
+				if(t > 1)
+				{
+					slide_writing_window_to(t);
+				}
 				return m_populations[t][x];
 			}
 			/**
@@ -106,9 +113,10 @@ namespace quetzal
 			*/
 			std::vector<coord_type> definition_space(time_type const& t) const
 			{
-				std::cout << m_last_flagged_time << " " << t << std::endl;
-
-				maybe_slide_window(t);
+				if(t > 1)
+				{
+					slide_reading_window_to(t);
+				}
 				std::vector<coord_type> v;
 				for(auto const& it : m_populations.at(t) )
 				{
@@ -146,7 +154,8 @@ namespace quetzal
 				// write class instance to archive
 				oa << m_populations.at(t);
 				// archive and stream closed when destructors are called, clear map
-				m_populations.erase(t);
+				m_populations.erase( t );
+
 			}
 
 			void deserialize_layer(time_type t) const
@@ -162,32 +171,73 @@ namespace quetzal
 				 m_populations[t] = layer;
 			}
 
-			void maybe_slide_window(time_type t) const
+			void slide_writing_window_to(time_type t) const
 			{
 				// when the context just jumped forward in time:
-				if( t > m_last_flagged_time)
+				if( t == m_writing_window.second + 1)
 				{
-					// N(x, t) is being computed based in N(x, m_last_flagged_time) & m_last_flagged_time = t - 1
-					if( t >= 2)
-					{
-						// you can serialize N(x, t - 2) because don't need it anymore
-						serialize_layer( t - 2 );
-					}
-					// Remember that the context jumped
-					m_last_flagged_time = t;
-				}
-				// when the context jumped backward in time
-				else if( t >= 2 && t <= m_last_flagged_time - 2)
-				{
-					// You have to deserialize N(t) because you gonna need it
-					deserialize_layer(t);
-					// You can serialize the "previous" layer because you don't need it anymore
-					serialize_layer( m_last_flagged_time ); // should always exists: ranges from 0 to t_sampling
-					// Remember that the context jumped
-					m_last_flagged_time -= 1;
+					// N(x, t) is being computed based in N(x, t-1)
+					serialize_layer( m_writing_window.first );
+					// erase layer from RAM
+					m_populations.erase( m_writing_window.first );
+					// advance the sliding windows
+					m_writing_window.first += 1;
+					m_writing_window.second += 1;
 				}
 			}
 
+			void slide_reading_window_to(time_type t) const
+			{
+				// window is well positioned
+				if(t == m_reading_window.first || t == m_reading_window.second )
+				{
+					// do nothing, just read the data
+					return;
+				}
+				// windows is one tick too advanced
+				else if( t == m_reading_window.first - 1)
+				{
+					// erase layer from RAM
+					serialize_layer( m_reading_window.second );
+					// read from disk
+					deserialize_layer( m_reading_window.first - 1 );
+					// slide back the window
+					m_reading_window.first -= 1;
+					m_reading_window.second -= 1;
+				}
+				// current windows is one tick too late
+				else if( t == m_reading_window.second + 1)
+				{
+					// erase layer from RAM if not already done by writing windows
+					if( m_populations.count(m_reading_window.first) == 1)
+					{
+						serialize_layer( m_reading_window.first );
+					}
+					// layer is not in the process of being simulated: read layer from disk
+					if( m_populations.count(t) == 0)
+					{
+						deserialize_layer( m_reading_window.second + 1 );
+					}
+					// slide back the windows
+					m_reading_window.first += 1;
+					m_reading_window.second += 1;
+				}
+				// current windows is totally not aligned
+				else
+				{
+					// erase both layers from RAM
+					serialize_layer( m_reading_window.first );
+					serialize_layer( m_reading_window.second );
+					m_populations.erase( m_reading_window.first );
+					m_populations.erase( m_reading_window.second );
+					// read both layers from disk
+					deserialize_layer( t );
+					deserialize_layer( t - 1 );
+					// slide the windows
+					m_reading_window.first = t - 1;
+					m_reading_window.second = t;
+				}
+			}
 		}; // PopulationSizeOnDiskImplementation
 	} // namespace demography
 } // namespace quetzal
