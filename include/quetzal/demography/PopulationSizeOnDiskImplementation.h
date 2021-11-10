@@ -17,8 +17,8 @@
 #include <boost/serialization/serialization.hpp>
 #include <boost/serialization/unordered_map.hpp>
 
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
 
 #include <unordered_map>
 #include <unordered_set>
@@ -156,11 +156,11 @@ namespace quetzal
 				// create and open a binary archive for output
 				std::ofstream ofs(filename);
 				// save data to archive
-				boost::archive::text_oarchive oa(ofs);
+				boost::archive::binary_oarchive oa(ofs);
 				// write class instance to archive
 				oa << m_populations.at(t);
 				// archive and stream closed when destructors are called, clear map
-				m_populations.erase( t );
+				m_populations.erase(t);
 
 			}
 
@@ -169,7 +169,7 @@ namespace quetzal
 				std::string filename = get_archive_name(t);
 				 // create and open an archive for input
 				 std::ifstream ifs(filename, std::ios::binary);
-				 boost::archive::text_iarchive ia(ifs);
+				 boost::archive::binary_iarchive ia(ifs);
 				 // read class state from archive
 				 std::unordered_map<Space, Value> layer;
 				 ia >> layer;
