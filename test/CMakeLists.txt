@@ -47,16 +47,16 @@ target_include_directories(model_1
   $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
 add_test(SpatialExpansionMassBased model_1 ${CMAKE_CURRENT_SOURCE_DIR}/data/europe_temp.tif)
 
+add_executable(model_3 integration_test/model_3.cpp)
+target_link_libraries(model_3 LINK_PUBLIC ${GDAL_LIBRARY} ${Boost_SERIALIZATION_LIBRARY})
+target_include_directories(model_3
+  PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
+add_test(SpatialExpansionMassBasedSerialized model_3 ${CMAKE_CURRENT_SOURCE_DIR}/data/europe_temp.tif)
+
 add_executable(model_2 integration_test/model_2.cpp)
 target_link_libraries(model_2 LINK_PUBLIC ${GDAL_LIBRARY} )
 target_include_directories(model_2
   PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
 add_test(SpatialExpansionIndividualBased model_2 ${CMAKE_CURRENT_SOURCE_DIR}/data/europe_temp.tif)
-
-add_executable(model_3 integration_test/model_3.cpp)
-target_link_libraries(model_3 LINK_PUBLIC ${GDAL_LIBRARY} ${Boost_SERIALIZATION_LIBRARY})
-target_include_directories(model_3
-  PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
-add_test(SpatialExpansionMassBasedSeialized model_3 ${CMAKE_CURRENT_SOURCE_DIR}/data/europe_temp.tif)
