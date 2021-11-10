@@ -36,7 +36,16 @@ namespace demography {
 template<typename Space, typename Time, typename Value>
 class FlowOnDiskImplementation
 {
+public:
+	//! \typedef time type
+	using time_type = Time;
+	//! \typedef space type
+	using coord_type = Space;
+	//! \typedef type of the population size variable
+	using value_type = Value;
 private:
+	mutable std::pair<Time, Time> m_writing_window = {0,1};
+	mutable std::pair<Time, Time> m_reading_window = {0,1};
 	/**
 		* \brief A class representing the spatio-temporal coordinates of the flow vector (time, origin and destination)
 		*/
@@ -90,23 +99,18 @@ private:
 	//! historical reverse flows database
 	backward_flow_type m_backward_flow;
 public:
-	//! \typedef time type
-	using time_type = Time;
-	//! \typedef space type
-	using coord_type = Space;
-	//! \typedef type of the population size variable
-	using value_type = Value;
 	/**
 	  * \brief Default constructor
 		*/
-	Flow() = default;
+	FlowOnDiskImplementation() = default;
 	/**
 	  * \brief Retrieves value of the flux from deme i to deme j at time t.
 		*/
 	value_type flux_from_to(coord_type const& from, coord_type const& to, time_type t) const
 	{
-		assert(m_forward_flow.find(key_type(t,from,to)) != m_forward_flow.end());
-		return m_forward_flow.at(key_type(t,from,to));
+		assert(m_forward_flow.find(t) != m_forward_flow.end());
+		assert(m_forward_flow.at(t).find(key_type(from, to)) != m_forward_flow.at(t).end());
+		return m_forward_flow.at(t).at(key_type(from,to));
 	}
 	/**
 	  * \brief Retrieves value of the flux from deme i to deme j at time t.
@@ -114,16 +118,16 @@ public:
 		*/
 	void set_flux_from_to(coord_type const& from, coord_type const& to, time_type t, value_type v)
 	{
-		m_forward_flow[key_type(t, from, to)] = v;
-		m_backward_flow[reverse_key_type(to, t)][from] = v;
+		m_forward_flow[t][key_type(from, to)] = v;
+		m_backward_flow[t][to][from] = v;
 	}
 	/**
 	  * \brief Adds value v to the flux from deme i to deme j at time t.
 		*/
 	void add_to_flux_from_to(coord_type const& from, coord_type const& to, time_type t, value_type v)
 	{
-		m_forward_flow[key_type(t, from, to)] += v;
-		m_backward_flow[reverse_key_type(to, t)][from] += v;
+		m_forward_flow[t][key_type(from, to)] += v;
+		m_backward_flow[t][to][from] += v;
 	}
 	/**
 	  * \brief Retrieves the distribution of the value of the flux converging to deme x at time t.
@@ -133,7 +137,7 @@ public:
 	std::unordered_map<coord_type, value_type> const & flux_to(coord_type const& x, time_type t) const
 	{
 		assert(flux_to_is_defined(x,t));
-		return m_backward_flow.at(reverse_key_type(x, t));
+		return m_backward_flow.at(t).at(x);
 	}
 	/**
 	  * \brief Check if the distribution of the value of the flux converging to deme x at time t is defined
@@ -141,8 +145,16 @@ public:
 		*/
 	bool flux_to_is_defined(coord_type const& to, time_type const& t) const
 	{
-		auto it = m_backward_flow.find(reverse_key_type(to, t));
-		return it != m_backward_flow.end();
+		auto it1 = m_backward_flow.find(t);
+		if(it1 != m_backward_flow.end())
+		{
+			auto it2 = m_backward_flow.at(t).find(to);
+			return it2 != m_backward_flow.at(t).end();
+		}
+		else
+		{
+			return false;
+		}
 	}
 private:
 	/**
@@ -180,7 +192,7 @@ private:
 		boost::archive::binary_oarchive backward_oa(backward_ofs);
 		// write class instance to archive
 		forward_oa << m_forward_flow.at(t);
-		backward_oa << m_backward.at(t);
+		backward_oa << m_backward_flow.at(t);
 		// archive and stream closed when destructors are called, clear map
 		m_forward_flow.erase(t);
 		m_backward_flow.erase(t);
@@ -213,7 +225,8 @@ private:
 			// N(x, t) is being computed based in N(x, t-1)
 			serialize_layer( m_writing_window.first );
 			// erase layer from RAM
-			m_populations.erase( m_writing_window.first );
+			m_forward_flow.erase( m_writing_window.first );
+			m_backward_flow.erase( m_writing_window.first );
 			// advance the sliding windows
 			m_writing_window.first += 1;
 			m_writing_window.second += 1;
@@ -243,12 +256,12 @@ private:
 		else if( t == m_reading_window.second + 1)
 		{
 			// erase layer from RAM if not already done by writing windows
-			if( m_populations.count(m_reading_window.first) == 1)
+			if( m_forward_flow.count(m_reading_window.first) == 1)
 			{
 				serialize_layer( m_reading_window.first );
 			}
 			// layer is not in the process of being simulated: read layer from disk
-			if( m_populations.count(t) == 0)
+			if( m_forward_flow.count(t) == 0)
 			{
 				deserialize_layer( m_reading_window.second + 1 );
 			}
@@ -262,8 +275,10 @@ private:
 			// erase both layers from RAM
 			serialize_layer( m_reading_window.first );
 			serialize_layer( m_reading_window.second );
-			m_populations.erase( m_reading_window.first );
-			m_populations.erase( m_reading_window.second );
+			m_forward_flow.erase( m_reading_window.first );
+			m_backward_flow.erase( m_reading_window.first );
+			m_forward_flow.erase( m_reading_window.second );
+			m_backward_flow.erase( m_reading_window.second );
 			// read both layers from disk
 			deserialize_layer( t );
 			deserialize_layer( t - 1 );
