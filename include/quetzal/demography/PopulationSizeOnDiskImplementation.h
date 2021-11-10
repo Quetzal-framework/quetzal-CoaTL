@@ -89,7 +89,6 @@ namespace quetzal
 					// means we are going backward
 					slide_reading_window_to(0);
 				}
-				std::cout << t << " " << m_reading_window.first << " " << m_reading_window.second <<  std::endl;
 				assert( is_defined(x,t) );
 				return m_populations.at(t).at(x);
 			}
