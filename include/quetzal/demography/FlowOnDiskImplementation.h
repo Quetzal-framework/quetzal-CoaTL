@@ -170,7 +170,7 @@ namespace quetzal
 				*/
 			std::string get_forward_flow_archive_name(time_type t) const
 			{
-				const std::string prefix = "M-forward";
+				const std::string prefix = "M-forward-";
 				const std::string extension = ".archive";
 				return prefix + std::to_string(t) + extension;
 			}
@@ -180,7 +180,7 @@ namespace quetzal
 				*/
 			std::string get_backward_flow_archive_name(time_type t) const
 			{
-				const std::string prefix = "M-backward";
+				const std::string prefix = "M-backward-";
 				const std::string extension = ".archive";
 				return prefix + std::to_string(t) + extension;
 			}
