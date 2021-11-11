@@ -25,7 +25,8 @@
 #include <vector>
 #include "assert.h"
 #include <iostream>
-
+ #include <fstream>
+ 
 namespace quetzal
 {
 	namespace demography
@@ -109,7 +110,6 @@ namespace quetzal
 				return v;
 			}
 
-		private:
 			/**
 			* \brief Checks if population size is defined at deme x at time t
 			* \return True  if variable is defined, else false.
@@ -120,6 +120,8 @@ namespace quetzal
 				&& (m_populations.find(t) != m_populations.end())
 				&& (m_populations.at(t).find(x) != m_populations.at(t).end());
 			}
+
+		private:
 
 			std::string get_archive_name(time_type t) const
 			{
