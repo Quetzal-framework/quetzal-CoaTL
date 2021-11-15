@@ -11,7 +11,7 @@
 #ifndef __GEOGRAPHIC_COORDINATES_H_INCLUDED__
 #define __GEOGRAPHIC_COORDINATES_H_INCLUDED__
 
-#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
 
 #include <assert.h>
 #include <cmath> // trigonometry

@@ -17,14 +17,15 @@
 #include <boost/serialization/serialization.hpp>
 #include <boost/serialization/unordered_map.hpp>
 
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
 
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
 #include "assert.h"
 #include <iostream>
+ #include <fstream>
 
 namespace quetzal
 {
@@ -42,8 +43,8 @@ namespace quetzal
 		class PopulationSizeOnDiskImplementation
 		{
 		private:
-			mutable std::pair<Time, Time> m_writing_window = {0,1};
-			mutable std::pair<Time, Time> m_reading_window = {0,1};
+			// Data in this windows are in RAM and allow for read and write access
+			mutable std::pair<Time, Time> m_RAM_window = {0,1};
 			// only stores 2 time keys at the time, other are serialized
 			mutable std::unordered_map<Time, std::unordered_map<Space, Value> > m_populations;
 
@@ -64,32 +65,25 @@ namespace quetzal
 			void set(coord_type const& x, time_type const& t, value_type N)
 			{
 				assert(N >= 0);
-				if(t > 1)
-				{
-					slide_writing_window_to(t);
-				}
+				slide_RAM_window_to(t);
 				m_populations[t][x] = N;
+			}
+			/**
+			* \brief Population size at deme x at time t.
+			* \return a reference to the value, initialized with value_type default constructor
+			* \remark operator allows for more expressive mathematical style in client code
+			*/
+			value_type& operator()(coord_type const& x, time_type const& t)
+			{
+				slide_RAM_window_to(t);
+				return m_populations[t][x];
 			}
 			/**
 			* \brief Get population size value at deme x at time t
 			*/
 			value_type get(coord_type const& x, time_type const& t) const
 			{
-				if(t > 1)
-				{
-					slide_reading_window_to(t);
-				}
-				else if( t == 1 && m_reading_window.first == 2)
-				{
-					// means we are going backward
-					slide_reading_window_to(1);
-				}
-				else if( t == 0 && m_reading_window.first == 1)
-				{
-					// means we are going backward
-					slide_reading_window_to(0);
-				}
-				std::cout << t << " " << m_reading_window.first << " " << m_reading_window.second <<  std::endl;
+				slide_RAM_window_to(t);
 				assert( is_defined(x,t) );
 				return m_populations.at(t).at(x);
 			}
@@ -101,28 +95,13 @@ namespace quetzal
 			{
 				return get(x,t);
 			}
-			/**
-			* \brief Population size at deme x at time t.
-			* \return a reference to the value, initialized with value_type default constructor
-			* \remark operator allows for more expressive mathematical style in client code
-			*/
-			value_type& operator()(coord_type const& x, time_type const& t)
-			{
-				if(t > 1)
-				{
-					slide_writing_window_to(t);
-				}
-				return m_populations[t][x];
-			}
+
 			/**
 			* \brief Return the demes at which the population size was defined (>0) at time t.
 			*/
 			std::vector<coord_type> definition_space(time_type const& t) const
 			{
-				if(t > 1)
-				{
-					slide_reading_window_to(t);
-				}
+				slide_RAM_window_to(t);
 				std::vector<coord_type> v;
 				for(auto const& it : m_populations.at(t) )
 				{
@@ -131,7 +110,6 @@ namespace quetzal
 				return v;
 			}
 
-		private:
 			/**
 			* \brief Checks if population size is defined at deme x at time t
 			* \return True  if variable is defined, else false.
@@ -142,6 +120,8 @@ namespace quetzal
 				&& (m_populations.find(t) != m_populations.end())
 				&& (m_populations.at(t).find(x) != m_populations.at(t).end());
 			}
+
+		private:
 
 			std::string get_archive_name(time_type t) const
 			{
@@ -156,12 +136,11 @@ namespace quetzal
 				// create and open a binary archive for output
 				std::ofstream ofs(filename);
 				// save data to archive
-				boost::archive::text_oarchive oa(ofs);
+				boost::archive::binary_oarchive oa(ofs);
 				// write class instance to archive
 				oa << m_populations.at(t);
 				// archive and stream closed when destructors are called, clear map
-				m_populations.erase( t );
-
+				m_populations.erase(t);
 			}
 
 			void deserialize_layer(time_type t) const
@@ -169,7 +148,7 @@ namespace quetzal
 				std::string filename = get_archive_name(t);
 				 // create and open an archive for input
 				 std::ifstream ifs(filename, std::ios::binary);
-				 boost::archive::text_iarchive ia(ifs);
+				 boost::archive::binary_iarchive ia(ifs);
 				 // read class state from archive
 				 std::unordered_map<Space, Value> layer;
 				 ia >> layer;
@@ -177,71 +156,57 @@ namespace quetzal
 				 m_populations[t] = layer;
 			}
 
-			void slide_writing_window_to(time_type t) const
-			{
-				// when the context just jumped forward in time:
-				if( t == m_writing_window.second + 1)
-				{
-					// N(x, t) is being computed based in N(x, t-1)
-					serialize_layer( m_writing_window.first );
-					// erase layer from RAM
-					m_populations.erase( m_writing_window.first );
-					// advance the sliding windows
-					m_writing_window.first += 1;
-					m_writing_window.second += 1;
-				}
-			}
-
-			void slide_reading_window_to(time_type t) const
+			void slide_RAM_window_to(time_type t) const
 			{
 				// window is well positioned
-				if(t == m_reading_window.first || t == m_reading_window.second )
+				if(t == m_RAM_window.first || t == m_RAM_window.second )
 				{
 					// do nothing, just read the data
 					return;
 				}
-				// windows is one tick too advanced
-				else if( t == m_reading_window.first - 1)
+				// windows has to go forward
+				else if( t == m_RAM_window.second + 1)
 				{
-					// erase layer from RAM
-					serialize_layer( m_reading_window.second );
-					// read from disk
-					deserialize_layer( m_reading_window.first - 1 );
+					// we know for sure we can serialize this
+					serialize_layer( m_RAM_window.first );
+					// slide the window
+					m_RAM_window.first += 1;
+					m_RAM_window.second += 1;
+					// we don't know if we are in forward history simulation or forward reading
+					try { deserialize_layer( m_RAM_window.second);
+					} catch (const std::exception& e) {
+						std::cout << "layer did not exist on disk, I assume it's forward simulation time" << std::endl;
+					}
+				}
+				// windows has to go backward
+				else if( t == m_RAM_window.first - 1)
+				{
+					// we know for sure we can serialize this
+					serialize_layer( m_RAM_window.second );
+					// we know for sure we should be able to deserialize this
+					deserialize_layer( m_RAM_window.first - 1 );
 					// slide back the window
-					m_reading_window.first -= 1;
-					m_reading_window.second -= 1;
+					m_RAM_window.first -= 1;
+					m_RAM_window.second -= 1;
 				}
-				// current windows is one tick too late
-				else if( t == m_reading_window.second + 1)
-				{
-					// erase layer from RAM if not already done by writing windows
-					if( m_populations.count(m_reading_window.first) == 1)
-					{
-						serialize_layer( m_reading_window.first );
-					}
-					// layer is not in the process of being simulated: read layer from disk
-					if( m_populations.count(t) == 0)
-					{
-						deserialize_layer( m_reading_window.second + 1 );
-					}
-					// slide back the windows
-					m_reading_window.first += 1;
-					m_reading_window.second += 1;
-				}
-				// current windows is totally not aligned
+				// current windows is totally not aligned: assume it's (for now) only random reading access
 				else
 				{
 					// erase both layers from RAM
-					serialize_layer( m_reading_window.first );
-					serialize_layer( m_reading_window.second );
-					m_populations.erase( m_reading_window.first );
-					m_populations.erase( m_reading_window.second );
-					// read both layers from disk
-					deserialize_layer( t );
-					deserialize_layer( t - 1 );
+					serialize_layer( m_RAM_window.first );
+					serialize_layer( m_RAM_window.second );
 					// slide the windows
-					m_reading_window.first = t - 1;
-					m_reading_window.second = t;
+          if(t == 0)
+					{
+						m_RAM_window.first = 0;
+						m_RAM_window.second = 1;
+					}else{
+						m_RAM_window.first = t - 1;
+						m_RAM_window.second = t;
+					}
+					// read both layers from disk
+					deserialize_layer( m_RAM_window.first );
+					deserialize_layer( m_RAM_window.second );
 				}
 			}
 		}; // PopulationSizeOnDiskImplementation

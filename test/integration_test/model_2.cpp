@@ -50,8 +50,8 @@ int main(int argc, char* argv[])
   demographic_policy::value_type N_0 = 100;
   // Number of generations
   unsigned int t_0 = 0;
-  unsigned int nb_generations = 30;
-  unsigned int sampling_time = 29;
+  unsigned int nb_generations = 10;
+  unsigned int sampling_time = 9;
   // Simulator initialization
   simulator_type simulator(x_0, N_0, nb_generations);
   // Ancestral wright-fisher population size
@@ -108,7 +108,7 @@ int main(int argc, char* argv[])
   ************************************************************/
   std::cout << "6 ... Simulating sampling scheme" << std::endl;
   // Sampling size
-  unsigned int n = 50;
+  unsigned int n = 5;
   // Retrieve the non-empty demes at sampling time
   std::vector<coord_type> distribution_area = simulator.distribution_area(sampling_time);
   // Declare a functor to get the population size at sampling time
