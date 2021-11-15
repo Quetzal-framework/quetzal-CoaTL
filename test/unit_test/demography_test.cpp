@@ -153,6 +153,64 @@ BOOST_AUTO_TEST_CASE( flow )
 	}
 }
 
+BOOST_AUTO_TEST_CASE( flow_on_disk_implementation )
+{
+  using coord_type = std::string;
+	using time_type = unsigned int;
+	using value_type = int;
+
+	time_type t = 0;
+	coord_type i = "A";
+	coord_type j = "B";
+
+	quetzal::demography::FlowOnDiskImplementation<coord_type, time_type, value_type> Phi;
+
+	BOOST_TEST( ! Phi.flux_to_is_defined(i, t) );
+	Phi.set_flux_from_to(i, j, t, 12);
+	Phi.add_to_flux_from_to(j, j, t, 1);
+	BOOST_TEST(Phi.flux_to_is_defined(j, t));
+	BOOST_TEST(Phi.flux_from_to(i,j,t) == 12);
+	BOOST_TEST(Phi.flux_from_to(j,j,t) == 1);
+
+  std::cout << "Flows converging to " << j << " at time t=" << t << ":" <<std::endl;
+	for(auto const& it : Phi.flux_to(j,t))
+  {
+		std::cout << "From "<< it.first << " to " << j << " = " << it.second << std::endl;
+	}
+}
+
+BOOST_AUTO_TEST_CASE( flow_on_disk_implementation_moving_windows )
+{
+  std::cout << "here" <<std::endl;
+  using coord_type = unsigned int;
+	using time_type = unsigned int;
+	using value_type = unsigned int;
+
+	quetzal::demography::FlowOnDiskImplementation<coord_type, time_type, value_type> Phi;
+
+  for(unsigned int t=0; t <= 5; ++t)
+  {
+    for(unsigned int from=0; from <=5; ++from)
+    {
+      for(unsigned int to=0; to <= 5; ++to)
+      {
+        Phi.set_flux_from_to(from, to, t, from+to+t);
+      }
+    }
+  }
+
+	BOOST_TEST(Phi.flux_to_is_defined(5, 5));
+	BOOST_TEST(Phi.flux_from_to(5,5,5) == 15);
+  BOOST_TEST(Phi.flux_from_to(2,4,5) == 11);
+  BOOST_TEST(Phi.flux_from_to(0,0,4) == 4);
+  BOOST_TEST(Phi.flux_from_to(0,0,3) == 3);
+  BOOST_TEST(Phi.flux_from_to(0,0,2) == 2);
+  BOOST_TEST(Phi.flux_from_to(0,0,1) == 1);
+  BOOST_TEST(Phi.flux_from_to(0,0,0) == 0);
+  BOOST_TEST(Phi.flux_from_to(1,2,5) == 8);
+  BOOST_TEST(Phi.flux_from_to(0,0,0) == 0);
+}
+
 BOOST_AUTO_TEST_CASE( individual_based_history_default_storage )
 {
 	 //! [individual_based_history_default_storage example]

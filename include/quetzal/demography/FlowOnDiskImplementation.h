@@ -226,6 +226,7 @@ namespace quetzal
 
 			void slide_RAM_window_to(time_type t) const
 			{
+				std::cout << t << " " << m_forward_flow.size() << " " << m_backward_flow.size() << std::endl;
 				// window is well positioned
 				if(t == m_RAM_window.first || t == m_RAM_window.second )
 				{
@@ -264,8 +265,15 @@ namespace quetzal
 					serialize_layer( m_RAM_window.first );
 					serialize_layer( m_RAM_window.second );
 					// slide the windows
-					m_RAM_window.first = t - 1;
-					m_RAM_window.second = t;
+					if(t == 0)
+					{
+						m_RAM_window.first = 0;
+						m_RAM_window.second = 1;
+					}else{
+						m_RAM_window.first = t - 1;
+						m_RAM_window.second = t;
+					}
+
 					// read both layers from disk
 					deserialize_layer( m_RAM_window.first );
 					deserialize_layer( m_RAM_window.second );

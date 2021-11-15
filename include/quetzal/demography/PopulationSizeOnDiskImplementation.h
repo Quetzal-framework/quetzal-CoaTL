@@ -26,7 +26,7 @@
 #include "assert.h"
 #include <iostream>
  #include <fstream>
- 
+
 namespace quetzal
 {
 	namespace demography
@@ -196,8 +196,14 @@ namespace quetzal
 					serialize_layer( m_RAM_window.first );
 					serialize_layer( m_RAM_window.second );
 					// slide the windows
-					m_RAM_window.first = t - 1;
-					m_RAM_window.second = t;
+          if(t == 0)
+					{
+						m_RAM_window.first = 0;
+						m_RAM_window.second = 1;
+					}else{
+						m_RAM_window.first = t - 1;
+						m_RAM_window.second = t;
+					}
 					// read both layers from disk
 					deserialize_layer( m_RAM_window.first );
 					deserialize_layer( m_RAM_window.second );
