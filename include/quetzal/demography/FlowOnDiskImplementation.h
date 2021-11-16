@@ -226,7 +226,6 @@ namespace quetzal
 
 			void slide_RAM_window_to(time_type t) const
 			{
-				std::cout << t << " " << m_forward_flow.size() << " " << m_backward_flow.size() << std::endl;
 				// window is well positioned
 				if(t == m_RAM_window.first || t == m_RAM_window.second )
 				{
