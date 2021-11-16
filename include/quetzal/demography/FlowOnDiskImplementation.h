@@ -243,7 +243,7 @@ namespace quetzal
 					// we don't know if we are in forward history simulation or forward reading
 					try { deserialize_layer( m_RAM_window.second);
 					} catch (const std::exception& e) {
-						std::cout << "layer did not exist on disk, I assume it's forward simulation time" << std::endl;
+						//std::cout << "layer did not exist on disk, I assume it's forward simulation time" << std::endl;
 					}
 				}
 				// windows has to go backward
