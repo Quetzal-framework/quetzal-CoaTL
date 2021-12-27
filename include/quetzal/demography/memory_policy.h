@@ -19,26 +19,37 @@
 
 namespace quetzal
 {
-  namespace memory
+  namespace demography
   {
-    struct on_demand
+    ///
+    /// @brief Policy classes customizing the memory behavior of the classes that inherit from quetzal::demography::History .
+    ///
+    namespace memory_policy
     {
-      template<typename Space, typename Time, typename Value>
-      using pop_sizes_type = quetzal::demography::PopulationSizeHashMapImplementation<Space, Time, Value>;
+      ///
+      /// @brief Keep the demographic data on RAM.
+      ///
+      struct on_RAM
+      {
+        template<typename Space, typename Time, typename Value>
+        using pop_sizes_type = quetzal::demography::PopulationSizeHashMapImplementation<Space, Time, Value>;
 
-      template<typename Space, typename Time, typename Value>
-      using flow_type = quetzal::demography::Flow<Space, Time, Value>;
-    };
+        template<typename Space, typename Time, typename Value>
+        using flow_type = quetzal::demography::Flow<Space, Time, Value>;
+      };
+      ///
+      /// @brief Serialize the unused layers of demographic data on disk, and deserialize them when access is needed.
+      ///
+      struct on_disk
+      {
+        template<typename Space, typename Time, typename Value>
+        using pop_sizes_type = quetzal::demography::PopulationSizeOnDiskImplementation<Space, Time, Value>;
 
-    struct on_disk
-    {
-      template<typename Space, typename Time, typename Value>
-      using pop_sizes_type = quetzal::demography::PopulationSizeOnDiskImplementation<Space, Time, Value>;
-
-      template<typename Space, typename Time, typename Value>
-      using flow_type = quetzal::demography::FlowOnDiskImplementation<Space, Time, Value>;
-    };
-  } // end namespace memory
+        template<typename Space, typename Time, typename Value>
+        using flow_type = quetzal::demography::FlowOnDiskImplementation<Space, Time, Value>;
+      };
+    } // end namespace memory
+  } // end namespace demography
 } // end namespace quetzal
 
 #endif
