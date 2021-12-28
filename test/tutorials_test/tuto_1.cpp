@@ -1,6 +1,6 @@
 // file main.cpp
 
-#include "quetzal/demography.h"
+#include <quetzal/demography.h>
 
 #include <iostream>
 #include <random>
