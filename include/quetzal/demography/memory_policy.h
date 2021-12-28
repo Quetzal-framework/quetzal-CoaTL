@@ -22,7 +22,7 @@ namespace quetzal
   namespace demography
   {
     ///
-    /// @brief Policy classes customizing the memory behavior of the classes that inherit from quetzal::demography::History .
+    /// @brief Policy classes to customize the memory storage behavior of the demographic history.
     ///
     namespace memory_policy
     {

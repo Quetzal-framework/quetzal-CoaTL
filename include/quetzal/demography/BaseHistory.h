@@ -43,15 +43,16 @@ namespace quetzal
       using coord_type = Space;
       //! \typedef time type
       using time_type = unsigned int;
-      using my_memory_policy = MemoryPolicy;
+      //! \typedef policy for storage and access to demographic data
+      using memory_policy = MemoryPolicy;
       //! \typedef strategy used for simulating populations dynamics
       using dispersal_policy = DispersalPolicy;
       //! \typedef value stored, usually double
       using value_type = typename dispersal_policy::value_type;
       //! \typedef type of the population flows database
-      using flow_type = typename my_memory_policy::template flow_type<coord_type, time_type, value_type>;
+      using flow_type = typename memory_policy::template flow_type<coord_type, time_type, value_type>;
       //! \typedef type of the population size database
-      using pop_sizes_type = typename my_memory_policy::template pop_sizes_type<coord_type, time_type, value_type>;
+      using pop_sizes_type = typename memory_policy::template pop_sizes_type<coord_type, time_type, value_type>;
       //! \typedef type of the discrete distribution used inside the backward dispersal kernel
       using discrete_distribution_type = quetzal::random::DiscreteDistribution<coord_type>;
       /**

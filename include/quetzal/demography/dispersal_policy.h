@@ -27,8 +27,7 @@ namespace quetzal
   namespace demography
   {
     ///
-    /// @brief Various implementations of dispersal process implementing an interface
-    /// compatible with the requirements of the \ref quetzal::demography::History simulation algorithm.
+    /// @brief Policy classes to customize the dispersal behavior of the simulation algorithm.
     ///
     namespace dispersal_policy
     {

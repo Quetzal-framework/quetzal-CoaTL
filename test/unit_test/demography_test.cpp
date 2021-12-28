@@ -225,9 +225,9 @@ BOOST_AUTO_TEST_CASE( individual_based_history_default_storage )
   // Declare an individual-based history where each gene copy is dispersed independently
   using quetzal::demography::dispersal_policy::individual_based;
   // Declare memory should be allocated only on demand: ideal for very short histories
-  using quetzal::memory::on_demand;
+  using quetzal::demography::memory_policy::on_RAM;
 	// 10 individuals introduced at x=1, t=0
-  quetzal::demography::History<coord_type, individual_based, on_demand> history(x_0, N_0, nb_generations);
+  quetzal::demography::History<coord_type, individual_based, on_RAM> history(x_0, N_0, nb_generations);
   // Declare a growth function
   auto N = history.get_functor_N(); // light copiable for capture
   auto growth = [N](auto& gen, coord_type x, auto t){ return 2*N(x,t) ; };
