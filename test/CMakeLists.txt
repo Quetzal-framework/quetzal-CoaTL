@@ -64,8 +64,8 @@ add_test(SpatialExpansionMassBasedSerialized model_3 ${CMAKE_CURRENT_SOURCE_DIR}
 ### TUTORIAL TESTS
 
 add_executable(tuto_1 tutorials_test/tuto_1.cpp)
-target_link_libraries(model_1 LINK_PUBLIC ${GDAL_LIBRARY} )
-target_include_directories(model_1
+target_link_libraries(tuto_1 LINK_PUBLIC ${GDAL_LIBRARY} )
+target_include_directories(tuto_1
   PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
-add_test(TwoDemesIndividualBased model_1)
+add_test(TwoDemesIndividualBased tuto_1)

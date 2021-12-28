@@ -1,6 +1,6 @@
 // file main.cpp
 
-#include <quetzal/demography.h>
+#include "quetzal/demography.h"
 
 #include <iostream>
 #include <random>
@@ -18,32 +18,41 @@ int main(){
   using quetzal::demography::dispersal_policy::individual_based;
   using quetzal::demography::memory_policy::on_RAM;
 
-  // Initialize the history with 10 individuals introduced in deme x=1 at time t=2018
-  quetzal::demography::History<coord_type, individual_based, on_RAM> history(1, 2018, 10);
+  // Random number generator
+  generator_type gen;
 
-  // Get a reference on the population sizes database
-  auto N = std::cref(history.pop_sizes());
+  // Number of non-overlapping generations for the demographic simulation
+  int nb_generations = 3;
+
+  // Coordinate of the origin of introduction
+  coord_type x0 = 1;
+
+  // Number of individuals introduced
+  int N0 = 10;
+
+  // Initialize the history:
+  quetzal::demography::History<coord_type, individual_based, on_RAM> history(x0, N0, nb_generations);
+
+  // Get a light callable object that behaves as a function of space and time
+  auto N = history.get_functor_N();
 
   // Capture it with a lambda expression to build a growth function
   auto growth = [N](auto& gen, coord_type x, time_type t){ return 2*N(x,t) ; };
 
-  // Number of non-overlapping generations for the demographic simulation
-  unsigned int nb_generations = 3;
-
-  // Random number generation
-  generator_type gen;
-
   // Stochastic dispersal kernel, purposely very simple
   // The geographic sampling space is {-1 , 1}, there is 50% chance to migrate
-  auto sample_location = [](auto& gen, coord_type x, time_type t){
+  auto sample_location = [](auto& gen, coord_type x){
     std::bernoulli_distribution d(0.5);
     if(d(gen)){ x = -x; }
     return x;
   };
 
-  history.expand(nb_generations, growth, sample_location, gen);
+  history.simulate_forward(growth, sample_location, gen);
 
-  std::cout << "Population flows from x to y at time t:\n\n"
-            << history.flows()
-            << std::endl;
+  time_type t = nb_generations -1;
+  for(auto x : history.distribution_area(t))
+  {
+    std::cout << "N(" << x << "," << nb_generations -1 << ") = " << N(x,t) << std::endl;
+  }
+
 }
