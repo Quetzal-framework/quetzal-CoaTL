@@ -44,7 +44,8 @@ int main(int argc, char* argv[])
   // Declaring simulation policies (policy-based design)
   using demographic_policy = quetzal::demography::dispersal_policy::mass_based;
   using coalescence_policy = quetzal::coalescence::newick_with_distance_to_parent<coord_type, time_type>;
-  using simulator_type = quetzal::ForwardBackwardSpatiallyExplicit<coord_type, demographic_policy, coalescence_policy, quetzal::memory::on_disk>;
+  using memory_policy      = quetzal::demography::memory_policy::on_disk;
+  using simulator_type     = quetzal::ForwardBackwardSpatiallyExplicit<coord_type, demographic_policy, coalescence_policy, memory_policy>;
   // Initial distribution
   coord_type x_0 = env.reproject_to_centroid(coord_type(40.0, -3.0));
   // Number of introduced gene copies
@@ -142,7 +143,7 @@ int main(int argc, char* argv[])
   env.export_to_geotiff(N, t_0, sampling_time, [&simulator](time_type const& t){return simulator.distribution_area(t);}, N_filename);
   // Easy to visualize with eg readOGR R function
   env.export_to_shapefile(sample, "sample.shp");
-  
+
   return 0;
 }
 //! [Demonstrate use]

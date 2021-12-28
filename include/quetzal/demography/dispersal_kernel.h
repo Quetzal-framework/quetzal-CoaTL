@@ -12,6 +12,7 @@
 #define __DISPERSAL_KERNELS_H_INCLUDED__
 
 #include <cmath> // M_PI std::gamma std::pow
+#include <cassert>
 
 namespace quetzal
 {
