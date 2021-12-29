@@ -46,7 +46,7 @@ namespace quetzal
   * @ingroup simulator
   *
   */
-  template<typename Space, typename DispersalPolicy, typename CoalescencePolicy, typename Memory = quetzal::memory::on_demand>
+  template<typename Space, typename DispersalPolicy, typename CoalescencePolicy, typename Memory = quetzal::demography::memory_policy::on_RAM>
   class ForwardBackwardSpatiallyExplicit :
   public CoalescencePolicy
   {
