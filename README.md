@@ -1,14 +1,16 @@
 # Quetzal-CoalTL <img align="right" width="200" src="https://github.com/Becheler/quetzal-CoalTL/blob/media/quetzal.png">
 
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/Becheler/quetzal-CoalTL)
 [![Becheler](https://circleci.com/gh/Becheler/quetzal-CoalTL.svg?style=shield)](https://app.circleci.com/pipelines/github/Becheler/quetzal-CoalTL)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Website becheler.github.io](https://img.shields.io/website-up-down-green-red/https/becheler.github.io.svg)](https://becheler.github.io/pages/quetzal/home)
-
+[![Website becheler.github.io](https://img.shields.io/website-up-down-green-red/https/becheler.github.io.svg)](https://becheler.github.io/softwares/quetzal-CoalTL/home/)
+![Lines of code](https://img.shields.io/tokei/lines/github/Becheler/quetzal-CoalTL)
+![GitHub last commit](https://img.shields.io/github/last-commit/Becheler/quetzal-CoalTL)
 # A Coalescence Template Libary
 
 Quetzal-CoalTL is a C++ template scientific library for simulating gene genealogies in explicit landscapes.
 
-:egg::egg::egg:  If you're a non-programmer, you may be interested by [Quetzal-EGGS simulators](https://github.com/Becheler/quetzal-EGGS)!
+:egg::egg::egg:  If you're a not a programmer, you may be interested by [Quetzal-EGGS simulators](https://github.com/Becheler/quetzal-EGGS)!
 
 :seedling: Infering populations ecological features (such as migration or growth patterns) from genetic datasets can be a complex task. In some settings it is actually a mathematically intractable problem, so simulations methods are needed ! Approximate Bayesian Computation (ABC) can be used to update your knowledge about the processes shaping your genetic dataset by simulating the underlying gene trees (coalescents) in an explicit geographic space.
 
@@ -27,53 +29,12 @@ However if you are working on developing some border case simulation model, or i
 
 # Website
 
-Please visit [Quetzal website](https://becheler.github.io/pages/quetzal/home) for more details and:
- - [step-by-step installation instructions](https://becheler.github.io/pages/getting_started.html)
- - [user tutorials](https://becheler.github.io/pages/tutorials.html)
- - [developer documentation](https://becheler.github.io/quetzalAPI/html/index.html)
+Please visit [Quetzal website](https://becheler.github.io/softwares/quetzal-CoalTL/home/) for more details and:
+ - [user tutorials](https://becheler.github.io/softwares/quetzal-CoalTL/tutorials/)
+ - [developer documentation](https://becheler.github.io/softwares/quetzal-CoalTL/API/html/index.html)
+ - [FAQ](https://becheler.github.io/softwares/quetzal-CoalTL/FAQ/)
 
-# Getting Started
-
-## Installing
-
-Quetzal is a header-only library. Just clone the project and include the files you need.
-
-## Prerequisites
-
-### g++
-gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.2)
-
-###  Boost
-
-Install boost with: ```sudo apt-get install libboost-all-dev```
-
-### GDAL
-
-The Geospatial Data Abstraction Library (GDAL) is essential to represent a spatially explicit landscape!
-To install GDAL please visit: http://www.gdal.org/
-
-### OS
-
-The present project was tested with the following OS:
-
-- Distributor ID: Ubuntu
-- Description: Ubuntu 16.04.1 LTS
-- Release: 16.04
-- Codename: xenial
-
-## Tests
-Run in a terminal at quetzal project root:
-```
-mkdir build
-cd build
-cmake ..
-make
-make test
-```
-
-## Acknowledgements
-
-# Authors
+# Author
 
 This github repository is basically the implementation of the probabilistic model of biological invasion developed during my PhD thesis under the direction of Stephane Dupas (laboratoire d'Evolution, Génomes, Comportements et Ecologie de Gif-sur-Yvette) and Camille Coron (Laboratoire de Mathématiques d'Orsay).
 
@@ -82,15 +43,16 @@ This github repository is basically the implementation of the probabilistic mode
 - LICENCE : This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.    
 - CONTACT : abechele@umich.edu
 - WEBSITE : https://becheler.github.io/
-- DOCUMENTATION : https://becheler.github.io/pages/quetzal.html
 
-## How to cite:
+# How to cite:
 
  Becheler, A, Coron, C, Dupas, S. The Quetzal Coalescence template library: A C++ programmers resource for integrating distributional, demographic and coalescent models. Mol Ecol Resour. 2019; 19: 788– 793. https://doi.org/10.1111/1755-0998.12992
+
+Becheler, A., & Knowles, L. L. (2020). Occupancy spectrum distribution: application for coalescence simulation with generic mergers. Bioinformatics, 36(10), 3279-3280.
 
 # Acknowledgements
 
 - Florence Jornod who was a tremendous intern and add much to the project.
 - Ambre Marques for his help, tips and the implementation of the expressive library.
 - Arnaud Le Rouzic for help and tips.
-- The developpez.com community, for his large help. This project would have failed without the constant support of Bousk, ternel, Koala, bacelar, dalfab, Medinoc, jo_link_noir and many others...
+- The developpez.com community, for their large help. This project would have failed without the constant support of Bousk, ternel, Koala, bacelar, dalfab, Medinoc, jo_link_noir and many others...
