@@ -41,6 +41,12 @@ target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
 enable_testing()
 add_subdirectory(test)
 
+# documentation
+
+# Add the cmake folder so the FindSphinx module is found
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+add_subdirectory(docs)
+
 # 'make install' to the correct locations provided by GNUInstallDirs.
 install(TARGETS ${PROJECT_NAME}
         EXPORT ${PROJECT_NAME}_Targets
