@@ -39,4 +39,5 @@ jobs:
       run: ctest -C ${{env.BUILD_TYPE}}
 
     - name: Docs
+      working-directory: ${{github.workspace}}/build
       run: make doc
