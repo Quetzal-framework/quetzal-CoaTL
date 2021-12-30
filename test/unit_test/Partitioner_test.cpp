@@ -17,7 +17,8 @@
 #include <iostream>
 
 int main(){
-	using fuzzy_transfer_distance::Partitioner;
+	using quetzal::fuzzy_transfer_distance::Partitioner;
+	using quetzal::fuzzy_transfer_distance::RestrictedGrowthString;
 
 	std::vector<unsigned int> set = {1,2,3,4,5};
 
