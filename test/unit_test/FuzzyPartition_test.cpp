@@ -19,6 +19,8 @@
 #include <iostream>
 
 int main(){
+	using quetzal::fuzzy_transfer_distance::FuzzyPartition;
+	using quetzal::fuzzy_transfer_distance::RestrictedGrowthString;
 
 	std::map<int, std::vector<double>> coeffs = { {0,{0.0, 0.1, 0.9, 0.0}},
 															{1,{0.4, 0.1, 0.2, 0.3}},
