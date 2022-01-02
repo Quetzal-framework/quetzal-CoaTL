@@ -15,7 +15,7 @@ if(DOXYGEN_FOUND)
   set(DOXYGEN_PROJECT_LOGO "quetzal.png")
   set(DOXYGEN_EXTRACT_PRIVATE YES)
   set(DOXYGEN_INLINE_INHERITED_MEMB YES)
-  set(DOXYGEN_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/doc")
+  set(DOXYGEN_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/docs")
   set(DOXYGEN_HTML_EXTRA_STYLESHEET "customdoxygen.css")
   set(DOXYGEN_HTML_HEADER "header.html")
   set(DOXYGEN_HTML_FOOTER "footer.html")
@@ -27,7 +27,7 @@ if(DOXYGEN_FOUND)
   # this target will only be built if specifically asked to.
   # run "make doc" to create the doxygen documentation
   doxygen_add_docs(
-    doc
+    docs
     ${PROJECT_SOURCE_DIR}
     COMMENT "Generate API-documents for NoteSearch."
   )
