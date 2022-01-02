@@ -13,6 +13,7 @@ if(DOXYGEN_FOUND)
   set(DOXYGEN_PROJECT_NAME "Quetzal-CoalTL")
   set(DOXYGEN_PROJECT_BRIEF "The Coalescence Template Library")
   set(DOXYGEN_PROJECT_LOGO "quetzal.png")
+  #set(DOXYGEN_PROJECT_NUMBER $PROJECT_NUMBER)
   set(DOXYGEN_EXTRACT_PRIVATE YES)
   set(DOXYGEN_INLINE_INHERITED_MEMB YES)
   set(DOXYGEN_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/docs")
@@ -22,10 +23,10 @@ if(DOXYGEN_FOUND)
   set(DOXYGEN_HTML_COLORSTYLE_HUE 220)
   set(DOXYGEN_HTML_COLORSTYLE_SAT 100)
   set(DOXYGEN_HTML_COLORSTYLE_GAMMA 80)
-  set(DOXYGEN_GENERATE_TREEVIEW YES)
+  set(DOXYGEN_GENERATE_TREEVIEW NO)
   set(DOXYGEN_USE_MATHJAX YES)
   # this target will only be built if specifically asked to.
-  # run "make doc" to create the doxygen documentation
+  # run "make docs" to create the doxygen documentation
   doxygen_add_docs(
     docs
     ${PROJECT_SOURCE_DIR}
