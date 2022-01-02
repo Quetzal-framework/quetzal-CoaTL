@@ -19,10 +19,10 @@ set(VERSION_SHORT "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules/version.cpp.in
                 ${CMAKE_CURRENT_BINARY_DIR}/version.cpp)
-                
+
 set(version_file "${CMAKE_CURRENT_BINARY_DIR}/version.cpp")
 
-#Add the version_file to the project build or it won't compile.
+#Add the version_file to the EGGS project build or it won't compile.
 #add_executable(${PROJECT_NAME} ${source_files} ${ui_files} ${version_file})
 
 #
