@@ -20,8 +20,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Install dependencies
-      run: sudo apt-get install -y --no-install-recommends libboost-all-dev libgdal-dev doxygen graphviz
+    - name: Install quetzal, Doxygen and Latex dependencies
+      run: sudo apt-get install -y --no-install-recommends libboost-all-dev libgdal-dev doxygen graphviz texlive-full
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -38,6 +38,17 @@ jobs:
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest -C ${{env.BUILD_TYPE}}
 
-    - name: Docs
+    - name: Generate documentation
       working-directory: ${{github.workspace}}/build
-      run: make doc
+      run: make docs
+
+    - name: Moving Files
+      run: |
+        mv ${{github.workspace}}/build/docs/html ./api
+
+      # Deploy to GitHub Pages
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./
