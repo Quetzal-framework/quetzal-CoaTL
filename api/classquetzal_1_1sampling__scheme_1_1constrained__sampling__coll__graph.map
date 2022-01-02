@@ -1,0 +1,5 @@
+<map id="quetzal::sampling_scheme::constrained_sampling&lt; X, N &gt;" name="quetzal::sampling_scheme::constrained_sampling&lt; X, N &gt;">
+<area shape="rect" id="node1" title="Policy to sample coordinates at random in a space." alt="" coords="5,215,201,271"/>
+<area shape="rect" id="node2" href="$classquetzal_1_1sampling__scheme_1_1constrained__sampling_1_1param__type.html" title=" " alt="" coords="5,96,201,152"/>
+<area shape="rect" id="node3" href="$classquetzal_1_1sampling__scheme_1_1param__base__class.html" title="Base class for sampling schemes parameter classes." alt="" coords="5,5,201,47"/>
+</map>

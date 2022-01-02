@@ -1,0 +1,28 @@
+var classquetzal_1_1coalescence_1_1Tree =
+[
+    [ "Tree", "classquetzal_1_1coalescence_1_1Tree.html#a54c9fba09d8f4931301cbbedffd6c7fa", null ],
+    [ "Tree", "classquetzal_1_1coalescence_1_1Tree.html#aa0f997d37d0ba2d7ea1fef79a78c3fe7", null ],
+    [ "Tree", "classquetzal_1_1coalescence_1_1Tree.html#ad6b19f57977b4bdf29fa1d0415959086", null ],
+    [ "Tree", "classquetzal_1_1coalescence_1_1Tree.html#a5dd65e874bb9e179a3ceb1b589723e82", null ],
+    [ "Tree", "classquetzal_1_1coalescence_1_1Tree.html#ad27d6e7ed82bf1835cc2bc9cdbfc378b", null ],
+    [ "Tree", "classquetzal_1_1coalescence_1_1Tree.html#a6720bd03532b7adb135b09a7ea8bce73", null ],
+    [ "add_child", "classquetzal_1_1coalescence_1_1Tree.html#a24737de6f1ca4990ece7cdea45066418", null ],
+    [ "add_child", "classquetzal_1_1coalescence_1_1Tree.html#a3c36a2ae0b41e21d9ee907650aa7b231", null ],
+    [ "add_child", "classquetzal_1_1coalescence_1_1Tree.html#a42f37a531054f5018a42905bfb695e57", null ],
+    [ "cell", "classquetzal_1_1coalescence_1_1Tree.html#a30c66e1e28aad7c8efdf671eb534e04b", null ],
+    [ "cell", "classquetzal_1_1coalescence_1_1Tree.html#a42d8ad262481416f12254f11e2fd3b70", null ],
+    [ "has_children", "classquetzal_1_1coalescence_1_1Tree.html#a61af917e264a3b4a2b49bd613570b467", null ],
+    [ "has_parent", "classquetzal_1_1coalescence_1_1Tree.html#a420f913c0921f7bc2caf4781c6a4732a", null ],
+    [ "nb_children", "classquetzal_1_1coalescence_1_1Tree.html#ab81bdc547a7f2f258a72693e49ada8a0", null ],
+    [ "operator=", "classquetzal_1_1coalescence_1_1Tree.html#a4e3f68d644c02491835e807644341c58", null ],
+    [ "operator=", "classquetzal_1_1coalescence_1_1Tree.html#af75c033667bd2d0c27152c4f08397ae5", null ],
+    [ "parent", "classquetzal_1_1coalescence_1_1Tree.html#af184f998dcffb06e011f4507fe8b7dc8", null ],
+    [ "parent", "classquetzal_1_1coalescence_1_1Tree.html#ab17685d71490471bdd9a8f648c6adbb5", null ],
+    [ "visit_cells_by_pre_order_DFS", "classquetzal_1_1coalescence_1_1Tree.html#abd7e506290632b0529b1eac06b018839", null ],
+    [ "visit_leaves_cells_by_DFS", "classquetzal_1_1coalescence_1_1Tree.html#a9ea2cc358aed0bd329d2c170c7039586", null ],
+    [ "visit_subtrees_by_generic_DFS", "classquetzal_1_1coalescence_1_1Tree.html#a3744f84fe9d661e99849a8d2f7af345a", null ],
+    [ "visit_subtrees_by_pre_order_DFS", "classquetzal_1_1coalescence_1_1Tree.html#ac43c096cd0fde71d8495696239da267a", null ],
+    [ "m_cell", "classquetzal_1_1coalescence_1_1Tree.html#a8175b60d913adf6a6e70bf0f069f5df2", null ],
+    [ "m_children", "classquetzal_1_1coalescence_1_1Tree.html#aa6e5288a229e90b898f23aadb371c432", null ],
+    [ "m_parent", "classquetzal_1_1coalescence_1_1Tree.html#afddddb40ae053a33b3a18f4964fa4aae", null ]
+];

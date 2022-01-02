@@ -1,0 +1,26 @@
+var classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrumDistribution =
+[
+    [ "probabilities_type", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrumDistribution.html#a3cca968cedcf73117236ba30d7bed2c4", null ],
+    [ "SelfType", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrumDistribution.html#a884169349cb16d62703cd8a77be4055f", null ],
+    [ "spectrum_type", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrumDistribution.html#a74b2f79c787b06852599212b19950633", null ],
+    [ "support_type", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrumDistribution.html#a1ca67c30dfe9d80b6eb35ee1fb819066", null ],
+    [ "OccupancySpectrumDistribution", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrumDistribution.html#a72594bdf23322be6176bf8d202cf4ba2", null ],
+    [ "OccupancySpectrumDistribution", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrumDistribution.html#acf916dd78a0fd0213291d5d948867f1f", null ],
+    [ "OccupancySpectrumDistribution", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrumDistribution.html#ac4ba37cd2458e1c7bab640ee2936b6ab", null ],
+    [ "OccupancySpectrumDistribution", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrumDistribution.html#aa807e3bf405ef7ebfe74e89f7420c567", null ],
+    [ "m", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrumDistribution.html#a56c87c6a187a8fa25b4529d47567fbf0", null ],
+    [ "make_callback", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrumDistribution.html#a4ce6b39e38c0dab9583960c502acc9ff", null ],
+    [ "n", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrumDistribution.html#a2d0b2762d3f2c884b55a42f513a48c77", null ],
+    [ "operator()", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrumDistribution.html#a9733055e95a3be11a640fade7c66b08a", null ],
+    [ "operator=", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrumDistribution.html#ad53eba52f279ec9ce57b0e3a113b3eda", null ],
+    [ "operator=", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrumDistribution.html#ab571eac21c7b82225c35dd05190a0ea1", null ],
+    [ "support", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrumDistribution.html#a0c552c9ee14ee3729a38368043f51085", null ],
+    [ "weights", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrumDistribution.html#a8b03e63c4e43e067479baa5c9cfef541", null ],
+    [ "operator<<", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrumDistribution.html#a05d0b9372e0cfbf2f737e0484997c27a", null ],
+    [ "m_dist", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrumDistribution.html#ad63e96e42bddfc93f5f20d3e8298a036", null ],
+    [ "m_k", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrumDistribution.html#aaeef716b0143b4ceb502826d7145ee85", null ],
+    [ "m_N", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrumDistribution.html#a5e3f7043662a34ead787bef9d1480060", null ],
+    [ "m_pred", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrumDistribution.html#a62b29dc9517dc2c562e710ac440b3a14", null ],
+    [ "m_probas", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrumDistribution.html#a38ff3855e403d466e62ebca6de7c618a", null ],
+    [ "m_support", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrumDistribution.html#a43a4dd80c926f535c2609fdb61372e79", null ]
+];
