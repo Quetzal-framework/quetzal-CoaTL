@@ -35,13 +35,13 @@ workflows:
   version: 2
   build-and-test:
     jobs:
-      - build-quetzal:
-          branches:
-            ignore:
-              - gh-pages
-      - test-quetzal:
-          branches:
-            ignore:
-              - gh-pages
-          requires:
-            - build-quetzal
+      build-quetzal:
+        branches:
+          ignore:
+            - gh-pages
+      test-quetzal:
+        branches:
+          ignore:
+            - gh-pages
+        requires:
+          - build-quetzal
