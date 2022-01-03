@@ -38,10 +38,10 @@ workflows:
       - build-quetzal:
           filters:
             branches:
-              only: master
+              ignore: gh-pages
       - test-quetzal:
           filters:
             branches:
-              only: master
+              ignore: gh-pages
           requires:
             - build-quetzal
