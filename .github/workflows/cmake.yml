@@ -22,7 +22,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Install quetzal, Doxygen and Latex dependencies
+    - name: Install quetzal and Doxygen dependencies
       run: sudo apt-get install -y --no-install-recommends libboost-all-dev libgdal-dev doxygen graphviz
 
     - name: Configure CMake
@@ -46,7 +46,7 @@ jobs:
 
     - name: Moving Files
       run: |
-        mv ${{github.workspace}}/build/docs/html ./docs
+        mv ${{github.workspace}}/build/docs/html ./docs/api
 
       # Deploy to GitHub Pages
     - name: Deploy
