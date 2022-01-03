@@ -10,10 +10,6 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -36,7 +32,7 @@
   <td id="projectlogo"><img alt="Logo" src="quetzal.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Quetzal-CoalTL
-   &#160;<span id="projectnumber">0.1</span>
+   &#160;<span id="projectnumber">2.1.2</span>
    </div>
    <div id="projectbrief">The Coalescence Template Library</div>
   </td>
@@ -61,23 +57,6 @@ $(function() {
 });
 /* @license-end */</script>
 <div id="main-nav"></div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('BaseHistory_8h_source.html',''); initResizable(); });
-/* @license-end */
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -92,6 +71,11 @@ $(document).ready(function(){initNavTree('BaseHistory_8h_source.html',''); initR
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_be280e243862f4b87fedacc8d211c836.html">quetzal</a></li><li class="navelem"><a class="el" href="dir_7552c354e1e3bd3e3be5cd271d541963.html">demography</a></li>  </ul>
+</div>
+</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">BaseHistory.h</div>  </div>
@@ -198,7 +182,6 @@ $(document).ready(function(){initNavTree('BaseHistory_8h_source.html',''); initR
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
-</div><!-- doc-content -->
 <div class="ttc" id="aclassquetzal_1_1demography_1_1BaseHistory_html_a09194841e41f200e766f4f8251bc992b"><div class="ttname"><a href="classquetzal_1_1demography_1_1BaseHistory.html#a09194841e41f200e766f4f8251bc992b">quetzal::demography::BaseHistory::nb_generations</a></div><div class="ttdeci">unsigned int const  &amp; nb_generations() const</div><div class="ttdoc">Last time recorded in the foward-in-time database history.</div><div class="ttdef"><b>Definition:</b> BaseHistory.h:113</div></div>
 <div class="ttc" id="aclassquetzal_1_1demography_1_1BaseHistory_html"><div class="ttname"><a href="classquetzal_1_1demography_1_1BaseHistory.html">quetzal::demography::BaseHistory</a></div><div class="ttdoc">Base class for simulating and recording spatial population history. It encpasulates backward migratio...</div><div class="ttdef"><b>Definition:</b> BaseHistory.h:39</div></div>
 <div class="ttc" id="aclassquetzal_1_1demography_1_1BaseHistory_html_af9c4d444fd87ad17fb9700524be6df73"><div class="ttname"><a href="classquetzal_1_1demography_1_1BaseHistory.html#af9c4d444fd87ad17fb9700524be6df73">quetzal::demography::BaseHistory::get_pop_size</a></div><div class="ttdeci">auto get_pop_size(coord_type const &amp;x, time_type const &amp;t)</div><div class="ttdoc">Read-only.</div><div class="ttdef"><b>Definition:</b> BaseHistory.h:99</div></div>
@@ -212,14 +195,11 @@ $(document).ready(function(){initNavTree('BaseHistory_8h_source.html',''); initR
 <div class="ttc" id="aclassquetzal_1_1demography_1_1BaseHistory_html_afb1fa8e592443c0fa3d9835253691a1d"><div class="ttname"><a href="classquetzal_1_1demography_1_1BaseHistory.html#afb1fa8e592443c0fa3d9835253691a1d">quetzal::demography::BaseHistory::BaseHistory</a></div><div class="ttdeci">BaseHistory(coord_type const &amp;x, value_type N, unsigned int nb_generations)</div><div class="ttdoc">Constructor initializing the demographic database.</div><div class="ttdef"><b>Definition:</b> BaseHistory.h:65</div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_be280e243862f4b87fedacc8d211c836.html">quetzal</a></li><li class="navelem"><a class="el" href="dir_7552c354e1e3bd3e3be5cd271d541963.html">demography</a></li><li class="navelem"><b>BaseHistory.h</b></li>
-    <li class="footer">Generated by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.17
+</small></address>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

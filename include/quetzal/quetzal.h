@@ -28,3 +28,4 @@
 #include "simulator/utils.h"
 
 #include "utils.h"
+#include "version.h"
