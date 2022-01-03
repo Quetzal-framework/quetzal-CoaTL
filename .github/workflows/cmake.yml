@@ -19,6 +19,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    # Fetch all history for all tags and branches
+    with:
+      fetch-depth: 0
 
     - name: Install quetzal, Doxygen and Latex dependencies
       run: sudo apt-get install -y --no-install-recommends libboost-all-dev libgdal-dev doxygen graphviz texlive-full
