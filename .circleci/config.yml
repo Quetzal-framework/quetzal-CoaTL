@@ -8,9 +8,6 @@ executors:
 jobs:
   build-quetzal:
     executor: exectr
-    branches:
-      ignore:
-        gh-pages
     steps:
       - checkout
       - run: |
@@ -25,9 +22,6 @@ jobs:
 
   test-quetzal:
     executor: exectr
-    branches:
-      ignore:
-        gh-pages
     steps:
       - attach_workspace:
           at: .
@@ -41,7 +35,13 @@ workflows:
   version: 2
   build-and-test:
     jobs:
-      - build-quetzal
-      - test-quetzal
-        requires
-          - build-quetzal
+      - build-quetzal:
+          filters:
+            branches:
+              only: master
+      - test-quetzal:
+          filters:
+            branches:
+              only: master
+          requires:
+            - build-quetzal
