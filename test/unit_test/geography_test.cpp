@@ -213,9 +213,8 @@ BOOST_AUTO_TEST_CASE( Resolution )
 
 BOOST_AUTO_TEST_CASE( gdalcppTest )
 {
-  using namespace gdalcpp;
   auto path = resolvePath("test/data/bio1.tif");
-	gdalcpp::Dataset data(path);
+	quetzal::geography::gdalcpp::Dataset data(path);
 	std::cout << "Name:\t" << data.dataset_name() << std::endl;
 	std::cout << "Driver:\t " << data.driver_name() << std::endl;
 	std::cout << "Width:\t" << data.width() << std::endl;
