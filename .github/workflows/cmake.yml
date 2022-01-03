@@ -46,7 +46,7 @@ jobs:
 
     - name: Moving Files
       run: |
-        mv ${{github.workspace}}/build/docs/html ./docs/api
+        mv ${{github.workspace}}/build/docs/html ./docs
 
       # Deploy to GitHub Pages
     - name: Deploy
