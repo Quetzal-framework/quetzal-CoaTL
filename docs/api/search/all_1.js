@@ -2,7 +2,7 @@ var searchData=
 [
   ['access_6',['access',['../structquetzal_1_1demography_1_1FlowOnDiskImplementation_1_1key__type.html#ac98d07dd8f7b70e16ccb9a01abf56b9c',1,'quetzal::demography::FlowOnDiskImplementation::key_type']]],
   ['backward_5fkernel_7',['backward_kernel',['../classquetzal_1_1demography_1_1BaseHistory.html#a854a923584c32b33d31a6030d2c833ae',1,'quetzal::demography::BaseHistory']]],
-  ['band_8',['band',['../classgdalcpp_1_1Dataset.html#a773642fddda3ecb3cbd30f4eab43feb0',1,'gdalcpp::Dataset']]],
+  ['band_8',['band',['../classquetzal_1_1geography_1_1gdalcpp_1_1Dataset.html#a2c0f739010ef43dc68871bdbcb2f46e8',1,'quetzal::geography::gdalcpp::Dataset']]],
   ['basehistory_9',['BaseHistory',['../classquetzal_1_1demography_1_1BaseHistory.html',1,'quetzal::demography::BaseHistory&lt; Space, DispersalPolicy, MemoryPolicy &gt;'],['../classquetzal_1_1demography_1_1BaseHistory.html#afb1fa8e592443c0fa3d9835253691a1d',1,'quetzal::demography::BaseHistory::BaseHistory()']]],
   ['basehistory_3c_20coord_5ftype_2c_20dispersalpolicy_2c_20memory_5fpolicy_20_3e_10',['BaseHistory&lt; coord_type, DispersalPolicy, memory_policy &gt;',['../classquetzal_1_1demography_1_1BaseHistory.html',1,'quetzal::demography']]],
   ['basehistory_3c_20space_2c_20dispersal_5fpolicy_3a_3aindividual_5fbased_2c_20memory_20_3e_11',['BaseHistory&lt; Space, dispersal_policy::individual_based, Memory &gt;',['../classquetzal_1_1demography_1_1BaseHistory.html',1,'quetzal::demography']]],

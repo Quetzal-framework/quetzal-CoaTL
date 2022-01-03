@@ -1,10 +1,10 @@
 <map id="quetzal::geography::EnvironmentalQuantity&lt; Time &gt;" name="quetzal::geography::EnvironmentalQuantity&lt; Time &gt;">
-<area shape="rect" id="node1" title="Discretized representation of an ecological quantity that varies in space and time." alt="" coords="687,143,868,199"/>
-<area shape="rect" id="node2" href="$classgdalcpp_1_1Dataset.html" title=" " alt="" coords="380,65,512,92"/>
-<area shape="rect" id="node3" href="$classgdalcpp_1_1SRS.html" title=" " alt="" coords="40,5,147,32"/>
-<area shape="rect" id="node4" title=" " alt="" coords="64,65,123,92"/>
-<area shape="rect" id="node5" href="$structgdalcpp_1_1detail_1_1Options.html" title=" " alt="" coords="5,116,181,143"/>
-<area shape="rect" id="node6" href="$classquetzal_1_1geography_1_1GeographicCoordinates.html" title="Geographic coordinates." alt="" coords="355,117,537,158"/>
-<area shape="rect" id="node7" href="$classquetzal_1_1geography_1_1Extent.html" title=" " alt="" coords="343,182,549,223"/>
-<area shape="rect" id="node8" href="$classquetzal_1_1geography_1_1Resolution.html" title=" " alt="" coords="363,248,529,304"/>
+<area shape="rect" id="node1" title="Discretized representation of an ecological quantity that varies in space and time." alt="" coords="695,157,876,213"/>
+<area shape="rect" id="node2" href="$classquetzal_1_1geography_1_1gdalcpp_1_1Dataset.html" title=" " alt="" coords="381,65,527,107"/>
+<area shape="rect" id="node3" href="$classquetzal_1_1geography_1_1gdalcpp_1_1SRS.html" title=" " alt="" coords="24,5,171,47"/>
+<area shape="rect" id="node4" title=" " alt="" coords="68,73,127,99"/>
+<area shape="rect" id="node5" href="$structquetzal_1_1geography_1_1gdalcpp_1_1detail_1_1Options.html" title=" " alt="" coords="5,124,189,165"/>
+<area shape="rect" id="node6" href="$classquetzal_1_1geography_1_1GeographicCoordinates.html" title="Geographic coordinates." alt="" coords="363,131,545,172"/>
+<area shape="rect" id="node7" href="$classquetzal_1_1geography_1_1Extent.html" title=" " alt="" coords="351,196,557,237"/>
+<area shape="rect" id="node8" href="$classquetzal_1_1geography_1_1Resolution.html" title=" " alt="" coords="371,262,537,318"/>
 </map>

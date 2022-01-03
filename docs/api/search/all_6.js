@@ -2,8 +2,8 @@ var searchData=
 [
   ['gaussian_77',['Gaussian',['../structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian.html',1,'quetzal::demography::dispersal_kernel']]],
   ['gaussianmixture_78',['GaussianMixture',['../structquetzal_1_1demography_1_1dispersal__kernel_1_1GaussianMixture.html',1,'quetzal::demography::dispersal_kernel']]],
-  ['gdal_5fdataset_5fdeleter_79',['gdal_dataset_deleter',['../structgdalcpp_1_1Dataset_1_1gdal__dataset__deleter.html',1,'gdalcpp::Dataset']]],
-  ['gdal_5ferror_80',['gdal_error',['../classgdalcpp_1_1gdal__error.html',1,'gdalcpp']]],
+  ['gdal_5fdataset_5fdeleter_79',['gdal_dataset_deleter',['../structquetzal_1_1geography_1_1gdalcpp_1_1Dataset_1_1gdal__dataset__deleter.html',1,'quetzal::geography::gdalcpp::Dataset']]],
+  ['gdal_5ferror_80',['gdal_error',['../classquetzal_1_1geography_1_1gdalcpp_1_1gdal__error.html',1,'quetzal::geography::gdalcpp']]],
   ['generate_81',['generate',['../structquetzal_1_1coalescence_1_1occupancy__spectrum_1_1Generator.html#af4b187154cd2717e86328c98eb873477',1,'quetzal::coalescence::occupancy_spectrum::Generator']]],
   ['generator_82',['Generator',['../structquetzal_1_1coalescence_1_1occupancy__spectrum_1_1Generator.html',1,'quetzal::coalescence::occupancy_spectrum']]],
   ['geographic_5fdefinition_5fspace_83',['geographic_definition_space',['../classquetzal_1_1geography_1_1DiscreteLandscape.html#a1d0f7554cd9871d9eab3d409e8b1eb25',1,'quetzal::geography::DiscreteLandscape::geographic_definition_space()'],['../classquetzal_1_1geography_1_1EnvironmentalQuantity.html#ac524710bfd17bcb26921dfc3d8ac39a8',1,'quetzal::geography::EnvironmentalQuantity::geographic_definition_space()']]],
