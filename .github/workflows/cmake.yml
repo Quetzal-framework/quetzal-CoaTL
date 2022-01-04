@@ -54,3 +54,11 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./
+
+    - name: Trigger tutorials source code update
+      uses: convictional/trigger-workflow-and-wait@v1.3.0
+        with:
+          owner: Becheler
+          repo: Becheler.github.io
+          github_token: ${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }}
+          workflow_file_name: github-pages.yml
