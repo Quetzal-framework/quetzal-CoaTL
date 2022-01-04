@@ -60,5 +60,5 @@ jobs:
       with:
         owner: Becheler
         repo: Becheler.github.io
-        github_token: ${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }}
+        github_token: ${{ secrets.G_ACCESS_TOKEN }}
         workflow_file_name: github-pages.yml
