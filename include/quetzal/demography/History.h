@@ -79,7 +79,7 @@ namespace quetzal
               for(unsigned int ind = 1; ind <= N_tilde; ++ind)
               {
                 auto y = kernel(gen, x);
-                this->m_flows->add_to_flux_from_to(x, y, t, 1);
+                this->m_flows->add_to_flow_from_to(x, y, t, 1);
                 this->pop_size(y, t+1) += 1;
               }
             }
@@ -140,7 +140,7 @@ namespace quetzal
               double nb_migrants = std::ceil(m * static_cast<double>(N_tilde));
               if(nb_migrants >= 0){
                 landscape_individuals_count += nb_migrants;
-                this->m_flows->set_flux_from_to(x, y, t, nb_migrants);
+                this->m_flows->set_flow_from_to(x, y, t, nb_migrants);
                 this->pop_size(y, t+1) += nb_migrants;
               }
             }

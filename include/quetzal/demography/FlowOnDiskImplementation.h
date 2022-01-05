@@ -106,9 +106,9 @@ namespace quetzal
 				*/
 			FlowOnDiskImplementation() = default;
 			/**
-			  * \brief Retrieves value of the flux from deme i to deme j at time t.
+			  * \brief Retrieves value of the flow from deme i to deme j at time t.
 				*/
-			value_type flux_from_to(coord_type const& from, coord_type const& to, time_type t) const
+			value_type flow_from_to(coord_type const& from, coord_type const& to, time_type t) const
 			{
 				slide_RAM_window_to(t);
 				assert(m_forward_flow.find(t) != m_forward_flow.end());
@@ -116,40 +116,40 @@ namespace quetzal
 				return m_forward_flow.at(t).at(key_type(from,to));
 			}
 			/**
-			  * \brief Retrieves value of the flux from deme i to deme j at time t.
+			  * \brief Retrieves value of the flow from deme i to deme j at time t.
 				* \return a reference on the value, initialized with value_type default constructor
 				*/
-			void set_flux_from_to(coord_type const& from, coord_type const& to, time_type t, value_type v)
+			void set_flow_from_to(coord_type const& from, coord_type const& to, time_type t, value_type v)
 			{
 				slide_RAM_window_to(t);
 				m_forward_flow[t][key_type(from, to)] = v;
 				m_backward_flow[t][to][from] = v;
 			}
 			/**
-			  * \brief Adds value v to the flux from deme i to deme j at time t.
+			  * \brief Adds value v to the flow from deme i to deme j at time t.
 				*/
-			void add_to_flux_from_to(coord_type const& from, coord_type const& to, time_type t, value_type v)
+			void add_to_flow_from_to(coord_type const& from, coord_type const& to, time_type t, value_type v)
 			{
 				slide_RAM_window_to(t);
 				m_forward_flow[t][key_type(from, to)] += v;
 				m_backward_flow[t][to][from] += v;
 			}
 			/**
-			  * \brief Retrieves the distribution of the value of the flux converging to deme x at time t.
+			  * \brief Retrieves the distribution of the value of the flow converging to deme x at time t.
 				* \return a const reference on an unordered_map with the key giving the origin deme and the value
 				*         giving the value of the flow
 				*/
-			std::unordered_map<coord_type, value_type> const & flux_to(coord_type const& x, time_type t) const
+			std::unordered_map<coord_type, value_type> const & flow_to(coord_type const& x, time_type t) const
 			{
 				slide_RAM_window_to(t);
-				assert(flux_to_is_defined(x,t));
+				assert(flow_to_is_defined(x,t));
 				return m_backward_flow.at(t).at(x);
 			}
 			/**
-			  * \brief Check if the distribution of the value of the flux converging to deme x at time t is defined
+			  * \brief Check if the distribution of the value of the flow converging to deme x at time t is defined
 				* \return true if the distribution is defined, else returns false
 				*/
-			bool flux_to_is_defined(coord_type const& to, time_type const& t) const
+			bool flow_to_is_defined(coord_type const& to, time_type const& t) const
 			{
 				slide_RAM_window_to(t);
 				auto it1 = m_backward_flow.find(t);

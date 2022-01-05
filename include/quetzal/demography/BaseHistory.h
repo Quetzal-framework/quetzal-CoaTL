@@ -126,7 +126,7 @@ namespace quetzal
       coord_type backward_kernel(coord_type const& x, time_type t, Generator& gen) const
       {
         --t;
-        assert(m_flows->flux_to_is_defined(x,t));
+        assert(m_flows->flow_to_is_defined(x,t));
         auto k = make_backward_distribution(x, t);
         return k(gen);
       }
@@ -143,9 +143,9 @@ namespace quetzal
       {
         std::vector<double> weights;
         std::vector<coord_type> support;
-        weights.reserve(m_flows->flux_to(x,t).size());
-        support.reserve(m_flows->flux_to(x,t).size());
-        for(auto const& it : m_flows->flux_to(x,t) )
+        weights.reserve(m_flows->flow_to(x,t).size());
+        support.reserve(m_flows->flow_to(x,t).size());
+        for(auto const& it : m_flows->flow_to(x,t) )
         {
           support.push_back(it.first);
           weights.push_back(static_cast<double>(it.second));

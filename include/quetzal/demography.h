@@ -11,3 +11,13 @@
 #include "demography/dispersal_kernel.h"
 #include "demography/memory_policy.h"
 #include "demography/History.h"
+
+
+namespace quetzal
+{
+  ///
+  /// @brief Generic components for simulation, storage and access of spatial demographic quantities.
+  ///
+  namespace demography
+  {}
+}

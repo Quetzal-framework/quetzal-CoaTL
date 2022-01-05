@@ -14,7 +14,7 @@
 #include "PopulationSizeHashMapImplementation.h"
 #include "PopulationSizeOnDiskImplementation.h"
 
-#include "Flow.h"
+#include "FlowHashMapImplementation.h"
 #include "FlowOnDiskImplementation.h"
 
 namespace quetzal
@@ -35,7 +35,7 @@ namespace quetzal
         using pop_sizes_type = quetzal::demography::PopulationSizeHashMapImplementation<Space, Time, Value>;
 
         template<typename Space, typename Time, typename Value>
-        using flow_type = quetzal::demography::Flow<Space, Time, Value>;
+        using flow_type = quetzal::demography::FlowHashMapImplementation<Space, Time, Value>;
       };
       ///
       /// @brief Serialize the unused layers of demographic data on disk, and deserialize them when access is needed.

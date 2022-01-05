@@ -29,3 +29,9 @@
 
 #include "utils.h"
 #include "version.h"
+
+///
+/// @brief Generic components for simulating integrated distribution, demographic and coalescence models.
+///
+namespace quetzal
+{}
