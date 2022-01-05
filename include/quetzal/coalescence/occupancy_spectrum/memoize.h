@@ -9,18 +9,22 @@
 *                                                                      *
 ***************************************************************************/
 
-#ifndef __OCCUPANCY_SPECTRUM_UTILS_H_INCLUDED__
-#define __OCCUPANCY_SPECTRUM_UTILS_H_INCLUDED__
+#ifndef __OCCUPANCY_SPECTRUM_MEMOIZE_H_INCLUDED__
+#define __OCCUPANCY_SPECTRUM_MEMOIZE_H_INCLUDED__
 
 #include "OccupancySpectrumDistribution.h"
 
 #include <unordered_map>
 #include <functional> // std::hash
 
-namespace quetzal{
-namespace coalescence {
-namespace occupancy_spectrum {
-namespace utils{
+namespace quetzal
+{
+namespace coalescence
+{
+namespace occupancy_spectrum
+{
+namespace memoization_utilities
+{
 
   struct MyHash
   {
@@ -36,9 +40,7 @@ namespace utils{
   template
   <
   class UnaryPredicate = return_always_true,
-  class SpectrumHandler = identity<Generator::occupancy_spectrum_type>,
-  class Int = cpp_int,
-  class Float = cpp_dec_float_50
+  class SpectrumHandler = identity,
   >
   const OccupancySpectrumDistribution<UnaryPredicate, SpectrumHandler, Int, Float>&
   memoize_OSD(unsigned int k, unsigned int N)

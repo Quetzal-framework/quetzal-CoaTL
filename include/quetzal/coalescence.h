@@ -32,5 +32,26 @@ namespace quetzal
     ///
     namespace container
     {}
+    ///
+    /// @brief How to simulate occupancy spectrums (coalescence merging configurations) when required by coalescence::algorithm::simultaneous_multiple_merge
+    ///
+    namespace occupancy_spectrum
+    {
+      ///
+      /// @brief Policy classes to discard or not the low-probability spectrums (optimization)
+      ///
+      namespace filter_policy
+      {}
+      ///
+      /// @brief Policy classes to shorten spectrums (optimization)
+      ///
+      namespace spectrum_editor
+      {}
+      ///
+      /// @brief What strategy to use to randomely sample occupancy spectrums
+      ///
+      namespace sampling_policy
+      {}
+    }
   }
 }
