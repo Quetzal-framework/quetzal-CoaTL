@@ -12,7 +12,7 @@
 #define __HISTORY_H_INCLUDED__
 
 #include "BaseHistory.h"
-#include "dispersal_policy.h"
+#include "demographic_policy.h"
 
 namespace quetzal
 {
@@ -22,7 +22,7 @@ namespace quetzal
     * @brief Unspecialized class (CRTP design pattern)
     *
     * @tparam Space    Demes identifiers.
-    * @tparam dispersal_policy    policy used for simulating populations dynamics
+    * @tparam demographic_policy    policy used for simulating populations dynamics
     *
     * @ingroup demography
     *
@@ -40,10 +40,10 @@ namespace quetzal
     *
     */
     template<typename Space, typename Memory>
-    class History<Space, dispersal_policy::individual_based, Memory> : public BaseHistory<Space, dispersal_policy::individual_based, Memory>
+    class History<Space, demographic_policy::individual_based, Memory> : public BaseHistory<Space, demographic_policy::individual_based, Memory>
     {
       // Using the BaseHistory class constructor
-      using BaseHistory<Space, dispersal_policy::individual_based, Memory>::BaseHistory;
+      using BaseHistory<Space, demographic_policy::individual_based, Memory>::BaseHistory;
     public:
       /**
       * @brief Expands the demographic database.
@@ -98,10 +98,10 @@ namespace quetzal
     * @ingroup demography
     */
     template<typename Space, typename Memory>
-    class History<Space, dispersal_policy::mass_based, Memory> : public BaseHistory<Space, dispersal_policy::mass_based, Memory>
+    class History<Space, demographic_policy::mass_based, Memory> : public BaseHistory<Space, demographic_policy::mass_based, Memory>
     {
       // Using the BaseHistory constructor
-      using BaseHistory<Space, dispersal_policy::mass_based, Memory>::BaseHistory;
+      using BaseHistory<Space, demographic_policy::mass_based, Memory>::BaseHistory;
     public:
       /** @brief Simulate forward the demographic history.
       *

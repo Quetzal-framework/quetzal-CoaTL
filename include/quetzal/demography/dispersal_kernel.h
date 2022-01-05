@@ -19,7 +19,7 @@ namespace quetzal
   namespace demography
   {
     /*!
-    \brief Namespace for defining dispersal location kernels as in Nathan et al 2012, table 15.1
+    \brief Dispersal location kernels as in Nathan et al 2012, table 15.1
     */
     namespace dispersal_kernel
     {

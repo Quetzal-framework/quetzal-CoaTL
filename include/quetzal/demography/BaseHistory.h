@@ -30,12 +30,12 @@ namespace quetzal
     *        (mass_based or individual_based) or storage aspects.
     *
     * @tparam Space    Demes identifiers.
-    * @tparam DispersalPolicy    Policy use for populations dynamics simulation algorithms, see dispersal_policy
+    * @tparam DemographicPolicy    Policy use for populations dynamics simulation algorithms, see demographic_policy
     *
     * @ingroup demography
     *
     */
-    template<typename Space, typename DispersalPolicy, typename MemoryPolicy>
+    template<typename Space, typename DemographicPolicy, typename MemoryPolicy>
     class BaseHistory
     {
     public:
@@ -46,9 +46,9 @@ namespace quetzal
       //! \typedef policy for storage and access to demographic data
       using memory_policy = MemoryPolicy;
       //! \typedef strategy used for simulating populations dynamics
-      using dispersal_policy = DispersalPolicy;
+      using demographic_policy = DemographicPolicy;
       //! \typedef value stored, usually double
-      using value_type = typename dispersal_policy::value_type;
+      using value_type = typename demographic_policy::value_type;
       //! \typedef type of the population flows database
       using flow_type = typename memory_policy::template flow_type<coord_type, time_type, value_type>;
       //! \typedef type of the population size database

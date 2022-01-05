@@ -223,7 +223,7 @@ BOOST_AUTO_TEST_CASE( individual_based_history_default_storage )
   unsigned int nb_generations = 3; // times: 0 - 1 - 2
   unsigned int N_0 = 10;
   // Declare an individual-based history where each gene copy is dispersed independently
-  using quetzal::demography::dispersal_policy::individual_based;
+  using quetzal::demography::demographic_policy::individual_based;
   // Declare memory should be allocated only on demand: ideal for very short histories
   using quetzal::demography::memory_policy::on_RAM;
 	// 10 individuals introduced at x=1, t=0
