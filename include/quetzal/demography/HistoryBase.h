@@ -22,21 +22,24 @@ namespace quetzal
   namespace demography
   {
     /*!
-    * @brief Base class for simulating and recording spatial population history.
-    *        It encpasulates backward migration logic. It makes use of the
+    * @brief Base class for simulating and recording spatial population history,
+    *        encpasulating backward migration logic.
+    *
+    * @details  It makes use of the
     *        CRTP design pattern, meaning that this class has to be specialized
     *        to define History classes offering
     *        customized behaviors, like details of the demograhic algorithms
     *        (mass_based or individual_based) or storage aspects.
     *
     * @tparam Space    Demes identifiers.
-    * @tparam DemographicPolicy    Policy use for populations dynamics simulation algorithms, see demographic_policy
+    * @tparam DemographicPolicy    Policy Used for populations dynamics simulation algorithms, see demographic_policy
+    * @tparam MemoryPolicy    Policy used for storage and access to demographic quantities, see memory_policy
     *
     * @ingroup demography
     *
     */
     template<typename Space, typename DemographicPolicy, typename MemoryPolicy>
-    class BaseHistory
+    class HistoryBase
     {
     public:
       //! \typedef space type
@@ -62,7 +65,7 @@ namespace quetzal
       * @param N the population size at coordinate x at time 0
       * @param nb_generations the number of generations history is supposed to last
       */
-      BaseHistory(coord_type const& x, value_type N, unsigned int nb_generations):
+      HistoryBase(coord_type const& x, value_type N, unsigned int nb_generations):
       m_nb_generations(nb_generations),
       m_sizes(std::make_unique<pop_sizes_type>()),
       m_flows(std::make_unique<flow_type>())
@@ -152,7 +155,7 @@ namespace quetzal
         }
         return discrete_distribution_type(std::move(support),std::move(weights));
       }
-    }; // end BaseHistory
+    }; // end HistoryBase
   } // namespace demography
 } // namespace quetzal
 

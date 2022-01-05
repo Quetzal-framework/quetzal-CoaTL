@@ -11,7 +11,7 @@
 #ifndef __DISCRETE_WRIGHT_FISHER_H_INCLUDED__
 #define __DISCRETE_WRIGHT_FISHER_H_INCLUDED__
 
-#include "../coalescence/containers/Forest.h"
+#include "../coalescence/container/Forest.h"
 #include "../coalescence/policies/merger.h"
 #include "../coalescence/occupancy_spectrum/on_the_fly.h"
 
@@ -37,7 +37,7 @@ public:
 
   //! \typedef forest type
   template<typename Space, typename Tree>
-  using forest_type = quetzal::coalescence::Forest<Space, Tree>;
+  using forest_type = quetzal::coalescence::container::Forest<Space, Tree>;
 
   /* @brief Coalesce a spatial forest of trees in a Wrigh-Fisher population until MRCA has been found.
    *
@@ -136,7 +136,7 @@ public:
     auto last = trees.end();
     while( k > 1 ){
       unsigned int g = sample_waiting_time(k, N, gen);
-      last = quetzal::coalescence::binary_merge(trees.begin(), last, make_tree(g), branch, gen);
+      last = quetzal::coalescence::algorithm::binary_merge(trees.begin(), last, make_tree(g), branch, gen);
       --k;
     }
     return *(trees.begin());

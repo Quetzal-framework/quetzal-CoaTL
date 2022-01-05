@@ -19,5 +19,18 @@ namespace quetzal
   /// @brief Generic components for simulation, storage and access of spatial demographic quantities.
   ///
   namespace demography
-  {}
+  {
+    ///
+    /// @brief Dispersal location kernels as defined in Nathan et al 2012, table 15.1
+    ///
+    namespace dispersal_kernel{}
+    ///
+    /// @brief Policy classes to customize the dispersal behavior of the simulation algorithm.
+    ///
+    namespace demographic_policy {}
+    ///
+    /// @brief Policy classes to customize the memory storage behavior of the demographic history.
+    ///
+    namespace memory_policy {}
+  }
 }

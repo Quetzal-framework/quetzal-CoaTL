@@ -22,7 +22,7 @@ BOOST_AUTO_TEST_CASE( binary_merge )
   using node_type = int;
   std::vector<node_type> nodes = {1,1,1,1};
   std::mt19937 rng;
-  using quetzal::coalescence::binary_merge;
+  using quetzal::coalescence::algorithm::binary_merge;
   // First coalescence using default parent initialization and operator
   auto last = binary_merge(nodes.begin(), nodes.end(), rng);
   std::copy(nodes.begin(), last, std::ostream_iterator<node_type>(std::cout, " "));
@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_CASE( simultaneous_multiple_merge )
   // 99 parents with no child, 0 parent with 1 child, 1 parent with 2 children, 1 parent with 3 children
   std::vector<unsigned int> spectrum = {98,0,1,1};
   std::mt19937 rng;
-  using quetzal::coalescence::simultaneous_multiple_merge;
+  using quetzal::coalescence::algorithm::simultaneous_multiple_merge;
   auto last = simultaneous_multiple_merge(nodes.begin(), nodes.end(), spectrum, rng);
   std::copy(nodes.begin(), last, std::ostream_iterator<node_type>(std::cout, " "));
 }
@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE( forest )
 {
   using position_type = int;
 	using tree_type = std::string;
-	using forest_type = quetzal::coalescence::Forest<position_type, tree_type>;
+	using forest_type = quetzal::coalescence::container::Forest<position_type, tree_type>;
 	forest_type forest;
 	auto summarize = [](auto const& forest){
 	std::cout << "Forest has "
@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE( forest_init )
 {
   using position_type = int;
 	using tree_type =int;
-	using forest_type = quetzal::coalescence::Forest<position_type, tree_type>;
+	using forest_type = quetzal::coalescence::container::Forest<position_type, tree_type>;
 	// initialization by default constructor
 	forest_type a;
 	// initialization by copy constructor
@@ -98,7 +98,7 @@ BOOST_AUTO_TEST_CASE (forest_insert)
   using position_type = int;
   using std::string;
   using tree_type = string;
-  using forest_type = quetzal::coalescence::Forest<position_type, tree_type>;
+  using forest_type = quetzal::coalescence::container::Forest<position_type, tree_type>;
   forest_type forest;
   // Insert some trees at some positions
   forest.insert(1, string("salix_nigra"));
@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE (forest_insert)
 
 BOOST_AUTO_TEST_CASE (tree_init)
 {
-  using quetzal::coalescence::Tree;
+  using quetzal::coalescence::container::Tree;
   using std::string;
   // initialization by default constructor
   Tree<int> a;
@@ -136,7 +136,7 @@ BOOST_AUTO_TEST_CASE (tree_init)
 
 BOOST_AUTO_TEST_CASE ( tree_DFS)
 {
-  using quetzal::coalescence::Tree;
+  using quetzal::coalescence::container::Tree;
   using std::string;
 
   /* Topology :
@@ -162,7 +162,7 @@ BOOST_AUTO_TEST_CASE ( tree_DFS)
 
 BOOST_AUTO_TEST_CASE (tree_preorder_DFS)
 {
-  using quetzal::coalescence::Tree;
+  using quetzal::coalescence::container::Tree;
   using std::string;
   /* Topology :
    *             a

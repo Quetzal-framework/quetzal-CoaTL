@@ -11,8 +11,8 @@
 #ifndef __DISTANCE_TO_PARENT_H_INCLUDED__
 #define __DISTANCE_TO_PARENT_H_INCLUDED__
 
-#include "../containers/Tree.h"
-#include "../containers/Forest.h"
+#include "../container/Tree.h"
+#include "../container/Forest.h"
 #include "../../simulator/DiscreteTimeWrightFisher.h"
 
 #include <map>
@@ -76,9 +76,9 @@ namespace quetzal
         void distance_to_parent(unsigned int l) {m_distance_to_parent = l;}
       };  // inner class cell_type
       //! The type used to represent a genealogy
-      using tree_type = quetzal::coalescence::Tree<cell_type>;
+      using tree_type = quetzal::coalescence::container::Tree<cell_type>;
       //! The type used to represent a spatial forest of genealogies
-      using forest_type = quetzal::coalescence::Forest<coord_type, tree_type>;
+      using forest_type = quetzal::coalescence::container::Forest<coord_type, tree_type>;
       /*
        * @brief Treatment to operate on a DFS on the tree to compute branches length.
        */
@@ -281,9 +281,9 @@ namespace quetzal
         void distance_to_parent(unsigned int l) {m_distance_to_parent = l;}
       };
       //! The type used to represent a genealogy
-      using tree_type = quetzal::coalescence::Tree<cell_type>;
+      using tree_type = quetzal::coalescence::container::Tree<cell_type>;
       //! The type used to represent a spatial forest of genealogies
-      using forest_type = quetzal::coalescence::Forest<coord_type, tree_type>;
+      using forest_type = quetzal::coalescence::container::Forest<coord_type, tree_type>;
       /*
        * @brief Treatment to operate on a DFS on the tree to compute branches length.
        */

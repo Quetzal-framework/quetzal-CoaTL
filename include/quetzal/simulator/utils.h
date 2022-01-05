@@ -12,7 +12,7 @@
 #define __SIMULATORS_UTILS_H_INCLUDED__
 
 #include "../demography/History.h"
-#include "../coalescence/containers/Forest.h"
+#include "../coalescence/container/Forest.h"
 #include "../coalescence/policies/merger.h"
 
 #include <map>

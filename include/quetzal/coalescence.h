@@ -8,10 +8,29 @@
 *                                                                      *
 ***************************************************************************/
 
-
 #include "coalescence/policies/merger.h"
 #include "coalescence/policies/distance_to_parent.h"
-#include "coalescence/containers/Tree.h"
-#include "coalescence/containers/Forest.h"
+#include "coalescence/container/Tree.h"
+#include "coalescence/container/Forest.h"
 #include "coalescence/occupancy_spectrum/in_memoized_distribution.h"
 #include "coalescence/occupancy_spectrum/on_the_fly.h"
+
+namespace quetzal
+{
+  ///
+  /// @brief Generic components for simulation of coalescent trees
+  ///
+  namespace coalescence
+  {
+    ///
+    /// @brief Generic algorithms for manipulating abstract coalescent trees
+    ///
+    namespace algorithm
+    {}
+    ///
+    /// @brief Generic data structures for manipulating abstract coalescent trees
+    ///
+    namespace container
+    {}
+  }
+}

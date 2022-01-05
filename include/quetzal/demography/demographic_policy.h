@@ -26,9 +26,6 @@ namespace quetzal
 {
   namespace demography
   {
-    ///
-    /// @brief Policy classes to customize the dispersal behavior of the simulation algorithm.
-    ///
     namespace demographic_policy
     {
       ///

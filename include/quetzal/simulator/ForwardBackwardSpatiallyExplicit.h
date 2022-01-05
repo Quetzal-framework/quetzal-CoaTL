@@ -12,7 +12,7 @@
 #define __SPATIALLY_EXPLICIT_H_INCLUDED__
 
 #include "../demography/History.h"
-#include "../coalescence/containers/Forest.h"
+#include "../coalescence/container/Forest.h"
 #include "../coalescence/policies/merger.h"
 #include "../coalescence/occupancy_spectrum/on_the_fly.h"
 
@@ -60,7 +60,7 @@ namespace quetzal
     //! \typedef Memory policy type
     using memory_policy = Memory;
     //! \typedef forest type
-    template<typename tree_type> using forest_type = quetzal::coalescence::Forest<coord_type, tree_type>;
+    template<typename tree_type> using forest_type = quetzal::coalescence::container::Forest<coord_type, tree_type>;
   private:
     using history_type = demography::History<coord_type, DispersalPolicy, memory_policy>;
     history_type m_history;
