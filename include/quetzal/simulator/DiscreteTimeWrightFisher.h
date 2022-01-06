@@ -13,7 +13,7 @@
 
 #include "../coalescence/container/Forest.h"
 #include "../coalescence/policies/merger.h"
-#include "../coalescence/occupancy_spectrum/on_the_fly.h"
+#include "../coalescence/occupancy_spectrum/sampling_policy.h"
 
 #include <boost/math/special_functions/binomial.hpp>
 
@@ -127,7 +127,7 @@ public:
       // Wright Fisher assumptions are clearly violated
       // Let's do one generation of simultaneous multiple merges to fix it.
       unsigned int g = 1;
-      using smm_type = coalescence::SimultaneousMultipleMerger<coalescence::occupancy_spectrum::on_the_fly>;
+      using smm_type = coalescence::SimultaneousMultipleMerger<coalescence::occupancy_spectrum::sampling_policy::on_the_fly>;
       auto last = smm_type::merge(trees.begin(), trees.end(), N, make_tree(g), branch, gen);
       trees.erase(last, trees.end());
     }
@@ -165,7 +165,7 @@ public:
    * @return A set of trees, possibly of length 1 if MRCA was found during the g generations.
    */
   template<
-  typename MergerType = coalescence::SimultaneousMultipleMerger<coalescence::occupancy_spectrum::on_the_fly>,
+  typename MergerType = coalescence::SimultaneousMultipleMerger<coalescence::occupancy_spectrum::sampling_policy::on_the_fly>,
   typename Tree, typename Generator, typename Binop, typename TimeFun>
   static std::vector<Tree> coalesce(std::vector<Tree> & trees, unsigned int N, unsigned int g, Generator& gen, Binop branch, TimeFun make_tree)
   {

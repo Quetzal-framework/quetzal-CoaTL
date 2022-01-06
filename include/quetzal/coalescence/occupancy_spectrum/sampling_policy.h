@@ -11,6 +11,10 @@
 #ifndef __SAMPLING_POLICY_H_INCLUDED__
 #define __SAMPLING_POLICY_H_INCLUDED__
 
+#include "editor_policy.h"
+#include "filter_policy.h"
+#include "memoize.h"
+
 #include <vector>
 #include <random>
 #include <utility> // std::forward, std::move
@@ -29,7 +33,7 @@ namespace quetzal
         /// @tparam FilterPolicy A filter_policy class, by default filter_policy::return_always_true
         /// @tparam EditorPolicy A editor_policy class, by default editor_policy::identity
         ///
-        template <class FilterPolicy = return_always_true, class EditorPolicy = identity>
+        template <class FilterPolicy = filter_policy::return_always_true, class EditorPolicy = editor_policy::identity>
         struct in_memoized_distribution
         {
           /// @brief Sample an occupancy spectrum
@@ -46,7 +50,7 @@ namespace quetzal
           {
             assert(k > 0);
             assert(N > 0);
-            return utils::memoize_OSD<FilterPolicy, EditorPolicy>(k, N)(g);
+            return memoize::memoize<FilterPolicy, EditorPolicy>(k, N)(g);
           }
         }; // end class in_memoized_distribution
         ///
@@ -68,8 +72,8 @@ namespace quetzal
           {
             assert(k > 0);
             assert(N > 0);
-            std::vector<unsigned int> M_j(k+1);
-            std::vector<unsigned int> parents(N);
+            std::vector<int> M_j(k+1);
+            std::vector<int> parents(N);
             // Populate the urns (parents) by throwing balls (lineages) at them
             std::uniform_int_distribution<int> distribution(0, N-1);
             for(int i = 1; i <=k; ++i)

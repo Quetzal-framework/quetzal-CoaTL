@@ -44,7 +44,7 @@ namespace quetzal
         /// @typedef Type of the internal representation of an occupancy spectrum
         using occupancy_spectrum_type = std::vector<int>;
         /// @brief The vector of occupancy numbers
-        occupancy_spectrum_type M_j
+        occupancy_spectrum_type M_j;
         /// @brief Number of balls (lineages) in the experiment that generated the spectrum
         int k;
         /// @brief Number of urns (parents) in the experiment that generated the spectrum
@@ -76,6 +76,10 @@ namespace quetzal
           return(sum == this->m);
         }
       public:
+        //! \typedef iterator type for iterating along a spectrum
+        using iterator = typename occupancy_spectrum_type::iterator;
+        //! \typedef const iterator type
+        using const_iterator = typename occupancy_spectrum_type::const_iterator;
         ///
         /// @brief Constructor
         ///
@@ -89,50 +93,80 @@ namespace quetzal
         {
           assert(m >= 0);
           assert(k >= 0);
-          assert(test_number_of_balls_conservation())
-          assert(test_number_of_urns_conservation())
+          assert(test_number_of_balls_conservation());
+          assert(test_number_of_urns_conservation());
         }
         ///
-        ///@brief returns iterator to the begin
+        /// @brief Move constructor
+        ///
+        /// @param v A vector of occupancy numbers
+        /// @param m the number of urns (parents) of the random experience
+        /// @param k the number of balls (coalescing lineages) of the random experience
+        OccupancySpectrum(std::vector<int>&& v, int m, int k):
+        M_j(std::move(v)),
+        m(m),
+        k(k)
+        {
+          assert(m >= 0);
+          assert(k >= 0);
+          assert(test_number_of_balls_conservation());
+          assert(test_number_of_urns_conservation());
+        }
+        ///
+        ///@brief returns iterator to the beginning of the spectrum
         ///
         iterator begin()
         {
           return M_j.begin();
         }
         ///
-        ///@brief returns iterator to the end
+        ///@brief returns iterator to the end of the spectrum
         ///
         iterator end()
         {
           return M_j.end();
         }
         ///
-        ///@brief returns iterator to the begining
+        ///@brief returns iterator to the beginning of the spectrum
         ///
         const_iterator begin() const
         {
           return M_j.begin();
         }
         ///
-        ///@brief returns iterator to the begining
+        ///@brief returns iterator to the end of the spectrum
         ///
         const_iterator end() const
         {
           return M_j.end();
         }
         ///
-        ///@brief returns iterator to the begin
+        ///@brief returns iterator to the beginning of the spectrum
         ///
         const_iterator cbegin() const
         {
           return M_j.cbegin();
         }
         ///
-        ///@brief returns iterator to the begin
+        ///@brief returns iterator to the end of the spectrum
         ///
         const_iterator cend() const
         {
           return M_j.cend();
+        }
+        ///
+        ///@brief erase a range of elements of the spectrum.
+        ///
+        void erase(iterator first, iterator last)
+        {
+          M_j.erase(first, last);
+        }
+        ///
+        ///@brief Returns whether the spectrum is empty (i.e. whether its size is 0).
+        ///
+        bool empty() const
+        {
+          return M_j.empty();
         }
       }; // end class OccupancySpectrum
     } // end namespace occupancy_spectrum

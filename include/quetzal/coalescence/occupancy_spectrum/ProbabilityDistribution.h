@@ -11,9 +11,9 @@
 #ifndef __OCCUPANCY_SPECTRUM_DISTRIBUTION_H_INCLUDED__
 #define __OCCUPANCY_SPECTRUM_DISTRIBUTION_H_INCLUDED__
 
-#include "Support.h"
 #include "editor_policy.h"
 #include "filter_policy.h"
+#include "Support.h"
 
 #include <random> // discrete_distribution
 #include <utility> // std::forward, std::move
@@ -68,11 +68,7 @@ namespace quetzal
       ///         The editor_policy::truncate_tail will remove all the last urns that are
       ///         empty, making later iteration over a spectrum faster.
       ///
-      template
-      <
-      class FilterPolicy = filter_policy::return_always_true,
-      class EditorPolicy = editor_policy::identity,
-      >
+      template <class FilterPolicy = filter_policy::return_always_true, class EditorPolicy = editor_policy::identity>
       class ProbabilityDistribution
       {
       private:
@@ -89,9 +85,9 @@ namespace quetzal
         /// @typedef Representation of the occupancy spectrum distribution probabilities
         using probabilities_type = std::vector<double>;
         /// @brief Number of balls (lineages) used in the random experience
-        unsigned int m_k;
+        int m_k;
         /// @brief Number of urns (parents) used in the random experience
-        unsigned int m_N;
+        int m_N;
         /// @brief Filter policy used
         FilterPolicy m_pred;
         /// @brief Set of occupancy spectrums
@@ -113,15 +109,15 @@ namespace quetzal
         ///
         /// @param n number of balls (lineages)
         /// @param m number of urns (parents)
-        /// @param pred UnaryPredicate
+        /// @param pred A filter policy, that is a unary predicate
         ///
-        ProbabilityDistribution(unsigned int n, unsigned int m, UnaryPredicate pred = UnaryPredicate()) :
+        ProbabilityDistribution(int n, int m, FilterPolicy pred = FilterPolicy() ) :
         m_k(n),
         m_N(m),
         m_pred(pred)
         {
           auto callback = make_callback(m_k, m_N);
-          Generator::generate(m_k, m_N, callback);
+          Support::generate(m_k, m_N, callback);
           m_distribution = std::discrete_distribution<size_t>( m_probas.cbegin(), m_probas.cend() );
           assert(m_support.size() == m_probas.size());
         }
@@ -159,11 +155,11 @@ namespace quetzal
         ///
         /// @brief The number of balls (coalescing lineages) that are thrown in the random experience
         ///
-        unsigned int n() const {return m_k; }
+        int n() const {return m_k; }
         ///
         /// @brief The number of urns (parents) used in the random experience
         ///
-        unsigned int m() const {return m_N; }
+        int m() const {return m_N; }
         ///
         /// @brief Get a constant reference on the support of occupancy spectrum distribution
         ///
@@ -197,7 +193,7 @@ namespace quetzal
         /// @remark As filters can be applied, weights do not necessarily sum to 1 before sampling.
         ///
         friend std::ostream& operator<<(std::ostream& os, self_type const& dist){
-          for(unsigned int i = 0; i < dist.support().size(); ++ i)
+          for(int i = 0; i < dist.support().size(); ++ i)
           {
             //os << "P( \t" << dist.support()[i] << "\t) = " << dist.weights()[i] << "\n";
             auto v = dist.support()[i];
@@ -215,7 +211,7 @@ namespace quetzal
         ///
         /// @brief Produces a callback passed to the Support class, that automatically filters and builds the distribution.
         ///
-        auto make_callback(unsigned int k, unsigned int N){
+        auto make_callback(int k, int N){
           return [this, k, N](spectrum_type&& M_j){
             auto p = compute_probability(k, N, M_j);
             if(this->m_pred(p)){

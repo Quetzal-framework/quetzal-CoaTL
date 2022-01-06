@@ -12,8 +12,7 @@
 #include "coalescence/policies/distance_to_parent.h"
 #include "coalescence/container/Tree.h"
 #include "coalescence/container/Forest.h"
-#include "coalescence/occupancy_spectrum/in_memoized_distribution.h"
-#include "coalescence/occupancy_spectrum/on_the_fly.h"
+#include "coalescence/occupancy_spectrum/sampling_policy.h"
 
 namespace quetzal
 {
@@ -48,9 +47,14 @@ namespace quetzal
       namespace spectrum_editor
       {}
       ///
-      /// @brief What strategy to use to randomely sample occupancy spectrums
+      /// @brief What strategy to use to randomly sample occupancy spectrums (optimization)
       ///
       namespace sampling_policy
+      {}
+      ///
+      /// @brief Utils for memoization of OccupancySpectrumDistribution objects (optimization)
+      ///
+      namespace memoize
       {}
     }
   }

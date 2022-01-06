@@ -11,10 +11,6 @@
 #ifndef __FILTER_POLICY_H_INCLUDED__
 #define __FILTER_POLICY_H_INCLUDED__
 
-#include <vector>
-#include <random>
-#include <utility> // std::forward, std::move
-
 namespace quetzal
 {
   namespace coalescence
