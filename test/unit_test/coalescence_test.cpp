@@ -187,10 +187,13 @@ BOOST_AUTO_TEST_CASE (tree_preorder_DFS)
 
 BOOST_AUTO_TEST_CASE (occupancy_spectrum_support)
 {
+  // Type declaration
   using quetzal::coalescence::occupancy_spectrum::Support;
-  using spectrum_type = Support::occupancy_spectrum_type;
-  auto editor = [](spectrum_type && M_j){
-    std::copy(M_j.begin(), M_j.end(), std::ostream_iterator<spectrum_type::value_type>(std::cout, " "));
+  using quetzal::coalescence::occupancy_spectrum::OccupancySpectrum;
+  // Customed editor policy
+  auto editor = [](OccupancySpectrum && M_j)
+  {
+    std::copy(M_j.begin(), M_j.end(), std::ostream_iterator<OccupancySpectrum::value_type>(std::cout, " "));
     std::cout << "\n";
   };
   Support::generate(5, 10, editor);
@@ -201,16 +204,16 @@ BOOST_AUTO_TEST_CASE (occupancy_spectrum__distribution_init)
   using quetzal::coalescence::occupancy_spectrum::ProbabilityDistribution;
   // initialization by default constructor
   ProbabilityDistribution<> a;
-  // // constructor
-  // ProbabilityDistribution<> b(5,10);
-  // // initialization by move constructor
-  // ProbabilityDistribution<> c(std::move(b)); // b can not be used again
-  // // deleted initialization by copy constructor
-  // // ProbabilityDistribution d(c); // uncomment will cause a compilation error
-  // // deleted assignment by copy assignment operator
-  // // a = b; // uncomment will cause a compilation error
-  // // assignment by move assignment operator
-  // ProbabilityDistribution<> e = std::move(c); // c should not be used anymore !
+  // constructor
+  ProbabilityDistribution<> b(5,10);
+  // initialization by move constructor
+  ProbabilityDistribution<> c(std::move(b)); // b can not be used again
+  // deleted initialization by copy constructor
+  // ProbabilityDistribution d(c); // uncomment will cause a compilation error
+  // deleted assignment by copy assignment operator
+  // a = b; // uncomment will cause a compilation error
+  // assignment by move assignment operator
+  ProbabilityDistribution<> e = std::move(c); // c should not be used anymore !
 }
 
 BOOST_AUTO_TEST_CASE (occupancy_spectrum_distribution)

@@ -76,12 +76,14 @@ namespace quetzal
           return(sum == this->m);
         }
       public:
+        //! \typedef value type when iterating along a spectrum
+        using value_type = typename occupancy_spectrum_type::value_type;
         //! \typedef iterator type for iterating along a spectrum
         using iterator = typename occupancy_spectrum_type::iterator;
         //! \typedef const iterator type
         using const_iterator = typename occupancy_spectrum_type::const_iterator;
         ///
-        /// @brief Constructor
+        /// @brief Constructor by copy
         ///
         /// @param v A vector of occupancy numbers
         /// @param m the number of urns (parents) of the random experience
@@ -113,11 +115,14 @@ namespace quetzal
           assert(test_number_of_urns_conservation());
         }
         ///
+        /// @brief Default copy constructor
+        ///
+        /// @param other An occupancy spectrum to copy content from
+        OccupancySpectrum(const OccupancySpectrum& other) = default;
+        ///
         /// @brief Move constructor
         ///
-        /// @param v A vector of occupancy numbers
-        /// @param m the number of urns (parents) of the random experience
-        /// @param k the number of balls (coalescing lineages) of the random experience
+        /// @param other An occupancy spectrum to move content from
         OccupancySpectrum(OccupancySpectrum&& other) noexcept:
         M_j(std::move(other.M_j)),
         m(other.m),
@@ -134,15 +139,23 @@ namespace quetzal
         OccupancySpectrum& operator=(const OccupancySpectrum& other)
         {
           OccupancySpectrum otherCopy(other);
-          *this = std::move(otherCopy);
+          this->M_j = std::move(otherCopy.M_j);
+          this->m = otherCopy.m;
+          this->k = otherCopy.k;
 					return *this;
         }
         ///
         /// @brief Move assignment operator
         ///
+        /// @param other the spectrum to move data from
+        ///
+        /// @remark other will be emptied and can not be reused.
+        ///
         OccupancySpectrum& operator=(OccupancySpectrum&& other)
         {
-          M_j = std::move(other.M_j);
+          this->M_j = std::move(other.M_j);
+          this->m = other.m;
+          this->k = other.k;
 					return *this;
         }
         ///

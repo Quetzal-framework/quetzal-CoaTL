@@ -14,7 +14,7 @@
 #include "../demography/History.h"
 #include "../coalescence/container/Forest.h"
 #include "../coalescence/policies/merger.h"
-#include "../coalescence/occupancy_spectrum/on_the_fly.h"
+#include "../coalescence/occupancy_spectrum/sampling_policy.h"
 
 #include <boost/math/special_functions/binomial.hpp>
 #include <map>
@@ -168,7 +168,7 @@ namespace quetzal
     */
     template
     <
-    typename Merger=quetzal::coalescence::SimultaneousMultipleMerger<quetzal::coalescence::occupancy_spectrum::on_the_fly>,
+    typename Merger=quetzal::coalescence::SimultaneousMultipleMerger<quetzal::coalescence::occupancy_spectrum::sampling_policy::on_the_fly>,
     typename Generator
     >
     auto coalesce_to_mrca(std::map<coord_type, unsigned int> sample, unsigned int sampling_time, Generator & gen)
@@ -192,7 +192,7 @@ namespace quetzal
     */
     template
     <
-    typename Merger=quetzal::coalescence::SimultaneousMultipleMerger<quetzal::coalescence::occupancy_spectrum::on_the_fly>,
+    typename Merger=quetzal::coalescence::SimultaneousMultipleMerger<quetzal::coalescence::occupancy_spectrum::sampling_policy::on_the_fly>,
     typename Generator
     >
     auto coalesce_to_mrca(std::map<coord_type, unsigned int> sample, Generator & gen)
@@ -219,7 +219,7 @@ namespace quetzal
     */
     template
     <
-    typename Merger=quetzal::coalescence::SimultaneousMultipleMerger<quetzal::coalescence::occupancy_spectrum::on_the_fly>,
+    typename Merger=quetzal::coalescence::SimultaneousMultipleMerger<quetzal::coalescence::occupancy_spectrum::sampling_policy::on_the_fly>,
     typename Generator,
     typename F
     >
@@ -249,7 +249,7 @@ namespace quetzal
     */
     template
     <
-    typename Merger=quetzal::coalescence::SimultaneousMultipleMerger<quetzal::coalescence::occupancy_spectrum::on_the_fly>,
+    typename Merger=quetzal::coalescence::SimultaneousMultipleMerger<quetzal::coalescence::occupancy_spectrum::sampling_policy::on_the_fly>,
     typename T,
     typename F1,
     typename F2,
