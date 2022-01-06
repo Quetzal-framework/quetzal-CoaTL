@@ -113,6 +113,39 @@ namespace quetzal
           assert(test_number_of_urns_conservation());
         }
         ///
+        /// @brief Move constructor
+        ///
+        /// @param v A vector of occupancy numbers
+        /// @param m the number of urns (parents) of the random experience
+        /// @param k the number of balls (coalescing lineages) of the random experience
+        OccupancySpectrum(OccupancySpectrum&& other) noexcept:
+        M_j(std::move(other.M_j)),
+        m(other.m),
+        k(other.k)
+        {
+          assert(m >= 0);
+          assert(k >= 0);
+          assert(test_number_of_balls_conservation());
+          assert(test_number_of_urns_conservation());
+        }
+        ///
+        /// @brief Copy assignment operator
+        ///
+        OccupancySpectrum& operator=(const OccupancySpectrum& other)
+        {
+          OccupancySpectrum otherCopy(other);
+          *this = std::move(otherCopy);
+					return *this;
+        }
+        ///
+        /// @brief Move assignment operator
+        ///
+        OccupancySpectrum& operator=(OccupancySpectrum&& other)
+        {
+          M_j = std::move(other.M_j);
+					return *this;
+        }
+        ///
         ///@brief returns iterator to the beginning of the spectrum
         ///
         iterator begin()
