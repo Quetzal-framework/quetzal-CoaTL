@@ -18,14 +18,8 @@ namespace quetzal
 {
   namespace demography
   {
-    /*!
-    \brief Namespace for defining dispersal location kernels as in Nathan et al 2012, table 15.1
-    */
     namespace dispersal_kernel
     {
-      /*!
-      \brief Gaussian kernel
-      */
       struct Gaussian
       {
         class param_type
@@ -45,9 +39,7 @@ namespace quetzal
         }
       };
 
-      /*!
-      \brief Logistic kernel
-      */
+
       struct Logistic
       {
         class param_type
@@ -71,9 +63,6 @@ namespace quetzal
 
       };
 
-      /*!
-      \brief Negative Exponential kernel
-      */
       struct NegativeExponential
       {
         class param_type
@@ -93,9 +82,6 @@ namespace quetzal
 
       };
 
-      /*!
-      \brief Exponential Power kernel
-      */
       struct ExponentialPower
       {
         class param_type

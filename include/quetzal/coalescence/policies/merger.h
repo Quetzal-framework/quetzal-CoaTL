@@ -11,7 +11,7 @@
 #ifndef __COALESCENCE_MERGERS_H_INCLUDED__
 #define __COALESCENCE_MERGERS_H_INCLUDED__
 
-#include "../algorithms/merge.h"
+#include "../algorithm/merge.h"
 
 #include <iterator> // std::distance
 #include <cassert>
@@ -67,7 +67,7 @@ namespace coalescence {
       double coal_proba = (k*(k-1.0))/static_cast<double>(2*N);
       std::bernoulli_distribution d(coal_proba);
       if( d(g) ){
-        last = binary_merge(first, last, init, binop, g);
+        last = algorithm::binary_merge(first, last, init, binop, g);
       }
       return last;
     }
@@ -148,7 +148,7 @@ namespace coalescence {
       assert(N >= 1 && "Population size should be positive for evaluating coalescence probability" );
       assert(std::distance(first, last) > 1 && "Coalescence should operate on a range containing more than one element.");
       unsigned int k = std::distance(first, last);
-      return simultaneous_multiple_merge(first, last, init, SpectrumCreationPolicy::sample(k, N, g), binop, g);
+      return algorithm::simultaneous_multiple_merge(first, last, init, SpectrumCreationPolicy::sample(k, N, g), binop, g);
     }
 
 
@@ -179,7 +179,7 @@ namespace coalescence {
       assert(N >= 1 && "Population size should be positive for evaluating coalescence probability" );
       assert(std::distance(first, last) > 1 && "Coalescence should operate on a range containing more than one element.");
       unsigned int k = std::distance(first, last);
-      return simultaneous_multiple_merge(first, last, SpectrumCreationPolicy::sample(k, N, g), g);
+      return algorithm::simultaneous_multiple_merge(first, last, SpectrumCreationPolicy::sample(k, N, g), g);
     }
 
   };

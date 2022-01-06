@@ -8,8 +8,8 @@
 *                                                                      *
 ***************************************************************************/
 
-#ifndef __DISPERSAL_POLICY_H_INCLUDED__
-#define __DISPERSAL_POLICY_H_INCLUDED__
+#ifndef __DEMOGRAPHIC_POLICY_H_INCLUDED__
+#define __DEMOGRAPHIC_POLICY_H_INCLUDED__
 
 #include "../utils/PointWithId.h"
 #include "../utils/matrix_operation.h"
@@ -26,10 +26,7 @@ namespace quetzal
 {
   namespace demography
   {
-    ///
-    /// @brief Policy classes to customize the dispersal behavior of the simulation algorithm.
-    ///
-    namespace dispersal_policy
+    namespace demographic_policy
     {
       ///
       /// @brief Policy class to specialize the \ref quetzal::demography::History class for expansion of populations with very low densities.
@@ -492,7 +489,7 @@ namespace quetzal
           return neighboring_migration<T, U, V>(emigrant_rate, friction, get_neighbors);
         }
       }; // end class mass_based
-    } // end namespace dispersal_policy
+    } // end namespace demographic_policy
   } // end namespace demography
 } // end namespace quetzal
 

@@ -11,9 +11,9 @@
 #ifndef __DISCRETE_WRIGHT_FISHER_H_INCLUDED__
 #define __DISCRETE_WRIGHT_FISHER_H_INCLUDED__
 
-#include "../coalescence/containers/Forest.h"
+#include "../coalescence/container/Forest.h"
 #include "../coalescence/policies/merger.h"
-#include "../coalescence/occupancy_spectrum/on_the_fly.h"
+#include "../coalescence/occupancy_spectrum/sampling_policy.h"
 
 #include <boost/math/special_functions/binomial.hpp>
 
@@ -37,7 +37,7 @@ public:
 
   //! \typedef forest type
   template<typename Space, typename Tree>
-  using forest_type = quetzal::coalescence::Forest<Space, Tree>;
+  using forest_type = quetzal::coalescence::container::Forest<Space, Tree>;
 
   /* @brief Coalesce a spatial forest of trees in a Wrigh-Fisher population until MRCA has been found.
    *
@@ -127,7 +127,7 @@ public:
       // Wright Fisher assumptions are clearly violated
       // Let's do one generation of simultaneous multiple merges to fix it.
       unsigned int g = 1;
-      using smm_type = coalescence::SimultaneousMultipleMerger<coalescence::occupancy_spectrum::on_the_fly>;
+      using smm_type = coalescence::SimultaneousMultipleMerger<coalescence::occupancy_spectrum::sampling_policy::on_the_fly>;
       auto last = smm_type::merge(trees.begin(), trees.end(), N, make_tree(g), branch, gen);
       trees.erase(last, trees.end());
     }
@@ -136,7 +136,7 @@ public:
     auto last = trees.end();
     while( k > 1 ){
       unsigned int g = sample_waiting_time(k, N, gen);
-      last = quetzal::coalescence::binary_merge(trees.begin(), last, make_tree(g), branch, gen);
+      last = quetzal::coalescence::algorithm::binary_merge(trees.begin(), last, make_tree(g), branch, gen);
       --k;
     }
     return *(trees.begin());
@@ -165,7 +165,7 @@ public:
    * @return A set of trees, possibly of length 1 if MRCA was found during the g generations.
    */
   template<
-  typename MergerType = coalescence::SimultaneousMultipleMerger<coalescence::occupancy_spectrum::on_the_fly>,
+  typename MergerType = coalescence::SimultaneousMultipleMerger<coalescence::occupancy_spectrum::sampling_policy::on_the_fly>,
   typename Tree, typename Generator, typename Binop, typename TimeFun>
   static std::vector<Tree> coalesce(std::vector<Tree> & trees, unsigned int N, unsigned int g, Generator& gen, Binop branch, TimeFun make_tree)
   {

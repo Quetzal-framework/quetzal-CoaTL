@@ -22,21 +22,24 @@ namespace quetzal
   namespace demography
   {
     /*!
-    * @brief Base class for simulating and recording spatial population history.
-    *        It encpasulates backward migration logic. It makes use of the
+    * @brief Base class for simulating and recording spatial population history,
+    *        encpasulating backward migration logic.
+    *
+    * @details  It makes use of the
     *        CRTP design pattern, meaning that this class has to be specialized
     *        to define History classes offering
     *        customized behaviors, like details of the demograhic algorithms
     *        (mass_based or individual_based) or storage aspects.
     *
     * @tparam Space    Demes identifiers.
-    * @tparam DispersalPolicy    Policy use for populations dynamics simulation algorithms, see dispersal_policy
+    * @tparam DemographicPolicy    Policy Used for populations dynamics simulation algorithms, see demographic_policy
+    * @tparam MemoryPolicy    Policy used for storage and access to demographic quantities, see memory_policy
     *
     * @ingroup demography
     *
     */
-    template<typename Space, typename DispersalPolicy, typename MemoryPolicy>
-    class BaseHistory
+    template<typename Space, typename DemographicPolicy, typename MemoryPolicy>
+    class HistoryBase
     {
     public:
       //! \typedef space type
@@ -46,9 +49,9 @@ namespace quetzal
       //! \typedef policy for storage and access to demographic data
       using memory_policy = MemoryPolicy;
       //! \typedef strategy used for simulating populations dynamics
-      using dispersal_policy = DispersalPolicy;
+      using demographic_policy = DemographicPolicy;
       //! \typedef value stored, usually double
-      using value_type = typename dispersal_policy::value_type;
+      using value_type = typename demographic_policy::value_type;
       //! \typedef type of the population flows database
       using flow_type = typename memory_policy::template flow_type<coord_type, time_type, value_type>;
       //! \typedef type of the population size database
@@ -62,7 +65,7 @@ namespace quetzal
       * @param N the population size at coordinate x at time 0
       * @param nb_generations the number of generations history is supposed to last
       */
-      BaseHistory(coord_type const& x, value_type N, unsigned int nb_generations):
+      HistoryBase(coord_type const& x, value_type N, unsigned int nb_generations):
       m_nb_generations(nb_generations),
       m_sizes(std::make_unique<pop_sizes_type>()),
       m_flows(std::make_unique<flow_type>())
@@ -126,7 +129,7 @@ namespace quetzal
       coord_type backward_kernel(coord_type const& x, time_type t, Generator& gen) const
       {
         --t;
-        assert(m_flows->flux_to_is_defined(x,t));
+        assert(m_flows->flow_to_is_defined(x,t));
         auto k = make_backward_distribution(x, t);
         return k(gen);
       }
@@ -143,16 +146,16 @@ namespace quetzal
       {
         std::vector<double> weights;
         std::vector<coord_type> support;
-        weights.reserve(m_flows->flux_to(x,t).size());
-        support.reserve(m_flows->flux_to(x,t).size());
-        for(auto const& it : m_flows->flux_to(x,t) )
+        weights.reserve(m_flows->flow_to(x,t).size());
+        support.reserve(m_flows->flow_to(x,t).size());
+        for(auto const& it : m_flows->flow_to(x,t) )
         {
           support.push_back(it.first);
           weights.push_back(static_cast<double>(it.second));
         }
         return discrete_distribution_type(std::move(support),std::move(weights));
       }
-    }; // end BaseHistory
+    }; // end HistoryBase
   } // namespace demography
 } // namespace quetzal
 

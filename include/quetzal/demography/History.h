@@ -11,8 +11,8 @@
 #ifndef __HISTORY_H_INCLUDED__
 #define __HISTORY_H_INCLUDED__
 
-#include "BaseHistory.h"
-#include "dispersal_policy.h"
+#include "HistoryBase.h"
+#include "demographic_policy.h"
 
 namespace quetzal
 {
@@ -22,13 +22,13 @@ namespace quetzal
     * @brief Unspecialized class (CRTP design pattern)
     *
     * @tparam Space    Demes identifiers.
-    * @tparam dispersal_policy    policy used for simulating populations dynamics
+    * @tparam demographic_policy    policy used for simulating populations dynamics
     *
     * @ingroup demography
     *
     */
     template<typename Space, typename DispersalPolicy, typename MemoryPolicy>
-    class History : public BaseHistory<Space, DispersalPolicy, MemoryPolicy>
+    class History : public HistoryBase<Space, DispersalPolicy, MemoryPolicy>
     {};
 
 
@@ -40,10 +40,10 @@ namespace quetzal
     *
     */
     template<typename Space, typename Memory>
-    class History<Space, dispersal_policy::individual_based, Memory> : public BaseHistory<Space, dispersal_policy::individual_based, Memory>
+    class History<Space, demographic_policy::individual_based, Memory> : public HistoryBase<Space, demographic_policy::individual_based, Memory>
     {
-      // Using the BaseHistory class constructor
-      using BaseHistory<Space, dispersal_policy::individual_based, Memory>::BaseHistory;
+      // Using the HistoryBase class constructor
+      using HistoryBase<Space, demographic_policy::individual_based, Memory>::HistoryBase;
     public:
       /**
       * @brief Expands the demographic database.
@@ -79,7 +79,7 @@ namespace quetzal
               for(unsigned int ind = 1; ind <= N_tilde; ++ind)
               {
                 auto y = kernel(gen, x);
-                this->m_flows->add_to_flux_from_to(x, y, t, 1);
+                this->m_flows->add_to_flow_from_to(x, y, t, 1);
                 this->pop_size(y, t+1) += 1;
               }
             }
@@ -98,10 +98,10 @@ namespace quetzal
     * @ingroup demography
     */
     template<typename Space, typename Memory>
-    class History<Space, dispersal_policy::mass_based, Memory> : public BaseHistory<Space, dispersal_policy::mass_based, Memory>
+    class History<Space, demographic_policy::mass_based, Memory> : public HistoryBase<Space, demographic_policy::mass_based, Memory>
     {
-      // Using the BaseHistory constructor
-      using BaseHistory<Space, dispersal_policy::mass_based, Memory>::BaseHistory;
+      // Using the HistoryBase constructor
+      using HistoryBase<Space, demographic_policy::mass_based, Memory>::HistoryBase;
     public:
       /** @brief Simulate forward the demographic history.
       *
@@ -140,7 +140,7 @@ namespace quetzal
               double nb_migrants = std::ceil(m * static_cast<double>(N_tilde));
               if(nb_migrants >= 0){
                 landscape_individuals_count += nb_migrants;
-                this->m_flows->set_flux_from_to(x, y, t, nb_migrants);
+                this->m_flows->set_flow_from_to(x, y, t, nb_migrants);
                 this->pop_size(y, t+1) += nb_migrants;
               }
             }

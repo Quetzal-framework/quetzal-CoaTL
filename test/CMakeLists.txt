@@ -21,7 +21,8 @@ foreach(testSrc ${TEST_SRCS})
                                 ${Boost_FILESYSTEM_LIBRARY}
                                 ${Boost_SYSTEM_LIBRARY}
                                 ${Boost_SERIALIZATION_LIBRARY}
-                                ${GDAL_LIBRARY})
+                                ${GDAL_LIBRARY}
+                                Boost::headers)
 
         #I like to move testing binaries into a testBin directory
         set_target_properties(${testName} PROPERTIES
