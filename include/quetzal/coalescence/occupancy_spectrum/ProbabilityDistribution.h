@@ -117,7 +117,8 @@ namespace quetzal
         m_pred(pred)
         {
           auto callback = make_callback(m_k, m_N);
-          Support::generate(m_k, m_N, callback);
+          Support s(m_k, m_N);
+          s.generate(callback);
           m_distribution = std::discrete_distribution<size_t>( m_probas.cbegin(), m_probas.cend() );
           assert(m_support.size() == m_probas.size());
         }

@@ -162,7 +162,7 @@ namespace quetzal
       ///         this iterator includes all the remaining nodes in the sequence.
       /// @remark The type `T` `BidirectionalIterator::value_type` must be defined.
       /// @remark The `T` default constructor is used to set the value at which the parent is initialized.
-      /// @remark With `a` and `b` two objects of type `T`, the expression `a + B` must be defined.
+      /// @remark With `a` and `b` two objects of type `T`, the expression `a + b` must be defined.
       /// @remark BidirectionalIterator must meet the requirements of ValueSwappable and RandomAccessIterator.
       ///
       template<class BidirectionalIterator, class OccupancySpectrum, class Generator>

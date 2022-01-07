@@ -86,7 +86,7 @@ namespace quetzal
                 M_j[it] += 1;
             }
             assert(M_j.size() == k+1);
-            return OccupancySpectrum(M_j, N, k);
+            return OccupancySpectrum(M_j, k, N);
           }
         };
       } // end namespace sampling_policy
