@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classquetzal_1_1demography_1_1FlowOnDiskImplementation.html" title="Defines a template class to store the demographic flows number across a landscape along time." alt="" coords="5,5,217,61"/>
+<area shape="rect" id="node1" href="$classquetzal_1_1demography_1_1HistoryBase.html" title=" " alt="" coords="5,5,215,76"/>
+<area shape="rect" id="node2" href="$classquetzal_1_1demography_1_1History_3_01Space_00_01demographic__policy_1_1individual__based_00_01Memory_01_4.html" title="Partial specialization where each individual is dispersed individually." alt="" coords="263,5,487,76"/>
 </map>

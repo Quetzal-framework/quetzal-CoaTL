@@ -73,7 +73,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>quetzal</b></li><li class="navelem"><a class="el" href="classquetzal_1_1ForwardBackwardSpatiallyExplicit.html">ForwardBackwardSpatiallyExplicit</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespacequetzal.html">quetzal</a></li><li class="navelem"><a class="el" href="classquetzal_1_1ForwardBackwardSpatiallyExplicit.html">ForwardBackwardSpatiallyExplicit</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -110,7 +110,7 @@ Collaboration diagram for quetzal::ForwardBackwardSpatiallyExplicit&lt; Space, D
 <area shape="rect" title="Discrete&#45;time coalescence simulator in a discrete spatially explicit landscape." alt="" coords="532,19,791,90"/>
 <area shape="rect" title=" " alt="" coords="249,5,391,32"/>
 <area shape="rect" href="classquetzal_1_1demography_1_1History.html" title=" " alt="" coords="225,57,415,127"/>
-<area shape="rect" href="classquetzal_1_1demography_1_1BaseHistory.html" title=" " alt="" coords="5,57,176,127"/>
+<area shape="rect" href="classquetzal_1_1demography_1_1HistoryBase.html" title=" " alt="" coords="5,57,176,127"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -128,10 +128,10 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>N_value_type</b> = t
 <tr class="memitem:a60e5a6666b8c6543ec16e5846ddde84d"><td class="memItemLeft" align="right" valign="top"><a id="a60e5a6666b8c6543ec16e5846ddde84d"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>memory_policy</b> = Memory</td></tr>
 <tr class="separator:a60e5a6666b8c6543ec16e5846ddde84d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad45d3c0874a6fc5f724bb499867f0ff3"><td class="memTemplParams" colspan="2"><a id="ad45d3c0874a6fc5f724bb499867f0ff3"></a>
+<tr class="memitem:a73ad468bc2e3166c94f10053192af8d8"><td class="memTemplParams" colspan="2"><a id="a73ad468bc2e3166c94f10053192af8d8"></a>
 template&lt;typename tree_type &gt; </td></tr>
-<tr class="memitem:ad45d3c0874a6fc5f724bb499867f0ff3"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><b>forest_type</b> = <a class="el" href="classquetzal_1_1coalescence_1_1Forest.html">quetzal::coalescence::Forest</a>&lt; coord_type, tree_type &gt;</td></tr>
-<tr class="separator:ad45d3c0874a6fc5f724bb499867f0ff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73ad468bc2e3166c94f10053192af8d8"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><b>forest_type</b> = <a class="el" href="classquetzal_1_1coalescence_1_1container_1_1Forest.html">quetzal::coalescence::container::Forest</a>&lt; coord_type, tree_type &gt;</td></tr>
+<tr class="separator:a73ad468bc2e3166c94f10053192af8d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -158,22 +158,22 @@ auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a573d59b916ec699a980725ff45b0eed5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a forest based on sample counts, forwarding the sampling time to the forest contructor. Then coalesce the forest along the spatial history, then stops and return a possibly incomplete forest.  <a href="classquetzal_1_1ForwardBackwardSpatiallyExplicit.html#a573d59b916ec699a980725ff45b0eed5">More...</a><br /></td></tr>
 <tr class="separator:a573d59b916ec699a980725ff45b0eed5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac903e2152d56b517cceab0b09995f801"><td class="memTemplParams" colspan="2">template&lt;typename Merger , typename Generator , typename F , typename Tree , typename U &gt; </td></tr>
-<tr class="memitem:ac903e2152d56b517cceab0b09995f801"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classquetzal_1_1ForwardBackwardSpatiallyExplicit.html#ac903e2152d56b517cceab0b09995f801">coalesce_along_spatial_history</a> (<a class="el" href="classquetzal_1_1coalescence_1_1Forest.html">forest_type</a>&lt; Tree &gt; forest, F binary_op, Generator &amp;gen, U make_tree)</td></tr>
+<tr class="memitem:ac903e2152d56b517cceab0b09995f801"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classquetzal_1_1ForwardBackwardSpatiallyExplicit.html#ac903e2152d56b517cceab0b09995f801">coalesce_along_spatial_history</a> (<a class="el" href="classquetzal_1_1coalescence_1_1container_1_1Forest.html">forest_type</a>&lt; Tree &gt; forest, F binary_op, Generator &amp;gen, U make_tree)</td></tr>
 <tr class="memdesc:ac903e2152d56b517cceab0b09995f801"><td class="mdescLeft">&#160;</td><td class="mdescRight">Coalesce a forest of nodes conditionally to the simulated demography.  <a href="classquetzal_1_1ForwardBackwardSpatiallyExplicit.html#ac903e2152d56b517cceab0b09995f801">More...</a><br /></td></tr>
 <tr class="separator:ac903e2152d56b517cceab0b09995f801"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2a2cd5e7a199bae56537a5482de80c6"><td class="memTemplParams" colspan="2">template&lt;typename Merger  = quetzal::coalescence::SimultaneousMultipleMerger&lt;quetzal::coalescence::occupancy_spectrum::on_the_fly&gt;, typename Generator &gt; </td></tr>
+<tr class="memitem:ad2a2cd5e7a199bae56537a5482de80c6"><td class="memTemplParams" colspan="2">template&lt;typename Merger  = quetzal::coalescence::merger_policy::SimultaneousMultipleMerger&lt;quetzal::coalescence::occupancy_spectrum::sampling_policy::on_the_fly&gt;, typename Generator &gt; </td></tr>
 <tr class="memitem:ad2a2cd5e7a199bae56537a5482de80c6"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classquetzal_1_1ForwardBackwardSpatiallyExplicit.html#ad2a2cd5e7a199bae56537a5482de80c6">coalesce_to_mrca</a> (std::map&lt; coord_type, unsigned int &gt; sample, unsigned int sampling_time, Generator &amp;gen)</td></tr>
 <tr class="memdesc:ad2a2cd5e7a199bae56537a5482de80c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a forest from a sample and coalesce it conditionally to the simulated demography.  <a href="classquetzal_1_1ForwardBackwardSpatiallyExplicit.html#ad2a2cd5e7a199bae56537a5482de80c6">More...</a><br /></td></tr>
 <tr class="separator:ad2a2cd5e7a199bae56537a5482de80c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac081402bbd2144ca537fdcdbe8030e78"><td class="memTemplParams" colspan="2">template&lt;typename Merger  = quetzal::coalescence::SimultaneousMultipleMerger&lt;quetzal::coalescence::occupancy_spectrum::on_the_fly&gt;, typename Generator &gt; </td></tr>
+<tr class="memitem:ac081402bbd2144ca537fdcdbe8030e78"><td class="memTemplParams" colspan="2">template&lt;typename Merger  = quetzal::coalescence::merger_policy::SimultaneousMultipleMerger&lt;quetzal::coalescence::occupancy_spectrum::sampling_policy::on_the_fly&gt;, typename Generator &gt; </td></tr>
 <tr class="memitem:ac081402bbd2144ca537fdcdbe8030e78"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classquetzal_1_1ForwardBackwardSpatiallyExplicit.html#ac081402bbd2144ca537fdcdbe8030e78">coalesce_to_mrca</a> (std::map&lt; coord_type, unsigned int &gt; sample, Generator &amp;gen)</td></tr>
 <tr class="memdesc:ac081402bbd2144ca537fdcdbe8030e78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a forest from a sample and coalesce it conditionally to the simulated demography.  <a href="classquetzal_1_1ForwardBackwardSpatiallyExplicit.html#ac081402bbd2144ca537fdcdbe8030e78">More...</a><br /></td></tr>
 <tr class="separator:ac081402bbd2144ca537fdcdbe8030e78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d6dbaa72b186a7ae8af71c28fc07f71"><td class="memTemplParams" colspan="2">template&lt;typename Merger  = quetzal::coalescence::SimultaneousMultipleMerger&lt;quetzal::coalescence::occupancy_spectrum::on_the_fly&gt;, typename Generator , typename F &gt; </td></tr>
+<tr class="memitem:a2d6dbaa72b186a7ae8af71c28fc07f71"><td class="memTemplParams" colspan="2">template&lt;typename Merger  = quetzal::coalescence::merger_policy::SimultaneousMultipleMerger&lt;quetzal::coalescence::occupancy_spectrum::sampling_policy::on_the_fly&gt;, typename Generator , typename F &gt; </td></tr>
 <tr class="memitem:a2d6dbaa72b186a7ae8af71c28fc07f71"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classquetzal_1_1ForwardBackwardSpatiallyExplicit.html#a2d6dbaa72b186a7ae8af71c28fc07f71">coalesce_to_mrca</a> (std::map&lt; coord_type, unsigned int &gt; sample, unsigned int sampling_time, F leaf_name, Generator &amp;gen)</td></tr>
 <tr class="memdesc:a2d6dbaa72b186a7ae8af71c28fc07f71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a forest from a sample giving name to tips, then coalesce them conditionally to the simulated demography.  <a href="classquetzal_1_1ForwardBackwardSpatiallyExplicit.html#a2d6dbaa72b186a7ae8af71c28fc07f71">More...</a><br /></td></tr>
 <tr class="separator:a2d6dbaa72b186a7ae8af71c28fc07f71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac30aa5b7dfa435c57029653f093ab6cd"><td class="memTemplParams" colspan="2">template&lt;typename Merger  = quetzal::coalescence::SimultaneousMultipleMerger&lt;quetzal::coalescence::occupancy_spectrum::on_the_fly&gt;, typename T , typename F1 , typename F2 , typename Generator &gt; </td></tr>
+<tr class="memitem:ac30aa5b7dfa435c57029653f093ab6cd"><td class="memTemplParams" colspan="2">template&lt;typename Merger  = quetzal::coalescence::merger_policy::SimultaneousMultipleMerger&lt;quetzal::coalescence::occupancy_spectrum::sampling_policy::on_the_fly&gt;, typename T , typename F1 , typename F2 , typename Generator &gt; </td></tr>
 <tr class="memitem:ac30aa5b7dfa435c57029653f093ab6cd"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classquetzal_1_1ForwardBackwardSpatiallyExplicit.html#ac30aa5b7dfa435c57029653f093ab6cd">coalesce_to_mrca</a> (std::vector&lt; T &gt; sample, unsigned int sampling_time, F1 get_location, F2 get_name, Generator &amp;gen)</td></tr>
 <tr class="memdesc:ac30aa5b7dfa435c57029653f093ab6cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a forest from a sample then coalesce them conditionally to the simulated demography.  <a href="classquetzal_1_1ForwardBackwardSpatiallyExplicit.html#ac30aa5b7dfa435c57029653f093ab6cd">More...</a><br /></td></tr>
 <tr class="separator:ac30aa5b7dfa435c57029653f093ab6cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -199,7 +199,7 @@ template&lt;typename Generator , typename Forest &gt; </td></tr>
 <tr class="separator:a149afa33278da446c0c8fcf4afa9fa60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8c0620f9e609d6e8db745c6ed66d007"><td class="memTemplParams" colspan="2"><a id="ab8c0620f9e609d6e8db745c6ed66d007"></a>
 template&lt;typename Merger , typename Generator , typename Tree , typename F , typename U &gt; </td></tr>
-<tr class="memitem:ab8c0620f9e609d6e8db745c6ed66d007"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>may_coalesce_colocated</b> (<a class="el" href="classquetzal_1_1coalescence_1_1Forest.html">forest_type</a>&lt; Tree &gt; &amp;forest, unsigned int t, Generator &amp;gen, F binop, U make_tree) const noexcept</td></tr>
+<tr class="memitem:ab8c0620f9e609d6e8db745c6ed66d007"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>may_coalesce_colocated</b> (<a class="el" href="classquetzal_1_1coalescence_1_1container_1_1Forest.html">forest_type</a>&lt; Tree &gt; &amp;forest, unsigned int t, Generator &amp;gen, F binop, U make_tree) const noexcept</td></tr>
 <tr class="separator:ab8c0620f9e609d6e8db745c6ed66d007"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
@@ -293,7 +293,7 @@ template&lt;typename Merger , typename Generator , typename F , typename Tree , 
         <tr>
           <td class="memname">auto <a class="el" href="classquetzal_1_1ForwardBackwardSpatiallyExplicit.html">quetzal::ForwardBackwardSpatiallyExplicit</a>&lt; Space, DispersalPolicy, CoalescencePolicy, Memory &gt;::coalesce_along_spatial_history </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classquetzal_1_1coalescence_1_1Forest.html">forest_type</a>&lt; Tree &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classquetzal_1_1coalescence_1_1container_1_1Forest.html">forest_type</a>&lt; Tree &gt;&#160;</td>
           <td class="paramname"><em>forest</em>, </td>
         </tr>
         <tr>
@@ -339,7 +339,7 @@ template&lt;typename Merger , typename Generator , typename F , typename Tree , 
 <div class="memtemplate">
 template&lt;typename Space , typename DispersalPolicy , typename CoalescencePolicy , typename Memory  = quetzal::demography::memory_policy::on_RAM&gt; </div>
 <div class="memtemplate">
-template&lt;typename Merger  = quetzal::coalescence::SimultaneousMultipleMerger&lt;quetzal::coalescence::occupancy_spectrum::on_the_fly&gt;, typename Generator &gt; </div>
+template&lt;typename Merger  = quetzal::coalescence::merger_policy::SimultaneousMultipleMerger&lt;quetzal::coalescence::occupancy_spectrum::sampling_policy::on_the_fly&gt;, typename Generator &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -394,7 +394,7 @@ template&lt;typename Merger  = quetzal::coalescence::SimultaneousMultipleMerger&
 <div class="memtemplate">
 template&lt;typename Space , typename DispersalPolicy , typename CoalescencePolicy , typename Memory  = quetzal::demography::memory_policy::on_RAM&gt; </div>
 <div class="memtemplate">
-template&lt;typename Merger  = quetzal::coalescence::SimultaneousMultipleMerger&lt;quetzal::coalescence::occupancy_spectrum::on_the_fly&gt;, typename Generator , typename F &gt; </div>
+template&lt;typename Merger  = quetzal::coalescence::merger_policy::SimultaneousMultipleMerger&lt;quetzal::coalescence::occupancy_spectrum::sampling_policy::on_the_fly&gt;, typename Generator , typename F &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -463,7 +463,7 @@ template&lt;typename Merger  = quetzal::coalescence::SimultaneousMultipleMerger&
 <div class="memtemplate">
 template&lt;typename Space , typename DispersalPolicy , typename CoalescencePolicy , typename Memory  = quetzal::demography::memory_policy::on_RAM&gt; </div>
 <div class="memtemplate">
-template&lt;typename Merger  = quetzal::coalescence::SimultaneousMultipleMerger&lt;quetzal::coalescence::occupancy_spectrum::on_the_fly&gt;, typename Generator &gt; </div>
+template&lt;typename Merger  = quetzal::coalescence::merger_policy::SimultaneousMultipleMerger&lt;quetzal::coalescence::occupancy_spectrum::sampling_policy::on_the_fly&gt;, typename Generator &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -525,7 +525,7 @@ template&lt;typename Merger  = quetzal::coalescence::SimultaneousMultipleMerger&
 <div class="memtemplate">
 template&lt;typename Space , typename DispersalPolicy , typename CoalescencePolicy , typename Memory  = quetzal::demography::memory_policy::on_RAM&gt; </div>
 <div class="memtemplate">
-template&lt;typename Merger  = quetzal::coalescence::SimultaneousMultipleMerger&lt;quetzal::coalescence::occupancy_spectrum::on_the_fly&gt;, typename T , typename F1 , typename F2 , typename Generator &gt; </div>
+template&lt;typename Merger  = quetzal::coalescence::merger_policy::SimultaneousMultipleMerger&lt;quetzal::coalescence::occupancy_spectrum::sampling_policy::on_the_fly&gt;, typename T , typename F1 , typename F2 , typename Generator &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">

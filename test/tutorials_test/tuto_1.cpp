@@ -15,7 +15,7 @@ int main(){
   using generator_type = std::mt19937;
 
   // choose the strategy to be used
-  using quetzal::demography::dispersal_policy::individual_based;
+  using quetzal::demography::demographic_policy::individual_based;
   using quetzal::demography::memory_policy::on_RAM;
 
   // Random number generator

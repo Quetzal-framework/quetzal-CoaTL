@@ -1,0 +1,4 @@
+<map id="quetzal::demography::FlowHashMapImplementation&lt; Space, Time, Value &gt;::key_hash" name="quetzal::demography::FlowHashMapImplementation&lt; Space, Time, Value &gt;::key_hash">
+<area shape="rect" id="node1" title="Makes key_type hashable (can be stored in hash maps)" alt="" coords="5,95,251,151"/>
+<area shape="rect" id="node2" title=" " alt="" coords="35,5,221,47"/>
+</map>

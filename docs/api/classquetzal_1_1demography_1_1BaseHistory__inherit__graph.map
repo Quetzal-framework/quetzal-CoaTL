@@ -1,4 +1,0 @@
-<map id="quetzal::demography::BaseHistory&lt; Space, DispersalPolicy, MemoryPolicy &gt;" name="quetzal::demography::BaseHistory&lt; Space, DispersalPolicy, MemoryPolicy &gt;">
-<area shape="rect" id="node1" title="Base class for simulating and recording spatial population history. It encpasulates backward migratio..." alt="" coords="5,5,248,61"/>
-<area shape="rect" id="node2" href="$classquetzal_1_1demography_1_1History.html" title="Unspecialized class (CRTP design pattern)" alt="" coords="27,109,227,165"/>
-</map>

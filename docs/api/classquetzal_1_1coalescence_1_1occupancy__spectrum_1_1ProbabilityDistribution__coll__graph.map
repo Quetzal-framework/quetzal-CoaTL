@@ -1,0 +1,4 @@
+<map id="quetzal::coalescence::occupancy_spectrum::ProbabilityDistribution&lt; FilterPolicy, EditorPolicy &gt;" name="quetzal::coalescence::occupancy_spectrum::ProbabilityDistribution&lt; FilterPolicy, EditorPolicy &gt;">
+<area shape="rect" id="node1" title="Occupancy spectrum distributed according to the probability function given by von Mises (1939)." alt="" coords="5,139,215,209"/>
+<area shape="rect" id="node2" href="$structquetzal_1_1coalescence_1_1occupancy__spectrum_1_1filter__policy_1_1return__always__true.html" title="Default policy: accept all spectrums whatever their sampling probability." alt="" coords="27,5,193,76"/>
+</map>
