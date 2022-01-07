@@ -48,7 +48,7 @@ namespace quetzal
         /// @brief Number of balls (lineages) in the experiment that generated the spectrum
         int k;
         /// @brief Number of urns (parents) in the experiment that generated the spectrum
-        int m;
+        int N;
         ///
         /// @brief Class invariant: number of balls should be conserved
         ///
@@ -58,7 +58,7 @@ namespace quetzal
           for(int i = 0; i < this->M_j.size(); ++i)
           {
             assert(this->M_j.at(i) >= 0);
-            sum += i*this->M_j.at(i);
+            sum += i*(this->M_j.at(i));
           }
           return(sum == this->k);
         }
@@ -73,7 +73,7 @@ namespace quetzal
             assert(this->M_j.at(i) >= 0);
             sum += this->M_j.at(i);
           }
-          return(sum == this->m);
+          return(sum == this->N);
         }
       public:
         //! \typedef value type when iterating along a spectrum
@@ -86,15 +86,15 @@ namespace quetzal
         /// @brief Constructor by copy
         ///
         /// @param v A vector of occupancy numbers
-        /// @param m the number of urns (parents) of the random experience
+        /// @param N the number of urns (parents) of the random experience
         /// @param k the number of balls (coalescing lineages) of the random experience
-        OccupancySpectrum(std::vector<int> const& v, int m, int k):
+        OccupancySpectrum(std::vector<int> const& v, int k, int N):
         M_j(v),
-        m(m),
-        k(k)
+        k(k),
+        N(N)
         {
-          assert(m >= 0);
-          assert(k >= 0);
+          assert(this->N >= 0);
+          assert(this->k >= 0);
           assert(test_number_of_balls_conservation());
           assert(test_number_of_urns_conservation());
         }
@@ -102,18 +102,23 @@ namespace quetzal
         /// @brief Move constructor
         ///
         /// @param v A vector of occupancy numbers
-        /// @param m the number of urns (parents) of the random experience
+        /// @param N the number of urns (parents) of the random experience
         /// @param k the number of balls (coalescing lineages) of the random experience
-        OccupancySpectrum(std::vector<int>&& v, int m, int k):
+        OccupancySpectrum(std::vector<int>&& v, int k, int N):
         M_j(std::move(v)),
-        m(m),
-        k(k)
+        k(k),
+        N(N)
         {
-          assert(m >= 0);
-          assert(k >= 0);
+          assert(this->N >= 0);
+          assert(this->k >= 0);
           assert(test_number_of_balls_conservation());
           assert(test_number_of_urns_conservation());
         }
+        ///
+        /// @brief Deleted default constructor
+        ///
+        /// @remark this would break class invariants as there is no good way to initialize by default
+        OccupancySpectrum() = delete;
         ///
         /// @brief Default copy constructor
         ///
@@ -123,13 +128,14 @@ namespace quetzal
         /// @brief Move constructor
         ///
         /// @param other An occupancy spectrum to move content from
+        ///
         OccupancySpectrum(OccupancySpectrum&& other) noexcept:
         M_j(std::move(other.M_j)),
-        m(other.m),
+        N(other.N),
         k(other.k)
         {
-          assert(m >= 0);
-          assert(k >= 0);
+          assert(this->N >= 0);
+          assert(this->k >= 0);
           assert(test_number_of_balls_conservation());
           assert(test_number_of_urns_conservation());
         }
@@ -140,7 +146,7 @@ namespace quetzal
         {
           OccupancySpectrum otherCopy(other);
           this->M_j = std::move(otherCopy.M_j);
-          this->m = otherCopy.m;
+          this->N = otherCopy.N;
           this->k = otherCopy.k;
 					return *this;
         }
@@ -154,7 +160,7 @@ namespace quetzal
         OccupancySpectrum& operator=(OccupancySpectrum&& other)
         {
           this->M_j = std::move(other.M_j);
-          this->m = other.m;
+          this->N = other.N;
           this->k = other.k;
 					return *this;
         }

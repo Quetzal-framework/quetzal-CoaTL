@@ -13,7 +13,7 @@
 
 #include "../demography/History.h"
 #include "../coalescence/container/Forest.h"
-#include "../coalescence/policies/merger.h"
+#include "../coalescence/merger_policy.h"
 
 #include <map>
 
