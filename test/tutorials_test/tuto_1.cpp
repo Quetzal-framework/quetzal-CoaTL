@@ -23,8 +23,10 @@ int main(){
   quetzal::demography::History<coord_type, individual_based, on_RAM> history(x0, N0, nb_generations);
   // Get a light callable object that behaves as a function of space and time
   auto N = history.get_functor_N();
+  // Constant growth rate
+  int r = 100;
   // Capture it with a lambda expression to build a growth function
-  auto growth = [N](auto& gen, coord_type x, time_type t){ return 2*N(x,t) ; };
+  auto growth = [N,r](auto& gen, coord_type x, time_type t){ return r*N(x,t) ; };
   // Stochastic dispersal lambda function, purposely very simple
   auto sample_location = [](auto& gen, coord_type x){
     // 50% chance to move to the other deme
@@ -41,5 +43,4 @@ int main(){
   {
     std::cout << "N(" << x << "," << nb_generations -1 << ") = " << N(x,t) << std::endl;
   }
-
-}
+} // end main
