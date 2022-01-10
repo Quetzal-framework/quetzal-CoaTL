@@ -8,30 +8,30 @@
 *                                                                      *
 ***************************************************************************/
 
-// Header file including all coalescence module
+#ifndef __FILTER_POLICY_H_INCLUDED__
+#define __FILTER_POLICY_H_INCLUDED__
 
-#include "coalescence.h"
-
-#include "random.h"
-
-#include "demography.h"
-
-#include "geography.h"
-
-#include "expressive.h"
-#include "genetics.h"
-
-#include "fuzzy_transfer_distance.h"
-
-#include "simulator/DiscreteTimeWrightFisher.h"
-#include "simulator/ForwardBackwardSpatiallyExplicit.h"
-#include "simulator/utils.h"
-
-#include "utils.h"
-#include "version.h"
-
-///
-/// @brief Generic components for simulating integrated distribution, demographic and coalescence models.
-///
 namespace quetzal
-{}
+{
+  namespace coalescence
+  {
+    namespace occupancy_spectrum
+    {
+      namespace filter_policy
+      {
+        ///
+        /// @brief Default policy: accept all spectrums whatever their sampling probability
+        ///
+        struct return_always_true
+        {
+          bool operator()(double /*param*/) const
+          {
+            return true;
+          }
+        }; // end struct return_always_true
+      } // end namespace filter policy
+    } // namespace occupancy_spectrum
+  } // namespace coalescence
+} // namespace quetzal
+
+#endif

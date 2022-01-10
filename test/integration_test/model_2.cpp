@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
    *****************************/
    std::cout << "2 ... Initializing spatial coalescence simulator" << std::endl;
    // Declaring simulation policies (policy-based design)
-  using demographic_policy = quetzal::demography::dispersal_policy::individual_based;
+  using demographic_policy = quetzal::demography::demographic_policy::individual_based;
   using coalescence_policy = quetzal::coalescence::newick_with_distance_to_parent<coord_type, time_type>;
   using simulator_type = quetzal::ForwardBackwardSpatiallyExplicit<coord_type, demographic_policy, coalescence_policy>;
   // Initial distribution

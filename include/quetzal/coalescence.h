@@ -8,10 +8,54 @@
 *                                                                      *
 ***************************************************************************/
 
-
-#include "coalescence/policies/merger.h"
+#include "coalescence/merger_policy.h"
 #include "coalescence/policies/distance_to_parent.h"
-#include "coalescence/containers/Tree.h"
-#include "coalescence/containers/Forest.h"
-#include "coalescence/occupancy_spectrum/in_memoized_distribution.h"
-#include "coalescence/occupancy_spectrum/on_the_fly.h"
+#include "coalescence/container/Tree.h"
+#include "coalescence/container/Forest.h"
+#include "coalescence/occupancy_spectrum.h"
+
+namespace quetzal
+{
+  ///
+  /// @brief Generic components for simulation of coalescent trees
+  ///
+  namespace coalescence
+  {
+    ///
+    /// @brief Generic algorithms for manipulating abstract coalescent trees
+    ///
+    namespace algorithm
+    {}
+    ///
+    /// @brief Generic data structures for manipulating abstract coalescent trees
+    ///
+    namespace container
+    {}
+    ///
+    /// @brief How to simulate occupancy spectrums (coalescence merging configurations) when required by coalescence::algorithm::simultaneous_multiple_merge
+    ///
+    namespace occupancy_spectrum
+    {
+      ///
+      /// @brief Policy classes to discard or not the low-probability spectrums (optimization)
+      ///
+      namespace filter_policy
+      {}
+      ///
+      /// @brief Policy classes to shorten spectrums (optimization)
+      ///
+      namespace spectrum_editor
+      {}
+      ///
+      /// @brief What strategy to use to randomly sample occupancy spectrums (optimization)
+      ///
+      namespace sampling_policy
+      {}
+      ///
+      /// @brief Utils for memoization of OccupancySpectrumDistribution objects (optimization)
+      ///
+      namespace memoize
+      {}
+    }
+  }
+}

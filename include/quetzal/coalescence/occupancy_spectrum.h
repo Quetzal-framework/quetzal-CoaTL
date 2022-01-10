@@ -8,30 +8,10 @@
 *                                                                      *
 ***************************************************************************/
 
-// Header file including all coalescence module
-
-#include "coalescence.h"
-
-#include "random.h"
-
-#include "demography.h"
-
-#include "geography.h"
-
-#include "expressive.h"
-#include "genetics.h"
-
-#include "fuzzy_transfer_distance.h"
-
-#include "simulator/DiscreteTimeWrightFisher.h"
-#include "simulator/ForwardBackwardSpatiallyExplicit.h"
-#include "simulator/utils.h"
-
-#include "utils.h"
-#include "version.h"
-
-///
-/// @brief Generic components for simulating integrated distribution, demographic and coalescence models.
-///
-namespace quetzal
-{}
+#include "occupancy_spectrum/editor_policy.h"
+#include "occupancy_spectrum/filter_policy.h"
+#include "occupancy_spectrum/memoize.h"
+#include "occupancy_spectrum/OccupancySpectrum.h"
+#include "occupancy_spectrum/ProbabilityDistribution.h"
+#include "occupancy_spectrum/sampling_policy.h"
+#include "occupancy_spectrum/Support.h"
