@@ -2,7 +2,6 @@
 #include "quetzal/demography.h"
 #include <iostream>
 #include <random>
-
 // Here we simulate a population expansion through a 2 demes landscape.
 int main(){
   // Use type aliasing for readability
