@@ -30,7 +30,7 @@ int main(){
   using quetzal::demography::memory_policy::on_RAM;
 	int N0 = 100;
 	// Number of non-overlapping generations for the demographic simulation
-	int nb_generations = 10
+	int nb_generations = 10;
 	quetzal::demography::History<coord_type, mass_based, on_RAM> history("Paris", N0, nb_generations);
 	// Growth function
 	auto N = history.get_functor_N();
