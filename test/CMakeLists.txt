@@ -63,10 +63,41 @@ target_include_directories(model_3
 add_test(SpatialExpansionMassBasedSerialized model_3 ${CMAKE_CURRENT_SOURCE_DIR}/data/europe_temp.tif)
 
 ### TUTORIAL TESTS
+#
+# add_executable(tuto_1 tutorials_test/tuto_1.cpp)
+# target_link_libraries(tuto_1 LINK_PUBLIC ${GDAL_LIBRARY} )
+# target_include_directories(tuto_1
+#   PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+#   $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
+# add_test(TwoDemesIndividualBased tuto_1)
 
-add_executable(tuto_1 tutorials_test/tuto_1.cpp)
-target_link_libraries(tuto_1 LINK_PUBLIC ${GDAL_LIBRARY} )
-target_include_directories(tuto_1
-  PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
-add_test(TwoDemesIndividualBased tuto_1)
+
+# Keep test files in a separate source directory called test
+file(GLOB TUTO_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} tutorials_test/*.cpp)
+
+# Run through each source
+foreach(testSrc ${TUTO_SRCS})
+        # Extract the filename without an extension (NAME_WE)
+        get_filename_component(testName ${testSrc} NAME_WE)
+        # Add compile target
+        add_executable(${testName} ${testSrc})
+        # Link to Boost libraries AND other targets and dependencies
+        target_link_libraries(${testName}
+                                ${Boost_LIBRARIES}
+                                ${Boost_FILESYSTEM_LIBRARY}
+                                ${Boost_SYSTEM_LIBRARY}
+                                ${Boost_SERIALIZATION_LIBRARY}
+                                ${GDAL_LIBRARY}
+                                Boost::headers)
+        # I like to move testing binaries into a testBin directory
+        set_target_properties(${testName} PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_CURRENT_SOURCE_DIR}/build/testBin)
+        # Specifies include directories to use when compiling a given target
+        target_include_directories(
+          ${testName} PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+                              $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
+        #Finally add it to test execution: notice the WORKING_DIRECTORY and COMMAND
+        add_test(NAME ${testName}
+                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build/testBin
+                 COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/build/testBin/${testName})
+endforeach(testSrc)

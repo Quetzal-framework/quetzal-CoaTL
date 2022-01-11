@@ -43,4 +43,5 @@ int main(){
   {
     std::cout << "N(" << x << "," << nb_generations -1 << ") = " << N(x,t) << std::endl;
   }
+  return 0;
 } // end main
