@@ -1,7 +1,7 @@
 # Quetzal-CoalTL <img align="right" width="200" src="https://github.com/Becheler/quetzal-CoalTL/blob/media/quetzal.png">
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/Becheler/quetzal-CoalTL)
-[![Becheler](https://circleci.com/gh/Becheler/quetzal-CoalTL.svg?style=shield)](https://app.circleci.com/pipelines/github/Becheler/quetzal-CoalTL)
+[![Becheler](https://circleci.com/gh/Becheler/quetzal-CoalTL.svg?style=shield)](https://app.circleci.com/pipelines/github/Becheler/quetzal-CoaTL)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Website becheler.github.io](https://img.shields.io/website-up-down-green-red/https/becheler.github.io.svg)](https://becheler.github.io/softwares/quetzal-CoalTL/home/)
 ![Lines of code](https://img.shields.io/tokei/lines/github/Becheler/quetzal-CoalTL)
