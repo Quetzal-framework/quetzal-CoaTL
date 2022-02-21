@@ -23,7 +23,7 @@ jobs:
         fetch-depth: 0
 
     - name: Install quetzal and Doxygen dependencies
-      run: sudo apt-get install -y --no-install-recommends libboost-all-dev libgdal-dev doxygen graphviz
+      run: sudo apt-get update && apt-get install -y --no-install-recommends libboost-all-dev libgdal-dev doxygen graphviz
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
