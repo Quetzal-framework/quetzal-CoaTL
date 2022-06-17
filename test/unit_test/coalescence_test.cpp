@@ -234,10 +234,13 @@ BOOST_AUTO_TEST_CASE(network)
    d.add_child("7");
 
    // Depth First Search allowing nodes to be revisited
-   std::vector<string> expected = {"r","a","1","c","e","2","g", "3", "Y", "4", "b", "d", "x", "f", "h", "y", "4", "5", "6", "7", "8"};
+   std::vector<string> expected = {"r","a","1","c","e","2","g","3","Y","4","X","b","8","d","X","f","h","5","6","7"};
    std::vector<string> v;
    auto functor = [&v](string s){ v.push_back(s); };
    root.visit_cells_by_pre_order_DFS(functor);
+   for(const auto & s : v ){
+     std::cout << s << std::endl;
+   }
    BOOST_TEST(v == expected);
 }
 
