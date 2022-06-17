@@ -5,10 +5,7 @@ find_package(Doxygen
              OPTIONAL_COMPONENTS mscgen dia)
 
 if(DOXYGEN_FOUND)
-  # exclude sqlite code
-  set(DOXYGEN_EXCLUDE_PATTERNS
-        */sqlite3/*
-  )
+
   # doxygen settings can be set here, prefixed with "DOXYGEN_"
   set(DOXYGEN_PROJECT_NAME "Quetzal-CoalTL")
   set(DOXYGEN_PROJECT_BRIEF "The Coalescence Template Library")

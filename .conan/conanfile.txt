@@ -1,0 +1,9 @@
+[requires]
+
+boost/1.79
+gdal/3.4.3
+mp-units/0.7.0
+
+[generators]
+
+tools.cmake.cmaketoolchain:generator=Ninja
