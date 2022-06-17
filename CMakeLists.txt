@@ -75,9 +75,10 @@ ENDIF()
 
 # Global approach Gdal
 find_package(GDAL REQUIRED)
-IF (GDAL_FOUND)
-    INCLUDE_DIRECTORIES(${GDAL_INCLUDE_DIR})
-ENDIF()
+# IF (GDAL_FOUND)
+#   INCLUDE_DIRECTORIES(${GDAL_INCLUDE_DIRS}) # Include directories for GDAL headers.
+#   INCLUDE_DIRECTORIES(${GDAL_INCLUDE_DIR}) # The directory containing gdal.h.
+# ENDIF()
 
 
 #########################################
