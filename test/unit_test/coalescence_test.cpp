@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_CASE (forest_insert)
   std::vector<string> v {"quercus_robur", "salix_nigra"};
   forest.insert(3, std::move(v));
   auto it = forest.insert(4, string("salix_nigra"));
-  BOOST_CHECK_EQUAL(it->first , 5);
+  BOOST_CHECK_EQUAL(it->first , 4);
   BOOST_CHECK_EQUAL(forest.nb_trees() , 6);
   BOOST_CHECK_EQUAL(forest.nb_trees(3) , 2);
   for(auto const& it : forest){
@@ -236,8 +236,8 @@ BOOST_AUTO_TEST_CASE(network)
    // Depth First Search allowing nodes to be revisited
    std::vector<string> expected = {"r","a","1","c","e","2","g", "3", "Y", "4", "b", "d", "x", "f", "h", "y", "4", "5", "6", "7", "8"};
    std::vector<string> v;
-   auto f = [&v](string s){ v.push_back(s); };
-   root.visit_cells_by_pre_order_DFS(f);
+   auto functor = [&v](string s){ v.push_back(s); };
+   root.visit_cells_by_pre_order_DFS(functor);
    BOOST_TEST(v == expected);
 }
 

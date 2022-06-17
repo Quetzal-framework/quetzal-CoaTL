@@ -129,6 +129,31 @@ namespace quetzal
 					return m_children.back();
 				}
 				///
+				/// @brief Add a sub-network to the children list of the network
+				///
+				/// @param subtree the subtree to be added
+				///
+				/// @return a reference on the added subtree
+				///
+				Network<CellT>& add_child(Network<CellT>& subnetwork)
+				{
+					subnetwork.add_parent(*this);
+					m_children.push_back(subnetwork);
+					return m_children.back();
+				}
+				///
+				/// @brief Add a itself as a sub-network in the list of the parent children
+				///
+				/// @param subtree the subtree to be added
+				///
+				/// @return a reference on the added subtree
+				///
+				Network<CellT>& add_parent(Network<CellT>& parent)
+				{
+				  m_parents.push_back(parent);
+					return m_parents.back();
+				}
+				///
 				/// @brief Checks whether the network has a parent
 				///
 				/// @return Returns true if the network has a parent, else returns false.

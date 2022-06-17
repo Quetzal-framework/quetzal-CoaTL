@@ -12,6 +12,7 @@
 #include "coalescence/policies/distance_to_parent.h"
 #include "coalescence/container/Tree.h"
 #include "coalescence/container/Forest.h"
+#include "coalescence/container/Network.h"
 #include "coalescence/occupancy_spectrum.h"
 
 namespace quetzal

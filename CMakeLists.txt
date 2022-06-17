@@ -47,8 +47,8 @@ add_library(${PROJECT_NAME} INTERFACE )
 # add alias so the project can be used with add_subdirectory
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
-# Include Boost as an imported target
-find_package(Boost 1.61 REQUIRED COMPONENTS unit_test_framework filesystem serialization)
+# Include Boost as an imported target: 1.73 important for compilation with gcc 10 and C++20
+find_package(Boost 1.73 REQUIRED COMPONENTS unit_test_framework filesystem serialization)
 
 # Include Gdal
 find_package(GDAL REQUIRED)
