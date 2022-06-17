@@ -15,14 +15,16 @@ foreach(testSrc ${TEST_SRCS})
         #Add compile target
         add_executable(${testName} ${testSrc} ${version_file})
         target_compile_options(${testName} PRIVATE "-fconcepts")
+
         #link to Boost libraries AND your targets and dependencies
         target_link_libraries(${testName}
-                                ${Boost_LIBRARIES}
-                                ${Boost_FILESYSTEM_LIBRARY}
-                                ${Boost_SYSTEM_LIBRARY}
-                                ${Boost_SERIALIZATION_LIBRARY}
-                                ${GDAL_LIBRARY}
-                                Boost::headers)
+                              boost::boost       # globalCMake's target
+                              ${Boost_LIBRARIES} # Boost component libraries to be linked.
+                              Boost::headers     # Target for header-only dependencies.
+                              Boost::unit_test_framework 
+                              GDAL::GDAL
+                              mp-units::mp-units
+                              )
 
         #I like to move testing binaries into a testBin directory
         set_target_properties(${testName} PROPERTIES
@@ -83,12 +85,9 @@ foreach(testSrc ${TUTO_SRCS})
         add_executable(${testName} ${testSrc})
         # Link to Boost libraries AND other targets and dependencies
         target_link_libraries(${testName}
-                                ${Boost_LIBRARIES}
-                                ${Boost_FILESYSTEM_LIBRARY}
-                                ${Boost_SYSTEM_LIBRARY}
-                                ${Boost_SERIALIZATION_LIBRARY}
-                                ${GDAL_LIBRARY}
-                                Boost::headers)
+                                boost::boost
+                                GDAL::GDAL
+                                )
         # I like to move testing binaries into a testBin directory
         set_target_properties(${testName} PROPERTIES
             RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_CURRENT_SOURCE_DIR}/build/testBin)

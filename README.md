@@ -8,17 +8,82 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/Becheler/quetzal-CoalTL)
 # A Coalescence Template Libary
 
-Quetzal-CoalTL is a C++ template scientific library for simulating gene genealogies in explicit landscapes.
+Quetzal-CoalTL is a Modern C++ template scientific library for
+simulating gene genealogies in explicit landscapes or phylogenetic networks. The basic
+idea is to propose a library of reusable STL-compatible components rather than unreusable
+publish-and-perish programs.
 
-:egg::egg::egg:  If you're a not a programmer, you may be interested by [Quetzal-EGGS simulators](https://github.com/Becheler/quetzal-EGGS)!
+:egg::egg::egg:  If you're a not a programmer, you may be interested by
+[Quetzal-EGGS simulators](https://github.com/Becheler/quetzal-EGGS)!
+
+# Usage
 
 :seedling: Infering populations ecological features (such as migration or growth patterns) from genetic datasets can be a complex task. In some settings it is actually a mathematically intractable problem, so simulations methods are needed ! Approximate Bayesian Computation (ABC) can be used to update your knowledge about the processes shaping your genetic dataset by simulating the underlying gene trees (coalescents) in an explicit geographic space.
 
 Existing softwares like [SPLATCHE](http://splatche.com/), [simcoal2](http://cmpg.unibe.ch/software/simcoal2/), [egglib](http://mycor.nancy.inra.fr/egglib/index.html), or [msprime](http://msprime.readthedocs.io/en/stable/index.html) are very useful and user-friendly resources that should be used whenever possible to achieve this task.
 
-However if you are working on developing some border case simulation model, or if you are not comfortable with hypothesis of the existing software solutions, you will surely consider to build your own program :grimacing:
+However if you are working on developing some border case simulation model, or
+if you are not comfortable with hypothesis of the existing software solutions,
+you will surely consider to build your own program :grimacing:
 
-:v: Quetzal can help you doing so by offering atomic components (structures, algorithms, concepts) that can be easily reused to build a new program. The template mechanism allow to adapt them efficiently to each particular situation you may encounter.
+And that's why we need something that looks like a standard.
+
+:v: Quetzal can help you doing so by offering atomic components (structures, algorithms, concepts) that can be easily reused to build a new program. The template mechanism allow to adapt them efficiently to each particular situation you may encounter (STL-compatible).
+
+Although the initial purpose of the library was mostly directed towards landscape
+simulations, my intend is to propose general-purpose components for coalescence-simulations:
+- generic containers for representing coalescent trees, forests (sets of trees), phylogenetic networks...
+- generic algorithms (like DFS, BFS) to apply on containers
+- policies to "furnish" the containers and specialize the containers (e.g. Newick format(**s**))
+
+
+# Installation
+
+## With Conan + CMake
+
+### 1 - Get Conan and CMake
+
+[Conan](https://conan.io/) is one of the leading options for cross-platform package
+manager for C/C++ projects. We chose it because it interfaces with CMake in a nice
+way. Conan will handle the dependencies and version conflicts management, and pass
+the paths of the installed dependencies to CMake so it can build the project. It's
+as simple to install as `pip install conan`!
+
+[CMake](https://cmake.org/cmake/help/latest/manual/cmake.1.html) is the C++ build systems first choice for cross-platform development. Technically, CMake is a build system generator but the
+level of abstraction it offers allows us to consider it as a cross-platform build system.
+Users can build, test, and install packages with `cmake` and `ctest` commands.
+
+> :bulb: For devs, if you want more background on how Conan and CMake interact, check:
+> - [the CMake official documentation](https://docs.conan.io/en/1.36/integrations/build_system/cmake.html)
+> - [this post](https://jfreeman.dev/blog/2019/05/22/trying-conan-with-modern-cmake:-dependencies/).
+
+#### Configuring the dependencies :wrench:
+
+Lets start in the project root folder. Assumming you installed gcc-10:
+
+```bash
+$ export CC=`which gcc-10`
+$ export CXX=`which g++-10`
+$ mkdir build && cd build
+$ cmake -D CMAKE_BUILD_TYPE=Release \
+        -D CMAKE_C_COMPILER=${CC} \
+        -D CMAKE_CXX_COMPILER=${CXX} \
+        -D CMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake
+        ..
+```
+
+### 3 - Build, test, install :rocket:
+
+```bash
+# Works on Linux, OSX, and Windows.
+$ ncpus=$(python -c 'import multiprocessing as mp; print(mp.cpu_count())')
+$ cmake --build . --parallel ${ncpus}
+$ ctest --parallel ${ncpus}
+$ cmake --build . --target install
+```
+
+
+# Looking forward
 
 - :crystal_ball: looking forward, we expect to develop the library related to genetic simulation and [C++20 concepts!](https://en.cppreference.com/w/cpp/language/constraints)
 - :email: You are interested? Want to contribute? Want to give some feedback? Don't be shy, [contact me!](https://lsa.umich.edu/eeb/people/postdoctoral-fellows/arnaud-becheler.html)
@@ -26,6 +91,9 @@ However if you are working on developing some border case simulation model, or i
 - :bug: A bug? Oopsie daisy! I'll fix it asap if you [email me](https://lsa.umich.edu/eeb/people/postdoctoral-fellows/arnaud-becheler.html) or open an issue :point_up:
 
 ![Quetzal-CoalTL concepts](https://github.com/Becheler/quetzal-CoalTL/blob/media/quetzal_scheme.png)
+
+# Installation
+
 
 # Website
 

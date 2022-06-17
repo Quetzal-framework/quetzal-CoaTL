@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.23 FATAL_ERROR)
 
-#
-# VERSIONING
-#
+#############################
+#    VERSIONING
+#############################
 
 # Appends the cmake/modules path to MAKE_MODULE_PATH variable.
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
@@ -22,63 +22,104 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules/version.cpp.in
 
 set(version_file "${CMAKE_CURRENT_BINARY_DIR}/version.cpp")
 
-#Add the version_file to the EGGS project build or it won't compile.
-#add_executable(${PROJECT_NAME} ${source_files} ${ui_files} ${version_file})
 
-#
-# PROJECT DESCRIPTION
-#
+###########################
+#    PROJECT DESCRIPTION
+###########################
+
 project(
   "quetzal"
   LANGUAGES CXX
   VERSION ${VERSION_SHORT}
-  DESCRIPTION "A header only c++ library for spatially explicit coalescence simulation."
-  HOMEPAGE_URL "https://github.com/becheler/quetzal")
+  DESCRIPTION "A header only c++ library for coalescence simulation."
+  HOMEPAGE_URL "https://github.com/becheler/quetzal"
+)
 
+#############################
+#    CONFIGURATION
+#############################
+
+# Use modern C++ with support for concepts and mp-units
 set(CMAKE_CXX_STANDARD 20)
+# Prevent use of non-portable compiler extensions
 set(CMAKE_CXX_EXTENSIONS OFF)
+# This makes C++20 a requirement and prevents a "decay" to C++98 when the compiler does not support C++20.
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-message(STATUS "Project will be installed to ${CMAKE_INSTALL_PREFIX}")
+# We default to Release build type if option -D CMAKE_BUILD_TYPE not provided
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
+endif()
 
-include(GNUInstallDirs)
+######################################
+#     CONAN dependencies management
+#
+# Must read: https://blog.conan.io/2021/10/19/New-CMake-Transparent-Integration-Guide.html
+#
+######################################
 
-add_library(${PROJECT_NAME} INTERFACE )
-# add alias so the project can be used with add_subdirectory
-add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+
+# See https://docs.conan.io/en/1.43/integrations/build_system/cmake/cmake_find_package_generator.html#in-a-conanfile-py
+# include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
+
+# Tell find_package() to first search using Config mode before falling back to Module mode (for conan)
+set(CMAKE_FIND_PACKAGE_PREFER_CONFIG TRUE)
+
+find_package(mp-units CONFIG REQUIRED)
 
 # Include Boost as an imported target: 1.73 important for compilation with gcc 10 and C++20
-find_package(Boost 1.73 REQUIRED COMPONENTS unit_test_framework filesystem serialization)
+find_package(Boost 1.79 REQUIRED COMPONENTS unit_test_framework filesystem serialization)
+if(Boost_FOUND)
+  include_directories(${Boost_INCLUDE_DIRS}) # Find Boost headers only:
+ENDIF()
 
-# Include Gdal
+# Global approach Gdal
 find_package(GDAL REQUIRED)
 IF (GDAL_FOUND)
     INCLUDE_DIRECTORIES(${GDAL_INCLUDE_DIR})
 ENDIF()
 
+
+#########################################
+#     Quetzal as a header only library
+#########################################
+
+message(STATUS "Project will be installed to ${CMAKE_INSTALL_PREFIX}")
+
+# Creates an Interface Library: target does not compile sources
+add_library(${PROJECT_NAME} INTERFACE )
+
+# Add an alias so the project can be used with add_subdirectory
+add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+
+# Provides install directory variables as defined by the GNU Coding Standards.
+include(GNUInstallDirs)
+
 # Adding the install interface generator expression makes sure that the include
 # files are installed to the proper location (provided by GNUInstallDirs)
-target_include_directories(${PROJECT_NAME}
+target_include_directories(
+  ${PROJECT_NAME}
   INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+                          )
 
 # If we have compiler requirements for this library, list them here
 target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
 
-#
-# TESTING
-#
+####################################
+#      Testing & Documentation
+####################################
+
 enable_testing()
+
 add_subdirectory(test)
 
-#
-# DOCUMENTATION
-#
 add_subdirectory(docs)
 
-#
+###########################
 # INSTALLATION
-#
+###########################
+
 # 'make install' to the correct locations provided by GNUInstallDirs.
 install(TARGETS ${PROJECT_NAME}
         EXPORT ${PROJECT_NAME}_Targets

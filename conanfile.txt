@@ -6,4 +6,5 @@ mp-units/0.7.0
 
 [generators]
 
-tools.cmake.cmaketoolchain:generator=Ninja
+CMakeToolchain
+CMakeDeps

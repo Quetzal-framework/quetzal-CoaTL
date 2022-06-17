@@ -7,7 +7,6 @@
 * (at your option) any later version.                                  *
 *                                                                      *
 ***************************************************************************/
-#define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE demography_test
 
 #include <boost/test/unit_test.hpp>
@@ -15,17 +14,6 @@ namespace utf = boost::unit_test;
 
 #include <quetzal/demography.h>
 
-//#include <concepts>
-
-template<typename T>
-concept bool MyConcept()
-{
-    return requires(T a, T b)
-    {
-        { a == b } -> bool;
-        { a != b } -> bool;
-   };
-}
 
 struct transition_matrix
 {

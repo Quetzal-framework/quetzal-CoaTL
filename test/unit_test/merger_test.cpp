@@ -7,7 +7,6 @@
 * (at your option) any later version.                                  *
 *                                                                      *
 ***************************************************************************/
-#define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE merger_test
 
 #include <boost/test/unit_test.hpp>
