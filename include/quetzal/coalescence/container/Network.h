@@ -38,7 +38,6 @@ namespace quetzal
 				CellT  m_cell;
 				std::vector<Network<CellT>> m_parents;
 				std::vector<Network<CellT>> m_children;
-
 			public:
 				///
 				/// @brief Default constructor
@@ -48,7 +47,6 @@ namespace quetzal
 				Network(): m_parents(), m_cell(), m_children()
 				{
 				}
-
 				///
 				/// @brief Constructor with data copy
 				///
@@ -59,7 +57,6 @@ namespace quetzal
 				Network(const CellT& cell): m_parents(), m_cell(cell), m_children()
 				{
 				}
-
 				///
 				/// @brief Constructor with data move
 				///
@@ -73,7 +70,6 @@ namespace quetzal
 				m_children()
 				{
 				}
-
 				///
 				/// @brief Returns the number of children
 				///
@@ -81,7 +77,6 @@ namespace quetzal
 				{
 					return m_children.size();
 				}
-
 				///
 				/// @brief Returns the number of parents
 				///
@@ -89,7 +84,6 @@ namespace quetzal
 				{
 					return m_parents.size();
 				}
-
 				///
 				/// @brief Cell accessor
 				///
@@ -172,68 +166,89 @@ namespace quetzal
 					return !m_children.empty();
 				}
 				///
-				/// @brief Applies a function object to each node encountered in a depth first search algorithm
+				/// @brief Applies a function object to the data member of each node
+				///        encountered in a preorder depth first search algorithm
 				///
-				/// @param op unary operation function object that will be applied to the data member///
-				/// of the network. The unary operator takes the cell as argument. The signature
-				/// of the function should be equivalent to the following:
-				/// `void op(const CellT & cell);`.
+				/// @param op unary operation function object that will be applied to the data member
+				///           of the network. The unary operator takes the cell as argument. The signature
+				///           of the function should be equivalent to the following:
+				///           `void op(const CellT & cell);`.
 				///
 				template<typename UnaryOperation>
-				void visit_cells_by_pre_order_DFS(UnaryOperation op) const
+				void visit_cell_by_pre_order_DFS(UnaryOperation op) const
 				{
 					op(this->cell());
-					for(auto const& child : this->m_children){
+					for(auto const& child : this->m_children)
+					{
 						child.visit_cells_by_pre_order_DFS(op);
 					}
 				}
 				///
 				/// @brief Applies a function object to each node encountered in a depth first search algorithm
 				///
-				/// @param op unary operation function object that will be applied to the data member///
-				/// of the network. The unary operator takes the cell as argument. The signature
-				/// of the function should be equivalent to the following:
-				/// `void op(CellT & cell);`.
+				/// @param op unary operation function object that will be applied to every node
+				///        of the network. The unary operator takes the node as argument. The signature
+				///        of the function should be equivalent to the following:
+				///        `void op(Network & node);`.
 				///
 				template<class UnaryOperation>
-				void visit_subnetworks_by_pre_order_DFS(UnaryOperation op) {
+				void visit_by_pre_order_DFS(UnaryOperation op)
+				{
 					op(*this);
-					for(auto & child : this->m_children){
-						child.visit_subnetworks_by_pre_order_DFS(op);
+					for(auto & child : this->m_children)
+					{
+						child.visit_by_pre_order_DFS(op);
 					}
 				}
-
+				///
+				/// @brief Applies a function object to each node encountered in a depth first search algorithm
+				///
+				/// @param preorder unary operation function object that will be applied to every node
+				///        of the network. The unary operator takes the node as argument. The signature
+				///        of the function should be equivalent to the following:
+				///        `void op(Network & node);`.
+				///
+				/// @param inorder unary operation function object that will be applied to every node
+				///        of the network. The unary operator takes the node as argument. The signature
+				///        of the function should be equivalent to the following:
+				///        `void op(Network & node);`.
+				///
+				/// @param postorder unary operation function object that will be applied to every node
+				///        of the network. The unary operator takes the node as argument. The signature
+				///        of the function should be equivalent to the following:
+				///        `void op(Network & node);`.
+				///
 				template<typename Op1, typename Op2, typename Op3>
-				void visit_subnetworks_by_generic_DFS(Op1 preorder, Op2 inorder, Op3 postorder){
+				void visit_by_generic_DFS(Op1 preorder, Op2 inorder, Op3 postorder)
+				{
 					preorder(*this);
 					for(auto& child : this->m_children)
 					{
-						child.visit_subnetworks_by_generic_DFS(preorder, inorder, postorder);
+						child.visit_by_generic_DFS(preorder, inorder, postorder);
 						inorder(*this);
 					}
 					postorder(*this);
 				}
-
-
 				///
-				/// @brief Applies a function object to each leave encountered in a depth first search algorithm
+				/// @brief Applies a function object to the data member of each leave encountered along a depth first search algorithm.
+				///
 				/// @param op unary operation function object that will be applied to the data member
-				/// of the network. The unary operator takes the cell as argument. The signature
-				/// of the function should be equivalent to the following:
-				/// `void op(const CellT & cell);`.
+				///        of the network. The unary operator takes the cell as argument. The signature
+				///        of the function should be equivalent to the following:
+				///        `void op(const CellT & cell);`.
 				///
 				template<typename UnaryOperation>
 				void visit_leaves_cells_by_DFS(UnaryOperation op) const
 				{
 					if(has_children()){
-						for(auto const& child : this->m_children){
+						for(auto const& child : this->m_children)
+						{
 							child.visit_leaves_cells_by_DFS(op);
 						}
 					}else{
 						op(this->cell());
 					}
 				}
-
 			}; // end class Network
 		} // end namespace container
 	} // end namespace coalescence

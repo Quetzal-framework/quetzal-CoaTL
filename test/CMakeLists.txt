@@ -24,6 +24,7 @@ foreach(testSrc ${TEST_SRCS})
                               Boost::unit_test_framework
                               GDAL::GDAL
                               mp-units::mp-units
+                              mp-units::core-io mp-units::si
                               )
 
         #I like to move testing binaries into a testBin directory
@@ -78,7 +79,7 @@ target_link_libraries(model_3 LINK_PUBLIC
                               Boost::unit_test_framework
                               Boost::serialization
                               GDAL::GDAL
-                              ${GDAL_LIBRARY} 
+                              ${GDAL_LIBRARY}
                             )
 
 target_include_directories(model_3

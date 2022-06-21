@@ -21,67 +21,81 @@ namespace quetzal
 {
   namespace coalescence
   {
-    /*
-    * @brief Policy class for coalescing gene copies into a Newick formula.
-    *
-    * Policy class for coalescing gene copies into a Newick formula, computing
-    * distances (in generations) to parent nodes.
-    *
-    * @tparam Space coordinate type
-    * @tparam Time time type
-    *
-    * @ingroup API
-    */
+    ///
+    /// @brief Policy class for coalescing gene copies into a Newick formula.
+    ///
+    /// Policy class for coalescing gene copies into a Newick formula, computing
+    /// distances (in generations) to parent nodes.
+    ///
+    /// @tparam Space coordinate type
+    ///
+    /// @tparam Time time type
+    ///
+    ///
     template<typename Space, typename Time>
     class newick_with_distance_to_parent
     {
     private:
+
       unsigned int m_ancestral_Wright_Fisher_N;
+
     public:
-      //! Geographic coordinate type
+      ///
+      /// Geographic coordinate type
+      ///
       using coord_type = Space;
-      //! Time type
+      ///
+      /// Time type
+      ///
       using time_type = Time;
-      //! Inner class defining what data type the tree stores.
+      ///
+      /// Inner class defining what data type the tree stores.
+      ///
       class cell_type
       {
       private:
         time_type m_t;
         unsigned int m_distance_to_parent = 0;
       public:
-        /*!
-           \brief Constructor
-           \param t the time at which the node appears (sampling time)
-        */
+        ///
+        /// @brief Constructor
+        ///
+        /// @param t the time at which the node appears (sampling time)
+        ///
         cell_type(time_type t): m_t(t) {}
-        /*!
-           \brief Default constructor.
-        */
+        ///
+        /// @brief Default constructor.
+        ///
         cell_type() = default;
-        /*!
-           \brief Get time of node creation
-        */
+        ///
+        /// @brief Get time of node creation
+        ///
         time_type time() const {return m_t;}
-        /*!
-           \brief Set time of node creation
-        */
+        ///
+        /// @brief Set time of node creation
+        ///
         void time(time_type const& t) { m_t = t;}
-        /*!
-           \brief Get distance to parent node, in number of generations.
-        */
+        ///
+        /// @brief Get distance to parent node, in number of generations.
+        ///
         unsigned int distance_to_parent() const {return m_distance_to_parent;}
-        /*!
-        \brief Set distance to parent node, in number of generations.
-        */
+        ///
+        /// @brief Set distance to parent node, in number of generations.
+        ///
         void distance_to_parent(unsigned int l) {m_distance_to_parent = l;}
-      };  // inner class cell_type
-      //! The type used to represent a genealogy
+      };  // end inner class cell_type
+      ///
+      ///
+      /// The type used to represent a genealogy
+      ///
       using tree_type = quetzal::coalescence::container::Tree<cell_type>;
-      //! The type used to represent a spatial forest of genealogies
+      ///
+      /// The type used to represent a spatial forest of genealogies
+      ///
       using forest_type = quetzal::coalescence::container::Forest<coord_type, tree_type>;
-      /*
-       * @brief Treatment to operate on a DFS on the tree to compute branches length.
-       */
+      ///
+      /// @brief Treatment to operate on a DFS on the tree to compute branches length.
+      ///
       struct treatment
       {
         auto operator()(tree_type & node) const
@@ -95,60 +109,76 @@ namespace quetzal
             node.cell().distance_to_parent(0);
           }
         }
-      }; // struct treatment
-      /*!
-         \brief Make a forest respecting the policy from a geographic sample.
-         \param sample_counts A map giving for each deme the number of sampled gene copies
-         \param sampling_time At what time the gene copies are sampled.
-         \return A forest compliant with the policy chosen.
-      */
-      static auto make_forest(std::map<coord_type, unsigned int> const& sample_counts, time_type const& sampling_time){
+      }; // end struct treatment
+      ///
+      /// @brief Make a forest respecting the policy from a geographic sample.
+      ///
+      /// @param sample_counts A map giving for each deme the number of sampled gene copies
+      ///
+      /// @param sampling_time At what time the gene copies are sampled.
+      ///
+      /// @return A forest compliant with the policy chosen.
+      ///
+      static auto make_forest(std::map<coord_type, unsigned int> const& sample_counts, time_type const& sampling_time)
+      {
         forest_type forest;
-        for(auto const& it: sample_counts){
+        for(auto const& it: sample_counts)
+        {
           forest.insert(it.first, std::vector<tree_type>(it.second, tree_type(sampling_time)));
         }
         return forest;
       }
-      /*
-      * @brief Set the size of the putative ancestral Wright-Fisher population preceding
-      *        the spatial history.
-      *
-      * @param value The Wright-Fisher population size
-      */
-      void ancestral_Wright_Fisher_N(unsigned int value){
+      ///
+      /// @brief Set the size of the putative ancestral Wright-Fisher population preceding
+      ///        the spatial history.
+      ///
+      /// @param value The Wright-Fisher population size
+      ///
+      void ancestral_Wright_Fisher_N(unsigned int value)
+      {
         m_ancestral_Wright_Fisher_N = value;
       }
-      /*
-      * @brief Get the size of the putative ancestral Wright-Fisher population preceding
-      *        the spatial history.
-      *
-      * @return The Wright-Fisher population size
-      */
-      unsigned int ancestral_Wright_Fisher_N() const {
+      ///
+      /// @brief Get the size of the putative ancestral Wright-Fisher population preceding
+      ///        the spatial history.
+      ///
+      /// @return The Wright-Fisher population size
+      ///
+      unsigned int ancestral_Wright_Fisher_N() const
+      {
         return m_ancestral_Wright_Fisher_N;
       }
-      /*!
-         \brief Get the functor interface required to branch a parent node to a child node.
-         \return A functor to forward to quetzal coalescence algorithms.
-      */
-      static auto branch(){
+      ///
+      /// @brief Get the functor interface required to branch a parent node to a child node.
+      ///
+      /// @return A functor to forward to quetzal coalescence algorithms.
+      ///
+      static auto branch()
+      {
         return []( auto& parent , auto const& child ){ return parent.add_child(child);};
       }
-      /*!
-         \brief Get the functor interface required to initialize a node.
-         \return A functor to forward to quetzal coalescence algorithms.
-      */
-      static auto init(){
+      ///
+      /// @brief Get the functor interface required to initialize a node.
+      ///
+      /// @return A functor to forward to quetzal coalescence algorithms.
+      ///
+      static auto init()
+      {
         return [](coord_type, time_type const& t){return tree_type(t);};
       }
-      /*!
-         \brief Coalesce the given forest into a discrete time Wright-Fisher model.
-         \tparam Generator The type of random generator.
-         \param forest The forest to coalesce.
-         \param first_time The time at which coalescence begins
-         \param gen The random generator
-         \return A single tree with root being the MRCA.
-      */
+      ///
+      /// @brief Coalesce the given forest into a discrete time Wright-Fisher model.
+      ///
+      /// @tparam Generator The type of random generator.
+      ///
+      /// @param forest The forest to coalesce.
+      ///
+      /// @param first_time The time at which coalescence begins
+      ///
+      /// @param gen The random generator
+      ///
+      /// @return A single tree with root being the MRCA.
+      ///
       template<typename Generator>
       tree_type find_mrca(forest_type const& forest, time_type const& first_time, Generator& gen) const
       {
@@ -164,11 +194,13 @@ namespace quetzal
         tree.visit_subtrees_by_pre_order_DFS(computer);
         return tree;
       }
-      /*!
-         \brief Visit the whole tree and builds its Newick formula.
-         \param tree The tree to visit.
-         \return The newick formula of the tree.
-      */
+      ///
+      /// @brief Visit the whole tree and builds its Newick formula.
+      ///
+      /// @param tree The tree to visit.
+      ///
+      /// @return The newick formula of the tree.
+      ///
       static std::string treat(tree_type & tree)
       {
         std::string newick;
