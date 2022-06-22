@@ -13,6 +13,7 @@
 
 #include<concepts>
 #include<regex>
+#include<string>
 
 namespace quetzal
 {
@@ -52,9 +53,9 @@ namespace quetzal
     ///
     struct identity
     {
-      static std::string edit(std::string&& s)
+      static std::string edit(const std::string& s)
       {
-        return std::move(s);
+        return s;
       }
     };
     ///
@@ -151,7 +152,7 @@ namespace quetzal
         // do nothing
         static inline std::string treat_comments(std::string & s)
         {
-
+          return s;
         }
       };
       ///
@@ -175,7 +176,11 @@ namespace quetzal
         // Branch length for root node is not explicit.
         static inline std::string root_branch_length(){return "";}
         // Remove comments that are nested, keep comments of depth 1
-        static inline std::string treat_comments(std::string & s){}
+        static inline std::string treat_comments(std::string & s)
+        {
+          // Allow comments of depth 1, but does not allow nested comments.
+          return remove_comments_of_depth<2>::edit(s);
+        }
       };
       ///
       /// @brief Concept for label name
@@ -209,13 +214,15 @@ namespace quetzal
         ///
         mutable formula_type _formula;
         ///
-        /// @brief Functor inspecting if the node being visited has children.
-        ///
-        P1 _has_children;
-        ///
         /// @brief Functor inspecting if the node being visited has a parent.
         ///
-        P2 _has_parent;
+        P1 _has_parent;
+
+        ///
+        /// @brief Functor inspecting if the node being visited has children.
+        ///
+        P2 _has_children;
+
         ///
         /// @brief Retrieve the name of the node being visited.
         ///
@@ -225,6 +232,7 @@ namespace quetzal
         /// @remark Return type must be convertible to std::string
         ///
         F1 _label;
+
         ///
         /// @brief Retrieve the branch length immediately above the node being visited.
         ///
@@ -235,6 +243,7 @@ namespace quetzal
         /// @remark Return type must be convertible to std::string
         ///
         F2 _branch_length;
+
         ///
         /// @brief Operation called in the general DFS algorithm to open a parenthesis if node has children to be visited.
         ///
@@ -247,6 +256,7 @@ namespace quetzal
             _formula += "(";
           }
         }
+
         ///
         /// @brief Operation called in the general DFS algorithm to add a comma between visited nodes.
         ///
@@ -254,6 +264,7 @@ namespace quetzal
         {
           _formula += ",";
         }
+        
         ///
         /// @brief Operation called in the general DFS algorithm to open a parenthesis if node has children to be visited.
         ///
@@ -279,11 +290,11 @@ namespace quetzal
         ///
         /// @brief Constructor
         ///
-        Formatter(P1 has_parent, P2 has_children, F1 label, F2 branch_length):
-        _has_parent(has_parent),
-        _has_children(has_children),
-        _label(label),
-        _branch_length(branch_length)
+        Formatter(P1 &&has_parent, P2 &&has_children, F1 &&label, F2 &&branch_length):
+        _has_parent(std::forward<P1>(has_parent)),
+        _has_children(std::forward<P2>(has_children)),
+        _label(std::forward<F1>(label)),
+        _branch_length(std::forward<F2>(branch_length))
         {
         }
         ///
@@ -300,7 +311,7 @@ namespace quetzal
         formula_type format(node_type & root) const
         {
           // that or expose orders
-          root.visit_by_generic_DFS(preorder, inorder, postorder);
+          // root.visit_by_generic_DFS(preorder, inorder, postorder);
 
           _formula.push_back(this->_end);
 
@@ -319,9 +330,13 @@ namespace quetzal
       }; // end structrure Newick
 
       template<class T, std::predicate<T> P1 , std::predicate<T> P2, Formattable<T> F1, Formattable<T> F2 >
-      auto make_formatter(P1 has_parent, P2 has_children, F1 label, F2 branch_length)
+      auto make_formatter(P1 &&has_parent, P2 &&has_children, F1 &&label, F2 &&branch_length)
       {
-        return Formatter<T, P1, P2, F1, F2>(has_parent, has_children, label, branch_length);
+        return Formatter<T, P1, P2, F1, F2>(
+          std::forward<P1>(has_parent),
+          std::forward<P2>(has_children),
+          std::forward<F1>(label),
+          std::forward<F2>(branch_length));
       }
     } // end namespace newick
   } // end namespace format

@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE(newick_filters)
 
   std::string s1 = "(A:5,B:5)r;";
   std::string s2 = "(A:5,B[Comment]:5)r;";
-  std::string s3 = "(A:5,B[Nested[Comment]]:5)r;";
+  std::string s3 = "(A:5,B[Comment[Nested]]:5)r;";
 
   // Testing policies
   BOOST_CHECK(fmt::is_balanced<fmt::parenthesis>::check(s2));
@@ -61,22 +61,20 @@ BOOST_AUTO_TEST_CASE(newick_formatting)
   root.data = id;
 
   // Interface Quetzal formatter with non-quetzal tree types
-  constexpr std::predicate<Node> auto has_children = [](const Node& n){return n.left != nullptr && n.right != nullptr;};
-  constexpr std::predicate<Node> auto has_parent = [](const Node& n){return n.parent != nullptr;};
-
+  std::predicate<Node> auto has_parent = [](const Node& n){return n.parent != nullptr;};
+  std::predicate<Node> auto has_children = [](const Node& n){return n.left != nullptr && n.right != nullptr;};
   newick::Formattable<Node> auto label = [&id](const Node& n ){return std::to_string(++id) + "[my[comment]]";};
-  
   newick::Formattable<Node> auto branch_length = [&gen,&dis](const Node& n){return std::to_string(dis(gen));};
 
-  auto formatter = newick::make_formatter<Node>(has_children, has_parent, label, branch_length);
+  auto formatter = newick::make_formatter<Node>(has_parent, has_children, label, branch_length);
 
   // Enables the use of nested comments
   auto s1 = formatter.format<newick::PAUP>(root);
 
-  // Writes a root node branch length (with a value of 0.0).
+  // Writes a root node branch length (with a value of 0.0) & no nested comments
   auto s2 = formatter.format<newick::TreeAlign>(root);
 
-  // Requires that an unrooted tree begin with a trifurcation
+  // Requires that an unrooted tree begin with a trifurcation & no nested comments
   auto s3 = formatter.format<newick::PHYLIP>(root);
 }
 

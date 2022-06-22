@@ -224,107 +224,110 @@ namespace quetzal
 			template<typename CellT>
 			Tree<CellT>::Tree() :
 			m_parent(nullptr), m_cell(), m_children()
-			{}
+			{
+			}
 
-				template<typename CellT>
-				Tree<CellT>::Tree(const CellT& cell) :
-				m_parent(nullptr), m_cell(cell), m_children()
-				{}
+			template<typename CellT>
+			Tree<CellT>::Tree(const CellT& cell) :
+			m_parent(nullptr), m_cell(cell), m_children()
+			{
+			}
 
-					template<typename CellT>
-					Tree<CellT>::Tree(CellT&& cell) noexcept :
-					m_parent(nullptr), m_cell(std::move(cell)), m_children()
-					{}
-
-
-						template<class CellT>
-						Tree<CellT>::Tree(const Tree<CellT>& other) :
-						m_parent(nullptr), m_cell(other.m_cell), m_children(other.m_children)
-						{
-							for(Tree<CellT>& child : m_children)
-							child.m_parent = this;
-						}
+			template<typename CellT>
+			Tree<CellT>::Tree(CellT&& cell) noexcept :
+			m_parent(nullptr), m_cell(std::move(cell)), m_children()
+			{
+			}
 
 
-						template<class CellT>
-						Tree<CellT>::Tree(Tree<CellT>&& other) noexcept :
-						m_parent(nullptr), m_cell(std::move(other.m_cell)), m_children(std::move(other.m_children))
-						{
-							for(Tree<CellT>& child : m_children)
-							child.m_parent = this;
-						}
+			template<class CellT>
+			Tree<CellT>::Tree(const Tree<CellT>& other) :
+			m_parent(nullptr), m_cell(other.m_cell), m_children(other.m_children)
+			{
+				for(Tree<CellT>& child : m_children)
+				child.m_parent = this;
+			}
 
-						template<class CellT>
-						Tree<CellT>::Tree(CellT&& cell, std::vector<Tree<CellT>>&& children) noexcept :
-						m_parent(nullptr), m_cell(std::move(cell)), m_children(std::move(children))
-						{
-							for(Tree<CellT>& child : m_children)
-							child.m_parent = this;
-						}
 
-						template<class CellT>
-						Tree<CellT>& Tree<CellT>::operator=(const Tree<CellT>& other)
-						{
-							Tree<CellT> otherCopy(other);
-							*this = std::move(otherCopy);
-							return *this;
-						}
+			template<class CellT>
+			Tree<CellT>::Tree(Tree<CellT>&& other) noexcept :
+			m_parent(nullptr), m_cell(std::move(other.m_cell)), m_children(std::move(other.m_children))
+			{
+				for(Tree<CellT>& child : m_children)
+				child.m_parent = this;
+			}
 
-						template<class CellT>
-						Tree<CellT>& Tree<CellT>::operator=(Tree<CellT>&& other) noexcept
-						{
-							m_cell     = std::move(other.m_cell);
-							m_children = std::move(other.m_children);
-							for(Tree<CellT>& child : m_children)
-							child.m_parent = this;
-							return *this;
-						}
+			template<class CellT>
+			Tree<CellT>::Tree(CellT&& cell, std::vector<Tree<CellT>>&& children) noexcept :
+			m_parent(nullptr), m_cell(std::move(cell)), m_children(std::move(children))
+			{
+				for(Tree<CellT>& child : m_children)
+				child.m_parent = this;
+			}
 
-						template<class CellT>
-						const CellT& Tree<CellT>::cell() const
-						{
-							return m_cell;
-						}
+			template<class CellT>
+			Tree<CellT>& Tree<CellT>::operator=(const Tree<CellT>& other)
+			{
+				Tree<CellT> otherCopy(other);
+				*this = std::move(otherCopy);
+				return *this;
+			}
 
-						template<class CellT>
-						CellT& Tree<CellT>::cell()
-						{
-							return m_cell;
-						}
+			template<class CellT>
+			Tree<CellT>& Tree<CellT>::operator=(Tree<CellT>&& other) noexcept
+			{
+				m_cell     = std::move(other.m_cell);
+				m_children = std::move(other.m_children);
+				for(Tree<CellT>& child : m_children)
+				child.m_parent = this;
+				return *this;
+			}
 
-						template<class CellT>
-						Tree<CellT>& Tree<CellT>::add_child(const Tree<CellT>& subtree)
-						{
-							Tree<CellT> otherCopy(subtree);
-							otherCopy.m_parent = this;
-							m_children.push_back(std::move(otherCopy));
-							return *this;
-						}
+			template<class CellT>
+			const CellT& Tree<CellT>::cell() const
+			{
+				return m_cell;
+			}
 
-						template<class CellT>
-						Tree<CellT>& Tree<CellT>::add_child(Tree<CellT>&& subtree) noexcept
-						{
-							subtree.m_parent = this;
-							m_children.push_back(std::move(subtree));
-							return *this;
-						}
+			template<class CellT>
+			CellT& Tree<CellT>::cell()
+			{
+				return m_cell;
+			}
 
-						template<class CellT>
-						Tree<CellT>& Tree<CellT>::add_child(CellT&& cell) noexcept
-						{
-							Tree<CellT> subtree(std::move(cell));
-							subtree.m_parent = this;
-							m_children.push_back(std::move(subtree));
-							return m_children.back();
-						}
+			template<class CellT>
+			Tree<CellT>& Tree<CellT>::add_child(const Tree<CellT>& subtree)
+			{
+				Tree<CellT> otherCopy(subtree);
+				otherCopy.m_parent = this;
+				m_children.push_back(std::move(otherCopy));
+				return *this;
+			}
 
-						template<class CellT>
-						bool Tree<CellT>::has_children() const
-						{
-							return !m_children.empty();
-						}
-					} // end namespace container
-				} // end namespace coalescence
-			} // end namespace quetzal
+			template<class CellT>
+			Tree<CellT>& Tree<CellT>::add_child(Tree<CellT>&& subtree) noexcept
+			{
+				subtree.m_parent = this;
+				m_children.push_back(std::move(subtree));
+				return *this;
+			}
 
-			#endif
+			template<class CellT>
+			Tree<CellT>& Tree<CellT>::add_child(CellT&& cell) noexcept
+			{
+				Tree<CellT> subtree(std::move(cell));
+				subtree.m_parent = this;
+				m_children.push_back(std::move(subtree));
+				return m_children.back();
+			}
+
+			template<class CellT>
+			bool Tree<CellT>::has_children() const
+			{
+				return !m_children.empty();
+			}
+		} // end namespace container
+	} // end namespace coalescence
+} // end namespace quetzal
+
+#endif
