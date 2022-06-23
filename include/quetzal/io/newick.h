@@ -137,7 +137,9 @@ namespace quetzal
           {
             if (ch == '[' ) counter++;
             if (ch == ']' ) counter--;
-            if (!(ch == '[' || ch == ']') && counter == 1) buffer.append(std::string(1,ch));
+            if ( ch == '[' && counter == 2) continue;  // do nothing, that was the opening
+            if ( ch == ']' && counter == 1) continue; // do nothing, that was the closing
+            if ( !( counter >=2 || (counter == 1 && ch == ']') ) ) buffer.append(std::string(1, ch));
           }
           return buffer;
         }
