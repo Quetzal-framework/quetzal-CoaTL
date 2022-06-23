@@ -93,7 +93,7 @@ namespace quetzal
       ///
       /// @brief Node names can be any character except blanks, colons, semicolons, parentheses, and square brackets.
       ///
-      static inline constexpr std::vector<std::string> forbidden_labels = {" "s, ","s, ";"s, "("s, ")"s, "()"s, ")("s, "["s, "]"s, "[]"s, "]["s};
+      static inline std::vector<std::string> forbidden_labels = {" "s, ","s, ";"s, "("s, ")"s, "["s, "]"s};
       ///
       /// @brief Underscore characters in unquoted labels are converted to blanks.
       ///
@@ -261,9 +261,9 @@ namespace quetzal
         ///
         bool has_forbidden_characters(const std::string &s) const
         {
-          constexpr std::string forbidden;
-          for (const std::string &piece : forbidden_labels ) forbidden += piece;
-          constexpr bool is_forbidden = std::regex_search(s, std::regex("^[^"s + forbidden + "]"s));
+          std::string joined;
+          for (const std::string &piece : forbidden_labels ) joined += piece;
+          bool is_forbidden = std::regex_search(s, std::regex("^[^"s + joined + "]"s));
           return is_forbidden;
         }
 
