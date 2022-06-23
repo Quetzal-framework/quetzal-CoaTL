@@ -95,8 +95,9 @@ BOOST_AUTO_TEST_CASE(newick_formatting)
   newick::Formattable<Node> auto no_label = [](const Node& n ){return "";};
   newick::Formattable<Node> auto no_branch_length = [](const Node& n){return "";};
 
-  // Calling the formatter
+  // Create a formatter
   auto formatter = newick::make_formatter(has_parent, has_children, no_label, no_branch_length);
+  // Expose its interface to your data-specific DFS algorithm
   a.depth_first_search(formatter.pre_order(), formatter.in_order(), formatter.post_order());
 
   // Retrieving the string
@@ -107,15 +108,17 @@ BOOST_AUTO_TEST_CASE(newick_formatting)
 
   // More sophisticated label formatting
   newick::Formattable<Node> auto label = [](const Node& n ){return std::string(1, n.data) + "[my[comment]]";};
+  // Get a seed for the random number engine
+  std::random_device rd;
+  // Standard mersenne_twister_engine seeded with rd()
+  std::mt19937 gen(rd());
+  // Arbitrary banch length distribution
+  std::uniform_real_distribution<> dis(0.0, 2.0);
   // Random data generation
-  std::random_device rd;  // Used to obtain a seed for the random number engine
-  std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
-  std::uniform_real_distribution<> dis(0.0, 2.0); // Arbitrary banch length distribution
   newick::Formattable<Node> auto branch_length = [&gen,&dis](const Node& n){return std::to_string(dis(gen));};
-  // Calling the formatter
+  // Call the formatter
   auto formatter_2 = newick::make_formatter(has_parent, has_children, label, branch_length);
   a.depth_first_search(formatter.pre_order(), formatter.in_order(), formatter.post_order());
-  // Retrieving the string
   std::cout << formatter_2.get() << std::endl;
 
   // TODO
