@@ -96,18 +96,16 @@ BOOST_AUTO_TEST_CASE(newick_formatting)
   newick::Formattable<Node> auto no_branch_length = [](const Node& n){return "";};
 
   // Create a formatter
-  auto formatter = newick::make_formatter(has_parent, has_children, no_label, no_branch_length);
+  auto formatter_1 = newick::make_formatter(has_parent, has_children, no_label, no_branch_length);
   // Expose its interface to your data-specific DFS algorithm
-  a.depth_first_search(formatter.pre_order(), formatter.in_order(), formatter.post_order());
+  a.depth_first_search(formatter_1.pre_order(), formatter_1.in_order(), formatter_1.post_order());
 
   // Retrieving the string
-  std::string s = formatter.get();
+  std::string s = formatter_1.get();
   BOOST_CHECK_EQUAL(s , "(,(,));");
 
-  // Non-trivial formatting
+  // Non-trivial data acquisition and formatting
 
-  // More sophisticated label formatting
-  newick::Formattable<Node> auto label = [](const Node& n ){return std::string(1, n.data) + "[my[comment]]";};
   // Get a seed for the random number engine
   std::random_device rd;
   // Standard mersenne_twister_engine seeded with rd()
@@ -116,21 +114,25 @@ BOOST_AUTO_TEST_CASE(newick_formatting)
   std::uniform_real_distribution<> dis(0.0, 2.0);
   // Random data generation
   newick::Formattable<Node> auto branch_length = [&gen,&dis](const Node& n){return std::to_string(dis(gen));};
+  // More sophisticated label formatting
+  newick::Formattable<Node> auto label = [](const Node& n ){return std::string(1, n.data) + "[my[comment]]";};
   // Call the formatter
   auto formatter_2 = newick::make_formatter(has_parent, has_children, label, branch_length);
-  a.depth_first_search(formatter.pre_order(), formatter.in_order(), formatter.post_order());
+  a.depth_first_search(formatter_2.pre_order(), formatter_2.in_order(), formatter_2.post_order());
   std::cout << formatter_2.get() << std::endl;
 
-  // TODO
-  // using quetzal::format::newick::PHYLIP;
-  // // Enables the use of nested comments
-  // auto s1 = formatter.format<newick::PAUP>(root);
-  //
-  // // Writes a root node branch length (with a value of 0.0) & no nested comments
-  // auto s2 = formatter.format<newick::TreeAlign>(root);
-  //
-  // // Requires that an unrooted tree begin with a trifurcation & no nested comments
-  // auto s3 = formatter.format<newick::PHYLIP>(root);
+  // Extra customizations (policy-based design)
+
+  // Writes a root node branch length with a value of 0.0 and disable nested comments
+  // using flavor = quetzal::format::newick::TreeAlign;
+  // Enables the use of nested comments
+  // using flavor = quetzal::format::newick::PAUP;
+  // TODO: Requires that an unrooted tree begin with a trifurcation & no nested comments
+  // TODO: using flavor = quetzal::format::newick::PHYLIP;
+
+  // auto formatter_3 = newick::make_formatter<flavor>(has_parent, has_children, label, branch_length);
+  // a.depth_first_search(formatter_3.pre_order(), formatter_3.in_order(), formatter_3.post_order());
+  // std::cout << formatter_3.get() << std::endl;
 }
 
 BOOST_AUTO_TEST_SUITE_END()

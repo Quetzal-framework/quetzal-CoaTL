@@ -14,6 +14,8 @@
 #include<concepts>
 #include<regex>
 #include<string>
+#include<stdexcept>
+#include<algorithm>
 
 namespace quetzal
 {
@@ -87,10 +89,11 @@ namespace quetzal
 
     namespace newick
     {
+      using namespace std::string_literals;
       ///
       /// @brief Node names can be any character except blanks, colons, semicolons, parentheses, and square brackets.
       ///
-      // static inline constexpr std::vector<std::string> forbidden_labels = {" ",",",";","(",")","()",")(","[","]","[]","]["};
+      static inline constexpr std::vector<std::string> forbidden_labels = {" "s, ","s, ";"s, "("s, ")"s, "()"s, ")("s, "["s, "]"s, "[]"s, "]["s};
       ///
       /// @brief Underscore characters in unquoted labels are converted to blanks.
       ///
@@ -194,8 +197,8 @@ namespace quetzal
       ///
       /// @brief Generic algorithm to generate the Newick formula of a tree.
       ///
-      template<class T, std::predicate<T> P1 , std::predicate<T> P2, Formattable<T> F1, Formattable<T> F2>
-      class Formatter : public PHYLIP
+      template<class T, std::predicate<T> P1 , std::predicate<T> P2, Formattable<T> F1, Formattable<T> F2, class Policy=PAUP>
+      class Formatter : public Policy
       {
       public:
         ///
@@ -209,7 +212,7 @@ namespace quetzal
         ///
         /// @brief Type of formula being generated
         ///
-        using policy_type = PHYLIP;
+        using policy_type = Policy;
 
       private:
         ///
@@ -256,6 +259,19 @@ namespace quetzal
         ///
         /// @param node the node currently visited
         ///
+        bool has_forbidden_characters(const std::string &s) const
+        {
+          constexpr std::string forbidden;
+          for (const std::string &piece : forbidden_labels ) forbidden += piece;
+          constexpr bool is_forbidden = std::regex_search(s, std::regex("^[^"s + forbidden + "]"s));
+          return is_forbidden;
+        }
+
+        ///
+        /// @brief Operation called in the general DFS algorithm to open a parenthesis if node has children to be visited.
+        ///
+        /// @param node the node currently visited
+        ///
         void _pre_order(const node_type & node) const
         {
           if(std::invoke(_has_children, node))
@@ -288,7 +304,12 @@ namespace quetzal
 
           if(_has_parent(node))
           {
-            _formula += std::invoke(_label, node);
+            auto label = std::invoke(_label, node);
+            if( has_forbidden_characters(remove_comments_of_depth<1>::edit(label))) {
+              throw std::invalid_argument("Node label stripped from its comments contains characters that are forbidden in Newick format:" + label);
+            } else {
+              _formula += label;
+            }
             auto branch = std::invoke(_branch_length, node);
             if( branch != "")
             {
@@ -376,28 +397,42 @@ namespace quetzal
       template<typename T> struct single_function_argument;
       template<typename Ret, typename Arg> struct single_function_argument<std::function<Ret(Arg)>> { using type = Arg; };
 
+      // type alias for passed "P1"'s function argument type
+      template<typename P1>
+      using single_function_argument_t = typename single_function_argument<decltype(std::function{ std::declval<P1>() }) >::type;
+
       // Deduction guide: type T is deduced from P1
-      template<class P1, class P2, class F1, class F2>
-      Formatter(P1 &&, P2 &&, F1 &&, F2 &&) -> Formatter
-      <
-        typename single_function_argument<decltype( std::function{ std::declval<P1>() } )>::type,
-        P1,
-        P2,
-        F1,
-        F2
-      >;
+      template<class P1, class P2, class F1, class F2, class Policy=PAUP>
+      Formatter(P1 &&, P2 &&, F1 &&, F2 &&) -> Formatter <single_function_argument_t<P1>, P1, P2, F1, F2, Policy>;
 
       ///
       /// @brief to use for template `lambda [](const auto& s) {}` e.g. `make_formatter<Node>``
       ///
-      template<class P1, class P2, class F1, class F2>
+      template<class P1, class P2, class F1, class F2, class Policy=PAUP>
       auto make_formatter(P1 &&has_parent, P2 &&has_children, F1 &&label, F2 && branch_length)
       {
-          // Use Class template argument deduction (CTAD)
-          return Formatter(std::forward<P1>(has_parent),
-                                   std::forward<P2>(has_children),
-                                   std::forward<F1>(label),
-                                   std::forward<F2>(branch_length));
+        // Use Class template argument deduction (CTAD)
+        return Formatter<single_function_argument_t<P1>, P1, P2, F1, F2, Policy>(
+          std::forward<P1>(has_parent),
+          std::forward<P2>(has_children),
+          std::forward<F1>(label),
+          std::forward<F2>(branch_length)
+        );
+      }
+
+      ///
+      /// @brief Can still specify type manually if you want, to use for template `lambda [](const auto& s) {}` e.g. `make_formatter<Node>``
+      ///
+      template<class T, std::predicate<T> P1, std::predicate<T> P2, Formattable<T> F1, Formattable<T> F2, class Policy>
+      auto make_formatter(P1 &&has_parent, P2 &&has_children, F1 &&label, F2 && branch_length)
+      {
+        // Use Class template argument deduction (CTAD)
+        return Formatter<T, P1, P2, F1, F2, Policy>(
+          std::forward<P1>(has_parent),
+          std::forward<P2>(has_children),
+          std::forward<F1>(label),
+          std::forward<F2>(branch_length)
+        );
       }
     } // end namespace newick
   } // end namespace format
