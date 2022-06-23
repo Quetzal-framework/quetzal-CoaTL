@@ -394,12 +394,15 @@ namespace quetzal
       }; // end structrure Newick
 
       // Replacement for `std::function<T(U)>::argument_type`
-      template<typename T> struct single_function_argument;
-      template<typename Ret, typename Arg> struct single_function_argument<std::function<Ret(Arg)>> { using type = Arg; };
-
-      // type alias for passed "P1"'s function argument type
       template<typename P1>
-      using single_function_argument_t = typename single_function_argument<decltype(std::function{ std::declval<P1>() }) >::type;
+      struct single_function_argument_impl
+      {
+        using type = typename single_function_argument<decltype(std::function{ std::declval<P1>() }) >::type;
+      };
+
+      // Compiler bug, we need that deduction helper (and gcc-12)
+      template<typename P1>
+      using single_function_argument_t = typename single_function_argument_impl<P1>::type;
 
       // Deduction guide: type T is deduced from P1
       template<class P1, class P2, class F1, class F2, class Policy=PAUP>
