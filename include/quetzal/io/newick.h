@@ -289,8 +289,12 @@ namespace quetzal
           if(_has_parent(node))
           {
             _formula += std::invoke(_label, node);
-            _formula += ":";
-            _formula += std::invoke(_branch_length, node);
+            auto branch = std::invoke(_branch_length, node);
+            if( branch != "")
+            {
+              _formula += ":";
+              _formula += branch;
+            }
           }else{
             _formula += std::invoke(_label, node);
             _formula += policy_type::root_branch_length();
