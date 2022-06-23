@@ -161,7 +161,7 @@ namespace quetzal
       struct TreeAlign
       {
         // Set explicit null branch length for root node
-        static inline std::string root_branch_length() { return "0.0";}
+        static inline std::string root_branch_length() { return ":0.0";}
         // Remove comments that are nested, keep comments of depth 1
         static inline std::string treat_comments(const std::string &s)
         {
@@ -192,8 +192,8 @@ namespace quetzal
       ///
       /// @brief Generic algorithm to generate the Newick formula of a tree.
       ///
-      template<class T, std::predicate<T> P1 , std::predicate<T> P2, Formattable<T> F1, Formattable<T> F2 >
-      class Formatter
+      template<class T, std::predicate<T> P1 , std::predicate<T> P2, Formattable<T> F1, Formattable<T> F2>
+      class Formatter : public PHYLIP
       {
       public:
         ///
@@ -204,6 +204,11 @@ namespace quetzal
         /// @brief Type of formula being generated
         ///
         using formula_type = std::string;
+        ///
+        /// @brief Type of formula being generated
+        ///
+        using policy_type = PHYLIP;
+
       private:
         ///
         /// @brief End character.
@@ -249,7 +254,7 @@ namespace quetzal
         ///
         /// @param node the node currently visited
         ///
-        void preorder(const node_type & node) const
+        void _pre_order(const node_type & node) const
         {
           if(std::invoke(_has_children, node))
           {
@@ -260,17 +265,17 @@ namespace quetzal
         ///
         /// @brief Operation called in the general DFS algorithm to add a comma between visited nodes.
         ///
-        void inorder() const
+        void _in_order() const
         {
           _formula += ",";
         }
-        
+
         ///
         /// @brief Operation called in the general DFS algorithm to open a parenthesis if node has children to be visited.
         ///
         /// @param node the node currently visited
         ///
-        void postorder(const node_type & node) const
+        void _post_order(const node_type & node) const
         {
           if(std::invoke(_has_children, node))
           {
@@ -279,14 +284,19 @@ namespace quetzal
             _formula += ")";
           }
 
-          if(has_parent(node))
+          if(_has_parent(node))
           {
-            _formula += std::to_string(std::invoke(_label, node));
+            _formula += std::invoke(_label, node);
             _formula += ":";
-            _formula += std::to_string(std::invoke(_branch_length, node));
+            _formula += std::invoke(_branch_length, node);
+          }else{
+            _formula += std::invoke(_label, node);
+            _formula += policy_type::root_branch_length();
           }
         }
+
       public:
+
         ///
         /// @brief Constructor
         ///
@@ -297,6 +307,32 @@ namespace quetzal
         _branch_length(std::forward<F2>(branch_length))
         {
         }
+
+        ///
+        /// @brief Operation called in the general DFS algorithm to open a parenthesis if node has children to be visited.
+        ///
+        /// @param node the node currently visited
+        ///
+        auto pre_order()
+        {
+          return [this](const node_type & node){this->_pre_order(node);};
+        }
+        ///
+        /// @brief Operation called in the general DFS algorithm to add a comma between visited nodes.
+        ///
+        auto in_order()
+        {
+          return [this](){this->_in_order();};
+        }
+        ///
+        /// @brief Operation to be passed to a generic DFS algorithm to open a parenthesis if node has children to be visited.
+        ///
+        /// @param node the node currently visited
+        ///
+        auto post_order()
+        {
+          return [this](const node_type & node){this->_post_order(node);};
+        }
         ///
         /// @brief Clear the formula buffer.
         ///
@@ -305,15 +341,16 @@ namespace quetzal
           _formula.clear();
         }
         ///
-        /// @brief Format the given node in the specified format
+        /// @brief Retrieve the formatted string of the given node in the specified format
         ///
-        template<typename Policy>
-        formula_type format(node_type & root) const
+        formula_type get() const
         {
           // that or expose orders
           // root.visit_by_generic_DFS(preorder, inorder, postorder);
 
           _formula.push_back(this->_end);
+
+          _formula = policy_type::treat_comments(_formula);
 
           if(is_balanced<parenthesis>::check(_formula) == false)
           {
@@ -329,14 +366,32 @@ namespace quetzal
         }
       }; // end structrure Newick
 
-      template<class T, std::predicate<T> P1 , std::predicate<T> P2, Formattable<T> F1, Formattable<T> F2 >
-      auto make_formatter(P1 &&has_parent, P2 &&has_children, F1 &&label, F2 &&branch_length)
+      // Replacement for `std::function<T(U)>::argument_type`
+      template<typename T> struct single_function_argument;
+      template<typename Ret, typename Arg> struct single_function_argument<std::function<Ret(Arg)>> { using type = Arg; };
+
+      // Deduction guide: type T is deduced from P1
+      template<class P1, class P2, class F1, class F2>
+      Formatter(P1 &&, P2 &&, F1 &&, F2 &&) -> Formatter
+      <
+        typename single_function_argument<decltype( std::function{ std::declval<P1>() } )>::type,
+        P1,
+        P2,
+        F1,
+        F2
+      >;
+
+      ///
+      /// @brief to use for template `lambda [](const auto& s) {}` e.g. `make_formatter<Node>``
+      ///
+      template<class P1, class P2, class F1, class F2>
+      auto make_formatter(P1 &&has_parent, P2 &&has_children, F1 &&label, F2 && branch_length)
       {
-        return Formatter<T, P1, P2, F1, F2>(
-          std::forward<P1>(has_parent),
-          std::forward<P2>(has_children),
-          std::forward<F1>(label),
-          std::forward<F2>(branch_length));
+          // Use Class template argument deduction (CTAD)
+          return Formatter(std::forward<P1>(has_parent),
+                                   std::forward<P2>(has_children),
+                                   std::forward<F1>(label),
+                                   std::forward<F2>(branch_length));
       }
     } // end namespace newick
   } // end namespace format

@@ -15,6 +15,7 @@ namespace utf = boost::unit_test;
 
 #include <quetzal/io.h>
 #include <random>
+#include <concepts>
 
 // Simplistic tree for testing
 struct Node
@@ -23,7 +24,18 @@ struct Node
   Node *left;
   Node *right;
   int data;
+
+  template<class Op1, class Op2, class Op3>
+  void depth_first_search(Op1 pre_order, Op2 in_order, Op3 post_order){
+    pre_order(*this);
+    this->left->depth_first_search(pre_order, in_order, post_order);
+    in_order();
+    this->right->depth_first_search(pre_order, in_order, post_order);
+    in_order();
+    post_order(*this);
+  }
 } ;
+
 
 BOOST_AUTO_TEST_SUITE( format )
 
@@ -63,19 +75,22 @@ BOOST_AUTO_TEST_CASE(newick_formatting)
   // Interface Quetzal formatter with non-quetzal tree types
   std::predicate<Node> auto has_parent = [](const Node& n){return n.parent != nullptr;};
   std::predicate<Node> auto has_children = [](const Node& n){return n.left != nullptr && n.right != nullptr;};
-  newick::Formattable<Node> auto label = [&id](const Node& n ){return std::to_string(++id) + "[my[comment]]";};
+  newick::Formattable<Node> auto label = [&id](const Node& n ){return std::to_string(id) + "[my[comment]]";};
   newick::Formattable<Node> auto branch_length = [&gen,&dis](const Node& n){return std::to_string(dis(gen));};
 
-  auto formatter = newick::make_formatter<Node>(has_parent, has_children, label, branch_length);
+  using quetzal::format::newick::PHYLIP;
+  auto formatter = newick::make_formatter(has_parent, has_children, label, branch_length);
+  root.depth_first_search(formatter.pre_order(), formatter.in_order(), formatter.post_order());
+  formatter.get();
 
-  // Enables the use of nested comments
-  auto s1 = formatter.format<newick::PAUP>(root);
-
-  // Writes a root node branch length (with a value of 0.0) & no nested comments
-  auto s2 = formatter.format<newick::TreeAlign>(root);
-
-  // Requires that an unrooted tree begin with a trifurcation & no nested comments
-  auto s3 = formatter.format<newick::PHYLIP>(root);
+  // // Enables the use of nested comments
+  // auto s1 = formatter.format<newick::PAUP>(root);
+  //
+  // // Writes a root node branch length (with a value of 0.0) & no nested comments
+  // auto s2 = formatter.format<newick::TreeAlign>(root);
+  //
+  // // Requires that an unrooted tree begin with a trifurcation & no nested comments
+  // auto s3 = formatter.format<newick::PHYLIP>(root);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
