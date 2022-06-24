@@ -58,6 +58,9 @@ endif()
 #
 ######################################
 
+# Avoids Could not find a package configuration file provided by "mp-units"
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 
 # See https://docs.conan.io/en/1.43/integrations/build_system/cmake/cmake_find_package_generator.html#in-a-conanfile-py
 # include(${CMAKE_BINARY_DIR}/conan_paths.cmake)

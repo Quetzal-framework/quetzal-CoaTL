@@ -47,10 +47,22 @@ simulations, my intend is to propose general-purpose components for coalescence-
 manager for C/C++ projects. We chose it because it interfaces with CMake in a nice
 way. Conan will handle the dependencies and version conflicts management, and pass
 the paths of the installed dependencies to CMake so it can build the project. It's
-as simple to install as `pip install conan`!
+as simple to install as `pip install conan`! Of course if you are careful about not messing
+up with your system, you may want to use conan from a virtual environment:
 
-[CMake](https://cmake.org/cmake/help/latest/manual/cmake.1.html) is the C++ build systems first choice for cross-platform development. Technically, CMake is a build system generator but the
-level of abstraction it offers allows us to consider it as a cross-platform build system.
+```bash
+python3 -m venv virtual-env
+source virtual-env/bin/activate
+pip install -r requirements.txt
+# if it's the first time you use conan with this project
+chmod u+x configure_conan.sh && ./configure_conan.sh
+# do some work
+deactivate
+```
+
+[CMake](https://cmake.org/cmake/help/latest/manual/cmake.1.html) is the C++ build
+systems first choice for cross-platform development. Technically, CMake is a build
+system generator but the level of abstraction it offers allows us to consider it as a cross-platform build system.
 Users can build, test, and install packages with `cmake` and `ctest` commands.
 
 > :bulb: For devs, if you want more background on how Conan and CMake interact, check:
@@ -59,11 +71,11 @@ Users can build, test, and install packages with `cmake` and `ctest` commands.
 
 #### Configuring the dependencies :wrench:
 
-Lets start in the project root folder. Assumming you installed gcc-10:
+Lets start in the project root folder. Assumming you installed gcc-12:
 
 ```bash
-$ export CC=`which gcc-10`
-$ export CXX=`which g++-10`
+$ export CC=`which gcc-12`
+$ export CXX=`which g++-12`
 $ mkdir build && cd build
 $ cmake -D CMAKE_BUILD_TYPE=Release \
         -D CMAKE_C_COMPILER=${CC} \

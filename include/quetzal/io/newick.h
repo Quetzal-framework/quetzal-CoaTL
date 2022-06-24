@@ -400,7 +400,6 @@ namespace quetzal
         using type = typename single_function_argument<decltype(std::function{ std::declval<P1>() }) >::type;
       };
 
-      // Compiler bug, we need that deduction helper (and gcc-12)
       template<typename P1>
       using single_function_argument_t = typename single_function_argument_impl<P1>::type;
 
