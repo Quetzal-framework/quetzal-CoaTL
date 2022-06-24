@@ -306,7 +306,7 @@ namespace quetzal
           {
             auto label = std::invoke(_label, node);
             if( has_forbidden_characters(remove_comments_of_depth<1>::edit(label))) {
-              throw std::invalid_argument("Node label stripped from its comments contains characters that are forbidden in Newick format:" + label);
+              throw std::invalid_argument(std::string("Node label stripped from its comments contains characters that are forbidden in Newick format:") + std::string(label));
             } else {
               _formula += label;
             }
@@ -394,6 +394,9 @@ namespace quetzal
       }; // end structrure Newick
 
       // Replacement for `std::function<T(U)>::argument_type`
+      template<typename T> struct single_function_argument;
+      template<typename Ret, typename Arg> struct single_function_argument<std::function<Ret(Arg)>> { using type = Arg; };
+
       template<typename P1>
       struct single_function_argument_impl
       {
