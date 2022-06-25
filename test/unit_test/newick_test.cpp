@@ -31,11 +31,11 @@ struct Node
     if(this->left != nullptr && this->right != nullptr)
     {
       this->left->depth_first_search(pre_order, in_order, post_order);
-      in_order();
+      in_order(*this);
       this->right->depth_first_search(pre_order, in_order, post_order);
-      in_order();
-      post_order(*this);
+      in_order(*this);
     }
+    post_order(*this);
   }
 } ;
 
@@ -99,10 +99,18 @@ BOOST_AUTO_TEST_CASE(newick_formatting)
   auto formatter_1 = newick::make_formatter(has_parent, has_children, no_label, no_branch_length);
   // Expose its interface to your data-specific DFS algorithm
   a.depth_first_search(formatter_1.pre_order(), formatter_1.in_order(), formatter_1.post_order());
-
   // Retrieving the string
-  std::string s = formatter_1.get();
-  BOOST_CHECK_EQUAL(s , "(,(,));");
+  BOOST_CHECK_EQUAL(formatter_1.get(), "(,(,));");
+
+  // Trivial labeling
+
+  // Print the data field
+  newick::Formattable<Node> auto trivial_label = [](const Node& n ){return std::string(1, n.data);};
+  // Configure a new formatter
+  auto formatter_3 = newick::make_formatter(has_parent, has_children, trivial_label, no_branch_length);
+  // Expose its interface to your data-specific DFS algorithm
+  a.depth_first_search(formatter_3.pre_order(), formatter_3.in_order(), formatter_3.post_order());
+  BOOST_CHECK_EQUAL(formatter_3.get() , "(b,(d,e)c)a;");
 
   // Non-trivial data acquisition and formatting
 

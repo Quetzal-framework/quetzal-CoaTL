@@ -283,7 +283,7 @@ namespace quetzal
         ///
         /// @brief Operation called in the general DFS algorithm to add a comma between visited nodes.
         ///
-        void _in_order() const
+        void _in_order(const node_type &) const
         {
           _formula += ",";
         }
@@ -295,27 +295,31 @@ namespace quetzal
         ///
         void _post_order(const node_type & node) const
         {
+
           if(std::invoke(_has_children, node))
           {
-            // Remove comma
-            _formula.pop_back();
+            _formula.pop_back(); // Remove comma
             _formula += ")";
           }
 
-          if(_has_parent(node))
+          if(std::invoke(_has_parent, node))
           {
             auto label = std::invoke(_label, node);
-            if( has_forbidden_characters(remove_comments_of_depth<1>::edit(label))) {
-              throw std::invalid_argument(std::string("Node label stripped from its comments contains characters that are forbidden in Newick format:") + std::string(label));
-            } else {
-              _formula += label;
+
+            if( has_forbidden_characters(remove_comments_of_depth<1>::edit(label)))
+            {
+              throw std::invalid_argument(std::string("Label with forbidden characters:") + std::string(label));
             }
+
+            _formula += label;
+
             auto branch = std::invoke(_branch_length, node);
             if( branch != "")
             {
               _formula += ":";
               _formula += branch;
             }
+
           }else{
             _formula += std::invoke(_label, node);
             _formula += policy_type::root_branch_length();
@@ -349,7 +353,7 @@ namespace quetzal
         ///
         auto in_order()
         {
-          return [this](){this->_in_order();};
+          return [this](const node_type & node){this->_in_order(node);};
         }
         ///
         /// @brief Operation to be passed to a generic DFS algorithm to open a parenthesis if node has children to be visited.
