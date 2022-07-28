@@ -18,10 +18,12 @@ foreach(testSrc ${TEST_SRCS})
 
         #link to Boost libraries AND your targets and dependencies
         target_link_libraries(${testName}
-                              boost::boost       # globalCMake's target
+                              boost::boost       # global target
                               ${Boost_LIBRARIES} # Boost component libraries to be linked.
                               Boost::headers     # Target for header-only dependencies.
-                              Boost::unit_test_framework
+                              # Boost::unit_test_framework
+                              # Boost::filesystem
+                              # Boost::serialization
                               GDAL::GDAL
                               mp-units::mp-units
                               mp-units::core-io mp-units::si
@@ -54,7 +56,6 @@ target_include_directories(model_1
   PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
 add_test(SpatialExpansionMassBased model_1 ${CMAKE_CURRENT_SOURCE_DIR}/data/europe_temp.tif)
-
 
 ### MODEL 2
 

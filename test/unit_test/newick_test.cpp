@@ -107,10 +107,10 @@ BOOST_AUTO_TEST_CASE(newick_formatting)
   // Print the data field
   newick::Formattable<Node> auto trivial_label = [](const Node& n ){return std::string(1, n.data);};
   // Configure a new formatter
-  auto formatter_3 = newick::make_formatter(has_parent, has_children, trivial_label, no_branch_length);
+  auto formatter_2 = newick::make_formatter(has_parent, has_children, trivial_label, no_branch_length);
   // Expose its interface to your data-specific DFS algorithm
-  a.depth_first_search(formatter_3.pre_order(), formatter_3.in_order(), formatter_3.post_order());
-  BOOST_CHECK_EQUAL(formatter_3.get() , "(b,(d,e)c)a;");
+  a.depth_first_search(formatter_2.pre_order(), formatter_2.in_order(), formatter_2.post_order());
+  BOOST_CHECK_EQUAL(formatter_2.get() , "(b,(d,e)c)a;");
 
   // Non-trivial data acquisition and formatting
 
@@ -125,22 +125,22 @@ BOOST_AUTO_TEST_CASE(newick_formatting)
   // More sophisticated label formatting
   newick::Formattable<Node> auto label = [](const Node& n ){return std::string(1, n.data) + "[my[comment]]";};
   // Call the formatter
-  auto formatter_2 = newick::make_formatter(has_parent, has_children, label, branch_length);
-  a.depth_first_search(formatter_2.pre_order(), formatter_2.in_order(), formatter_2.post_order());
-  std::cout << formatter_2.get() << std::endl;
+  auto formatter_3 = newick::make_formatter(has_parent, has_children, label, branch_length);
+  a.depth_first_search(formatter_3.pre_order(), formatter_3.in_order(), formatter_3.post_order());
+  std::cout << formatter_3.get() << std::endl;
 
   // Extra customizations (policy-based design)
 
   // Writes a root node branch length with a value of 0.0 and disable nested comments
-  // using flavor = quetzal::format::newick::TreeAlign;
+  using flavor = quetzal::format::newick::TreeAlign;
   // Enables the use of nested comments
   // using flavor = quetzal::format::newick::PAUP;
   // TODO: Requires that an unrooted tree begin with a trifurcation & no nested comments
   // TODO: using flavor = quetzal::format::newick::PHYLIP;
 
-  // auto formatter_3 = newick::make_formatter<flavor>(has_parent, has_children, label, branch_length);
-  // a.depth_first_search(formatter_3.pre_order(), formatter_3.in_order(), formatter_3.post_order());
-  // std::cout << formatter_3.get() << std::endl;
+  auto formatter_4 = newick::make_formatter(has_parent, has_children, label, branch_length, flavor());
+  a.depth_first_search(formatter_4.pre_order(), formatter_4.in_order(), formatter_4.post_order());
+  std::cout << formatter_4.get() << std::endl;
 }
 
 BOOST_AUTO_TEST_SUITE_END()

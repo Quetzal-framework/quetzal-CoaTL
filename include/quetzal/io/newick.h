@@ -418,7 +418,7 @@ namespace quetzal
       /// @brief to use for template `lambda [](const auto& s) {}` e.g. `make_formatter<Node>``
       ///
       template<class P1, class P2, class F1, class F2, class Policy=PAUP>
-      auto make_formatter(P1 &&has_parent, P2 &&has_children, F1 &&label, F2 && branch_length)
+      auto make_formatter(P1 &&has_parent, P2 &&has_children, F1 &&label, F2 && branch_length, Policy policy=Policy())
       {
         // Use Class template argument deduction (CTAD)
         return Formatter<single_function_argument_t<P1>, P1, P2, F1, F2, Policy>(
@@ -433,7 +433,7 @@ namespace quetzal
       /// @brief Can still specify type manually if you want, to use for template `lambda [](const auto& s) {}` e.g. `make_formatter<Node>``
       ///
       template<class T, std::predicate<T> P1, std::predicate<T> P2, Formattable<T> F1, Formattable<T> F2, class Policy>
-      auto make_formatter(P1 &&has_parent, P2 &&has_children, F1 &&label, F2 && branch_length)
+      auto make_formatter(P1 &&has_parent, P2 &&has_children, F1 &&label, F2 && branch_length, Policy policy=Policy())
       {
         // Use Class template argument deduction (CTAD)
         return Formatter<T, P1, P2, F1, F2, Policy>(

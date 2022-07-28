@@ -17,6 +17,7 @@ string(REGEX REPLACE "^v[0-9]+\\.[0-9]+\\.([0-9]+).*" "\\1" VERSION_PATCH "${VER
 string(REGEX REPLACE "^v[0-9]+\\.[0-9]+\\.[0-9]+(.*)" "\\1" VERSION_SHA1 "${VERSION}")
 set(VERSION_SHORT "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
+# Copies input to output and substitutes variable values referenced in the input file content.
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules/version.cpp.in
                 ${CMAKE_CURRENT_BINARY_DIR}/version.cpp)
 
@@ -52,18 +53,12 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 ######################################
-#     CONAN dependencies management
-#
-# Must read: https://blog.conan.io/2021/10/19/New-CMake-Transparent-Integration-Guide.html
-#
+#     CONAN dependencies management: using conan.tools.cmake
 ######################################
 
 # Avoids Could not find a package configuration file provided by "mp-units"
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
-
-# See https://docs.conan.io/en/1.43/integrations/build_system/cmake/cmake_find_package_generator.html#in-a-conanfile-py
-# include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
 
 # Tell find_package() to first search using Config mode before falling back to Module mode (for conan)
 set(CMAKE_FIND_PACKAGE_PREFER_CONFIG TRUE)
@@ -73,7 +68,7 @@ find_package(mp-units CONFIG REQUIRED)
 # Include Boost as an imported target: 1.73 important for compilation with gcc 10 and C++20
 find_package(Boost 1.79 REQUIRED COMPONENTS unit_test_framework filesystem serialization)
 if(Boost_FOUND)
-  include_directories(${Boost_INCLUDE_DIRS}) # Find Boost headers only:
+  include_directories(${Boost_INCLUDE_DIRS}) # Find Boost headers only
 ENDIF()
 
 # Global approach Gdal

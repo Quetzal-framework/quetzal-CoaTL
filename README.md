@@ -55,7 +55,8 @@ up with your system, you may want to use conan from a virtual environment:
 python3 -m venv virtual-env
 source virtual-env/bin/activate
 pip install -r requirements.txt
-# if it's the first time you use conan with this project
+export CC=`which gcc-12`
+export CXX=`which g++-12`
 chmod u+x conan/configure.sh && ./conan/configure.sh
 # do some work
 deactivate
@@ -72,15 +73,20 @@ Users can build, test, and install packages with `cmake` and `ctest` commands.
 
 #### Configuring the dependencies :wrench:
 
-Lets start in the project root folder. Assumming you installed gcc-12:
+Lets start in the project root folder:
 
 ```bash
-$ export CC=`which gcc-12`
-$ export CXX=`which g++-12`
-$ mkdir build && cd build
-$ cmake -D CMAKE_BUILD_TYPE=Release \
+rm -rf build
+mkdir build && cd build
+```
+
+Then, assumming you installed gcc-12:
+
+```bash
+cmake -D CMAKE_BUILD_TYPE=Release \
         -D CMAKE_C_COMPILER=${CC} \
-        -D CMAKE_CXX_COMPILER=${CXX}
+        -D CMAKE_CXX_COMPILER=${CXX} \
+        -D CMAKE_TOOLCHAIN_FILE=conantoolchain.cmake \
         ..
 ```
 
