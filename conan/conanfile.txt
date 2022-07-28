@@ -1,0 +1,14 @@
+[requires]
+
+boost/1.79.0
+gdal/3.4.3
+mp-units/0.7.0
+
+[generators]
+
+CMakeToolchain
+CMakeDeps
+
+# This generator is especially useful if you are using CMake based only on the
+# find_package feature to locate the dependencies. Creates a file named conan_paths.cmake
+# cmake_paths
