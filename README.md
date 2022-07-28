@@ -6,6 +6,7 @@
 [![Website becheler.github.io](https://img.shields.io/website-up-down-green-red/https/becheler.github.io.svg)](https://becheler.github.io/softwares/quetzal-CoalTL/home/)
 ![Lines of code](https://img.shields.io/tokei/lines/github/Becheler/quetzal-CoalTL)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Becheler/quetzal-CoalTL)
+
 # A Coalescence Template Libary
 
 Quetzal-CoalTL is a Modern C++ template scientific library for
@@ -55,7 +56,7 @@ python3 -m venv virtual-env
 source virtual-env/bin/activate
 pip install -r requirements.txt
 # if it's the first time you use conan with this project
-chmod u+x configure_conan.sh && ./configure_conan.sh
+chmod u+x conan/configure.sh && ./conan/configure.sh
 # do some work
 deactivate
 ```
