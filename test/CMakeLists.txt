@@ -19,8 +19,8 @@ foreach(testSrc ${TEST_SRCS})
         #link to Boost libraries AND your targets and dependencies
         target_link_libraries(${testName}
                               boost::boost       # global target
-                              ${Boost_LIBRARIES} # Boost component libraries to be linked.
-                              Boost::headers     # Target for header-only dependencies.
+                              #${Boost_LIBRARIES} # Boost component libraries to be linked.
+                              #Boost::headers     # Target for header-only dependencies.
                               # Boost::unit_test_framework
                               # Boost::filesystem
                               # Boost::serialization

@@ -11,9 +11,9 @@
 #define BOOST_TEST_MODULE coalescence_test
 
 #include <boost/test/unit_test.hpp>
-namespace utf = boost::unit_test;
-
 #include <quetzal/coalescence.h>
+
+namespace utf = boost::unit_test;
 
 BOOST_AUTO_TEST_SUITE( coalescence_algorithms )
 
