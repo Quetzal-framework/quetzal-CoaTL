@@ -54,12 +54,18 @@ up with your system, you may want to use conan from a virtual environment:
 ```bash
 python3 -m venv virtual-env
 source virtual-env/bin/activate
-pip install -r requirements.txt
-export CC=`which gcc-12`
-export CXX=`which g++-12`
-chmod u+x conan/configure.sh && ./conan/configure.sh
-# do some work
+pip install conan==1.49.0
+# do some work using conan
 deactivate
+```
+
+To ask conan to download, build and install the project dependencies, just run:
+
+```bash
+export CONAN_V2_MODE=1
+export CC=`which gcc-12` && export CXX=`which g++-12`
+chmod u+x conan/configure.sh && ./conan/configure.sh
+
 ```
 
 [CMake](https://cmake.org/cmake/help/latest/manual/cmake.1.html) is the C++ build
@@ -71,7 +77,7 @@ Users can build, test, and install packages with `cmake` and `ctest` commands.
 > - [the CMake official documentation](https://docs.conan.io/en/1.36/integrations/build_system/cmake.html)
 > - [this post](https://jfreeman.dev/blog/2019/05/22/trying-conan-with-modern-cmake:-dependencies/).
 
-#### Configuring the dependencies :wrench:
+#### Configuring the dependencies
 
 Lets start in the project root folder:
 
@@ -86,7 +92,7 @@ Then, assumming you installed gcc-12:
 cmake -D CMAKE_BUILD_TYPE=Release \
         -D CMAKE_C_COMPILER=${CC} \
         -D CMAKE_CXX_COMPILER=${CXX} \
-        -D CMAKE_TOOLCHAIN_FILE=conantoolchain.cmake \
+        -D CMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake \
         ..
 ```
 
