@@ -3,6 +3,7 @@
 boost/1.79.0
 gdal/3.4.3
 mp-units/0.7.0
+sfml/2.5.1
 
 [generators]
 
