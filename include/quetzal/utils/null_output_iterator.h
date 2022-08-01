@@ -21,19 +21,30 @@ namespace quetzal::utils
   ///
   /// @note Use in TajimasD class
   ///
-  template<class Base = std::iterator< std::output_iterator_tag, null_output_iterator > >
-  struct null_output_iterator : Base
+  template<typename T>
+  class null_output_iterator
   {
+  private:
+    T _p;
+  public:
+    using iterator_category = std::forward_iterator_tag;
+    using value_type = T;
+    using difference_type = T;
+    using pointer = T*;
+    using reference = T&;
     ///
-    /// @brief No-op assignment
+    /// @brief Constructor
+    null_output_iterator(T p):_p(p){};
     ///
-    template<typename T>
-    void operator=(T const&) {}
+    /// @brief Assignment
+    ///
+    void operator=(T p) {_p = p ;}
     ///
     /// @brief Can be pre-incremented
     ///
     null_output_iterator & operator++()
     {
+      _p++;
       return *this;
     }
     ///
@@ -41,6 +52,7 @@ namespace quetzal::utils
     ///
     null_output_iterator operator++(int)
     {
+      _p++;
       return *this;
     }
     ///
@@ -50,6 +62,11 @@ namespace quetzal::utils
     {
       return *this;
     }
+    ///
+    /// @brief We want comparison it != end;
+    friend bool operator== (const null_output_iterator& a, const null_output_iterator& b) { return a._p == b._p; };
+    friend bool operator!= (const null_output_iterator& a, const null_output_iterator& b) { return a._p != b._p; };
+
   };
 }
 

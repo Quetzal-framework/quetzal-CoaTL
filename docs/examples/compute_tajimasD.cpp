@@ -11,5 +11,5 @@ int main()
                                                     number_of_segregating_sites,
                                                     nb_sequences);
 
-  //assert(polymophism.tajimasD.get<tajimasD>() == -1.446172);
+  assert(stat.get() == -1.446172);
 }

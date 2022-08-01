@@ -49,7 +49,9 @@ namespace quetzal::polymophism::statistics
     constexpr std::pair<value_type, value_type> compute_a(int n)
     {
       auto a = std::make_pair(0.0, 0.0);
-      std::generate(1, n, [i = 1, &a] () mutable { a.first += 1/i; a.second += 1/(i*i); return i++;});
+      quetzal::utils::null_output_iterator<int> it1(1);
+      quetzal::utils::null_output_iterator<int> it2(n);
+      std::generate(it1, it2, [i = 1, &a] () mutable { a.first += 1/i; a.second += 1/(i*i); return i++;});
       return a;
     }
     ///
@@ -115,8 +117,11 @@ namespace quetzal::polymophism::statistics
     _c2(compute_c2(n, _a.first, _a.second, _b2)),
     _e1(compute_e1(_c1, _a.first)),
     _e2(compute_e2(_a.first, _a.second, _c2)),
-    _D(compute_D()){}
-
+    _D(compute_D(pi, S, _a.first, _e1, _e2)){}
+    ///
+    /// @brief Get the computed value
+    ///
+    constexpr value_type get(){ return _D;}
   }; // class TajimasD
 }
 

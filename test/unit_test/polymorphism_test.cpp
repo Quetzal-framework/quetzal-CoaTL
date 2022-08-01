@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE( tajimasD )
                                                           number_of_segregating_sites,
                                                           nb_sequences);
 
-  BOOST_CHECK_EQUAL(polymophism.tajimasD.value(), -1.446172);
+  BOOST_CHECK_EQUAL(stat.get(), -1.446172);
 
 
 }
