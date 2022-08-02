@@ -15,7 +15,7 @@
 
 #include <algorithm> // std::generate
 #include <cmath> // sqrt
-
+#include <iostream>
 namespace quetzal::polymophism::statistics
 {
   ///
@@ -51,7 +51,7 @@ namespace quetzal::polymophism::statistics
       auto a = std::make_pair(0.0, 0.0);
       quetzal::utils::null_output_iterator<int> it1(1);
       quetzal::utils::null_output_iterator<int> it2(n);
-      std::generate(it1, it2, [i = 1, &a] () mutable { a.first += 1/i; a.second += 1/(i*i); return i++;});
+      std::generate(it1, it2, [i = 1, &a] () mutable {a.first += 1./i; a.second += 1./(i*i); return i++;});
       return a;
     }
     ///
@@ -96,7 +96,7 @@ namespace quetzal::polymophism::statistics
     /// @param S number of segregating sites
     constexpr auto compute_D(value_type pi, value_type S, value_type a1, value_type e1, value_type e2)
     {
-      return (pi - S/a1) / std::pow((e1 * S + e2 * S * (S - 1.0)), 0.5);
+      return (pi - S/a1) / std::sqrt( e1*S + e2*S*(S-1.0) );
     }
   public:
     ///
@@ -113,7 +113,7 @@ namespace quetzal::polymophism::statistics
     _a(compute_a(n)),
     _b1(compute_b1(n)),
     _b2(compute_b2(n)),
-    _c1(compute_c1(_a.first, _a.second)),
+    _c1(compute_c1(_a.first, _b1)),
     _c2(compute_c2(n, _a.first, _a.second, _b2)),
     _e1(compute_e1(_c1, _a.first)),
     _e2(compute_e2(_a.first, _a.second, _c2)),
@@ -122,7 +122,21 @@ namespace quetzal::polymophism::statistics
     /// @brief Get the computed value
     ///
     constexpr value_type get(){ return _D;}
+
+    value_type pi() const {return _pi;};
+    value_type S() const {return _S;};
+    value_type n() const {return _n;};
+    value_type a1() const {return _a.first;};
+    value_type a2() const {return _a.second;};
+    value_type b1() const {return _b1;};
+    value_type b2() const {return _b2;};
+    value_type c1() const {return _c1;};
+    value_type c2() const {return _c2;};
+    value_type e1() const {return _e1;};
+    value_type e2() const {return _e2;};
+    value_type D() const {return _D;};
   }; // class TajimasD
+
 }
 
 

@@ -11,9 +11,15 @@
 #define BOOST_TEST_MODULE polymorphism_test
 
 #include <boost/test/unit_test.hpp>
+
+#include <units/quantity.h> // percent
+#include <units/generic/dimensionless.h> // percent
+
 #include <quetzal/polymorphism.h>
 
 namespace utf = boost::unit_test;
+
+using namespace units;
 
 BOOST_AUTO_TEST_SUITE( statistics )
 
@@ -49,28 +55,43 @@ BOOST_AUTO_TEST_CASE( tajimasD )
   // BOOST_CHECK_EQUAL(polymophism.tajimasD.number_of_segregating_sites.value()), 16);
   // BOOST_CHECK_EQUAL(polymophism.tajimasD.fraction_of_segregating_sites.value()), 16/41);
   //
-  // BOOST_CHECK_EQUAL(polymorphism.tajimasD.a2.value(), 1.539768)
-  // BOOST_CHECK_EQUAL(polymorphism.tajimasD.a1.value(), 2.828968)
-  // BOOST_CHECK_EQUAL(polymorphism.tajimasD.b1.value(), 0.407407)
-  // BOOST_CHECK_EQUAL(polymorphism.tajimasD.b2.value(), 0.279012)
-  // BOOST_CHECK_EQUAL(polymorphism.tajimasD.c1.value(), 0.053922)
-  // BOOST_CHECK_EQUAL(polymorphism.tajimasD.c2.value(), 0.047227)
-  // BOOST_CHECK_EQUAL(polymorphism.tajimasD.e1.value(), 0.019061)
-  // BOOST_CHECK_EQUAL(polymorphism.tajimasD.e2.value(), 0.004949)
+
   //
   // BOOST_CHECK_EQUAL(polymophism.tajimasD.value(), -1.446172);
   // std::cout << polymophism.tajimasD.meaning() << std::endl;
   //
   int mean_pairwise_difference = 3.888889;
-  int number_of_segregating_sites = 16;
+  int nb_segregating_sites = 16;
   int nb_sequences = 10;
 
-  auto stat = quetzal::polymophism::statistics::tajimasD(mean_pairwise_difference,
-                                                          number_of_segregating_sites,
-                                                          nb_sequences);
+  // Compute stats
+  using quetzal::polymophism::statistics::tajimasD;
+  auto stat = tajimasD(mean_pairwise_difference, nb_segregating_sites, nb_sequences);
 
-  BOOST_CHECK_EQUAL(stat.get(), -1.446172);
+  // Define test metrics
+  auto error = [](auto computed, auto expected){return computed - expected;};
+  auto tolerance = [](auto expected){return dimensionless<percent>(1 * expected / expected);};
 
+  // Expected values
+  auto a1 = 2.828968;
+  auto a2 = 1.539768;
+  auto b1 = 0.407407;
+  auto b2 = 0.279012;
+  auto c1 = 0.053922;
+  auto c2 = 0.047227;
+  auto e1 = 0.019061;
+  auto e2 = 0.004949;
+  auto D  = -1.446172;
+
+  BOOST_CHECK_SMALL(error(stat.a1(), a1), tolerance(a1).number());
+  BOOST_CHECK_SMALL(error(stat.a2(), a2), tolerance(a2).number());
+  BOOST_CHECK_SMALL(error(stat.b1(), b1), tolerance(b1).number() ) ;
+  BOOST_CHECK_SMALL(error(stat.b2(), b2), tolerance(b2).number() ) ;
+  BOOST_CHECK_SMALL(error(stat.c1(), c1), tolerance(c1).number() ) ;
+  BOOST_CHECK_SMALL(error(stat.c2(), c2), tolerance(c2).number() ) ;
+  BOOST_CHECK_SMALL(error(stat.e1(), e1), tolerance(e1).number() ) ;
+  BOOST_CHECK_SMALL(error(stat.e2(), e2), tolerance(e2).number() ) ;
+  BOOST_CHECK_SMALL(error(stat.D() ,  D), tolerance( D).number() ) ;
 
 }
 
