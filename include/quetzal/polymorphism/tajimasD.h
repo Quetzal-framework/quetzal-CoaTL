@@ -16,6 +16,7 @@
 #include <algorithm> // std::generate
 #include <cmath> // sqrt
 #include <iostream>
+
 namespace quetzal::polymophism::statistics
 {
   ///

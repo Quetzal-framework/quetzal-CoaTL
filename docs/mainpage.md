@@ -1,10 +1,15 @@
 
 # The Quetzal Coalescence Library
 
-This documentation is meant for C++ developers who want to include the Quetzal Coalescence Template Library in their own code project.
+This documentation is meant for C++ developers who want to include the Quetzal
+Coalescence Template Library (CTL) in their own code project.
 
-Coalescence is a mathematical abstraction that is useful for solving many types of problems in computational population genetics. Consequently, the abstractions of
-coalescence theory must also be represented in computer programs. A standardized generic interface for manipulating concepts like demographic history, reproduction, migration, lineages, mergers, mutation, recombination is of utmost importance to encourage reuse of algorithms and data structures.
+Coalescence is a mathematical abstraction that is useful for solving many types
+of problems in computational population genetics. Consequently, the abstractions of
+coalescence theory must also be represented in computer programs. A standardized
+generic interface for manipulating concepts like demographic history, reproduction,
+migration, lineages, mergers, mutation, recombination is of utmost importance to
+encourage reuse of algorithms and data structures.
 
 Part of the Quetzal Coalescence Library is a generic interface that allows access
 and manipulation of demographic and genealogical graph structures and of data
@@ -44,9 +49,9 @@ The second reason why the STL is generic is because its algorithms and container
 
 The third way that STL is generic is that its containers are parameterized on the element type. Though hugely important, this is perhaps the least “interesting” way in which STL is generic. Generic programming is often summarized by a brief description of parameterized lists such as `std::list<T>`. This hardly scratches the surface!
 
-## Genericity in the Quetzal CTL
+## Genericity in Quetza
 
-Like the STL, there are three ways in which the CTL is generic.
+Like the STL, there are three ways in which the Quetzal CTL is generic.
 
 ### Algorithm/Data-Structure Interoperability
 

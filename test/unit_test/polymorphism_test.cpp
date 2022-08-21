@@ -95,5 +95,8 @@ BOOST_AUTO_TEST_CASE( tajimasD )
 
 }
 
+BOOST_AUTO_TEST_CASE( tajimasD )
+{
 
+}
 BOOST_AUTO_TEST_SUITE_END()
