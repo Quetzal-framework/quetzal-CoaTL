@@ -1,0 +1,11 @@
+# works with conan install conan/conanfile_macos.txt --build=missing --install-folder=build -pr:b=default
+
+[requires]
+
+boost/1.80.0
+gdal/3.5.2
+
+[generators]
+
+CMakeToolchain
+CMakeDeps

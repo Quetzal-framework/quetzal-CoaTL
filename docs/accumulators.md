@@ -1,6 +1,6 @@
 # Polymorphism statistics
 
-This section describes how to use the Quetzal.Accumulators to perform
+This section describes how to use Quetzal.Accumulators to perform
 incremental statistical computations on genetic data.
 
 ## Hello world!
@@ -113,7 +113,7 @@ Since accumulator_set<> defines its accumulate function to be the function call 
 // The data for which we wish to calculate statistical properties:
 std::vector< double > data( /* stuff */ );
 
-// The accumulator set which will calculate the properties for us:    
+// The accumulator set which will calculate the properties for us:
 accumulator_set< double, features< tag::min, tag::mean > > acc;
 
 // Use std::for_each to accumulate the statistical properties:

@@ -11,17 +11,30 @@
 
 Quetzal-CoalTL is a Modern C++ template scientific library for
 simulating gene genealogies in explicit landscapes or phylogenetic networks. The basic
-idea is to propose a library of reusable STL-compatible components rather than unreusable
-publish-and-perish programs.
+idea is to propose a library of reusable STL-compatible components to encourage
+code reuse.
 
-:egg::egg::egg:  If you're a not a programmer, you may be interested by
-[Quetzal-EGGS simulators](https://github.com/Becheler/quetzal-EGGS)!
+:egg::egg::egg:  If you're a not a programmer, or you are not familiar with modern C++,
+then you are unlikely to benefit from installing Quetzal-CoaTL separately: instead it is more
+likely you want to use some components of Quetzal-CoaTL through the Quetzal-EGGS simulators builder project:
+please read [this page](https://github.com/Becheler/quetzal-EGGS).
 
 # Usage
 
-:seedling: Infering populations ecological features (such as migration or growth patterns) from genetic datasets can be a complex task. In some settings it is actually a mathematically intractable problem, so simulations methods are needed ! Approximate Bayesian Computation (ABC) can be used to update your knowledge about the processes shaping your genetic dataset by simulating the underlying gene trees (coalescents) in an explicit geographic space.
+:seedling: Infering populations ecological features (such as migration or growth
+patterns) from genetic datasets can be a complex task. In some settings it is
+actually a mathematically intractable problem, so simulations methods are needed!
 
-Existing softwares like [SPLATCHE](http://splatche.com/), [simcoal2](http://cmpg.unibe.ch/software/simcoal2/), [egglib](http://mycor.nancy.inra.fr/egglib/index.html), or [msprime](http://msprime.readthedocs.io/en/stable/index.html) are very useful and user-friendly resources that should be used whenever possible to achieve this task.
+For example, Approximate Bayesian Computation (ABC) can be used to update current
+knowledge on the processes shaping a genetic dataset by simulating the underlying
+gene trees (coalescents) in an explicit geographic space.
+
+Existing softwares like
+[SPLATCHE](http://splatche.com/),
+[simcoal2](http://cmpg.unibe.ch/software/simcoal2/),
+[egglib](http://mycor.nancy.inra.fr/egglib/index.html), or
+[msprime](http://msprime.readthedocs.io/en/stable/index.html) are very useful and
+user-friendly resources that should be used whenever possible to achieve this task.
 
 However if you are working on developing some border case simulation model, or
 if you are not comfortable with hypothesis of the existing software solutions,
@@ -29,66 +42,67 @@ you will surely consider to build your own program :grimacing:
 
 And that's why we need something that looks like a standard.
 
-:v: Quetzal can help you doing so by offering atomic components (structures, algorithms, concepts) that can be easily reused to build a new program. The template mechanism allow to adapt them efficiently to each particular situation you may encounter (STL-compatible).
+:v: Quetzal can help you doing so by offering atomic components (structures,
+algorithms, concepts) that can be easily reused to build a new program.
+The template mechanism allow to adapt them efficiently to each particular situation
+you may encounter (STL-compatible).
 
 Although the initial purpose of the library was mostly directed towards landscape
 simulations, my intend is to propose general-purpose components for coalescence-simulations:
 - generic containers for representing coalescent trees, forests (sets of trees), phylogenetic networks...
 - generic algorithms (like DFS, BFS) to apply on containers
-- policies to "furnish" the containers and specialize the containers (e.g. Newick format(**s**))
-
+- policies to "furnish" the containers and specialize the containers (e.g. Newick format(**s*)
+- polymoprhism statics running on abstract genealogies
 
 # Installation
 
 ## With Conan + CMake
 
-### 1 - Get Conan and CMake
+### Install Conan
 
 [Conan](https://conan.io/) is one of the leading options for cross-platform package
-manager for C/C++ projects. We chose it because it interfaces with CMake in a nice
+manager with C/C++ projects. We chose it because it interfaces with CMake in a nice
 way. Conan will handle the dependencies and version conflicts management, and pass
 the paths of the installed dependencies to CMake so it can build the project. It's
 as simple to install as `pip install conan`! Of course if you are careful about not messing
-up with your system, you may want to use conan from a virtual environment:
+up with your system, you may want to use conan from a virtual environment.
 
 ```bash
 python3 -m venv virtual-env
 source virtual-env/bin/activate
-pip install conan==1.49.0
-# do some work using conan
+pip install --upgrade pip
+pip install conan
 deactivate
 ```
 
-To ask conan to download, build and install the project dependencies, just run:
-
-```bash
-export CONAN_V2_MODE=1
-export CC=`which gcc-12` && export CXX=`which g++-12`
-chmod u+x conan/configure.sh && ./conan/configure.sh
-
-```
+### Install CMake
 
 [CMake](https://cmake.org/cmake/help/latest/manual/cmake.1.html) is the C++ build
 systems first choice for cross-platform development. Technically, CMake is a build
 system generator but the level of abstraction it offers allows us to consider it as a cross-platform build system.
 Users can build, test, and install packages with `cmake` and `ctest` commands.
+Please refer to the [CMake official documentation](https://cmake.org/install/)
+for installation on your specific OS.
 
-> :bulb: For devs, if you want more background on how Conan and CMake interact, check:
-> - [the CMake official documentation](https://docs.conan.io/en/1.36/integrations/build_system/cmake.html)
-> - [this post](https://jfreeman.dev/blog/2019/05/22/trying-conan-with-modern-cmake:-dependencies/).
+### Configure Conan
 
-#### Configuring the dependencies
+To ask conan to download, build and install Quetzal-CoaTL dependencies, run:
+
+```bash
+source virtual-env/bin/activate
+export CONAN_V2_MODE=1
+export CC=`which gcc` && export CXX=`which g++`
+chmod u+x conan/configure.sh && ./conan/configure.sh
+deactivate
+```
+
+#### Configure CMake
 
 Lets start in the project root folder:
 
 ```bash
 rm -rf build
 mkdir build && cd build
-```
-
-Then, assumming you installed gcc-12:
-
-```bash
 cmake -D CMAKE_BUILD_TYPE=Release \
         -D CMAKE_C_COMPILER=${CC} \
         -D CMAKE_CXX_COMPILER=${CXX} \
@@ -96,7 +110,7 @@ cmake -D CMAKE_BUILD_TYPE=Release \
         ..
 ```
 
-### 3 - Build, test, install :rocket:
+#### 3 - Build, test, install :rocket:
 
 ```bash
 # Works on Linux, OSX, and Windows.
@@ -116,9 +130,6 @@ $ cmake --build . --target install
 
 ![Quetzal-CoalTL concepts](https://github.com/Becheler/quetzal-CoalTL/blob/media/quetzal_scheme.png)
 
-# Installation
-
-
 # Website
 
 Please visit [Quetzal website](https://becheler.github.io/softwares/quetzal-CoalTL/home/) for more details and:
@@ -132,13 +143,13 @@ This github repository is basically the implementation of the probabilistic mode
 
 - AUTHOR : Arnaud Becheler
 - DATE   : 2016
-- LICENCE : This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.    
+- LICENCE : This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
 - CONTACT : abechele@umich.edu
 - WEBSITE : https://becheler.github.io/
 
 # How to cite:
 
- Becheler, A, Coron, C, Dupas, S. The Quetzal Coalescence template library: A C++ programmers resource for integrating distributional, demographic and coalescent models. Mol Ecol Resour. 2019; 19: 788– 793. https://doi.org/10.1111/1755-0998.12992
+Becheler, A, Coron, C, Dupas, S. The Quetzal Coalescence template library: A C++ programmers resource for integrating distributional, demographic and coalescent models. Mol Ecol Resour. 2019; 19: 788– 793. https://doi.org/10.1111/1755-0998.12992
 
 Becheler, A., & Knowles, L. L. (2020). Occupancy spectrum distribution: application for coalescence simulation with generic mergers. Bioinformatics, 36(10), 3279-3280.
 
