@@ -47,7 +47,7 @@ namespace quetzal::polymophism::statistics
     ///
     /// @return a pair p where p.first is the term a1 and p.second the term a2
     ///
-    constexpr std::pair<value_type, value_type> compute_a(int n)
+    std::pair<value_type, value_type> compute_a(int n)
     {
       auto a = std::make_pair(0.0, 0.0);
       quetzal::utils::null_output_iterator<int> it1(1);

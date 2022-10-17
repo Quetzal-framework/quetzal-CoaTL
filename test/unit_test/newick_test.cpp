@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE(newick_filters)
   BOOST_CHECK_EQUAL(fmt::newick::remove_comments_of_depth<2>::edit(s3) , s2);
 }
 
-BOOST_AUTO_TEST_CASE(newick_formatting)
+BOOST_AUTO_TEST_CASE(newick_formatting, * utf::disabled())
 {
   namespace newick = quetzal::format::newick;
 

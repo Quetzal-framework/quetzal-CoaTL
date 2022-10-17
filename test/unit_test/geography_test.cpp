@@ -21,8 +21,6 @@ namespace utf = boost::unit_test;
 
 inline std::string resolvePath(const std::string &relPath)
 {
-    //namespace fs = std::tr2::sys;
-    //namespace fs = std::filesystem;
     namespace fs = boost::filesystem;
     auto baseDir = fs::current_path();
     while (baseDir.has_parent_path())
@@ -37,9 +35,9 @@ inline std::string resolvePath(const std::string &relPath)
     throw std::runtime_error("File not found!");
 }
 
-BOOST_AUTO_TEST_SUITE( geography )
+BOOST_AUTO_TEST_SUITE( geography)
 
-BOOST_AUTO_TEST_CASE( DiscreteLandscape )
+BOOST_AUTO_TEST_CASE( DiscreteLandscape, * utf::disabled())
   {
     using time_type = unsigned int;
     using landscape_type = quetzal::geography::DiscreteLandscape<std::string, time_type>;
@@ -72,7 +70,7 @@ BOOST_AUTO_TEST_CASE( DiscreteLandscape )
   }
 }
 
-BOOST_AUTO_TEST_CASE( EnvironmentalQuantity )
+BOOST_AUTO_TEST_CASE( EnvironmentalQuantity, * utf::disabled() )
 {
   using time_type = unsigned int;
 	using quantity_type = quetzal::geography::EnvironmentalQuantity<time_type>;
@@ -210,7 +208,7 @@ BOOST_AUTO_TEST_CASE( Resolution )
 	assert(copy != res);
 }
 
-BOOST_AUTO_TEST_CASE( gdalcppTest )
+BOOST_AUTO_TEST_CASE( gdalcppTest, * utf::disabled() )
 {
   auto path = resolvePath("test/data/bio1.tif");
 	quetzal::geography::gdalcpp::Dataset data(path);

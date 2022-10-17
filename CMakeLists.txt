@@ -1,29 +1,5 @@
 cmake_minimum_required(VERSION 3.23 FATAL_ERROR)
 
-#############################
-#    VERSIONING
-#############################
-
-# Appends the cmake/modules path to MAKE_MODULE_PATH variable.
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
-
-include(GetGitRevisionDescription)
-git_describe(VERSION --tags --dirty=-d)
-
-#parse the version information into pieces.
-string(REGEX REPLACE "^v([0-9]+)\\..*" "\\1" VERSION_MAJOR "${VERSION}")
-string(REGEX REPLACE "^v[0-9]+\\.([0-9]+).*" "\\1" VERSION_MINOR "${VERSION}")
-string(REGEX REPLACE "^v[0-9]+\\.[0-9]+\\.([0-9]+).*" "\\1" VERSION_PATCH "${VERSION}")
-string(REGEX REPLACE "^v[0-9]+\\.[0-9]+\\.[0-9]+(.*)" "\\1" VERSION_SHA1 "${VERSION}")
-set(VERSION_SHORT "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
-
-# Copies input to output and substitutes variable values referenced in the input file content.
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules/version.cpp.in
-                ${CMAKE_CURRENT_BINARY_DIR}/version.cpp)
-
-set(version_file "${CMAKE_CURRENT_BINARY_DIR}/version.cpp")
-
-
 ###########################
 #    PROJECT DESCRIPTION
 ###########################
@@ -31,7 +7,7 @@ set(version_file "${CMAKE_CURRENT_BINARY_DIR}/version.cpp")
 project(
   "quetzal"
   LANGUAGES CXX
-  VERSION ${VERSION_SHORT}
+  VERSION "0.1"
   DESCRIPTION "A header only c++ library for coalescence simulation."
   HOMEPAGE_URL "https://github.com/becheler/quetzal"
 )
@@ -56,6 +32,9 @@ endif()
 #     CONAN dependencies management: using conan.tools.cmake
 ######################################
 
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup()
+
 # Avoids Could not find a package configuration file provided by "mp-units"
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
@@ -63,7 +42,7 @@ list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 # Tell find_package() to first search using Config mode before falling back to Module mode (for conan)
 set(CMAKE_FIND_PACKAGE_PREFER_CONFIG TRUE)
 
-find_package(mp-units CONFIG REQUIRED)
+#find_package(mp-units CONFIG REQUIRED)
 
 # Include Boost as an imported target: 1.73 important for compilation with gcc 10 and C++20
 find_package(Boost 1.79 REQUIRED COMPONENTS unit_test_framework filesystem serialization)
