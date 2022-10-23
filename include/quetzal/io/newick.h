@@ -122,6 +122,8 @@ namespace quetzal
       {
         static std::string edit(const std::string& s)
         {
+          if (s.empty())
+            return s;
           return std::regex_replace(s, std::regex(R"(\[[^()]*\])"), "");
         }
       };
@@ -261,9 +263,9 @@ namespace quetzal
         ///
         bool has_forbidden_characters(const std::string &s) const
         {
-          std::string joined;
-          for (const std::string &piece : forbidden_labels ) joined += piece;
-          bool is_forbidden = std::regex_search(s, std::regex("^[^"s + joined + "]"s));
+          if (s.empty()) return false;
+          std::string forbidden = " ,;()[\\]";
+          bool is_forbidden = std::regex_search(s, std::regex("[" + forbidden + "]"));
           return is_forbidden;
         }
 
@@ -295,7 +297,6 @@ namespace quetzal
         ///
         void _post_order(const node_type & node) const
         {
-
           if(std::invoke(_has_children, node))
           {
             _formula.pop_back(); // Remove comma
@@ -305,7 +306,6 @@ namespace quetzal
           if(std::invoke(_has_parent, node))
           {
             auto label = std::invoke(_label, node);
-
             if( has_forbidden_characters(remove_comments_of_depth<1>::edit(label)))
             {
               throw std::invalid_argument(std::string("Label with forbidden characters:") + std::string(label));
@@ -321,9 +321,11 @@ namespace quetzal
             }
 
           }else{
+
             _formula += std::invoke(_label, node);
             _formula += policy_type::root_branch_length();
           }
+
         }
 
       public:

@@ -56,6 +56,14 @@ simulations, my intend is to propose general-purpose components for coalescence-
 
 # Installation
 
+```
+conan install conan/conanfile.py --build=missing --install-folder=build -pr:b=conan/profiles/clang_13 -pr:h=conan/profiles/clang_13
+cd build
+cmake -D CMAKE_TOOLCHAIN_FILE=conan_paths.cmake ..
+cmake --build .
+ctest
+```
+
 ## With Conan + CMake
 
 ### Install Conan
@@ -120,6 +128,13 @@ $ ctest --parallel ${ncpus}
 $ cmake --build . --target install
 ```
 
+### Packaging
+
+```bash
+cd build
+conan create ..
+conan upload -r quetzal quetzal-CoaTL/0.1 --all
+```
 
 # Looking forward
 
