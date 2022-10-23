@@ -180,7 +180,7 @@ BOOST_FIXTURE_TEST_CASE(randomized_labels, Fixture_simple_tree)
 }
 
 
-BOOST_FIXTURE_TEST_CASE(customized_labels, Fixture_simple_tree)
+BOOST_FIXTURE_TEST_CASE(tree_align_format, Fixture_simple_tree)
 {
   namespace newick = quetzal::format::newick;
 
@@ -193,13 +193,8 @@ BOOST_FIXTURE_TEST_CASE(customized_labels, Fixture_simple_tree)
   // More sophisticated label formatting
   newick::Formattable<Node> auto label = [](const Node& n ){return std::string(1, n.data) + "[my[comment]]";};
 
-  // Writes a root node branch length with a value of 0.0 and disable nested comments
+  // Writes a root node branch length with a value of 0.0 and disable/remove nested comments
   using flavor = quetzal::format::newick::TreeAlign;
-
-  // Enables the use of nested comments
-  // using flavor = quetzal::format::newick::PAUP;
-  // TODO: Requires that an unrooted tree begin with a trifurcation & no nested comments
-  // TODO: using flavor = quetzal::format::newick::PHYLIP;
 
   auto formatter = newick::make_formatter(has_parent, has_children, label, branch_length, flavor());
   a.depth_first_search(formatter.pre_order(), formatter.in_order(), formatter.post_order());
@@ -207,5 +202,13 @@ BOOST_FIXTURE_TEST_CASE(customized_labels, Fixture_simple_tree)
   // We retrieve the formatted string
   BOOST_CHECK_EQUAL(formatter.get() , "(b[my]:0.1,(d[my]:0.1,e[my]:0.1)c[my]:0.1)a[my]:0.0;");
 }
+
+
+  // Enables the use of nested comments
+  // using flavor = quetzal::format::newick::PAUP;
+
+  // TODO: Requires that an unrooted tree begin with a trifurcation & no nested comments
+  // TODO: using flavor = quetzal::format::newick::PHYLIP;
+
 
 BOOST_AUTO_TEST_SUITE_END()
