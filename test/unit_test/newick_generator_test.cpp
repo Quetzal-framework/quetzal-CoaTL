@@ -8,7 +8,7 @@
 *                                                                      *
 ***************************************************************************/
 
-#define BOOST_TEST_MODULE coalescence_test
+#define BOOST_TEST_MODULE newick_generator_test
 
 #include <boost/test/unit_test.hpp>
 namespace utf = boost::unit_test;
