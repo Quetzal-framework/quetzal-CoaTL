@@ -13,10 +13,10 @@
 #include <boost/test/unit_test.hpp>
 namespace utf = boost::unit_test;
 
-#define BOOST_SPIRIT_X3_DEBUG
+#include "quetzal/io/newick/ast.hpp"
+#include "quetzal/io/newick/ast_adapted.hpp"
+#include "quetzal/io/newick/tree.hpp"
 
-#include <boost/spirit/home/x3.hpp>
-#include "quetzal/io/newick_parser.h"
 #include <iomanip>
 
 namespace x3 = boost::spirit::x3;
