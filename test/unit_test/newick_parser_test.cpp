@@ -21,150 +21,156 @@ namespace utf = boost::unit_test;
 
 namespace x3 = boost::spirit::x3;
 
+struct FixtureCases
+{
+  // Set up fixture
+  FixtureCases()
+  {
+    BOOST_TEST_MESSAGE( "setup fixture Newick cases" );
+
+    this->name_cases =
+    {
+      "a34",
+      "A856BC",
+      "k56aH"
+    };
+
+    this->length_cases =
+    {
+      ":1",
+      ":999",
+      ":0.001"
+    };
+
+    this->leaf_cases =
+    {
+      "",
+      "A",
+      "B897kj"
+    };
+
+    this->branch_cases =
+    {
+      "leaf",
+      "(in,ternal)",
+      "leaf:10.0",
+      "(in,ternal):50.0",
+    };
+
+    this->internal_cases =
+    {
+      "(,)",
+      "(A,B)F",
+      "(A:10,B:10)F"
+    };
+
+    this-> subtree_cases =
+    {
+      "leaf",
+      "(in,ternal)",
+      "(,,(,))",
+      "(A,B,(C,D))",
+      "(A,B,(C,D)E)F",
+      "(:0.1,:0.2,(:0.3,:0.4):0.5)",
+      "(:0.1,:0.2,(:0.3,:0.4):0.5)",
+      "(A:0.1,B:0.2,(C:0.3,D:0.4):0.5)",
+      "(A:0.1,B:0.2,(C:0.3,D:0.4)E:0.5)F",
+      "((B:0.2,(C:0.3,D:0.4)E:0.5)F:0.1)A"
+    };
+
+    this->tree_standard_cases =
+    {
+      ";",
+      "(,);",
+      "(,,(,));",
+      "(A,B,(C,D));",
+      "(A,B,(C,D)E)F;",
+      "(:0.1,:0.2,(:0.3,:0.4):0.5);",
+      "(:0.1,:0.2,(:0.3,:0.4):0.5):0.0;",
+      "(A:0.1,B:0.2,(C:0.3,D:0.4):0.5);",
+      "(A:0.1,B:0.2,(C:0.3,D:0.4)E:0.5)F;",
+      "((B:0.2,(C:0.3,D:0.4)E:0.5)F:0.1)A;"
+    };
+
+    this->tree_exotic_cases =
+    {
+      "((B:0.2,(C:0.3,D:0.4)E:0.5)F:0.1)A;"
+    };
+
+    this->tree_must_fail_cases =
+    {
+
+    };
+
+  }
+
+  // Tear down fixture
+  ~FixtureCases()
+  {
+    BOOST_TEST_MESSAGE( "teardown fixture Newick cases" );
+  }
+
+  // Member data of fixture
+  std::vector<std::string> name_cases;
+  std::vector<std::string> length_cases;
+  std::vector<std::string> leaf_cases;
+  std::vector<std::string> branch_cases;
+  std::vector<std::string> internal_cases;
+  std::vector<std::string> subtree_cases;
+  std::vector<std::string> tree_standard_cases;
+  std::vector<std::string> tree_exotic_cases;
+  std::vector<std::string> tree_must_fail_cases;
+
+
+}; // end FixtureHomozygoteParents
+
+// Generic test function
+auto test(const auto& cases, auto parser)
+{
+  for(const auto& input : cases)
+  {
+    auto iter = input.begin();
+    auto iter_end = input.end();
+    bool r = x3::parse(iter, iter_end, parser);
+    BOOST_CHECK(r && iter == iter_end);
+  }
+}
 
 BOOST_AUTO_TEST_SUITE( newick_parser )
 
-BOOST_AUTO_TEST_CASE(name_grammar)
+BOOST_FIXTURE_TEST_CASE(name_grammar, FixtureCases)
 {
-  std::vector<std::string> inputs =
-  {
-    "a34",
-    "A856BC",
-    "k56aH"
-  };
-
-  for(const auto& input : inputs)
-  {
-    auto iter = input.begin();
-    auto iter_end = input.end();
-    bool r = phrase_parse(iter, iter_end, quetzal::newick::parser::name, x3::space );
-    BOOST_CHECK(r && iter == iter_end);
-  }
+  test(name_cases, quetzal::newick::parser::name);
 }
 
-BOOST_AUTO_TEST_CASE(length_grammar)
+BOOST_FIXTURE_TEST_CASE(length_grammar, FixtureCases)
 {
-  std::vector<std::string> inputs =
-  {
-    ":1",
-    ":999",
-    ":0.001"
-  };
-
-  for(const auto& input : inputs)
-  {
-    auto iter = input.begin();
-    auto iter_end = input.end();
-    bool r = phrase_parse(iter, iter_end, quetzal::newick::parser::length, x3::space );
-    BOOST_CHECK(r && iter == iter_end);
-  }
+  test(length_cases, quetzal::newick::parser::length);
 }
 
-BOOST_AUTO_TEST_CASE(leaf_grammar)
+BOOST_FIXTURE_TEST_CASE(leaf_grammar, FixtureCases)
 {
-  std::vector<std::string> inputs =
-  {
-    "",
-    "A",
-    "B897kj"
-  };
-
-  for(const auto& input : inputs)
-  {
-    auto iter = input.begin();
-    auto iter_end = input.end();
-    bool r = phrase_parse(iter, iter_end, quetzal::newick::parser::leaf, x3::space );
-    BOOST_CHECK(r && iter == iter_end);
-  }
+  test(leaf_cases, quetzal::newick::parser::leaf);
 }
 
-BOOST_AUTO_TEST_CASE(branch_grammar)
+BOOST_FIXTURE_TEST_CASE(branch_grammar, FixtureCases)
 {
-  std::vector<std::string> inputs =
-  {
-    "",
-    "A",
-    "A38",
-    "A38:10.0"
-  };
-
-  for(const auto& input : inputs)
-  {
-    auto iter = input.begin();
-    auto iter_end = input.end();
-    bool r = phrase_parse(iter, iter_end, quetzal::newick::parser::branch, x3::space );
-    BOOST_CHECK(r && iter == iter_end);
-  }
+  test(branch_cases, quetzal::newick::parser::branch);
 }
 
-BOOST_AUTO_TEST_CASE(internal_grammar)
+BOOST_FIXTURE_TEST_CASE(internal_grammar, FixtureCases)
 {
-  std::vector<std::string> inputs =
-  {
-    "(,)",
-    "(A,B)F",
-    "(A:10,B:10)F"
-  };
-
-  for(const auto& input : inputs)
-  {
-    auto iter = input.begin();
-    auto iter_end = input.end();
-    bool r = phrase_parse(iter, iter_end, quetzal::newick::parser::internal, x3::space );
-    BOOST_CHECK(r && iter == iter_end);
-  }
+  test(internal_cases, quetzal::newick::parser::internal);
 }
 
-BOOST_AUTO_TEST_CASE(subtree_grammar)
+BOOST_FIXTURE_TEST_CASE(subtree_grammar, FixtureCases)
 {
-  std::vector<std::string> inputs =
-  {
-    "leaf",
-    "(in,ternal)",
-    "(,,(,))",
-    "(A,B,(C,D))",
-    "(A,B,(C,D)E)F",
-    "(:0.1,:0.2,(:0.3,:0.4):0.5)",
-    "(:0.1,:0.2,(:0.3,:0.4):0.5)",
-    "(A:0.1,B:0.2,(C:0.3,D:0.4):0.5)",
-    "(A:0.1,B:0.2,(C:0.3,D:0.4)E:0.5)F",
-    "((B:0.2,(C:0.3,D:0.4)E:0.5)F:0.1)A"
-  };
-
-  for(const auto& input : inputs)
-  {
-    auto iter = input.begin();
-    auto iter_end = input.end();
-    bool r = phrase_parse(iter, iter_end, quetzal::newick::parser::subtree, x3::space );
-    BOOST_CHECK(r && iter == iter_end);
-  }
+  test(subtree_cases, quetzal::newick::parser::subtree);
 }
 
-BOOST_AUTO_TEST_CASE(full_grammar)
+BOOST_FIXTURE_TEST_CASE(tree_standard_grammar, FixtureCases)
 {
-  std::vector<std::string> inputs =
-  {
-    ";",
-    "(,);",
-    "(,,(,));",
-    "(A,B,(C,D));",
-    "(A,B,(C,D)E)F;",
-    "(:0.1,:0.2,(:0.3,:0.4):0.5);",
-    "(:0.1,:0.2,(:0.3,:0.4):0.5):0.0;",
-    "(A:0.1,B:0.2,(C:0.3,D:0.4):0.5);",
-    "(A:0.1,B:0.2,(C:0.3,D:0.4)E:0.5)F;",
-    "((B:0.2,(C:0.3,D:0.4)E:0.5)F:0.1)A;"
-  };
-
-  for(const auto& input : inputs)
-  {
-    auto iter = input.begin();
-    auto iter_end = input.end();
-    bool r = phrase_parse(iter, iter_end, quetzal::newick::parser::tree, x3::space );
-    std::cout << quoted(input) << " \t-> " << std::boolalpha
-              << parse(begin(input), end(input), quetzal::newick::parser::tree) << std::endl;
-    BOOST_CHECK(r && iter == iter_end);
-  }
+  test(tree_standard_cases, quetzal::newick::parser::tree);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
