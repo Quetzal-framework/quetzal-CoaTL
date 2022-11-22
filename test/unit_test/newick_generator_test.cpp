@@ -13,7 +13,7 @@
 #include <boost/test/unit_test.hpp>
 namespace utf = boost::unit_test;
 
-#include <quetzal/io.h>
+#include <quetzal/io/newick/generator.h>
 #include <random>
 #include <concepts>
 
@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_SUITE( newick_formatting )
 
 BOOST_AUTO_TEST_CASE(newick_filters)
 {
-  namespace fmt = quetzal::format;
+  namespace fmt = quetzal::format::newick;
 
   std::string s1 = "(A:5,B:5)r;";
   std::string s2 = "(A:5,B[Comment]:5)r;";
@@ -59,9 +59,9 @@ BOOST_AUTO_TEST_CASE(newick_filters)
   BOOST_CHECK(fmt::is_balanced<fmt::square_bracket>::check("(A:5,B[Comment:5r;") == false );
   BOOST_CHECK(fmt::is_balanced<fmt::parenthesis>::check("(A:5,B[Comment:5))r;") == false );
 
-  BOOST_CHECK_EQUAL(fmt::newick::remove_comments_of_depth<0>::edit(s2) , s2);
-  BOOST_CHECK_EQUAL(fmt::newick::remove_comments_of_depth<1>::edit(s3) , s1);
-  BOOST_CHECK_EQUAL(fmt::newick::remove_comments_of_depth<2>::edit(s3) , s2);
+  BOOST_CHECK_EQUAL(fmt::remove_comments_of_depth<0>::edit(s2) , s2);
+  BOOST_CHECK_EQUAL(fmt::remove_comments_of_depth<1>::edit(s3) , s1);
+  BOOST_CHECK_EQUAL(fmt::remove_comments_of_depth<2>::edit(s3) , s2);
 }
 
 
@@ -104,7 +104,7 @@ BOOST_FIXTURE_TEST_CASE(no_label, Fixture_simple_tree)
 {
   namespace newick = quetzal::format::newick;
 
-  // Interfacing Quetzal formatter with non-quetzal tree types
+  // Interfacing Quetzal generator with non-quetzal tree types
   std::predicate<Node> auto has_parent = [](const Node& n){return n.parent != nullptr;};
   std::predicate<Node> auto has_children = [](const Node& n){return n.left != nullptr && n.right != nullptr;};
 
@@ -112,14 +112,14 @@ BOOST_FIXTURE_TEST_CASE(no_label, Fixture_simple_tree)
   newick::Formattable<Node> auto no_label = [](const Node& n ){return "";};
   newick::Formattable<Node> auto no_branch_length = [](const Node& n){return "";};
 
-  // We declare a formatter passing it the interfaces
-  auto formatter = newick::make_formatter(has_parent, has_children, no_label, no_branch_length);
+  // We declare a generator passing it the interfaces
+  auto generator = newick::make_generator(has_parent, has_children, no_label, no_branch_length);
 
   // We expose its interface to the user-defined class DFS algorithm
-  a.depth_first_search(formatter.pre_order(), formatter.in_order(), formatter.post_order());
+  a.depth_first_search(generator.pre_order(), generator.in_order(), generator.post_order());
 
   // We retrieve the formatted string
-  BOOST_CHECK_EQUAL(formatter.get(), "(,(,));");
+  BOOST_CHECK_EQUAL(generator.get(), "(,(,));");
 }
 
 
@@ -127,7 +127,7 @@ BOOST_FIXTURE_TEST_CASE(print_label, Fixture_simple_tree)
 {
   namespace newick = quetzal::format::newick;
 
-  // Interfacing Quetzal formatter with non-quetzal tree types
+  // Interfacing Quetzal generator with non-quetzal tree types
   std::predicate<Node> auto has_parent = [](const Node& n){return n.parent != nullptr;};
   std::predicate<Node> auto has_children = [](const Node& n){return n.left != nullptr && n.right != nullptr;};
 
@@ -137,14 +137,14 @@ BOOST_FIXTURE_TEST_CASE(print_label, Fixture_simple_tree)
   // This time we want to record the data field
   newick::Formattable<Node> auto print_label = [](const Node& n ){return std::string(1, n.data);};
 
-  // We configure a formatter passing it the interfaces
-  auto formatter = newick::make_formatter(has_parent, has_children, print_label, no_branch_length);
+  // We configure a generator passing it the interfaces
+  auto generator = newick::make_generator(has_parent, has_children, print_label, no_branch_length);
 
   // We expose its interface to the user-defined class DFS algorithm
-  a.depth_first_search(formatter.pre_order(), formatter.in_order(), formatter.post_order());
+  a.depth_first_search(generator.pre_order(), generator.in_order(), generator.post_order());
 
   // We retrieve the formatted string
-  BOOST_CHECK_EQUAL(formatter.get() , "(b,(d,e)c)a;");
+  BOOST_CHECK_EQUAL(generator.get() , "(b,(d,e)c)a;");
 }
 
 
@@ -152,7 +152,7 @@ BOOST_FIXTURE_TEST_CASE(randomized_labels, Fixture_simple_tree)
 {
   namespace newick = quetzal::format::newick;
 
-  // Interfacing Quetzal formatter with non-quetzal tree types
+  // Interfacing Quetzal generator with non-quetzal tree types
   std::predicate<Node> auto has_parent = [](const Node& n){return n.parent != nullptr;};
   std::predicate<Node> auto has_children = [](const Node& n){return n.left != nullptr && n.right != nullptr;};
 
@@ -168,14 +168,14 @@ BOOST_FIXTURE_TEST_CASE(randomized_labels, Fixture_simple_tree)
   // More sophisticated label formatting
   newick::Formattable<Node> auto label = [](const Node& n ){return std::string(1, n.data) + "[my[comment]]";};
 
-  // Create the formatter passing it the interfaces
-  auto formatter = newick::make_formatter(has_parent, has_children, label, branch_length);
+  // Create the generator passing it the interfaces
+  auto generator = newick::make_generator(has_parent, has_children, label, branch_length);
 
   // We expose its interface to the user-defined class DFS algorithm
-  a.depth_first_search(formatter.pre_order(), formatter.in_order(), formatter.post_order());
+  a.depth_first_search(generator.pre_order(), generator.in_order(), generator.post_order());
 
   // We don't have an expectation because of the randomness, but you can always print it
-  std::cout << formatter.get() << std::endl;
+  std::cout << generator.get() << std::endl;
 
 }
 
@@ -184,7 +184,7 @@ BOOST_FIXTURE_TEST_CASE(tree_align_format, Fixture_simple_tree)
 {
   namespace newick = quetzal::format::newick;
 
-  // Interfacing Quetzal formatter with non-quetzal tree types
+  // Interfacing Quetzal generator with non-quetzal tree types
   std::predicate<Node> auto has_parent = [](const Node& n){return n.parent != nullptr;};
   std::predicate<Node> auto has_children = [](const Node& n){return n.left != nullptr && n.right != nullptr;};
 
@@ -196,11 +196,11 @@ BOOST_FIXTURE_TEST_CASE(tree_align_format, Fixture_simple_tree)
   // Writes a root node branch length with a value of 0.0 and disable/remove nested comments
   using flavor = quetzal::format::newick::TreeAlign;
 
-  auto formatter = newick::make_formatter(has_parent, has_children, label, branch_length, flavor());
-  a.depth_first_search(formatter.pre_order(), formatter.in_order(), formatter.post_order());
+  auto generator = newick::make_generator(has_parent, has_children, label, branch_length, flavor());
+  a.depth_first_search(generator.pre_order(), generator.in_order(), generator.post_order());
 
   // We retrieve the formatted string
-  BOOST_CHECK_EQUAL(formatter.get() , "(b[my]:0.1,(d[my]:0.1,e[my]:0.1)c[my]:0.1)a[my]:0.0;");
+  BOOST_CHECK_EQUAL(generator.get() , "(b[my]:0.1,(d[my]:0.1,e[my]:0.1)c[my]:0.1)a[my]:0.0;");
 }
 
 

@@ -8,7 +8,8 @@
 *                                                                      *
 ***************************************************************************/
 
-#include "io/newick.h"
+#include "io/newick/parser.h"
+#include "io/newick/generator.h"
 
 
 namespace quetzal

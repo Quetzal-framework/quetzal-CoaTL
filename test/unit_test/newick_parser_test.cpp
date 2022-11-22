@@ -13,7 +13,7 @@
 #include <boost/test/unit_test.hpp>
 namespace utf = boost::unit_test;
 
-#include "quetzal/io/newick/tree.h"
+#include "quetzal/io/newick/parser.h"
 
 #include <iomanip>
 
@@ -138,37 +138,22 @@ BOOST_AUTO_TEST_SUITE( newick_parser )
 
 BOOST_FIXTURE_TEST_CASE(name_grammar, FixtureCases)
 {
-  test(name_cases, quetzal::newick::parser::name);
+  test(name_cases, quetzal::format::newick::parser::name);
 }
 
 BOOST_FIXTURE_TEST_CASE(length_grammar, FixtureCases)
 {
-  test(length_cases, quetzal::newick::parser::length);
+  test(length_cases, quetzal::format::newick::parser::length);
 }
 
 BOOST_FIXTURE_TEST_CASE(leaf_grammar, FixtureCases)
 {
-  test(leaf_cases, quetzal::newick::parser::leaf);
+  test(leaf_cases, quetzal::format::newick::parser::leaf);
 }
-
-// BOOST_FIXTURE_TEST_CASE(branch_grammar, FixtureCases)
-// {
-//   test(branch_cases, quetzal::newick::parser::branch);
-// }
-
-// BOOST_FIXTURE_TEST_CASE(internal_grammar, FixtureCases)
-// {
-//   test(internal_cases, quetzal::newick::parser::internal);
-// }
-
-// BOOST_FIXTURE_TEST_CASE(subtree_grammar, FixtureCases)
-// {
-//   test(subtree_cases, quetzal::newick::parser::subtree);
-// }
 
 BOOST_FIXTURE_TEST_CASE(tree_standard_grammar, FixtureCases)
 {
-  test(tree_standard_cases, quetzal::newick::parser::tree);
+  test(tree_standard_cases, quetzal::format::newick::parser::tree);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

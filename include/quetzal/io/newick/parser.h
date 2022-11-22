@@ -6,7 +6,7 @@
 #include <boost/fusion/include/vector.hpp>
 #include <boost/fusion/include/std_pair.hpp>
 
-namespace quetzal::newick
+namespace quetzal::format::newick
 {
   namespace parser
   {

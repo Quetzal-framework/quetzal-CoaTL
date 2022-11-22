@@ -9,7 +9,7 @@
 
 #include <iomanip>
 
-namespace quetzal::newick::ast
+namespace quetzal::format::newick::ast
 {
   using nodes = std::vector<struct node>;
 
@@ -36,6 +36,6 @@ namespace quetzal::newick::ast
   }
 } // namespace ast
 
-BOOST_FUSION_ADAPT_STRUCT(quetzal::newick::ast::node, children, name, length)
+BOOST_FUSION_ADAPT_STRUCT(quetzal::format::newick::ast::node, children, name, length)
 
 #endif
