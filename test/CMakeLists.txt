@@ -61,5 +61,5 @@ foreach(testSrc ${TUTO_SRCS})
   add_test(
     NAME ${testName}
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/bin
-    COMMAND ${testName})
+  COMMAND sh -c "$<TARGET_FILE:${testName}> > ${testName}.output" )
 endforeach(testSrc)

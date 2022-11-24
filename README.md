@@ -59,7 +59,7 @@ simulations, my intend is to propose general-purpose components for coalescence-
 ```
 conan install conan/conanfile.py --build=missing --install-folder=build -pr:b=conan/profiles/clang_13 -pr:h=conan/profiles/clang_13
 cd build
-cmake -D CMAKE_TOOLCHAIN_FILE=conan_paths.cmake ..
+cmake -D CMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake ..
 cmake --build .
 ctest
 ```

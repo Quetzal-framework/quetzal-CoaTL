@@ -92,7 +92,8 @@ struct FixtureCases
 
     this->tree_exotic_cases =
     {
-      "((B:0.2,(C:0.3,D:0.4)E:0.5)F:0.1)A;"
+      "(Space In,Leaf)Name",
+      "(Special,Symbol)%;"
     };
 
     this->tree_must_fail_cases =
@@ -154,6 +155,11 @@ BOOST_FIXTURE_TEST_CASE(leaf_grammar, FixtureCases)
 BOOST_FIXTURE_TEST_CASE(tree_standard_grammar, FixtureCases)
 {
   test(tree_standard_cases, quetzal::format::newick::parser::tree);
+}
+
+BOOST_FIXTURE_TEST_CASE(tree_exotic_grammar, FixtureCases)
+{
+  test(tree_exotic_cases, quetzal::format::newick::parser::tree);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
