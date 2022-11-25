@@ -15,7 +15,7 @@ jobs:
     # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
     # You can convert this to a matrix build if you need cross-platform coverage.
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
     - uses: actions/checkout@v2
@@ -24,19 +24,21 @@ jobs:
 
     - name: Get GCC-12
       run:   |
-             sudo apt update
-             sudo apt install gcc-12 g++-12
+             sudo apt update && sudo apt upgrade -y
+             sudo apt install -y gcc-12 g++-12
+             sudo apt install -y python3-pip
+             sudo apt install -y cmake
 
     - name: Conan installation
       id: conan
-      uses: turtlebrowser/get-conan@v1.0
+      uses: turtlebrowser/get-conan@main
 
     - name: Conan version
       run: echo "${{ steps.conan.outputs.version }}"
 
     - name: Conan profile configuration
       run: |
-           conan profile new quetzal-profile --detect
+           conan profile new quetzal-profile --detect --force
            conan profile update settings.compiler="gcc" quetzal-profile
            conan profile update settings.compiler.version=12 quetzal-profile
            conan profile update settings.compiler.cppstd=20 quetzal-profile
@@ -68,9 +70,11 @@ jobs:
       working-directory: ${{github.workspace}}/build
       run: ctest -C ${{env.BUILD_TYPE}}
 
-    - name: CMake test
-      working-directory: ${{github.workspace}}/build
-      run: ctest -C ${{env.BUILD_TYPE}}
+      # Update tutorials documentations based on tests output
+    - name: Markdown autodocs
+      uses: dineshsonachalam/markdown-autodocs@v1.0.7
+      with:
+        output_file_paths: '[./docs/tutorials/newick_parser.md]'
 
     - name: Doxygen documentation generation
       working-directory: ${{github.workspace}}/build
@@ -82,6 +86,7 @@ jobs:
 
     - name: Deploy to Github Pages
       uses: peaceiris/actions-gh-pages@v3
+
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./

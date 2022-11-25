@@ -8,13 +8,14 @@ class QuetzalCoaTLConan(ConanFile):
     exports_sources = "include/*", "CMakeLists.txt", "test/*", "cmake/*", "docs/*"
     no_copy_source = True
     generators = "cmake", "CMakeToolchain", "CMakeDeps"
-    requires = "boost/[>=1.78.0]", "gdal/[>=3.4.3]"
-    tool_requires = "cmake/3.24.2", "doxygen/1.9.4"
+    # zlib overriden because conflict on ubuntu 22.04 (gh-actions)
+    requires = "boost/1.80.0", "gdal/3.5.2", "zlib/1.2.13"
+    tool_requires = "cmake/3.22.0", "doxygen/1.9.2"
 
     def generate(self):
         cmake = CMakeDeps(self)
         # generate the config files for the tool require
-        cmake.build_context_activated = ["doxygen/1.9.4"]
+        cmake.build_context_activated = ["cmake/3.22.0","doxygen/1.9.2"]
         cmake.generate()
 
     def build(self): # this is not building a library, just tests

@@ -1,4 +1,5 @@
 #include "quetzal/polymorphism.h"
+#include <cassert>
 
 int main()
 {
