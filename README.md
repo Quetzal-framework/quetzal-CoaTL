@@ -62,6 +62,7 @@ cd build
 cmake -D CMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake ..
 cmake --build .
 ctest
+make docs
 ```
 
 ## With Conan + CMake
