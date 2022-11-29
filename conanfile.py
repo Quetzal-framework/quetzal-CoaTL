@@ -8,7 +8,7 @@ class QuetzalCoaTLConan(ConanFile):
     name            = "quetzal-CoaTL"
     url             = "https://github.com/Quetzal-framework/quetzal-CoaTL"
     license         = "GPLv3"
-    description     = "Quetzal Coalescence Template Library"
+    description     = "Coalescence library for C++"
     version         = "0.1"
 
     settings        = "os", "compiler", "arch", "build_type"
@@ -17,6 +17,18 @@ class QuetzalCoaTLConan(ConanFile):
 
     requires        = "boost/[>1.75 <1.80]", "gdal/[>=3.4.0]"     # on Macos Monterey clang 13
     #requires       = "boost/1.80.0", "gdal/3.5.2", "zlib/1.2.13" # on Ubuntu 22.04 for gh-actions
+
+    def generate(self):
+        tc = CMakeToolchain(self)
+        tc.generate()
+        deps = CMakeDeps(self)
+        deps.generate()
+
+    def build(self): # this is not building a library, just tests
+        cmake = CMake(self)
+        cmake.configure()
+        cmake.build()
+        cmake.test()
 
     def package(self):
         copy(self, "*.h*",

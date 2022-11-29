@@ -29,11 +29,8 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 ######################################
-#     CONAN dependencies management: using conan.tools.cmake
+#     CONAN dependencies management
 ######################################
-
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
 
 # Avoids Could not find a package configuration file provided by "mp-units"
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
