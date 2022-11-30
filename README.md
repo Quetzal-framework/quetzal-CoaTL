@@ -1,8 +1,8 @@
 # Quetzal-CoalTL <img align="right" width="200" src="https://github.com/Becheler/quetzal-CoalTL/blob/media/quetzal.png">
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/Becheler/quetzal-CoalTL)
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Website becheler.github.io](https://img.shields.io/website-up-down-green-red/https/becheler.github.io.svg)](https://quetzal-framework.github.io/quetzal-CoaTL/)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/Becheler/quetzal-CoalTL)](https://github.com/Quetzal-framework/quetzal-CoaTL/releases)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Becheler/quetzal-CoalTL)
 
 # C++ Template Libary for coalescence
