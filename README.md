@@ -16,7 +16,7 @@ code reuse.
 
 > :egg::egg::egg: If you are not a C++ programmer,
 > then you are unlikely to benefit directly from this library:
-> you may prefer instead the [etzal-EGGS simulators](https://github.com/Quetzal-framework/quetzal-EGGS).
+> you may prefer instead the [Quetzal-EGGS simulators](https://github.com/Quetzal-framework/quetzal-EGGS).
 
 # Documentation
 
@@ -36,7 +36,7 @@ The documentation lives [here](https://quetzal-framework.github.io/quetzal-CoaTL
 - CONTACT : abechele@umich.edu
 - WEBSITE : https://becheler.github.io/
 
-# How to cite:
+# How to cite
 
 Becheler, A, Coron, C, Dupas, S. The Quetzal Coalescence template library: A C++ programmers resource for integrating distributional, demographic and coalescent models. Mol Ecol Resour. 2019; 19: 788– 793. https://doi.org/10.1111/1755-0998.12992
 
