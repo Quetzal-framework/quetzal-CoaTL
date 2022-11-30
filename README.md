@@ -7,7 +7,7 @@
 
 # C++ Template Libary for coalescence
 
-Quetzal-CoalTL is a Modern C++ template scientific library for
+Quetzal-CoalTL is a C++20 template scientific library for
 simulating the coalescence of gene genealogies in explicit landscapes or
 phylogenetic networks.
 
