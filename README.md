@@ -14,7 +14,9 @@ phylogenetic networks.
 Its aim is to standardize a library of reusable STL-compatible components to encourage
 code reuse.
 
-> :egg::egg::egg:  If you are not a C++ programmer,
+> :egg::egg::egg:
+>
+> If you are not a C++ programmer,
 > then you are unlikely to benefit directly from this library: instead
 > you may prefer the Quetzal-EGGS simulators,
 > please read [this page](https://github.com/Quetzal-framework/quetzal-EGGS).
