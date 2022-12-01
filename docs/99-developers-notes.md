@@ -14,15 +14,7 @@ make docs
 ## Packaging
 
 ```bash
-cd build
-conan create ..
-conan upload -r quetzal quetzal-CoaTL/0.1 --all
-```
-
-```
-conan create . test/demo -pr:b=conan/profiles/clang_13 -pr:h=conan/profiles/clang_13 --test-folder=conan/test_package
-```
-
-```
-export CC=`which gcc` && export CXX=`which g++`
+conan remote add becheler-conan https://arnaudbecheler.jfrog.io/artifactory/api/conan/becheler-conan
+conan create . test/demo -pr:b=conan/profiles/clang_13 -pr:h=conan/profiles/clang_13
+conan upload quetzal-CoaTL/0.1@demo/testing --all -r=becheler-conan
 ```
