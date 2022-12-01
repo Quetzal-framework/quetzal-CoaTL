@@ -152,4 +152,4 @@ cmake --build . --config Release
 ```
 @note
 If you want to build the library tests, examples and documentation, please refer to
-the [developer's notes section](99-developers-notes).
+the Developer's Notes section.

@@ -1,4 +1,7 @@
-### Build process
+# Developer's notes
+
+## Build process
+
 ```bash
 conan install conanfile.py --build=missing --install-folder=build -pr:b=conan/profiles/clang_13 -pr:h=conan/profiles/clang_13
 cd build
@@ -8,7 +11,7 @@ ctest
 make docs
 ```
 
-### Packaging
+## Packaging
 
 ```bash
 cd build
