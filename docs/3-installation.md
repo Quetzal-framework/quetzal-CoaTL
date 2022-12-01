@@ -1,11 +1,10 @@
 # Installation and Usage
 
-> **Note**
->
->  Quetzal-CoaTL uses C++20 features: it requires the latest C++ compilers.
->  The following compilers (or newer) are supported:
-> - gcc-12
-> - clang-13
+@note
+Quetzal-CoaTL uses C++20 features: it requires the latest C++ compilers.
+The following compilers (or newer) are supported:
+- gcc-12
+- clang-13
 
 ## Structure and Dependencies
 
