@@ -12,15 +12,15 @@ This repository contains three independent CMake-based projects:
 
 * `./src`
   - header-only project containing whole Quetzal-CoaTL library
-  - this library depends on:
+  - this library depends on the following external dependencies:
     - [GDAL](https://gdal.org/) for geographic data manipulation
     - [Boost](https://www.boost.org/doc/libs/master/index.html) for general purpose C++ utilities
 * `.`
-  - project used as an entry point for library development
-  - it wraps `./src` project with examples and tests
-  - if you want to build the documentation, the following are required:
-    - [Doxygen](https://www.doxygen.nl/) to generate documentation from annotated C++ sources
-* `./test_package`
+  - entry point for library development
+  - it wraps `./src` project with a cmake project, examples, tests and docs.
+  - if you want to build the documentation without Conan, [Doxygen](https://www.doxygen.nl/)
+    is required to generate the documentation from the annotated C++ sources.
+* `.conan/test_package`
   - installs the library and verifies Conan packaging.
 
 ---
@@ -87,7 +87,7 @@ Depending on your needs and constraints, there are several ways to reuse the lib
 
 ### Copy
 
-Since Quetzal-CoaTL is a header-only library, you can copy-paste the `include` subdirectory
+Since Quetzal-CoaTL is a header-only library, you can copy-paste the `./src` subdirectory
 to your source tree.
 
 @note
@@ -99,7 +99,7 @@ passed to the compiler.
 
 If you copy the entire Quetzal-CoaTL repository to your source tree, you can reuse
 the CMake targets defined by the library. To do so you should use `CMakeLists.txt` file
-from the `./src` directory:
+from the `./` directory:
 
 ```cmake
 add_subdirectory(<path_to_quetzal_folder>/src)
@@ -150,3 +150,6 @@ conan install .. -pr <your_conan_profile> -s compiler.cppstd=20 -b=missing
 cmake .. -G "Ninja Multi-Config" -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake
 cmake --build . --config Release
 ```
+@note
+If you want to build the library tests, examples and documentation, please refer to
+the [developer's notes section](99-developers-notes).

@@ -1,6 +1,6 @@
 ### Build process
 ```bash
-conan install conan/conanfile.py --build=missing --install-folder=build -pr:b=conan/profiles/clang_13 -pr:h=conan/profiles/clang_13
+conan install conanfile.py --build=missing --install-folder=build -pr:b=conan/profiles/clang_13 -pr:h=conan/profiles/clang_13
 cd build
 cmake -D CMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake ..
 cmake --build .
