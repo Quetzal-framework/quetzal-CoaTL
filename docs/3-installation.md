@@ -24,6 +24,7 @@ This repository contains three independent CMake-based projects:
 * `./test_package`
   - installs the library and verifies Conan packaging.
 
+---
 ## Obtaining Dependencies
 
 Quetzal-CoaTL assumes that most of the dependencies will be retrieved by the Conan Package Manager.
@@ -37,6 +38,7 @@ system generator but the level of abstraction it offers allows us to consider
 it as a cross-platform build system
 Users can build, test, and install packages with `cmake` and `ctest` commands.
 
+@note
 Please refer to the [CMake official documentation](https://cmake.org/install/)
 for installation on your specific OS.
 
@@ -47,6 +49,7 @@ manager with C/C++ projects. We chose it because it interfaces with CMake in a n
 way. Conan will handle the dependencies and version conflicts management, and pass
 the paths of the installed dependencies to CMake so it can build the project.
 
+@note
 Please refer to the [Conan official documentation](https://docs.conan.io/en/latest/installation.html)
 for installation on your specific OS.
 
@@ -73,11 +76,12 @@ compiler.cppstd=20
 build_type=Release
 ```
 
-> Quetzal-CoaTL requires C++20 to be activated either in a Conan profile or with Conan command line.
-> By setting the option once for all in the profile, you will avoid typing `-s compiler.cppstd=20`
-> every time you run a Conan command.
+@note
+Quetzal-CoaTL requires C++20 to be activated either in a Conan profile or with Conan command line.
+By setting the option once for all in the profile, you will avoid typing `-s compiler.cppstd=20`
+every time you run a Conan command.
 
-
+---
 ## Installation and Reuse
 
 Depending on your needs and constraints, there are several ways to reuse the library code.
@@ -87,9 +91,10 @@ Depending on your needs and constraints, there are several ways to reuse the lib
 Since Quetzal-CoaTL is a header-only library, you can copy-paste the `include` subdirectory
 to your source tree.
 
-> :warning: If you go this way, you will be responsible for ensuring that the dependencies are installed,
-> that the header files can be located at build-time and that the right flags are
-> passed to the compiler.
+@note
+If you go this way, you will be responsible for ensuring that the dependencies are installed,
+that the header files can be located at build-time and that the right flags are
+passed to the compiler.
 
 ### Copy + CMake
 
@@ -103,8 +108,9 @@ add_subdirectory(<path_to_quetzal_folder>/src)
 target_link_libraries(<your_target> <PUBLIC|PRIVATE|INTERFACE> quetzal::quetzal)
 ```
 
-> :warning: You are still responsible to ensure that the dependencies are installed
-> and that the header files can be located at build-time.
+@note
+You are still responsible to ensure that the dependencies are installed
+and that the header files can be located at build-time.
 
 ### Conan + CMake
 
