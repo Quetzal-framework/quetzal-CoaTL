@@ -1,6 +1,17 @@
 cmake_minimum_required(VERSION 3.12)
 set(CMAKE_CXX_STANDARD 20)
 
+set(CMAKE_FIND_PACKAGE_PREFER_CONFIG TRUE)
+
+# Include Boost as an imported target: 1.73 important for compilation with gcc 10 and C++20
+find_package(Boost 1.79 REQUIRED COMPONENTS unit_test_framework filesystem serialization)
+if(Boost_FOUND)
+  include_directories(${Boost_INCLUDE_DIRS}) # Find Boost headers only
+ENDIF()
+
+# Global approach Gdal
+find_package(GDAL REQUIRED)
+
 ### UNIT TEST
 file(GLOB TEST_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} unit_test/*.cpp)
 foreach(testSrc ${TEST_SRCS})
@@ -9,7 +20,7 @@ foreach(testSrc ${TEST_SRCS})
   # Add compile target
   add_executable(${testName} ${testSrc})
   # Link to targets and dependencies
-  target_link_libraries(${testName} boost::boost GDAL::GDAL)
+  target_link_libraries(${testName} quetzal::quetzal boost::boost GDAL::GDAL)
   # Specifies include directories to use when compiling the target
   target_include_directories(
     ${testName} PRIVATE
@@ -18,7 +29,7 @@ foreach(testSrc ${TEST_SRCS})
   # Add it to test execution
   add_test(
     NAME ${testName}
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test
     COMMAND ${testName} )
 endforeach(testSrc)
 
@@ -30,7 +41,7 @@ foreach(testSrc ${INTEGRATION_SRCS})
   # Add compile target
   add_executable(${testName} ${testSrc})
   # Link to targets and dependencies
-  target_link_libraries(${testName} boost::boost GDAL::GDAL)
+  target_link_libraries(${testName} quetzal::quetzal boost::boost GDAL::GDAL)
   # Specifies include directories to use when compiling the target
   target_include_directories(
     ${testName} PRIVATE
@@ -39,7 +50,7 @@ foreach(testSrc ${INTEGRATION_SRCS})
   # Add it to test execution
   add_test(
     NAME ${testName}
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test
     COMMAND ${testName} ${CMAKE_CURRENT_SOURCE_DIR}/data/europe_temp.tif)
 endforeach(testSrc)
 
@@ -51,7 +62,7 @@ foreach(testSrc ${TUTO_SRCS})
   # Add compile target
   add_executable(${testName} ${testSrc})
   # Link to Boost libraries AND other targets and dependencies
-  target_link_libraries(${testName} boost::boost GDAL::GDAL)
+  target_link_libraries(${testName} quetzal::quetzal boost::boost GDAL::GDAL)
   # Specifies include directories to use when compiling a given target
   target_include_directories(
     ${testName} PRIVATE
@@ -60,6 +71,6 @@ foreach(testSrc ${TUTO_SRCS})
   # Add it to test execution
   add_test(
     NAME ${testName}
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test
   COMMAND sh -c "$<TARGET_FILE:${testName}> > ${testName}.output" )
 endforeach(testSrc)

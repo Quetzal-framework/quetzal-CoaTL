@@ -12,7 +12,7 @@ class QuetzalCoaTLConan(ConanFile):
     version         = "0.1"
 
     settings        = "os", "compiler", "arch", "build_type"
-    exports_sources = "include/*", "CMakeLists.txt", "test/*", "cmake/*", "docs/*"
+    exports_sources = "src/*", "CMakeLists.txt", "test/*", "cmake/*", "docs/*"
     no_copy_source  = True
 
     requires        = "boost/[>1.75 <1.80]", "gdal/[>=3.4.0]"     # on Macos Monterey clang 13
