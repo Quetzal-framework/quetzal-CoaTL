@@ -14,10 +14,8 @@
 #include <random>
 #include <map>
 
-namespace quetzal {
-
-//! Sampling schemes for Pseudo-Observed Data generation
-namespace sampling_scheme {
+namespace quetzal::sampling
+{
 
   //! Base class for sampling schemes parameter classes
   class param_base_class {
@@ -150,7 +148,7 @@ auto make_unif_constrained_sampler(std::vector<X> const& space, N pop_size, unsi
   return constrained_sampling<X, N>(space, uniform_weighting, pop_size, n);
 }
 
-} // namespace sampling_scheme
+} // namespace sampling
 } // namespace quetzal
 
 #endif

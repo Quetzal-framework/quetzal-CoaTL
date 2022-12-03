@@ -19,7 +19,7 @@
 #include <boost/math/special_functions/binomial.hpp>
 #include <map>
 
-namespace quetzal
+namespace quetzal::simulator
 {
   /**
   * @brief Discrete-time coalescence simulator in a discrete spatially explicit landscape.
@@ -327,6 +327,6 @@ namespace quetzal
       }
     }
   }; // end ForwardBackwardSpatiallyExplicit
-} // namespace quetzal
+} // namespace quetzal::simulator
 
 #endif

@@ -17,7 +17,8 @@
 
 #include <boost/math/special_functions/binomial.hpp>
 
-namespace quetzal {
+namespace quetzal::simulator
+{
 
 /**
 * @brief Discrete time simulation in a Wright-Fisher Population.
@@ -185,6 +186,6 @@ public:
   }
 };  // End DiscreteTimeWrightFisher
 
-} // namespace quetzal
+} // namespace quetzal::simulator
 
   #endif

@@ -10,3 +10,9 @@
 
 
 #include "simulator/simulator.h"
+
+///
+/// @brief Standard simulators of genetic diversity
+///
+namespace quetzal::simulator
+{}
