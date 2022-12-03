@@ -18,7 +18,7 @@
 namespace quetzal
 {
   ///
-  /// @brief Generic components for simulation of coalescent trees
+  /// @brief Simulation of coalescent trees
   ///
   namespace coalescence
   {

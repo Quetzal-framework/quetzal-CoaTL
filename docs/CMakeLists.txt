@@ -12,8 +12,8 @@ if(DOXYGEN_FOUND)
   set(DOXYGEN_PROJECT_BRIEF "The Coalescence Template Library")
   set(DOXYGEN_PROJECT_LOGO "quetzal-coaltl-fa.png")
   set(DOXYGEN_USE_MDFILE_AS_MAINPAGE "mainpage.md")
-  set(DOXYGEN_EXCLUDE_PATTERNS "README.md" "doxygen-awesome-css" "*env*")
- 
+  set(DOXYGEN_EXCLUDE_PATTERNS "README.md" "doxygen-awesome-css" "*env*" "conanfile.*")
+
   set(DOXYGEN_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/docs")
 
   set(DOXYGEN_HTML_EXTRA_STYLESHEET "doxygen-awesome-css/doxygen-awesome.css"
@@ -29,6 +29,8 @@ if(DOXYGEN_FOUND)
   set(DOXYGEN_INLINE_INHERITED_MEMB YES)
   set(DOXYGEN_EXAMPLE_PATH "examples")
   set(DOXYGEN_USE_MATHJAX YES)
+  set(DOXYGEN_WARN_IF_UNDOCUMENTED NO)
+  SET(DOXYGEN_HTML_COLORSTYLE LIGHT)
   # this target will only be built if specifically asked to.
   # run "make docs" to create the doxygen documentation
   doxygen_add_docs(

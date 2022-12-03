@@ -15,9 +15,7 @@
 #include <vector>
 #include <random>
 
-namespace quetzal
-{
-	namespace random
+namespace quetzal::utils::random
 	{
 		/*!
 		* \brief Sampling (non) arithmetic values in discrete probability distribution.
@@ -147,6 +145,5 @@ namespace quetzal
 			}
 		}; // end DiscreteDistribution
 	} // namespace random
-} // namespace quetzal
 
 #endif

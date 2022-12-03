@@ -12,26 +12,25 @@
 
 using namespace units;
 
-namespace fps {
+// namespace fps {
+//
+// struct foot : named_unit<foot, "ft"> {};
+// struct yard : named_scaled_unit<yard, "yd", ratio(3), foot> {};
+//
+// struct dim_length : base_dimension<"L", foot> {};
+//
+// template<UnitOf<dim_length> U, Representation Rep = double>
+// using length = quantity<dim_length, U, Rep>;
+//
+// }  // namespace fps
 
-struct foot : named_unit<foot, "ft"> {};
-struct yard : named_scaled_unit<yard, "yd", ratio(3), foot> {};
 
-struct dim_length : base_dimension<"L", foot> {};
+///
+/// @brief Compile-time unit quantities for coalescence
+///
+namespace quetzal::units
+{}
 
-template<UnitOf<dim_length> U, Representation Rep = double>
-using length = quantity<dim_length, U, Rep>;
-
-}  // namespace fps
-
-
-// namespace quetzal
-// {
-//   ///
-//   /// @brief Compile-time unit quantities for coalescence
-//   ///
-//   namespace coalescence_units
-//   {
 //     using namespace units;
 //     ///
 //     /// @brief New kind to represent probability as a more specific usage of a dimensionless quantity

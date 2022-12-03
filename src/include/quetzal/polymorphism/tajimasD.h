@@ -17,7 +17,7 @@
 #include <cmath> // sqrt
 #include <iostream>
 
-namespace quetzal::polymophism::statistics
+namespace quetzal::polymorphism::statistics
 {
   ///
   /// @brief Class to compute Tajima's D

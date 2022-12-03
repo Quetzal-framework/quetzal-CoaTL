@@ -6,7 +6,7 @@
 * the Free Software Foundation; either version 2 of the License, or    *
 * (at your option) any later version.                                  *
 *                                                                      *
-***************************************************************************/ 
+***************************************************************************/
 
 #ifndef ZIP_RANGE_H
 #define ZIP_RANGE_H

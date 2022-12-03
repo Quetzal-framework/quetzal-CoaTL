@@ -30,7 +30,7 @@ Removing cpp inclusion
 #include <cassert>
 #include <algorithm>
 
-namespace quetzal
+namespace quetzal::polymorphism
 {
   namespace fuzzy_transfer_distance
   {

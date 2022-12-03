@@ -12,8 +12,8 @@
 #define __ALLELE_H_INCLUDED__
 
 
-namespace quetzal{
-namespace genetics{
+namespace quetzal::format::genetics
+{
 
 template<typename Value>
 class Allele
@@ -32,7 +32,6 @@ private:
 	value_type m_allelic_state;
 };
 
-}
 }
 
 #endif

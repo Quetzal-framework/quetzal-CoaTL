@@ -17,7 +17,7 @@
 	 - In Single Nuclear Polymorphism data, allelic states are A, T, G, C
 ***************************************************************************/
 
-namespace quetzal{
+namespace quetzal::format{
 namespace genetics{
 
 	template<typename T>

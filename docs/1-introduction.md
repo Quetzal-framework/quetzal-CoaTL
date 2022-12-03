@@ -1,27 +1,33 @@
 
 # Introduction
 
-Coalescence is a mathematical abstraction that is useful for solving many types
-of problems in computational population genetics. Consequently, the abstractions of
-coalescence theory must also be represented in computer programs. A standardized
-generic interface for manipulating concepts like demographic history, reproduction,
-migration, lineages, mergers, mutation, recombination is of utmost importance to
-encourage reuse of algorithms and data structures. This library intends to do this
-for the C++ language.
+## Motivations
 
-Part of the Quetzal Coalescence Template Library is a generic interface that allows access
-and manipulation of demographic and genealogical graph structures and of data
-generation models that operate on these structures, but hides the details of the implementation.
+:seedling: Infering the evolutionary history of populations from genetic datasets
+an be a complex task. In some settings it is
+actually a mathematically intractable problem, so simulations methods are needed.
 
-This is an *“open”* interface in the sense that any code that implements this
-interface will be interoperable with the Quetzal generic algorithms.
+Existing softwares like
+[SPLATCHE](http://splatche.com/),
+[simcoal2](http://cmpg.unibe.ch/software/simcoal2/),
+[egglib](http://mycor.nancy.inra.fr/egglib/index.html), or
+[msprime](http://msprime.readthedocs.io/en/stable/index.html) are very useful and
+user-friendly resources that should be used whenever possible to achieve this task.
 
-Quetzal-CoaTL provides some general purpose classes that conform to these interfaces,
-but they are not meant to be the “only” compatible classes; users will certainly
-come with different class implementations that are better for certain situations.
+However if you are:
+- a phD student working on developing some border case simulation model, or
+- a post-doctoral researcher uncomfortable with some assumptions/constraints of the existing
+softwares, or
+- a video-game company looking for implementing realistic
+models of evolutions :eyes: ,
+you will surely consider to build your own program.
 
-We believe that the main contribution of
-the Quetzal library is the formulation of these interfaces.
+And that's why we need something that looks like a standard pile of components.
+
+:v: Quetzal can help you doing so by offering atomic components (structures,
+algorithms, concepts) that can be reused to build a new program.
+The template mechanism allow to adapt them efficiently to each particular situation
+you may encounter.
 
 The Quetzal-CoaTL interfaces and components are generic, in the same sense as the
 Standard Template Library (STL) [2].
@@ -30,13 +36,16 @@ Standard Template Library (STL) [2].
 
 The Quetzal-CoaTL library is generic in 3 ways:
 
-### 1 - Algorithm and Data-Structure Interoperability
+### 1 - Algorithm and Data-Structure Interoperability
 
 Each algorithm is written to be **data-structure agnostic**.
 
 This allows a single function to operate on many different classes of data structures.
+In other words you can import a **quetzal** algorithm in your code without being invaded by new data-structures.
+
 This decoupling has a huge impact on the code size, falling from \f$O(M*N)\f$ to \f$O(M+N)\f$, \f$M\f$ being the number of algorithms and \f$N\f$ the number of data structures.
 
+@note
 This is important for researchers in computational biology:
 for 20 algorithms and 5 data-structures, it is the difference between having to write, debug, document and maintain 100 functions versus 25. And this difference grows faster and faster with the number of algorithms and data-structures.
 

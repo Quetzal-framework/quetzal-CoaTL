@@ -10,3 +10,9 @@
 
 
 #include "geography/DiscreteLandscape.h"
+
+///
+/// @brief Geospatial data formatting and processing
+///
+namespace quetzal::geography
+{}

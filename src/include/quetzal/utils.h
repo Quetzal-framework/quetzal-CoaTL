@@ -12,3 +12,16 @@
 #include "utils/matrix_operation.h"
 #include "utils/sampling_scheme.h"
 #include "utils/PointWithId.h"
+
+#include "utils/random.h"
+
+///
+/// @brief Miscellaneous details
+///
+namespace quetzal::utils
+{
+  ///
+  /// @brief Random sampling processes
+  ///
+  namespace random{}
+}

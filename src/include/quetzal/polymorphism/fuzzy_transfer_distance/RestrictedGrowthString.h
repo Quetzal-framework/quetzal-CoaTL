@@ -15,7 +15,7 @@
 #include <vector>
 #include <iostream>
 
-namespace quetzal
+namespace quetzal::polymorphism
 {
 	namespace fuzzy_transfer_distance
 	{

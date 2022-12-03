@@ -20,7 +20,7 @@
 
 #include "RestrictedGrowthString.h"
 
-namespace quetzal
+namespace quetzal::polymorphism
 {
 	namespace fuzzy_transfer_distance
 	{

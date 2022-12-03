@@ -18,7 +18,7 @@
 #include <assert.h>
 #include <numeric> // std::accumulate
 
-namespace quetzal{
+namespace quetzal::format{
 namespace genetics{
 
 template<typename Space, typename Individual>

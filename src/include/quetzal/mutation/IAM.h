@@ -8,9 +8,12 @@
 *                                                                      *
 ***************************************************************************/
 
-#include "expressive/expressive.h"
+#ifndef __IAM_H_INCLUDED__
+#define __IAM_H_INCLUDED__
 
-///
-/// @brief Mathematical expressions of spatio-temporal quantities.
-///
-namespace quetzal::expressive {}
+namespace quetzal::mutation::IAM
+{
+  class cell;
+}
+
+#endif

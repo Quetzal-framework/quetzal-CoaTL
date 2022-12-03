@@ -32,7 +32,7 @@ Modified by Arnaud Becheler, 2016, removing cpp include.
 #include <cmath>
 #include <limits>
 
-namespace quetzal
+namespace quetzal::polymorphism
 {
   namespace fuzzy_transfer_distance
   {

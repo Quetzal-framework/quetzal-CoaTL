@@ -16,7 +16,7 @@
 
 namespace quetzal {
 
-//! Generic sampling schemes simulation
+//! Sampling schemes for Pseudo-Observed Data generation
 namespace sampling_scheme {
 
   //! Base class for sampling schemes parameter classes

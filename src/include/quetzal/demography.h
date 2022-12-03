@@ -16,7 +16,7 @@
 namespace quetzal
 {
   ///
-  /// @brief Generic components for simulation, storage and access of spatial demographic quantities.
+  /// @brief Simulation, storage and access of spatial demographic quantities.
   ///
   namespace demography
   {

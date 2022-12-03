@@ -9,7 +9,7 @@
 ***************************************************************************/
 
 
-#include "genetics/marker_traits.h"
-#include "genetics/Allele.h"
-#include "genetics/DiploidIndividual.h"
-#include "genetics/SpatialGeneticSampleLoader.h"
+#include "io/genetics/marker_traits.h"
+#include "io/genetics/Allele.h"
+#include "io/genetics/DiploidIndividual.h"
+#include "io/genetics/SpatialGeneticSampleLoader.h"

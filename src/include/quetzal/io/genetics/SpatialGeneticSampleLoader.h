@@ -28,7 +28,7 @@ using std::ifstream;
 using std::string;
 using std::cerr;
 
-namespace quetzal {
+namespace quetzal::format {
 namespace genetics {
 
 template< typename Space, typename Marker>

@@ -29,7 +29,7 @@
 template<typename T>
 bool operator==(const boost::numeric::ublas::matrix<T>& m, const boost::numeric::ublas::matrix<T>& n);
 
-namespace quetzal
+namespace quetzal::polymorphism
 {
 	namespace fuzzy_transfer_distance
 	{

@@ -14,8 +14,8 @@
 #include <assert.h>
 #include <unordered_map>
 
-namespace quetzal{
-namespace random {
+namespace quetzal::utils::random
+{
 
  template<class...T>
  class TransitionKernel;
@@ -252,6 +252,5 @@ public:
 };
 
 } // namespace random
-} // namespace quetzal
 
 #endif

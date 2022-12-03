@@ -15,7 +15,7 @@
 #include <string>
 #include <set>
 
-namespace quetzal{
+namespace quetzal::format{
 namespace genetics{
 
 template<typename Allele>

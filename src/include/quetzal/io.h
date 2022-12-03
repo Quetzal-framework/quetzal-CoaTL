@@ -10,12 +10,12 @@
 
 #include "io/newick/parser.h"
 #include "io/newick/generator.h"
-
+#include "io/genetics/wrapper.h"
 
 namespace quetzal
 {
   ///
-  /// @brief Generic components for formatting
+  /// @brief Parsers and generators for input/output.
   ///
   namespace format
   {
@@ -23,6 +23,12 @@ namespace quetzal
     /// @brief Generic components for generating Newick strings
     ///
     namespace newick
+    {}
+
+    ///
+    /// @brief Data-structures for genetic datasets
+    ///
+    namespace genetics
     {}
   }
 }

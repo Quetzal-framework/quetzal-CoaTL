@@ -8,8 +8,8 @@
 *                                                                      *
 ***************************************************************************/
 
-#ifndef __DISPERSAL_KERNELS_H_INCLUDED__
-#define __DISPERSAL_KERNELS_H_INCLUDED__
+#ifndef __DISPERSAL_KERNELS_HPP_INCLUDED__
+#define __DISPERSAL_KERNELS_HPP_INCLUDED__
 
 #include <cmath> // M_PI std::gamma std::pow
 #include <cassert>
@@ -20,17 +20,27 @@ namespace quetzal
   {
     namespace dispersal_kernel
     {
+      /// @brief Gaussian dispersal kernel
+      ///
+      /// @ingroup demography
+      ///
       struct Gaussian
       {
+        /// @brief Gaussian dispersal kernel parameter
         class param_type
         {
           double _a;
         public:
+
+          /// @brief Gaussian dispersal kernel parameter constructor
           param_type (double a): _a(a) {};
+
+          /// @brief Get Gaussian dispersal kernel parameter
           double a() const {return _a;}
           void a(double value) { _a = value ;}
         };
 
+        /// @brief Gaussian dispersal kernel parameter pdf
         static double pdf(double r, param_type const& p)
         {
           double a = p.a();
@@ -39,7 +49,10 @@ namespace quetzal
         }
       };
 
-
+      /// @brief Logistic dispersal kernel
+      ///
+      /// @ingroup demography
+      ///
       struct Logistic
       {
         class param_type
@@ -63,6 +76,10 @@ namespace quetzal
 
       };
 
+      /// @brief NegativeExponential dispersal kernel
+      ///
+      /// @ingroup demography
+      ///
       struct NegativeExponential
       {
         class param_type
@@ -82,6 +99,10 @@ namespace quetzal
 
       };
 
+      /// @brief ExponentialPower dispersal kernel
+      ///
+      /// @ingroup demography
+      ///
       struct ExponentialPower
       {
         class param_type
@@ -106,6 +127,10 @@ namespace quetzal
       };
 
 
+      /// @brief TwoDt dispersal kernel
+      ///
+      /// @ingroup demography
+      ///
       struct TwoDt
       {
         class param_type
@@ -128,6 +153,10 @@ namespace quetzal
         }
       };
 
+      /// @brief InversePowerLaw dispersal kernel
+      ///
+      /// @ingroup demography
+      ///
       struct InversePowerLaw
       {
         class param_type
@@ -150,6 +179,10 @@ namespace quetzal
         }
       };
 
+      /// @brief UndefinedInversePowerLaw dispersal kernel
+      ///
+      /// @ingroup demography
+      ///
       struct UndefinedInversePowerLaw
       {
         class param_type
@@ -172,7 +205,10 @@ namespace quetzal
         }
       };
 
-
+      /// @brief Lognormal dispersal kernel
+      ///
+      /// @ingroup demography
+      ///
       struct Lognormal
       {
         class param_type
@@ -195,6 +231,10 @@ namespace quetzal
         }
       };
 
+      /// @brief GaussianMixture dispersal kernel
+      ///
+      /// @ingroup demography
+      ///
       struct GaussianMixture
       {
         class param_type

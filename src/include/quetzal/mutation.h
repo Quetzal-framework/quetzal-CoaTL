@@ -8,9 +8,26 @@
 *                                                                      *
 ***************************************************************************/
 
-#include "expressive/expressive.h"
+#include "mutation/JC69.h"
+
 
 ///
-/// @brief Mathematical expressions of spatio-temporal quantities.
+/// @brief Update mutational states along a gene genealogy.
 ///
-namespace quetzal::expressive {}
+namespace quetzal::mutation
+{
+  ///
+  /// @brief Jukes and Cantor 1969: implest substitution model
+  ///
+  namespace JC69 {}
+
+  ///
+  /// @brief Infinite Allele Model, mainly for protein polymorphism
+  ///
+  namespace IAM {}
+
+  ///
+  /// @brief Infinite Site Model, mainly for DNA polymorphism
+  ///
+  namespace ISM {}
+}
