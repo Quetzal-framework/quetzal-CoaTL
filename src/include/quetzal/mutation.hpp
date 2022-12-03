@@ -8,21 +8,26 @@
 *                                                                      *
 ***************************************************************************/
 
-#define BOOST_TEST_MODULE extended_newick_test
-
-#include <boost/test/unit_test.hpp>
-namespace utf = boost::unit_test;
-
-#include <quetzal/io.hpp>
-
-BOOST_AUTO_TEST_SUITE( extended_newick_formatting )
+#include "mutation/JC69.hpp"
 
 
-BOOST_AUTO_TEST_CASE(extended_newick_filters)
+///
+/// @brief Update mutational states along a gene genealogy.
+///
+namespace quetzal::mutation
 {
-  std::string s = "((1, ((2, (3, (4)Y#H1)g)e, (((Y#H1, 5)h, 6)f)X#H2)c)a, ((X#H2, 7)d, 8)b)r;";
+  ///
+  /// @brief Jukes and Cantor 1969: implest substitution model
+  ///
+  namespace JC69 {}
 
+  ///
+  /// @brief Infinite Allele Model, mainly for protein polymorphism
+  ///
+  namespace IAM {}
+
+  ///
+  /// @brief Infinite Site Model, mainly for DNA polymorphism
+  ///
+  namespace ISM {}
 }
-
-
-BOOST_AUTO_TEST_SUITE_END()

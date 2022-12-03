@@ -8,21 +8,11 @@
 *                                                                      *
 ***************************************************************************/
 
-#define BOOST_TEST_MODULE extended_newick_test
 
-#include <boost/test/unit_test.hpp>
-namespace utf = boost::unit_test;
+#include "utils/sampling_scheme.hpp"
 
-#include <quetzal/io.hpp>
-
-BOOST_AUTO_TEST_SUITE( extended_newick_formatting )
-
-
-BOOST_AUTO_TEST_CASE(extended_newick_filters)
-{
-  std::string s = "((1, ((2, (3, (4)Y#H1)g)e, (((Y#H1, 5)h, 6)f)X#H2)c)a, ((X#H2, 7)d, 8)b)r;";
-
-}
-
-
-BOOST_AUTO_TEST_SUITE_END()
+///
+/// @brief Sampling schemes for Pseudo-Observed Data generation
+///
+namespace quetzal::sampling
+{}

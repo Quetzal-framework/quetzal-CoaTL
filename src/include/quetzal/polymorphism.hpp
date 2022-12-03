@@ -8,21 +8,23 @@
 *                                                                      *
 ***************************************************************************/
 
-#define BOOST_TEST_MODULE extended_newick_test
+#include "polymorphism/tajimasD.hpp"
+#include "polymorphism/fuzzy_transfer_distance.hpp"
 
-#include <boost/test/unit_test.hpp>
-namespace utf = boost::unit_test;
-
-#include <quetzal/io.hpp>
-
-BOOST_AUTO_TEST_SUITE( extended_newick_formatting )
-
-
-BOOST_AUTO_TEST_CASE(extended_newick_filters)
+///
+/// @brief Generic components for polymorphism analysis
+///
+namespace quetzal::polymorphism
 {
-  std::string s = "((1, ((2, (3, (4)Y#H1)g)e, (((Y#H1, 5)h, 6)f)X#H2)c)a, ((X#H2, 7)d, 8)b)r;";
+  ///
+  /// @brief Classical summary statistics computations
+  ///
+  namespace statistics
+  {}
 
+  ///
+  /// @brief Summary statistics based on spatial partition of coalescent trees.
+  ///
+  namespace fuzzy_transfer_distance
+  {}
 }
-
-
-BOOST_AUTO_TEST_SUITE_END()

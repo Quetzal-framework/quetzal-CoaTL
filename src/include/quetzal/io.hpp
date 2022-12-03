@@ -8,21 +8,27 @@
 *                                                                      *
 ***************************************************************************/
 
-#define BOOST_TEST_MODULE extended_newick_test
+#include "io/newick/parser.hpp"
+#include "io/newick/generator.hpp"
+#include "io/genetics/wrapper.hpp"
 
-#include <boost/test/unit_test.hpp>
-namespace utf = boost::unit_test;
-
-#include <quetzal/io.hpp>
-
-BOOST_AUTO_TEST_SUITE( extended_newick_formatting )
-
-
-BOOST_AUTO_TEST_CASE(extended_newick_filters)
+namespace quetzal
 {
-  std::string s = "((1, ((2, (3, (4)Y#H1)g)e, (((Y#H1, 5)h, 6)f)X#H2)c)a, ((X#H2, 7)d, 8)b)r;";
+  ///
+  /// @brief Parsers and generators for input/output.
+  ///
+  namespace format
+  {
+    ///
+    /// @brief Generic components for generating Newick strings
+    ///
+    namespace newick
+    {}
 
+    ///
+    /// @brief Data-structures for genetic datasets
+    ///
+    namespace genetics
+    {}
+  }
 }
-
-
-BOOST_AUTO_TEST_SUITE_END()

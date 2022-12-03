@@ -15,7 +15,7 @@
 // #include <units/quantity.h> // percent
 // #include <units/generic/dimensionless.h> // percent
 
-#include <quetzal/polymorphism.h>
+#include <quetzal/polymorphism.hpp>
 
 namespace utf = boost::unit_test;
 
@@ -65,7 +65,7 @@ BOOST_AUTO_TEST_CASE( tajimasD )
   int nb_sequences = 10;
 
   // Compute stats
-  using quetzal::polymophism::statistics::tajimasD;
+  using quetzal::polymorphism::statistics::tajimasD;
   auto stat = tajimasD(mean_pairwise_difference, nb_segregating_sites, nb_sequences);
   //
   // // Define test metrics

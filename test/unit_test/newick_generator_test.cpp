@@ -13,7 +13,7 @@
 #include <boost/test/unit_test.hpp>
 namespace utf = boost::unit_test;
 
-#include <quetzal/io/newick/generator.h>
+#include <quetzal/io/newick/generator.hpp>
 #include <random>
 #include <concepts>
 

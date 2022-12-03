@@ -1,4 +1,4 @@
-#include "quetzal/demography.h"
+#include "quetzal/demography.hpp"
 #include <iostream>
 #include <random>
 #include <map>

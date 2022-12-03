@@ -1,4 +1,4 @@
-#include "quetzal/polymorphism.h"
+#include "quetzal/polymorphism.hpp"
 #include <cassert>
 
 int main()
@@ -8,7 +8,7 @@ int main()
   int number_of_segregating_sites = 16;
   int nb_sequences = 10;
 
-  auto stat = quetzal::polymophism::statistics::tajimasD(mean_pairwise_difference,
+  auto stat = quetzal::polymorphism::statistics::tajimasD(mean_pairwise_difference,
                                                     number_of_segregating_sites,
                                                     nb_sequences);
 

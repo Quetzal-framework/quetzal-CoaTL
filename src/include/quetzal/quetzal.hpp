@@ -8,21 +8,23 @@
 *                                                                      *
 ***************************************************************************/
 
-#define BOOST_TEST_MODULE extended_newick_test
+// Header file including all coalescence module
 
-#include <boost/test/unit_test.hpp>
-namespace utf = boost::unit_test;
+#include "coalescence.hpp"
+#include "demography.hpp"
+#include "expressive.hpp"
+#include "geography.hpp"
+#include "io.hpp"
+#include "mutation.hpp"
+#include "polymorphism.hpp"
+#include "sampling.hpp"
+#include "simulator.hpp"
+//#include "units.hpp"
+#include "utils.hpp"
+#include "version.hpp"
 
-#include <quetzal/io.hpp>
-
-BOOST_AUTO_TEST_SUITE( extended_newick_formatting )
-
-
-BOOST_AUTO_TEST_CASE(extended_newick_filters)
-{
-  std::string s = "((1, ((2, (3, (4)Y#H1)g)e, (((Y#H1, 5)h, 6)f)X#H2)c)a, ((X#H2, 7)d, 8)b)r;";
-
-}
-
-
-BOOST_AUTO_TEST_SUITE_END()
+///
+/// @brief Simulation of coalescence-based models of molecular evolution.
+///
+namespace quetzal
+{}

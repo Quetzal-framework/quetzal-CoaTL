@@ -8,21 +8,21 @@
 *                                                                      *
 ***************************************************************************/
 
-#define BOOST_TEST_MODULE extended_newick_test
 
-#include <boost/test/unit_test.hpp>
-namespace utf = boost::unit_test;
+#include "utils/matrix_operation.hpp"
+#include "utils/sampling_scheme.hpp"
+#include "utils/PointWithId.hpp"
 
-#include <quetzal/io.hpp>
+#include "utils/random.hpp"
 
-BOOST_AUTO_TEST_SUITE( extended_newick_formatting )
-
-
-BOOST_AUTO_TEST_CASE(extended_newick_filters)
+///
+/// @brief Miscellaneous details
+///
+namespace quetzal::utils
 {
-  std::string s = "((1, ((2, (3, (4)Y#H1)g)e, (((Y#H1, 5)h, 6)f)X#H2)c)a, ((X#H2, 7)d, 8)b)r;";
+  ///
+  /// @brief Random sampling processes
+  ///
+  namespace random{}
 
 }
-
-
-BOOST_AUTO_TEST_SUITE_END()
