@@ -11,7 +11,7 @@
 #ifndef __EDITOR_POLICY_H_INCLUDED__
 #define __EDITOR_POLICY_H_INCLUDED__
 
-#include "OccupancySpectrum.h"
+#include "OccupancySpectrum.hpp"
 
 #include <utility> // std::forward, std::move
 

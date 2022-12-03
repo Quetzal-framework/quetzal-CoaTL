@@ -9,7 +9,7 @@
 ***************************************************************************/
 
 
-#include "utils/sampling_scheme.h"
+#include "utils/sampling_scheme.hpp"
 
 ///
 /// @brief Sampling schemes for Pseudo-Observed Data generation

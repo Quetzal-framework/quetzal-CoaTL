@@ -19,10 +19,10 @@
 #include <map>
 #include <vector>
 
-#include "marker_traits.h"
-#include "Allele.h"
-#include "DiploidIndividual.h"
-#include "SpatialGeneticSample.h"
+#include "marker_traits.hpp"
+#include "Allele.hpp"
+#include "DiploidIndividual.hpp"
+#include "SpatialGeneticSample.hpp"
 
 using std::ifstream;
 using std::string;

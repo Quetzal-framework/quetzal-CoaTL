@@ -8,10 +8,10 @@
 *                                                                      *
 ***************************************************************************/
 
-#include "occupancy_spectrum/editor_policy.h"
-#include "occupancy_spectrum/filter_policy.h"
-#include "occupancy_spectrum/memoize.h"
-#include "occupancy_spectrum/OccupancySpectrum.h"
-#include "occupancy_spectrum/ProbabilityDistribution.h"
-#include "occupancy_spectrum/sampling_policy.h"
-#include "occupancy_spectrum/Support.h"
+#include "occupancy_spectrum/editor_policy.hpp"
+#include "occupancy_spectrum/filter_policy.hpp"
+#include "occupancy_spectrum/memoize.hpp"
+#include "occupancy_spectrum/OccupancySpectrum.hpp"
+#include "occupancy_spectrum/ProbabilityDistribution.hpp"
+#include "occupancy_spectrum/sampling_policy.hpp"
+#include "occupancy_spectrum/Support.hpp"

@@ -11,7 +11,7 @@
 #ifndef __BASE_HISTORY_H_INCLUDED__
 #define __BASE_HISTORY_H_INCLUDED__
 
-#include "../random/DiscreteDistribution.h" // BackwardKernel
+#include "../utils/random/DiscreteDistribution.hpp" // BackwardKernel
 
 #include <vector>
 #include <memory> // unique_ptr
@@ -57,7 +57,7 @@ namespace quetzal
       //! \typedef type of the population size database
       using pop_sizes_type = typename memory_policy::template pop_sizes_type<coord_type, time_type, value_type>;
       //! \typedef type of the discrete distribution used inside the backward dispersal kernel
-      using discrete_distribution_type = quetzal::random::DiscreteDistribution<coord_type>;
+      using discrete_distribution_type = quetzal::utils::random::DiscreteDistribution<coord_type>;
       /**
       * @brief Constructor initializing the demographic database.
       *

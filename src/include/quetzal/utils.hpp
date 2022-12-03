@@ -9,11 +9,11 @@
 ***************************************************************************/
 
 
-#include "utils/matrix_operation.h"
-#include "utils/sampling_scheme.h"
-#include "utils/PointWithId.h"
+#include "utils/matrix_operation.hpp"
+#include "utils/sampling_scheme.hpp"
+#include "utils/PointWithId.hpp"
 
-#include "utils/random.h"
+#include "utils/random.hpp"
 
 ///
 /// @brief Miscellaneous details

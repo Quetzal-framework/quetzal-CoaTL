@@ -8,24 +8,23 @@
 *                                                                      *
 ***************************************************************************/
 
-#include "polymorphism/tajimasD.h"
-#include "polymorphism/fuzzy_transfer_distance.h"
+#include "polymorphism/tajimasD.hpp"
+#include "polymorphism/fuzzy_transfer_distance.hpp"
 
 ///
 /// @brief Generic components for polymorphism analysis
 ///
 namespace quetzal::polymorphism
-  {
-    ///
-    /// @brief Classical summary statistics computations
-    ///
-    namespace statistics
-    {}
+{
+  ///
+  /// @brief Classical summary statistics computations
+  ///
+  namespace statistics
+  {}
 
-    ///
-    /// @brief Summary statistics based on spatial partition of coalescent trees.
-    ///
-    namespace fuzzy_transfer_distance
-    {}
-  }
+  ///
+  /// @brief Summary statistics based on spatial partition of coalescent trees.
+  ///
+  namespace fuzzy_transfer_distance
+  {}
 }

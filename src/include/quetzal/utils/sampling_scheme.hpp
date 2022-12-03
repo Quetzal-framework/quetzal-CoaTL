@@ -149,6 +149,5 @@ auto make_unif_constrained_sampler(std::vector<X> const& space, N pop_size, unsi
 }
 
 } // namespace sampling
-} // namespace quetzal
 
 #endif

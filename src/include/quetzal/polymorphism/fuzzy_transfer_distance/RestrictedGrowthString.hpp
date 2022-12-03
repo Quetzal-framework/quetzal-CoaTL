@@ -15,10 +15,8 @@
 #include <vector>
 #include <iostream>
 
-namespace quetzal::polymorphism
+namespace quetzal::polymorphism::fuzzy_transfer_distance
 {
-	namespace fuzzy_transfer_distance
-	{
 		class RestrictedGrowthString
 		{
 
@@ -58,7 +56,6 @@ namespace quetzal::polymorphism
 
 		};
 
-	} // end namespace fuzzy_transfer_distance
 } // end namespace quetzal
 
 

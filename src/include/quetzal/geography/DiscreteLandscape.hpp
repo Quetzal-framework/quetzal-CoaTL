@@ -19,7 +19,7 @@
 #include <tuple>      // std::forward_as_tuple
 #include <functional> // std::cref
 
-#include "EnvironmentalQuantity.h"
+#include "EnvironmentalQuantity.hpp"
 
 namespace quetzal {
 	namespace geography {

@@ -11,9 +11,9 @@
 #ifndef __DISCRETE_WRIGHT_FISHER_H_INCLUDED__
 #define __DISCRETE_WRIGHT_FISHER_H_INCLUDED__
 
-#include "../coalescence/container/Forest.h"
-#include "../coalescence/merger_policy.h"
-#include "../coalescence/occupancy_spectrum/sampling_policy.h"
+#include "../coalescence/container/Forest.hpp"
+#include "../coalescence/merger_policy.hpp"
+#include "../coalescence/occupancy_spectrum/sampling_policy.hpp"
 
 #include <boost/math/special_functions/binomial.hpp>
 

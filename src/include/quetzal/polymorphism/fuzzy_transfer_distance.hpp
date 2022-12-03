@@ -9,5 +9,5 @@
 ***************************************************************************/
 
 
-#include "fuzzy_transfer_distance/FuzzyPartition.h"
-#include "fuzzy_transfer_distance/Partitioner.h"
+#include "fuzzy_transfer_distance/FuzzyPartition.hpp"
+#include "fuzzy_transfer_distance/Partitioner.hpp"

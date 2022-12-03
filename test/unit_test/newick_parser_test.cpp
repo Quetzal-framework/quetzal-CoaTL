@@ -13,7 +13,7 @@
 #include <boost/test/unit_test.hpp>
 namespace utf = boost::unit_test;
 
-#include "quetzal/io/newick/parser.h"
+#include "quetzal/io/newick/parser.hpp"
 
 #include <iomanip>
 

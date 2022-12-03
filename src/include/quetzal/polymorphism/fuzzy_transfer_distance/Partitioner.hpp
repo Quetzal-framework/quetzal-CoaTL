@@ -18,7 +18,7 @@
 #include <list>
 #include "assert.h"
 
-#include "RestrictedGrowthString.h"
+#include "RestrictedGrowthString.hpp"
 
 namespace quetzal::polymorphism
 {

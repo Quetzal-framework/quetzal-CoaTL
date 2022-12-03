@@ -11,9 +11,9 @@
 #ifndef __OCCUPANCY_SPECTRUM_DISTRIBUTION_H_INCLUDED__
 #define __OCCUPANCY_SPECTRUM_DISTRIBUTION_H_INCLUDED__
 
-#include "editor_policy.h"
-#include "filter_policy.h"
-#include "Support.h"
+#include "editor_policy.hpp"
+#include "filter_policy.hpp"
+#include "Support.hpp"
 
 #include <random> // discrete_distribution
 #include <utility> // std::forward, std::move

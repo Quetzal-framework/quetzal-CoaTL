@@ -12,9 +12,9 @@
 #ifndef __OCCUPANCY_SPECTRUM_MEMOIZE_H_INCLUDED__
 #define __OCCUPANCY_SPECTRUM_MEMOIZE_H_INCLUDED__
 
-#include "editor_policy.h"
-#include "filter_policy.h"
-#include "ProbabilityDistribution.h"
+#include "editor_policy.hpp"
+#include "filter_policy.hpp"
+#include "ProbabilityDistribution.hpp"
 
 #include <unordered_map>
 #include <functional> // std::hash

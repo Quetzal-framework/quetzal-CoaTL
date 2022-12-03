@@ -9,7 +9,8 @@
 ***************************************************************************/
 
 
-#include "simulator/simulator.h"
+#include "simulator/DiscreteTimeWrightFisher.hpp"
+#include "simulator/ForwardBackwardSpatiallyExplicit.hpp"
 
 ///
 /// @brief Standard simulators of genetic diversity

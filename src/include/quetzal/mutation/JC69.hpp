@@ -104,6 +104,6 @@ namespace quetzal::mutation::JC69
 
 } // end namespace mutation
 
-const std::map<char, std::string> quetzal::mutation_kernel::JC69::dico = { {'A', "TGC"}, {'T', "ACG"}, {'G', "ATC"}, {'C', "ATG"} };
+//const std::map<char, std::string> quetzal::mutation::JC69::dico = { {'A', "TGC"}, {'T', "ACG"}, {'G', "ATC"}, {'C', "ATG"} };
 
 #endif

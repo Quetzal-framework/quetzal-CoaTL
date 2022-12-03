@@ -1,5 +1,5 @@
 // file main.cpp
-#include "quetzal/demography.h"
+#include "quetzal/demography.hpp"
 #include <iostream>
 #include <random>
 // Here we simulate a population expansion through a 2 demes landscape.

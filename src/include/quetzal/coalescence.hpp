@@ -8,12 +8,12 @@
 *                                                                      *
 ***************************************************************************/
 
-#include "coalescence/merger_policy.h"
-#include "coalescence/policies/distance_to_parent.h"
-#include "coalescence/container/Tree.h"
-#include "coalescence/container/Forest.h"
-#include "coalescence/container/Network.h"
-#include "coalescence/occupancy_spectrum.h"
+#include "coalescence/merger_policy.hpp"
+#include "coalescence/policies/distance_to_parent.hpp"
+#include "coalescence/container/Tree.hpp"
+#include "coalescence/container/Forest.hpp"
+#include "coalescence/container/Network.hpp"
+#include "coalescence/occupancy_spectrum.hpp"
 
 namespace quetzal
 {

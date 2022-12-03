@@ -11,9 +11,9 @@
 #ifndef __DISTANCE_TO_PARENT_H_INCLUDED__
 #define __DISTANCE_TO_PARENT_H_INCLUDED__
 
-#include "../container/Tree.h"
-#include "../container/Forest.h"
-#include "../../simulator/DiscreteTimeWrightFisher.h"
+#include "../container/Tree.hpp"
+#include "../container/Forest.hpp"
+#include "../../simulator/DiscreteTimeWrightFisher.hpp"
 
 #include <map>
 
@@ -188,7 +188,7 @@ namespace quetzal
           t_curr -= t;
           return tree_type(t_curr);
         };
-        using WF_model = quetzal::DiscreteTimeWrightFisher;
+        using WF_model = quetzal::simulator::DiscreteTimeWrightFisher;
         auto tree = WF_model::coalesce(forest, m_ancestral_Wright_Fisher_N, gen, branch(), WF_init);
         treatment computer;
         tree.visit_subtrees_by_pre_order_DFS(computer);
@@ -407,7 +407,7 @@ namespace quetzal
           t_curr -= t;
           return tree_type(t_curr);
         };
-        using WF_model = quetzal::DiscreteTimeWrightFisher;
+        using WF_model = quetzal::simulator::DiscreteTimeWrightFisher;
         auto tree = WF_model::coalesce(forest, m_ancestral_Wright_Fisher_N, gen, branch(), WF_init);
         treatment computer;
         tree.visit_subtrees_by_pre_order_DFS(computer);

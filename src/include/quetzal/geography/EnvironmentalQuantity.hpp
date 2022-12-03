@@ -11,10 +11,10 @@
 #ifndef __ENVIRONMENTAL_QUANTITY_H_INCLUDED
 #define __ENVIRONMENTAL_QUANTITY_H_INCLUDED
 
-#include "gdalcpp.h"
-#include "GeographicCoordinates.h"
-#include "Resolution.h"
-#include "Extent.h"
+#include "gdalcpp.hpp"
+#include "GeographicCoordinates.hpp"
+#include "Resolution.hpp"
+#include "Extent.hpp"
 
 #include <string>
 #include <algorithm>

@@ -8,9 +8,9 @@
 *                                                                      *
 ***************************************************************************/
 
-#include "io/newick/parser.h"
-#include "io/newick/generator.h"
-#include "io/genetics/wrapper.h"
+#include "io/newick/parser.hpp"
+#include "io/newick/generator.hpp"
+#include "io/genetics/wrapper.hpp"
 
 namespace quetzal
 {

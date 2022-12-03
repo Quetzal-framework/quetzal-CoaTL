@@ -11,11 +11,11 @@
 #ifndef __MEMORY_TRAIT_H_INCLUDED__
 #define __MEMORY_TRAIT_H_INCLUDED__
 
-#include "PopulationSizeHashMapImplementation.h"
-#include "PopulationSizeOnDiskImplementation.h"
+#include "PopulationSizeHashMapImplementation.hpp"
+#include "PopulationSizeOnDiskImplementation.hpp"
 
-#include "FlowHashMapImplementation.h"
-#include "FlowOnDiskImplementation.h"
+#include "FlowHashMapImplementation.hpp"
+#include "FlowOnDiskImplementation.hpp"
 
 namespace quetzal
 {

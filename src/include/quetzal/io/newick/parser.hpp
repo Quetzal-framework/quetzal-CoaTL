@@ -2,7 +2,7 @@
 #define __NEWICK_TREE_H_INCLUDED__
 
 #include <boost/spirit/home/x3.hpp>
-#include "ast.h"
+#include "ast.hpp"
 #include <boost/fusion/include/vector.hpp>
 #include <boost/fusion/include/std_pair.hpp>
 

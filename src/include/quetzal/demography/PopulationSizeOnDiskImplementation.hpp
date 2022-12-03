@@ -25,7 +25,7 @@
 #include <vector>
 #include "assert.h"
 #include <iostream>
- #include <fstream>
+#include <fstream>
 
 namespace quetzal
 {

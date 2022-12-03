@@ -1,4 +1,4 @@
-#include "quetzal/io.h"
+#include "quetzal/io.hpp"
 #include <iostream>
 
 // Define a namespace alias to shorten notation

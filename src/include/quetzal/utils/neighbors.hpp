@@ -11,7 +11,7 @@
 #ifndef __NEIGHBORS_H_INCLUDED__
 #define __NEIGHBORS_H_INCLUDED__
 
-#include "../geography/GeographicCoordinates.h"
+#include "../geography/GeographicCoordinates.hpp"
 
 namespace quetzal {
 	namespace utils {

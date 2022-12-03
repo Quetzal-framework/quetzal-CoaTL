@@ -12,7 +12,7 @@
 #include <boost/test/unit_test.hpp>
 namespace utf = boost::unit_test;
 
-#include <quetzal/demography.h>
+#include <quetzal/demography.hpp>
 
 
 struct transition_matrix

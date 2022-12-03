@@ -11,8 +11,8 @@
 #ifndef __DEMOGRAPHIC_POLICY_H_INCLUDED__
 #define __DEMOGRAPHIC_POLICY_H_INCLUDED__
 
-#include "../utils/PointWithId.h"
-#include "../utils/matrix_operation.h"
+#include "../utils/PointWithId.hpp"
+#include "../utils/matrix_operation.hpp"
 
 #include <boost/numeric/ublas/matrix_sparse.hpp>
 #include <boost/numeric/ublas/symmetric.hpp>

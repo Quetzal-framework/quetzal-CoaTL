@@ -9,7 +9,7 @@
 ***************************************************************************/
 
 
-#include "geography/DiscreteLandscape.h"
+#include "geography/DiscreteLandscape.hpp"
 
 ///
 /// @brief Geospatial data formatting and processing

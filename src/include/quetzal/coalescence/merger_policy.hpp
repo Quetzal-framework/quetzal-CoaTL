@@ -11,7 +11,7 @@
 #ifndef __COALESCENCE_MERGERS_H_INCLUDED__
 #define __COALESCENCE_MERGERS_H_INCLUDED__
 
-#include "algorithm/merge.h"
+#include "algorithm/merge.hpp"
 
 #include <iterator> // std::distance
 #include <cassert>

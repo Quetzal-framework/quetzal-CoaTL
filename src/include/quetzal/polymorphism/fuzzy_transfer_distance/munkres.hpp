@@ -24,7 +24,7 @@ Modified by Arnaud Becheler, 2016, removing cpp include.
 #ifndef _MUNKRES_H_
 #define _MUNKRES_H_
 
-#include "matrix.h"
+#include "matrix.hpp"
 
 #include <list>
 #include <utility>

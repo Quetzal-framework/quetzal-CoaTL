@@ -11,7 +11,7 @@
 #ifndef __OCCUPANCY_SPECTRUM_SUPPORT_H_INCLUDED__
 #define __OCCUPANCY_SPECTRUM_SUPPORT_H_INCLUDED__
 
-#include "OccupancySpectrum.h"
+#include "OccupancySpectrum.hpp"
 
 #include <vector>
 #include <utility>

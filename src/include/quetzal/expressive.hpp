@@ -8,7 +8,7 @@
 *                                                                      *
 ***************************************************************************/
 
-#include "expressive/expressive.h"
+#include "expressive/expressive.hpp"
 
 ///
 /// @brief Mathematical expressions of spatio-temporal quantities.

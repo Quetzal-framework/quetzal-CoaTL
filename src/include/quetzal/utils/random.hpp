@@ -10,6 +10,6 @@
 
 // Header file including all coalescence module
 
-#include "random/DiscreteDistribution.h"
+#include "random/DiscreteDistribution.hpp"
 
-#include "random/TransitionKernel.h"
+#include "random/TransitionKernel.hpp"

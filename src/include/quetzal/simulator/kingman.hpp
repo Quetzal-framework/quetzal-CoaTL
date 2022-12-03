@@ -11,7 +11,7 @@
 #ifndef __DISCRETE_WRIGHT_FISHER_H_INCLUDED__
 #define __DISCRETE_WRIGHT_FISHER_H_INCLUDED__
 
-# include <quetzal.h>
+# include <quetzal.hpp>
 
 using namespace quetzal::units;
 

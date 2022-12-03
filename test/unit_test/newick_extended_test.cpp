@@ -13,7 +13,7 @@
 #include <boost/test/unit_test.hpp>
 namespace utf = boost::unit_test;
 
-#include <quetzal/io.h>
+#include <quetzal/io.hpp>
 
 BOOST_AUTO_TEST_SUITE( extended_newick_formatting )
 

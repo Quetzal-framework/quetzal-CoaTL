@@ -11,9 +11,9 @@
 #ifndef __SIMULATORS_UTILS_H_INCLUDED__
 #define __SIMULATORS_UTILS_H_INCLUDED__
 
-#include "../demography/History.h"
-#include "../coalescence/container/Forest.h"
-#include "../coalescence/merger_policy.h"
+#include "../demography/History.hpp"
+#include "../coalescence/container/Forest.hpp"
+#include "../coalescence/merger_policy.hpp"
 
 #include <map>
 

@@ -11,8 +11,8 @@
 #ifndef __HISTORY_H_INCLUDED__
 #define __HISTORY_H_INCLUDED__
 
-#include "HistoryBase.h"
-#include "demographic_policy.h"
+#include "HistoryBase.hpp"
+#include "demographic_policy.hpp"
 
 namespace quetzal
 {

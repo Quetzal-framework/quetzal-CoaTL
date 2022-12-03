@@ -11,9 +11,9 @@
 #ifndef __SAMPLING_POLICY_H_INCLUDED__
 #define __SAMPLING_POLICY_H_INCLUDED__
 
-#include "editor_policy.h"
-#include "filter_policy.h"
-#include "memoize.h"
+#include "editor_policy.hpp"
+#include "filter_policy.hpp"
+#include "memoize.hpp"
 
 #include <vector>
 #include <random>

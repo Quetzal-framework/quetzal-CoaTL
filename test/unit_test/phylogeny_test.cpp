@@ -13,7 +13,7 @@
 #include <boost/test/unit_test.hpp>
 namespace utf = boost::unit_test;
 
-#include <quetzal/coalescence/container/Network.h>
+#include <quetzal/coalescence/container/Network.hpp>
 
 BOOST_AUTO_TEST_SUITE( phylogenetics )
 

@@ -10,25 +10,18 @@
 
 // Header file including all coalescence module
 
-#include "coalescence.h"
-
-#include "random.h"
-
-#include "demography.h"
-
-#include "geography.h"
-
-#include "expressive.h"
-#include "genetics.h"
-
-#include "fuzzy_transfer_distance.h"
-
-#include "simulator/DiscreteTimeWrightFisher.h"
-#include "simulator/ForwardBackwardSpatiallyExplicit.h"
-#include "simulator/utils.h"
-
-#include "utils.h"
-#include "version.h"
+#include "coalescence.hpp"
+#include "demography.hpp"
+#include "expressive.hpp"
+#include "geography.hpp"
+#include "io.hpp"
+#include "mutation.hpp"
+#include "polymorphism.hpp"
+#include "sampling.hpp"
+#include "simulator.hpp"
+//#include "units.hpp"
+#include "utils.hpp"
+#include "version.hpp"
 
 ///
 /// @brief Simulation of coalescence-based models of molecular evolution.

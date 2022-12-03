@@ -11,7 +11,7 @@
 #ifndef __TAJIMAS_D_H_INCLUDED__
 #define __TAJIMAS_D_H_INCLUDED__
 
-#include "../utils/null_output_iterator.h"
+#include "../utils/null_output_iterator.hpp"
 
 #include <algorithm> // std::generate
 #include <cmath> // sqrt
