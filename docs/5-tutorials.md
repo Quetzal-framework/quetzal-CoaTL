@@ -50,13 +50,12 @@ Whitespace here refer to any of the following: spaces, tabs, carriage returns, a
 
 ### Input
 
-<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=../../test/tutorials_test/newick_parser.cpp) -->
-<!-- MARKDOWN-AUTO-DOCS:END -->
+@include{lineno} newick_parser.cpp
 
 ### Output
 
-<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=../../build/bin/newick_parser.output) -->
-<!-- MARKDOWN-AUTO-DOCS:END -->
+@include{lineno} newick_parser.txt
+
 
 @page newick_generator Newick tree generator
 

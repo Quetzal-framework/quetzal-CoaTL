@@ -19,10 +19,9 @@ However if you are:
 - a post-doctoral researcher uncomfortable with some assumptions/constraints of the existing
 softwares, or
 - a video-game company looking for implementing realistic
-models of evolutions :eyes: ,
-you will surely consider to build your own program.
+models of evolution :eyes:
 
-And that's why we need something that looks like a standard pile of components.
+you will surely hope to develop your own program without having to start from scratch. And that's why we need something that looks like a standard pile of small components.
 
 :v: Quetzal can help you doing so by offering atomic components (structures,
 algorithms, concepts) that can be reused to build a new program.

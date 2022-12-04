@@ -53,24 +53,3 @@ foreach(testSrc ${INTEGRATION_SRCS})
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test
     COMMAND ${testName} ${CMAKE_CURRENT_SOURCE_DIR}/data/europe_temp.tif)
 endforeach(testSrc)
-
-### TUTORIAL TESTS
-file(GLOB TUTO_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} tutorials_test/*.cpp)
-foreach(testSrc ${TUTO_SRCS})
-  # Extract the filename without an extension (NAME_WE)
-  get_filename_component(testName ${testSrc} NAME_WE)
-  # Add compile target
-  add_executable(${testName} ${testSrc})
-  # Link to Boost libraries AND other targets and dependencies
-  target_link_libraries(${testName} quetzal::quetzal boost::boost GDAL::GDAL)
-  # Specifies include directories to use when compiling a given target
-  target_include_directories(
-    ${testName} PRIVATE
-    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
-  # Add it to test execution
-  add_test(
-    NAME ${testName}
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test
-  COMMAND sh -c "$<TARGET_FILE:${testName}> > ${testName}.output" )
-endforeach(testSrc)

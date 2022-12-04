@@ -14,12 +14,11 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 # add project code
 add_subdirectory(src)
 
-# add unit tests
-enable_testing()
-add_subdirectory(test)
-
-# add usage example
-#add_subdirectory(example)
-
 # generate project documentation
 add_subdirectory(docs)
+
+enable_testing()
+# add unit tests
+add_subdirectory(test)
+# add usage example
+add_subdirectory(example)
