@@ -2,19 +2,23 @@
 
 ## Input/Output
 
-### Newick Tree Format
+- Tree Format
+  - @subpage newick_parser
+  - @subpage newick_generator
 
-- @subpage newick_parser
-- @subpage newick_generator
+- Network Format
+  - @subpage extended_newick_parser
+  - @subpage extended_newick_generator
 
-### Extended Newick Network Format
+- Demes Format
+  - @subpage demes_parser
+  - @subpage demes_generator
 
-### Demes Format
+- Raster Format
+  - https://gdal.org/drivers/raster/index.html
 
-### Raster Drivers
-
-https://gdal.org/drivers/raster/index.html
-
+- Genetic Format
+  -
 ## Demographic Histories
 
 ### Growth Expressions
@@ -23,8 +27,8 @@ https://gdal.org/drivers/raster/index.html
 
 ### Memory Management
 
-<!-- @subpage parsingNewick "Parsing Newick" -->
 
+[//]: # (----------------------------------------------------------------------)
 @page newick_parser Newick tree parser
 
 Newick tree format is a way of representing graph-theoretical trees with edge
@@ -57,6 +61,7 @@ Whitespace here refer to any of the following: spaces, tabs, carriage returns, a
 @include{lineno} newick_parser.txt
 
 
+[//]: # (----------------------------------------------------------------------)
 @page newick_generator Newick tree generator
 
 Yet not very efficient, Newick is a simple format for representing trees, what is

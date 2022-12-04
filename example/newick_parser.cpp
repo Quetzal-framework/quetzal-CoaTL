@@ -25,15 +25,12 @@ int main()
     auto ok = quetzal::parse(begin(input), end(input), newick::parser::tree, root);
 
     // Process the AST using its << operator
-    std::cout << quoted(input) << "\t " << (ok ? "PASS" : "FAIL");
-    if (ok)
-        std::cout << " -> " << root << std::endl;
-    else
-        std::cout << std::endl;
+    std::cout << quoted(input) << "\t " << (ok ? "Parsed" : "Failed");
+    if (ok) std::cout << "\n" << root << std::endl;
 
     // You can also manually explore the recursive AST
-    for (auto& child : root.children)
-      std::cout << root.name << " <-> " << child.name << ":" << root.length << std::endl;
+    // for (auto& child : root.children)
+    //   std::cout << root.name << " <-> " << child.name << ":" << root.length << std::endl;
   }
 
   return 0;
