@@ -26,13 +26,14 @@ else ()
                                     "doxygen-awesome-css/doxygen-awesome-darkmode-toggle.js"
                                     "doxygen-awesome-css/doxygen-awesome-sidebar-only-darkmode-toggle.css"
                                     "doxygen-awesome-css/doxygen-awesome-fragment-copy-button.js")
+  # Documentation for tutorials requires ctest call to populate build folder
+  set(DOXYGEN_EXAMPLE_PATH "../example" "../build/example/output")
+
   # Required by doxygen awesome
   set(DOXYGEN_GENERATE_TREEVIEW YES)
   set(DOXYGEN_HTML_HEADER "header.html")
   set(DOXYGEN_EXTRACT_PRIVATE NO)
   set(DOXYGEN_INLINE_INHERITED_MEMB YES)
-  # set(DOXYGEN_EXCLUDE "../example" "../build/example/output")
-  set(DOXYGEN_EXAMPLE_PATH "../example" "../build/example/output")
   set(DOXYGEN_USE_MATHJAX YES)
   set(DOXYGEN_WARN_IF_UNDOCUMENTED NO)
   set(DOXYGEN_HTML_COLORSTYLE LIGHT)

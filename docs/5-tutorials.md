@@ -35,11 +35,15 @@ Newick tree format is a way of representing graph-theoretical trees with edge
 lengths using parentheses and commas.
 
 Yet not very efficient, Newick is a simple format for representing trees, and provides
-an useful abstraction in coalescence theory to represent the shared history of populations
+a rather useful abstraction in coalescence theory for representing the shared history of populations
 (species trees, population trees) or gene genealogies that coalesce into these
 trees.
 
 Quetzal-CoaTL provides some utilities to parse and generate such format.
+In this page we show how to parse Newick strings into an AST (Abstract Syntax Tree),
+a temporary simplistic data structure that represents the syntactic
+structure of the tree. This AST can then be converted into the data structure of
+your choice for further processing.
 
 ## Grammar
 
@@ -64,26 +68,19 @@ Whitespace here refer to any of the following: spaces, tabs, carriage returns, a
 [//]: # (----------------------------------------------------------------------)
 @page newick_generator Newick tree generator
 
-Yet not very efficient, Newick is a simple format for representing trees, what is
-a useful abstraction in coalescence to represent the shared history of populations
-(species trees, population trees) or gene genealogies that coalesce into these
-trees.
+To make Newick tree generator reusable, **quetzal** proposes to consider independently
+1. the node data access logic, or *how to access the data stored in a node class*
+2. the recursion logic, or *how to traverse a tree from the root to the tips*
+3. the formatting logic, or *the grammar - that is the correspondence between the tree topology and the Newick string characters*
 
-Here we provide some utilities to parse and generate such format.
+@note
+Although it may require a -small- effort from the user to use this generator,
+this decoupling allows to generalize the quetzal generator over any class that
+a user may use to represent a tree in their program. Doing so, it saves them the
+time and effort to develop their own generator.
 
-## Grammar
+## Using a Quetzal Tree class
 
-Whitespace here refer to any of the following: spaces, tabs, carriage returns, and linefeeds.
+## Using a user-defined Binary Tree
 
-- Whitespace  within number is prohibited.
-- Whitespace elsewhere is ignored.
-- Grammar characters (semicolon, parentheses, comma, and colon) are prohibited
-- Unquoted string may not contain blanks, parentheses, square brackets, single_quotes, colons, semicolons, or commas. --- Underscore characters in unquoted strings are converted to blanks.
-- A string may also be quoted by enclosing it in single quotes.
-- Single quotes in the original string are represented as two consecutive single quote characters.
-- Whitespace may appear anywhere except within an unquoted string or a Length
-- Newlines may appear anywhere except within a string or a Length.
-- Comments are enclosed in square brackets. They can appear anywhere newlines are allowed.[3]
-- Comments starting with & - are generally computer-generated for additional data.
-
-## Parser
+## Using a user-defined N-ary Tree

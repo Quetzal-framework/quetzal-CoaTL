@@ -11,6 +11,8 @@
 #ifndef __NEWICK_GENERATOR_H_INCLUDED__
 #define __NEWICK_GENERATOR_H_INCLUDED__
 
+#include "../../coalescence/container/Tree.hpp"
+
 #include<concepts>
 #include<regex>
 #include<string>
@@ -455,6 +457,27 @@ namespace quetzal::format::newick
       std::forward<F2>(branch_length)
     );
   }
+
+  template<class T>
+  using q_tree_t = quetzal::coalescence::container::Tree<T>;
+
+  ///
+  /// @brief Can still specify type manually if you want, to use for template
+  ///        `lambda [](const auto& s) {}` e.g. `make_generator<Node>``
+  ///
+  // template<class T, Formattable<q_tree_t<T>> F1, Formattable<q_tree_t<T>> F2, class Policy>
+  // auto make_generator(F1 &&label, F2 && branch_length, Policy policy=Policy())
+  // {
+  //
+  //   // Use Class template argument deduction (CTAD)
+  //   return Generator<T, P1, P2, F1, F2, Policy>(
+  //     [](const q_tree_t& t){return t.has_parent();},
+  //     [](const q_tree_t& t){return t.has_children();},
+  //     std::forward<F1>(label),
+  //     std::forward<F2>(branch_length)
+  //   );
+  // }
+
 } // end namespace quetzal::format::newick
 
 
