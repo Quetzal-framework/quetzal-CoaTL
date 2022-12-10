@@ -56,6 +56,14 @@ Whitespace here refer to any of the following: spaces, tabs, carriage returns, a
 
 ## Complete example
 
+@note
+You can easily visualize the graphviz format printed in the output using the online editor https://edotor.net/
+
+@remark
+Here we use simplistic properties of the Tree graph (a string as a vertex and a double
+as an edge). You can actually embed much more complex data structures - see other
+tutorials.
+
 ### Input
 
 @include{lineno} newick_parser.cpp
