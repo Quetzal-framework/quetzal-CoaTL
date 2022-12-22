@@ -31,15 +31,20 @@
 [//]: # (----------------------------------------------------------------------)
 @page newick_parser Newick tree parser
 
+@tableofcontents
+
+## Start
+
 Newick tree format is a way of representing graph-theoretical trees with edge
 lengths using parentheses and commas.
 
-Yet not very efficient, Newick is a simple format for representing trees, and provides
+Yet not very efficient, Newick is a simple and popular format for representing trees, and provides
 a rather useful abstraction in coalescence theory for representing the shared history of populations
 (species trees, population trees) or gene genealogies that coalesce into these
 trees.
 
 Quetzal-CoaTL provides some utilities to parse and generate such format.
+
 In this page we show how to parse Newick strings into an AST (Abstract Syntax Tree),
 a temporary simplistic data structure that represents the syntactic
 structure of the tree. This AST can then be converted into the data structure of
@@ -54,23 +59,32 @@ Whitespace here refer to any of the following: spaces, tabs, carriage returns, a
 - Grammar characters (semicolon, parentheses, comma, and colon) are prohibited
 - Comments are enclosed in square brackets.
 
-## Complete example
+## To a Quetzal k-ary tree
+
+### Default properties
+
+In this example we will use simplistic properties of the graph:
+- a vertex (the *name* of the node) is represented by a simple `std::string`
+- an edge (the *distance to a parent node*) is a simple `double`.
+
+@remark
+In the next sections we will see that you can actually parse into more complex data
+structures - as long as they are constructible from a simple `std::string` and `double`!
 
 @note
 You can easily visualize the graphviz format printed in the output using the online editor https://edotor.net/
 
-@remark
-Here we use simplistic properties of the Tree graph (a string as a vertex and a double
-as an edge). You can actually embed much more complex data structures - see other
-tutorials.
-
-### Input
+**Input**
 
 @include{lineno} newick_parser.cpp
 
-### Output
+**Output**
 
 @include{lineno} newick_parser.txt
+
+### Custom properties
+
+
 
 
 [//]: # (----------------------------------------------------------------------)

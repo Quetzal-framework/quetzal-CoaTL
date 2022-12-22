@@ -14,7 +14,7 @@
 #include "coalescence/container/Forest.hpp"
 #include "coalescence/container/Network.hpp"
 #include "coalescence/occupancy_spectrum.hpp"
-#include "coalescence/container/TreeBGL.hpp"
+#include "coalescence/graph/k_ary_tree.hpp"
 
 namespace quetzal
 {

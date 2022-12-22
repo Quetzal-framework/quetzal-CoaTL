@@ -14,6 +14,7 @@
 #include "utils/PointWithId.hpp"
 
 #include "utils/random.hpp"
+#include "utils/to_k_ary_tree.hpp"
 
 ///
 /// @brief Miscellaneous details

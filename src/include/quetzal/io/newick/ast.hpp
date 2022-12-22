@@ -21,15 +21,41 @@
 
 namespace quetzal::format::newick::ast
 {
+
+  ///
+  /// @brief A container of children nodes
+  ///
   using nodes = std::vector<struct node>;
 
   ///
   /// @brief Abstract Syntax Tree structure
   struct node
   {
+    ///
+    /// @brief The type of vertex described by the AST
+    ///
+    using vertex_properties = std::string;
+
+    ///
+    /// @brief The type of edge described by the AST
+    ///
+    using edge_properties = double;
+
+    ///
+    /// @brief A container of nodes
+    ///
     nodes children;
-    std::string name;
-    double distance_to_parent;
+
+    ///
+    /// @brief the name of the node
+    ///
+    vertex_properties name;
+
+    ///
+    ///@brief the length of the branch
+    ///
+    edge_properties distance_to_parent;
+
   };
 
   ///
