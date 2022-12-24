@@ -3,8 +3,10 @@
 #include "quetzal/utils.hpp"       // to_tree
 #include <iostream>                // std::cout
 #include <memory>                  // std::unique_ptr
-// Assume you were already using this cute class across your entire project ...
-struct MyNode {
+
+// Assume this binary tree class pervades your code
+struct MyNode
+{
   std::string id;        // the vertex name
   double length;         // the edge length
   std::unique_ptr<MyNode> left_child; // never use bare pointers in interfaces
