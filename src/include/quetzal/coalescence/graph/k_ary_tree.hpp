@@ -13,6 +13,7 @@
 
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graphviz.hpp>
+#include <boost/graph/isomorphism.hpp>
 #include <iostream>
 
 namespace quetzal::coalescence
@@ -35,7 +36,7 @@ namespace quetzal::coalescence
 			using directed_type                   = boost::directedS;
 		};
 	}
-	
+
 	///
   /// @brief A class adapted for simulating coalescent trees as a rooted K-ary tree, where each node can hold at most k number of children.
 	///
@@ -63,6 +64,7 @@ namespace quetzal::coalescence
 		 ///
 		 /// @brief Print the tree to the graphviz format
 		 /// @remarks Intends to hide the bundles writer syntax
+		 ///
 		 void to_graphviz(std::ostream& out) const
 		 {
 				 using namespace boost;
@@ -70,6 +72,14 @@ namespace quetzal::coalescence
 						 out, *this,
 						 boost::make_label_writer(boost::get(vertex_bundle, *this)),
 						 boost::make_label_writer(boost::get(edge_bundle, *this)));
+		 }
+
+		 ///
+		 /// @brief Returns true if there exists an isomorphism between this and other and false otherwise.
+		 ///
+		 bool is_isomorphic(const self_type& other) noexcept
+		 {
+			 return boost::isomorphism(*this, other);
 		 }
 
 	 }; // end class Tree

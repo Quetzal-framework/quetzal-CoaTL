@@ -12,30 +12,31 @@
 #define TO_TREE_H_INCLUDED
 
 #include "quetzal/io/newick/ast.hpp"
+#include "quetzal/io/newick/parser.hpp"
 #include "quetzal/coalescence/graph/k_ary_tree.hpp"
 
 #include <concepts>
 
-namespace quetzal::utils
+namespace quetzal
 {
-  namespace
-  {
-    using ast_type = quetzal::format::newick::ast::node;
-    using vertex_properties = ast_type::vertex_properties;
-    using edge_properties = ast_type::edge_properties;
-    using synthetized_tree_type = quetzal::coalescence::k_ary_tree<vertex_properties, edge_properties>;
-  }
 
   ///
   /// @brief Converts a standard Newick AST to a quetzal Tree graph
   ///
-  template<class VertexProperties = vertex_properties, class EdgeProperties= edge_properties>
-      requires std::constructible_from<VertexProperties, vertex_properties> &&
-               std::constructible_from<EdgeProperties, edge_properties>
-  auto to_k_ary_tree(quetzal::format::newick::ast::node ast_root)
+  template
+  <
+    class VertexProperties = quetzal::format::newick::ast::node::vertex_properties,
+    class EdgeProperties= quetzal::format::newick::ast::node::edge_properties
+  >
+  std::tuple
+  <
+    quetzal::coalescence::k_ary_tree<VertexProperties,EdgeProperties>,
+    typename quetzal::coalescence::k_ary_tree<VertexProperties,EdgeProperties>::vertex_descriptor
+  >
+  to_k_ary_tree(quetzal::format::newick::ast::node ast_root)
   {
-    synthetized_tree_type tree;
-    auto root = add_vertex(ast_root.name, tree);
+    quetzal::coalescence::k_ary_tree<VertexProperties,EdgeProperties> tree;
+    auto root = add_vertex( {ast_root.name}, tree);
 
     // A hacky recursive lambda (C++23 will make this much simpler)
     static const auto populate = [](auto& graph, auto parent, const auto& ast){
@@ -43,17 +44,45 @@ namespace quetzal::utils
         // the idea is simple: while traversing the ast ...
         for(const auto& ast_child : ast.children){
           // add node to the quetzal tree graph
-          auto child = add_vertex(ast_child.name, graph);
+          auto child = add_vertex( {ast_child.name}, graph);
           // add directed edge from child to parent
-          add_edge(child, parent, ast_child.distance_to_parent, graph);
+          add_edge(child, parent, {ast_child.distance_to_parent}, graph);
           // and propagate to the next level
           self(graph, child, ast_child, self);}};
       recursive(graph, parent, ast, recursive);
     };
 
     populate(tree, root, ast_root);
-    return tree;
+    return {std::move(tree), root};
   }
+
+  namespace format::newick
+  {
+    ///
+    /// @brief Converts a standard Newick string to a quetzal Tree graph
+    ///
+    template
+    <
+      class VertexProperties = quetzal::format::newick::ast::node::vertex_properties,
+      class EdgeProperties= quetzal::format::newick::ast::node::edge_properties
+    >
+    std::tuple
+    <
+      quetzal::coalescence::k_ary_tree<VertexProperties,EdgeProperties>,
+      typename quetzal::coalescence::k_ary_tree<VertexProperties,EdgeProperties>::vertex_descriptor
+    >
+    to_k_ary_tree(const std::string& newick)
+    {
+      // We initialize the root of Abstract Syntax Tree (AST)
+      newick::ast::node ast;
+      // We parse the input string into the AST
+      auto ok = quetzal::parse(begin(newick), end(newick), newick::parser::tree, ast);
+      // todo: handling exceptions in boost::spirit
+      assert(ok);
+      return quetzal::to_k_ary_tree<VertexProperties,EdgeProperties>(ast);
+    }
+  }
+
 
 } // end namespace quetzal
 

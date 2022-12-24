@@ -1,6 +1,7 @@
+# requires cxx_std_20 new in CMake 3.12
 cmake_minimum_required(VERSION 3.12)
-set(CMAKE_CXX_STANDARD 20)
 
+# Tell find_package() to first search using Config mode before falling back to Module mode (for conan)
 set(CMAKE_FIND_PACKAGE_PREFER_CONFIG TRUE)
 
 # Global approach Gdal
@@ -21,6 +22,8 @@ foreach(testSrc ${SRCS})
   get_filename_component(testName ${testSrc} NAME_WE)
   # Add compile target
   add_executable(${testName} ${testSrc})
+  # Require the standard
+  target_compile_features(${testName} PUBLIC cxx_std_20)
   # Link to Boost libraries AND other targets and dependencies
   target_link_libraries(${testName} quetzal::quetzal boost::boost GDAL::GDAL)
   # Specifies include directories to use when compiling a given target
@@ -35,5 +38,3 @@ foreach(testSrc ${SRCS})
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/example
   COMMAND sh -c "$<TARGET_FILE:${testName}> > output/${testName}.txt" )
 endforeach(testSrc)
-
-#WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/example # no output

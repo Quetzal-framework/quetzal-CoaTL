@@ -6,27 +6,8 @@
 # (at your option) any later version.
 
 cmake_minimum_required(VERSION 3.19)
+
 project("quetzal" LANGUAGES CXX VERSION "0.1")
-
-# Avoids Could not find a package configuration file provided by "mp-units"
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
-list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
-
-# Use modern C++ with support for concepts and mp-units
-set(CMAKE_CXX_STANDARD 20)
-# Prevent use of non-portable compiler extensions
-set(CMAKE_CXX_EXTENSIONS OFF)
-# This makes C++20 a requirement and prevents a "decay" to C++98 when the compiler does not support C++20.
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-# We default to Release build type if option -D CMAKE_BUILD_TYPE not provided
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
-endif()
-
-# Tell find_package() to first search using Config mode before falling back to Module mode (for conan)
-set(CMAKE_FIND_PACKAGE_PREFER_CONFIG TRUE)
-add_subdirectory(external)
 
 # project-wide wrapper
 add_library(${PROJECT_NAME} INTERFACE )
@@ -39,7 +20,8 @@ include(GNUInstallDirs)
 
 # Adding the install interface generator expression makes sure that the include
 # files are installed to the proper location (provided by GNUInstallDirs)
-target_include_directories(${PROJECT_NAME} INTERFACE
+target_include_directories(${PROJECT_NAME}
+  INTERFACE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 

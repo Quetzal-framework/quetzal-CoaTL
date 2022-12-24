@@ -1,5 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
-set(CMAKE_CXX_STANDARD 20)
+cmake_minimum_required(VERSION 3.19)
 
 set(CMAKE_FIND_PACKAGE_PREFER_CONFIG TRUE)
 
@@ -19,6 +18,8 @@ foreach(testSrc ${TEST_SRCS})
   get_filename_component(testName ${testSrc} NAME_WE)
   # Add compile target
   add_executable(${testName} ${testSrc})
+  # Require the standard
+  target_compile_features(${testName} PRIVATE cxx_std_20)
   # Link to targets and dependencies
   target_link_libraries(${testName} quetzal::quetzal boost::boost GDAL::GDAL)
   # Specifies include directories to use when compiling the target
@@ -40,6 +41,8 @@ foreach(testSrc ${INTEGRATION_SRCS})
   get_filename_component(testName ${testSrc} NAME_WE)
   # Add compile target
   add_executable(${testName} ${testSrc})
+  # Require the standard
+  target_compile_features(${testName} PRIVATE cxx_std_20)
   # Link to targets and dependencies
   target_link_libraries(${testName} quetzal::quetzal boost::boost GDAL::GDAL)
   # Specifies include directories to use when compiling the target
