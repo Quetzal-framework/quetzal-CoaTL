@@ -9,7 +9,7 @@
 ***************************************************************************/
 #define BOOST_TEST_MODULE utils_test
 
-#include <quetzal/utils.hpp>
+#include <quetzal/utils/matrix_operation.hpp>
 
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/io.hpp>

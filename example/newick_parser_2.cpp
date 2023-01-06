@@ -1,7 +1,5 @@
-#include "quetzal/io.hpp"          // parsers and generators
-#include "quetzal/coalescence.hpp" // coalescence tree
-#include "quetzal/utils.hpp"       // to_tree
-#include <iostream>                // std::cout
+#include "quetzal/quetzal.hpp"
+#include <iostream>               
 #include <boost/graph/depth_first_search.hpp>
 
 // Your custom little vertex class

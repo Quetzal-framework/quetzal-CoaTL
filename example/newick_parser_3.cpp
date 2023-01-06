@@ -1,6 +1,4 @@
-#include "quetzal/io.hpp"          // parsers and generators
-#include "quetzal/coalescence.hpp" // coalescence tree
-#include "quetzal/utils.hpp"       // to_tree
+#include "quetzal/quetzal.hpp"
 #include <iostream>                // std::cout
 #include <memory>                  // std::unique_ptr
 

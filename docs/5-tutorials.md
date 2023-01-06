@@ -14,8 +14,10 @@
   - @subpage demes_parser
   - @subpage demes_generator
 
-- Raster Format
+- Geospatial Formats
   - https://gdal.org/drivers/raster/index.html
+  - @subpage geospatial_parser
+  - @subpage geospatial_generator
 
 - Genetic Format
   -
@@ -29,11 +31,13 @@
 
 
 [//]: # (----------------------------------------------------------------------)
-@page newick_parser Newick tree parser
+@page newick_parser Parsing a Newick tree
 
 @tableofcontents
 
-## Start
+## Introduction
+
+### Background
 
 Newick tree format is a way of representing graph-theoretical trees with edge
 lengths using parentheses and commas.
@@ -43,9 +47,16 @@ a rather useful abstraction in coalescence theory for representing the shared hi
 (species trees, population trees) or gene genealogies that coalesce into these
 trees.
 
-Quetzal-CoaTL provides some utilities to parse, generate and manipulate such format.
+**Quetzal** provides some utilities to parse, generate and manipulate such format.
 
-## Grammar
+@note
+To provide users with sensical defaults, **Quetzal** made to choice to generate
+and manipulate graphs objects from the [Boost Graph Library](https://www.boost.org/doc/libs/1_81_0/libs/graph/doc/index.html) when not told otherwise by the user.
+This choice is mostly practical and not hard coded, as **Quetzal** interfaces
+still remain open-ended and offer the possibility to generate and manipulate
+your own custom graph classes if required to.
+
+### Grammar
 
 Whitespace here refer to any of the following: spaces, tabs, carriage returns, and linefeeds.
 
@@ -54,9 +65,16 @@ Whitespace here refer to any of the following: spaces, tabs, carriage returns, a
 - Grammar characters (semicolon, parentheses, comma, and colon) are prohibited
 - Comments are enclosed in square brackets.
 
+### Objectives
+
+In this tutorial section you will learn how to:
+- Parse a Newick string to a **Quetzal** k-ary tree class,
+- Customize the default **Quetzal** tree properties to describe your data and problem correctly,
+- Parse a Newick string to your own custom tree class to limit ripple effects in your code base.
+
 ## To a Quetzal k-ary tree
 
-### Default properties
+### With default properties
 
 In this example we will use the default (and simplistic) properties of the graph synthetized by the parsing.
 By *properties* we mean the type of the data structures that describe vertices
@@ -67,7 +85,7 @@ we can reasonably expect *ad minima*:
 - a `std::string` to describe a vertex (the *name* of the node)
 - a `double` to describe an edge (the *distance to a parent node*).
 
-Quetzal defaults to these minima when it tries to build a tree from a Newick string.
+**Quetzal** defaults to these minima when it tries to build a tree from a Newick string.
 
 @remark
 In the next sections we will see that you can actually parse into more complex data
@@ -81,7 +99,7 @@ structures - as long as vertices (*resp.* edges) remain constructible from a sim
 
 @include{lineno} newick_parser_1.txt
 
-### Custom properties
+### With custom properties
 
 In the previous example we used default types to represent the properties of a vertex and an edge.
 These defaults are useful, but not always sufficient. For example, you may want to visit
@@ -113,15 +131,15 @@ This is surprisingly easy to inject your own classes into a graph!
 
 If you have been coding for a while, you may already depend heavily on your own
 class to describe a tree graph, and not feel very excited about refactoring your whole
-project to switch to Quetzal tree classes. Fair enough. This section shows how to use Quetzal parser to populate
-your own custom class and then forget about Quetzal.
+project to switch to **Quetzal** tree classes. Fair enough. This section shows how to use **Quetzal** parser to populate
+your own custom class and then forget about **Quetzal**.
 
 1. You will need to parse Newick strings into an AST (Abstract Syntax Tree): this
 is a temporary data structure that represents the syntactic structure of the tree.
 2. This AST can then be iterated over to convert it into the data structure of your choice.
 
 @note
-1. Quetzal does not know anything about your own classes, so you will need a bit of extra effort to write a recursion on the AST data
+1. **Quetzal** does not know anything about your own classes, so you will need a bit of extra effort to write a recursion on the AST data
 2. But at least you don't have to worry about the parsing logic anymore!
 3. Adapting your own classes can be tedious, don't hesitate to ask for help
 on the github issue pages!
@@ -137,21 +155,50 @@ on the github issue pages!
 
 
 [//]: # (----------------------------------------------------------------------)
-@page newick_generator Newick tree generator
+@page newick_generator Generating a Newick tree
 
-To make Newick tree generator reusable, **quetzal** proposes to consider independently
+@tableofcontents
+
+## Introduction
+
+### Design choices
+
+As we saw with Newick parser logic, it can be interesting to isolate independent behaviors,
+as it makes Newick tree grammar reusable across different code bases even if
+these projects made different choices concerning tree-like graphs implementation.
+
+In the same logic, when generating a Newick string, **Quetzal** considers independently
 1. the node data access logic, or *how to access the data stored in a node class*
 2. the recursion logic, or *how to traverse a tree from the root to the tips*
 3. the formatting logic, or *the grammar - that is the correspondence between the tree topology and the Newick string characters*
 
-@note
-Although it may require a -small- effort from the user to use this generator,
-this decoupling allows to generalize the quetzal generator over any class that
-a user may use to represent a tree in their program. Doing so, it saves them the
-time and effort to develop their own generator.
+### Justification
 
-## Using a Quetzal Tree class
+Although you may find it requires a -small- effort to use this generator,
+this decoupling allows to generalize the **Quetzal** generator over any class that
+a user may have used to represent a tree in their own code bases - even classes
+that **Quetzal** does'nt know anything about. Doing so, it hopefully saves the
+community the time and effort to develop their own grammars and generators independently.
 
-## Using a user-defined Binary Tree
+### Objectives
 
-## Using a user-defined N-ary Tree
+In this tutorial section you will learn how to:
+- Generate a Newick string from a **Quetzal** k-ary tree class,
+- Customize the behavior of the generator based on the **Quetzal** tree properties you used to describe your data and problem correctly,
+- Generate a Newick string from your own custom tree class.
+
+## From a Quetzal k-ary tree
+
+**Input**
+
+@include{lineno} newick_generator_1.cpp
+
+**Output**
+
+@include{lineno} newick_generator_1.txt
+
+### With default properties
+
+### With custom properties
+
+## From a custom k-ary tree

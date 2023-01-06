@@ -11,16 +11,19 @@
 #ifndef __NEWICK_GENERATOR_H_INCLUDED__
 #define __NEWICK_GENERATOR_H_INCLUDED__
 
-#include "../../coalescence/container/Tree.hpp"
-
 #include<concepts>
 #include<regex>
 #include<string>
 #include<stdexcept>
 #include<algorithm>
+#include<string_view>
+
+#include <boost/graph/depth_first_search.hpp>
+#include "quetzal/coalescence/graph/k_ary_tree.hpp"
 
 namespace quetzal::format::newick
 {
+
   /// @brief Tag
   struct parenthesis {};
 
@@ -34,7 +37,7 @@ namespace quetzal::format::newick
   /// @note Since parenthesis checking is a context-free grammar, it requires a stack.
   ///       Regex can not accomplish that since they do not have memory.
   ///
-  bool check_if_balanced(const std::string & input, const char & open='(', const char & close=')')
+  bool check_if_balanced(std::string_view input, const char & open='(', const char & close=')')
   {
     int count = 0;
     for(const auto & ch : input)
@@ -54,7 +57,7 @@ namespace quetzal::format::newick
   ///
   struct identity
   {
-    static std::string edit(const std::string& s)
+    static std::string edit(const std::string  s)
     {
       return s;
     }
@@ -72,7 +75,7 @@ namespace quetzal::format::newick
   ///
   template<> struct is_balanced<parenthesis>
   {
-    static bool check(const std::string& s)
+    static bool check(std::string_view s)
     {
       return check_if_balanced(s, '(', ')' );
     }
@@ -83,7 +86,7 @@ namespace quetzal::format::newick
   ///
   template<> struct is_balanced<square_bracket>
   {
-    static bool check(const std::string& s)
+    static bool check(std::string_view s)
     {
       return check_if_balanced(s, '[', ']');
     }
@@ -126,7 +129,7 @@ namespace quetzal::format::newick
   ///
   template<> struct remove_comments_of_depth<1>
   {
-    static std::string edit(const std::string& s)
+    static std::string edit(const std::string  s)
     {
       if (s.empty())
       return s;
@@ -141,7 +144,7 @@ namespace quetzal::format::newick
   ///
   template<> struct remove_comments_of_depth<2>
   {
-    static std::string edit(const std::string& s)
+    static std::string edit(const std::string  s)
     {
       std::string buffer;
       int counter = 0;
@@ -179,7 +182,7 @@ namespace quetzal::format::newick
     // Set explicit null branch length for root node
     static inline std::string root_branch_length() { return ":0.0";}
     // Remove comments that are nested, keep comments of depth 1
-    static inline std::string treat_comments(const std::string &s)
+    static inline std::string treat_comments(const std::string  s)
     {
       return remove_comments_of_depth<2>::edit(s);
     }
@@ -208,10 +211,24 @@ namespace quetzal::format::newick
   std::convertible_to<std::invoke_result_t<F, Args...>, std::string>;
 
   ///
-  /// @brief Generic algorithm to generate the Newick formula of a tree.
+  /// @brief Base class for Newick generators
   ///
+  template<class Policy=PAUP>
+  class generator_base : public Policy
+  {
+  public:
+
+
+  private:
+
+  }; // end generator_base
+
+  ///
+  /// @brief Generate the Newick formula from an external (custom) tree class.
+  /// @remark This is a non-intrusive interface implementation so users can reuse Newick formatting
+  ///         logic and expose the formatting internals to their own Tree class.
   template<class T, std::predicate<T> P1 , std::predicate<T> P2, Formattable<T> F1, Formattable<T> F2, class Policy=PAUP>
-  class Generator : public Policy
+  class generator : public generator_base<Policy>
   {
   public:
     ///
@@ -267,24 +284,6 @@ namespace quetzal::format::newick
     ///
     F2 _branch_length;
 
-    ///
-    /// @brief Operation called in the general DFS algorithm to open a parenthesis if node has children to be visited.
-    ///
-    /// @param node the node currently visited
-    ///
-    bool has_forbidden_characters(const std::string &s) const
-    {
-      if (s.empty()) return false;
-      std::string forbidden = " ,;()[\\]";
-      bool is_forbidden = std::regex_search(s, std::regex("[" + forbidden + "]"));
-      return is_forbidden;
-    }
-
-    ///
-    /// @brief Operation called in the general DFS algorithm to open a parenthesis if node has children to be visited.
-    ///
-    /// @param node the node currently visited
-    ///
     void _pre_order(const node_type & node) const
     {
       if(std::invoke(_has_children, node))
@@ -293,19 +292,11 @@ namespace quetzal::format::newick
       }
     }
 
-    ///
-    /// @brief Operation called in the general DFS algorithm to add a comma between visited nodes.
-    ///
     void _in_order(const node_type &) const
     {
       _formula += ",";
     }
 
-    ///
-    /// @brief Operation called in the general DFS algorithm to open a parenthesis if node has children to be visited.
-    ///
-    /// @param node the node currently visited
-    ///
     void _post_order(const node_type & node) const
     {
       if(std::invoke(_has_children, node))
@@ -330,21 +321,38 @@ namespace quetzal::format::newick
           _formula += ":";
           _formula += branch;
         }
-
       }else{
-
         _formula += std::invoke(_label, node);
         _formula += policy_type::root_branch_length();
       }
-
     }
 
-  public:
+    struct visitor : boost::default_dfs_visitor
+    {
+      // any changes to the state during the algorithm will be made to a copy of the visitor object,
+      std::string& formula;
+      //
+      void discover_vertex(auto vertex, auto /*const& graph*/)
+      {
+        //pre_order
+      }
 
+      void examine_edge(auto u, auto v, auto /*const& graph*/)
+      {
+        //in order
+      }
+
+      void finish_vertex(auto vertex, auto /*const& graph*/)
+      {
+      }
+        //post order
+    }; // end class visitor
+
+  public:
     ///
     /// @brief Constructor
     ///
-    Generator(P1 &&has_parent, P2 &&has_children, F1 &&label, F2 &&branch_length):
+    generator(P1 &&has_parent, P2 &&has_children, F1 &&label, F2 &&branch_length):
     _has_parent(std::forward<P1>(has_parent)),
     _has_children(std::forward<P2>(has_children)),
     _label(std::forward<F1>(label)),
@@ -361,6 +369,7 @@ namespace quetzal::format::newick
     {
       return [this](const node_type & node){this->_pre_order(node);};
     }
+
     ///
     /// @brief Operation called in the general DFS algorithm to add a comma between visited nodes.
     ///
@@ -368,6 +377,7 @@ namespace quetzal::format::newick
     {
       return [this](const node_type & node){this->_in_order(node);};
     }
+
     ///
     /// @brief Operation to be passed to a generic DFS algorithm to open a parenthesis if node has children to be visited.
     ///
@@ -377,21 +387,31 @@ namespace quetzal::format::newick
     {
       return [this](const node_type & node){this->_post_order(node);};
     }
+
     ///
-    /// @brief Clear the formula buffer.
+    /// @brief Check if a string contains characters forbidden by the standard
+    ///
+    bool has_forbidden_characters(const std::string & s) const
+    {
+      if (s.empty()) return false;
+      std::string forbidden = " ,;()[\\]";
+      bool is_forbidden = std::regex_search(s, std::regex("[" + forbidden + "]"));
+      return is_forbidden;
+    }
+
+    ///
+    /// @brief Clear the formula buffer to refresh the generator.
     ///
     void clear()
     {
       _formula.clear();
     }
+
     ///
     /// @brief Retrieve the formatted string of the given node in the specified format
     ///
-    formula_type get() const
+    std::string&& take_result() const
     {
-      // that or expose orders
-      // root.visit_by_generic_DFS(preorder, inorder, postorder);
-
       _formula.push_back(this->_end);
 
       _formula = policy_type::treat_comments(_formula);
@@ -406,9 +426,14 @@ namespace quetzal::format::newick
         throw std::runtime_error(std::string("Failed: formula square brackets are not balanced:") + _formula);
       }
 
-      return _formula;
+      return std::move(_formula);
     }
-  }; // end structure Generator
+
+    auto make_boost_dfs_visitor()
+    {
+      return visitor{*_formula};
+    }
+  }; // end structure generator
 
   // Replacement for `std::function<T(U)>::argument_type`
   template<typename T> struct single_function_argument;
@@ -425,16 +450,17 @@ namespace quetzal::format::newick
 
   // Deduction guide: type T is deduced from P1
   template<class P1, class P2, class F1, class F2, class Policy=PAUP>
-  Generator(P1 &&, P2 &&, F1 &&, F2 &&) -> Generator <single_function_argument_t<P1>, P1, P2, F1, F2, Policy>;
+  generator(P1 &&, P2 &&, F1 &&, F2 &&) -> generator <single_function_argument_t<P1>, P1, P2, F1, F2, Policy>;
 
   ///
-  /// @brief to use for template `lambda [](const auto& s) {}` e.g. `make_generator<Node>``
+  /// @brief Build a Newick generator for an external (custom) tree class
+  /// @remark Fully generic version - no concept check
   ///
   template<class P1, class P2, class F1, class F2, class Policy=PAUP>
   auto make_generator(P1 &&has_parent, P2 &&has_children, F1 &&label, F2 && branch_length, Policy policy=Policy())
   {
     // Use Class template argument deduction (CTAD)
-    return Generator<single_function_argument_t<P1>, P1, P2, F1, F2, Policy>(
+    return generator<single_function_argument_t<P1>, P1, P2, F1, F2, Policy>(
       std::forward<P1>(has_parent),
       std::forward<P2>(has_children),
       std::forward<F1>(label),
@@ -443,14 +469,14 @@ namespace quetzal::format::newick
   }
 
   ///
-  /// @brief Can still specify type manually if you want, to use for template
-  ///        `lambda [](const auto& s) {}` e.g. `make_generator<Node>``
+  /// @brief Build a Newick generator for an external (custom) tree class
+  /// @remark Uses concepts
   ///
-  template<class T, std::predicate<T> P1, std::predicate<T> P2, Formattable<T> F1, Formattable<T> F2, class Policy>
+  template<class T, std::predicate<T> P1, std::predicate<T> P2, Formattable<T> F1, Formattable<T> F2, class Policy=PAUP>
   auto make_generator(P1 &&has_parent, P2 &&has_children, F1 &&label, F2 && branch_length, Policy policy=Policy())
   {
     // Use Class template argument deduction (CTAD)
-    return Generator<T, P1, P2, F1, F2, Policy>(
+    return generator<T, P1, P2, F1, F2, Policy>(
       std::forward<P1>(has_parent),
       std::forward<P2>(has_children),
       std::forward<F1>(label),
@@ -458,25 +484,75 @@ namespace quetzal::format::newick
     );
   }
 
-  template<class T>
-  using q_tree_t = quetzal::coalescence::container::Tree<T>;
+  ///
+  /// @brief Build a Newick generator for a quetzal tree class defaulted to no bundled properties
+  ///
+  /// @remark It deduces what DFS to invoke and how to manipulate its interface
+  /// @remark Tree vertices labels will be empty strings in the Newick formula
+  /// @remark Tree edges branch lengths will be empty strings in the Newick formula
+  ///
+  template<class Policy=PAUP>
+  std::string&& generate(quetzal::coalescence::k_ary_tree<> tree, Policy policy=Policy())
+  {
+    // Make sure the default template deduction worked as expected
+    using tree_type = quetzal::coalescence::k_ary_tree<>;
+    static_assert(std::is_same<typename tree_type::vertex_properties, boost::no_property>());
+    static_assert(std::is_same<typename tree_type::edge_properties, boost::no_property>());
+
+    // adapters: these expressions are bound to an instance of a graph in Boost Graph
+    auto has_parent   = [&tree](auto v){return tree.has_parent(v); };
+    auto has_children = [&tree](auto v){return tree.has_children(v); };
+
+    // adapters: not bound to a graph because empty properties
+    constexpr auto label         = [](auto){return "";};
+    constexpr auto branch_length = [](auto){return "";};
+
+    // Owns the newick's string and provides access to a visitor for the BGL DFS
+    auto holder = make_generator(
+      std::forward<decltype(has_parent)   >(has_parent),
+      std::forward<decltype(has_children) >(has_children),
+      std::forward<decltype(label)        >(label),
+      std::forward<decltype(branch_length)>(branch_length),
+      policy
+    );
+
+    auto vis = holder.make_boost_dfs_visitor();
+    tree.depth_first_search(boost::visitor(vis));
+    return holder.take_result();
+
+  }
 
   ///
-  /// @brief Can still specify type manually if you want, to use for template
-  ///        `lambda [](const auto& s) {}` e.g. `make_generator<Node>``
+  /// @brief Build a Newick generator for a quetzal tree class
   ///
-  // template<class T, Formattable<q_tree_t<T>> F1, Formattable<q_tree_t<T>> F2, class Policy>
-  // auto make_generator(F1 &&label, F2 && branch_length, Policy policy=Policy())
-  // {
-  //
-  //   // Use Class template argument deduction (CTAD)
-  //   return Generator<T, P1, P2, F1, F2, Policy>(
-  //     [](const q_tree_t& t){return t.has_parent();},
-  //     [](const q_tree_t& t){return t.has_children();},
-  //     std::forward<F1>(label),
-  //     std::forward<F2>(branch_length)
-  //   );
-  // }
+  /// @remark It deduces what DFS to invoke and how to manipulate its interface
+  ///
+  template<class VertexProperties, class EdgeProperties, class Policy=PAUP>
+  std::string&& generate(quetzal::coalescence::k_ary_tree<VertexProperties,EdgeProperties> tree, Policy policy=Policy())
+  {
+    using vertex_t = VertexProperties;
+    using edge_t = EdgeProperties;
+    using tree_t = quetzal::coalescence::k_ary_tree<VertexProperties,EdgeProperties>;
+
+    // adapters: lambdas are bound to an instance of a graph in BGL
+    auto has_parent    = [&tree](auto v){return tree.has_parent(v); };
+    auto has_children  = [&tree](auto v){return tree.has_children(v); };
+    auto label         = [&tree](auto v){return tree[v].label;};
+    auto branch_length = [&tree](auto v){return tree[v].out_edges.branch_length;};
+
+    // Owns the newick's string and provides access to a visitor for the BGL DFS
+    auto holder = make_generator(
+      std::forward<decltype(has_parent)   >(has_parent),
+      std::forward<decltype(has_children) >(has_children),
+      std::forward<decltype(label)        >(label),
+      std::forward<decltype(branch_length)>(branch_length),
+      policy
+    );
+
+    auto vis = holder.make_boost_dfs_visitor();
+    depth_first_search(tree, boost::visitor(vis));
+    return holder.take_result();
+  }
 
 } // end namespace quetzal::format::newick
 

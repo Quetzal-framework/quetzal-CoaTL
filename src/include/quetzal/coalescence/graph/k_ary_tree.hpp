@@ -57,9 +57,17 @@ namespace quetzal::coalescence
 		 /// @brief Properties of a vertex, e.g. a structure representing the mutational state.
 		 using vertex_properties = VertexProperties;
 		 /// @brief The type of graph hold by the tree class
-		 using self_type = details::tree_traits::model <
+		 using base_type = details::tree_traits::model <
 		       details::tree_traits::out_edge_list_type, details::tree_traits::vertex_list_type,
 			     details::tree_traits::directed_type, vertex_properties, edge_properties >;
+
+		 using self_type = k_ary_tree <vertex_properties, edge_properties >;
+
+		/// @brief The type used for identifying vertices within the graph
+		using vertex_descriptor = typename self_type::vertex_descriptor;
+
+		/// @brief Inherit all constructor from boost graph
+		using base_type::base_type;
 
 		 ///
 		 /// @brief Print the tree to the graphviz format
@@ -77,10 +85,38 @@ namespace quetzal::coalescence
 		 ///
 		 /// @brief Returns true if there exists an isomorphism between this and other and false otherwise.
 		 ///
-		 bool is_isomorphic(const self_type& other) noexcept
+		 template<class T>
+		 bool is_isomorphic(const T& other) noexcept
 		 {
 			 return boost::isomorphism(*this, other);
 		 }
+
+		 ///
+		 /// @brief Returns true if a given node has a parent node
+		 ///
+		 bool has_parent(vertex_descriptor v) const
+		 {
+			 auto [it1, it2] = out_edges(v, *this);
+			 // since it is a tree, at most 1 parent
+			 assert(std::distance(it1,it2) <= 1);
+			 // if iterators equal, then no parent
+			 return it1 == it2 ? false : true;
+		 }
+
+		 ///
+		 /// @brief Returns true if a given node has children nodes
+		 ///
+		 bool has_children(vertex_descriptor v) const
+		 {
+			 auto [it1, it2] = in_edges(v, *this);
+			 return std::distance(it1, it2) >= 1;
+		 }
+
+		 auto depth_first_search(auto visitor)
+		 {
+			 depth_first_search(*this, visitor);
+		 }
+
 
 	 }; // end class Tree
 } // end namespace quetzal::coalescence

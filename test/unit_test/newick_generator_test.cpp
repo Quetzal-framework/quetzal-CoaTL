@@ -14,6 +14,8 @@
 namespace utf = boost::unit_test;
 
 #include <quetzal/io/newick/generator.hpp>
+#include <quetzal/utils/get_random_spanning_tree.hpp>
+#include <quetzal/utils/newick_to_k_ary_tree.hpp>
 #include <random>
 #include <concepts>
 
@@ -100,7 +102,7 @@ struct Fixture_simple_tree
 }; // end FixtureHomozygoteParents
 
 
-BOOST_FIXTURE_TEST_CASE(no_label, Fixture_simple_tree)
+BOOST_FIXTURE_TEST_CASE(external_tree_no_label, Fixture_simple_tree)
 {
   namespace newick = quetzal::format::newick;
 
@@ -119,11 +121,12 @@ BOOST_FIXTURE_TEST_CASE(no_label, Fixture_simple_tree)
   a.depth_first_search(generator.pre_order(), generator.in_order(), generator.post_order());
 
   // We retrieve the formatted string
-  BOOST_CHECK_EQUAL(generator.get(), "(,(,));");
+  auto result = generator.take_result();
+  BOOST_CHECK_EQUAL(result, "(,(,));");
 }
 
 
-BOOST_FIXTURE_TEST_CASE(print_label, Fixture_simple_tree)
+BOOST_FIXTURE_TEST_CASE(external_tree_print_label, Fixture_simple_tree)
 {
   namespace newick = quetzal::format::newick;
 
@@ -144,11 +147,12 @@ BOOST_FIXTURE_TEST_CASE(print_label, Fixture_simple_tree)
   a.depth_first_search(generator.pre_order(), generator.in_order(), generator.post_order());
 
   // We retrieve the formatted string
-  BOOST_CHECK_EQUAL(generator.get() , "(b,(d,e)c)a;");
+  auto result = generator.take_result();
+  BOOST_CHECK_EQUAL(result , "(b,(d,e)c)a;");
 }
 
 
-BOOST_FIXTURE_TEST_CASE(randomized_labels, Fixture_simple_tree)
+BOOST_FIXTURE_TEST_CASE(external_randomized_labels, Fixture_simple_tree)
 {
   namespace newick = quetzal::format::newick;
 
@@ -159,12 +163,12 @@ BOOST_FIXTURE_TEST_CASE(randomized_labels, Fixture_simple_tree)
   // Get a seed for the random number engine
   std::random_device rd;
   // Standard mersenne_twister_engine seeded with rd()
-  std::mt19937 gen(rd());
+  std::mt19937 rng(rd());
   // Arbitrary banch length distribution
   std::uniform_real_distribution<> dis(0.0, 2.0);
 
   // Random data is generated for the branch length
-  newick::Formattable<Node> auto branch_length = [&gen,&dis](const Node& n){return std::to_string(dis(gen));};
+  newick::Formattable<Node> auto branch_length = [&rng,&dis](const Node& n){return std::to_string(dis(rng));};
   // More sophisticated label formatting
   newick::Formattable<Node> auto label = [](const Node& n ){return std::string(1, n.data) + "[my[comment]]";};
 
@@ -175,12 +179,12 @@ BOOST_FIXTURE_TEST_CASE(randomized_labels, Fixture_simple_tree)
   a.depth_first_search(generator.pre_order(), generator.in_order(), generator.post_order());
 
   // We don't have an expectation because of the randomness, but you can always print it
-  std::cout << generator.get() << std::endl;
+  std::cout << generator.take_result() << std::endl;
 
 }
 
 
-BOOST_FIXTURE_TEST_CASE(tree_align_format, Fixture_simple_tree)
+BOOST_FIXTURE_TEST_CASE(external_tree_align_format, Fixture_simple_tree)
 {
   namespace newick = quetzal::format::newick;
 
@@ -200,15 +204,46 @@ BOOST_FIXTURE_TEST_CASE(tree_align_format, Fixture_simple_tree)
   a.depth_first_search(generator.pre_order(), generator.in_order(), generator.post_order());
 
   // We retrieve the formatted string
-  BOOST_CHECK_EQUAL(generator.get() , "(b[my]:0.1,(d[my]:0.1,e[my]:0.1)c[my]:0.1)a[my]:0.0;");
-}
-
-
+  auto result = generator.take_result();
+  BOOST_CHECK_EQUAL(result , "(b[my]:0.1,(d[my]:0.1,e[my]:0.1)c[my]:0.1)a[my]:0.0;");
   // Enables the use of nested comments
   // using flavor = quetzal::format::newick::PAUP;
 
   // TODO: Requires that an unrooted tree begin with a trifurcation & no nested comments
   // TODO: using flavor = quetzal::format::newick::PHYLIP;
+
+}
+
+BOOST_AUTO_TEST_CASE(k_ary_tree_no_property)
+{
+  // Get a seed for the random number engine
+  std::random_device rd;
+  // Declare a random number generator
+  std::mt19937 rng(rd());
+  // Generate a random tree with no property from a graph V(10,30)
+  auto [tree,root] = quetzal::get_random_spanning_tree<>(10, 30, rng);
+  // Generate the newick string
+  auto s = quetzal::format::newick::generate(tree);
+  // Convert back
+  auto [other_tree,other_root] = quetzal::to_k_ary_tree<>(s);
+  // Should be isomorphic
+  BOOST_TEST(tree.is_isomorphic(other_tree));
+}
+
+struct vertex_t { std::string bar; };
+struct edge_t { double foo; };
+
+BOOST_AUTO_TEST_CASE(k_ary_tree_default_property)
+{
+  // Default generate trees with string/double as properties
+  auto [tree,root] = quetzal::to_k_ary_tree<>("(ant:17, (bat:31, cow:22):7, dog:22, (elk:33, fox:12):40);");
+  // Generate the newick string
+  auto s = quetzal::format::newick::generate(tree);
+  // Convert back, default would be no_property, so need something
+  auto [other_tree, other_root] = quetzal::to_k_ary_tree<vertex_t, edge_t>(s);
+  // Should be isomorphic
+  BOOST_TEST(tree.is_isomorphic(other_root));
+}
 
 
 BOOST_AUTO_TEST_SUITE_END()
