@@ -24,74 +24,91 @@
 namespace quetzal::format::newick
 {
 
-  /// @brief Tag
-  struct parenthesis {};
-
-  /// @brief Tag
-  struct square_bracket {};
-
-  ///
-  /// @brief Check if the string is balanced for open/close symbols (parenthesis,brackets)
-  ///
-  ///
-  /// @note Since parenthesis checking is a context-free grammar, it requires a stack.
-  ///       Regex can not accomplish that since they do not have memory.
-  ///
-  bool check_if_balanced(std::string_view input, const char & open='(', const char & close=')')
+  namespace detail
   {
-    int count = 0;
-    for(const auto & ch : input)
+    // Replacement for `std::function<T(U)>::argument_type`
+    template<typename T>
+    struct single_function_argument;
+
+    template<typename Ret, typename Arg>
+    struct single_function_argument<std::function<Ret(Arg)>> { using type = Arg; };
+
+    template<typename P1>
+    struct single_function_argument_impl{
+      using type = typename single_function_argument<decltype(std::function{ std::declval<P1>() }) >::type;
+    };
+
+    template<typename P1>
+    using single_function_argument_t = typename single_function_argument_impl<P1>::type;
+
+    /// @brief Tag
+    struct parenthesis {};
+
+    /// @brief Tag
+    struct square_bracket {};
+
+    ///
+    /// @brief Check if the string is balanced for open/close symbols (parenthesis,brackets)
+    ///
+    ///
+    /// @note Since parenthesis checking is a context-free grammar, it requires a stack.
+    ///       Regex can not accomplish that since they do not have memory.
+    ///
+    bool check_if_balanced(std::string_view input, const char & open='(', const char & close=')')
     {
-      if (ch == open ) count++;
-      if (ch == close ) count--;
-      // if a parenthesis is closed without being opened return false
-      if(count < 0)
-      return false;
+      int count = 0;
+      for(const auto & ch : input)
+      {
+        if (ch == open ) count++;
+        if (ch == close ) count--;
+        // if a parenthesis is closed without being opened return false
+        if(count < 0)
+        return false;
+      }
+      // in the end the test is passed only if count is zero
+      return count == 0;
     }
-    // in the end the test is passed only if count is zero
-    return count == 0;
+
+    ///
+    /// @brief Default comment removal policy: do not change anything
+    ///
+    struct identity
+    {
+      static std::string edit(const std::string  s)
+      {
+        return s;
+      }
+    };
+
+    ///
+    /// @brief Class template, base for further specialization
+    ///
+    template<class tag>
+    struct is_balanced
+    {};
+
+    ///
+    /// @brief Specialization for parenthesis
+    ///
+    template<> struct is_balanced<detail::parenthesis>
+    {
+      static bool check(std::string_view s)
+      {
+        return check_if_balanced(s, '(', ')' );
+      }
+    };
+
+    ///
+    /// @brief Specialization for square bracket
+    ///
+    template<> struct is_balanced<detail::square_bracket>
+    {
+      static bool check(std::string_view s)
+      {
+        return check_if_balanced(s, '[', ']');
+      }
+    };
   }
-
-  ///
-  /// @brief Do not change anything
-  ///
-  struct identity
-  {
-    static std::string edit(const std::string  s)
-    {
-      return s;
-    }
-  };
-
-  ///
-  /// @brief Class template
-  ///
-  template<class tag>
-  struct is_balanced
-  {};
-
-  ///
-  /// @brief Specialization for parenthesis
-  ///
-  template<> struct is_balanced<parenthesis>
-  {
-    static bool check(std::string_view s)
-    {
-      return check_if_balanced(s, '(', ')' );
-    }
-  };
-
-  ///
-  /// @brief Specialization for square bracket
-  ///
-  template<> struct is_balanced<square_bracket>
-  {
-    static bool check(std::string_view s)
-    {
-      return check_if_balanced(s, '[', ']');
-    }
-  };
-
 
   using namespace std::string_literals;
 
@@ -119,7 +136,7 @@ namespace quetzal::format::newick
   ///
   /// @brief Do not remove anything
   ///
-  template<> struct remove_comments_of_depth<0> : identity
+  template<> struct remove_comments_of_depth<0> : detail::identity
   {};
 
   ///
@@ -161,21 +178,22 @@ namespace quetzal::format::newick
   };
 
   ///
-  /// @brief Allow nested comments.
+  /// @brief Policy allowing to keep nested comments.
+  ///
+  /// @note Use this as a template parameter to specialize a Newick generator policy
   ///
   struct PAUP
   {
     // return empty string
     static inline std::string root_branch_length() { return "";}
     // do nothing
-    static inline std::string treat_comments(std::string & s)
-    {
-      return s;
-    }
+    static inline std::string treat_comments(std::string & s) { return s; }
   };
 
   ///
-  /// @brief Set a root node branch length to zero. Remove all nested comments.
+  /// @brief Set a root node branch length to zero, allow comments of depth 1, but will remove nested comments.
+  ///
+  /// @note Use this as a template parameter to specialize a Newick generator policy
   ///
   struct TreeAlign
   {
@@ -190,6 +208,8 @@ namespace quetzal::format::newick
 
   ///
   /// @brief Requires that an unrooted tree begin with a trifurcation; it will not "uproot" a rooted tree.
+  ///        Allow comments of depth 1, but does not allow nested comments.
+  /// @note Use this as a template parameter to specialize a Newick generator policy
   ///
   struct PHYLIP
   {
@@ -204,31 +224,19 @@ namespace quetzal::format::newick
   };
 
   ///
-  /// @brief Concept for label name
+  /// @brief Concept for label name: invocable and the return type is convertible to a string.
   ///
   template<class F, class... Args>
   concept Formattable = std::invocable<F, Args...> &&
   std::convertible_to<std::invoke_result_t<F, Args...>, std::string>;
 
   ///
-  /// @brief Base class for Newick generators
-  ///
-  template<class Policy=PAUP>
-  class generator_base : public Policy
-  {
-  public:
-
-
-  private:
-
-  }; // end generator_base
-
-  ///
   /// @brief Generate the Newick formula from an external (custom) tree class.
+  ///
   /// @remark This is a non-intrusive interface implementation so users can reuse Newick formatting
-  ///         logic and expose the formatting internals to their own Tree class.
+  ///         logic and expose the formatting internals to their own Tree class's DFS.
   template<class T, std::predicate<T> P1 , std::predicate<T> P2, Formattable<T> F1, Formattable<T> F2, class Policy=PAUP>
-  class generator : public generator_base<Policy>
+  class generator : public Policy
   {
   public:
     ///
@@ -297,68 +305,43 @@ namespace quetzal::format::newick
       _formula += ",";
     }
 
-    void _post_order(const node_type & node) const
-    {
-      if(std::invoke(_has_children, node))
-      {
-        _formula.pop_back(); // Remove comma
-        _formula += ")";
-      }
-
-      if(std::invoke(_has_parent, node))
-      {
-        auto label = std::invoke(_label, node);
-        if( has_forbidden_characters(remove_comments_of_depth<1>::edit(label)))
-        {
-          throw std::invalid_argument(std::string("Label with forbidden characters:") + std::string(label));
+    void _post_order(node_type const& node) {
+        if (std::invoke(_has_children, node)) {
+            if (_formula.back() == ',')
+                _formula.pop_back();
+            _formula += ')';
         }
 
-        _formula += label;
+        if (std::invoke(_has_parent, node)) {
+            auto label = std::invoke(_label, node);
+            if (has_forbidden_characters(remove_comments_of_depth<1>::edit(label))) {
+                throw std::invalid_argument(std::string("Label with forbidden characters:") +
+                                            std::string(label));
+            }
 
-        auto branch = std::invoke(_branch_length, node);
-        if( branch != "")
-        {
-          _formula += ":";
-          _formula += branch;
+            _formula += label;
+
+            std::string branch(std::invoke(_branch_length, node));
+            if (!branch.empty()) {
+                _formula += ":";
+                _formula += branch;
+            }
+        } else {
+            _formula += std::invoke(_label, node);
+            _formula += policy_type::root_branch_length();
         }
-      }else{
-        _formula += std::invoke(_label, node);
-        _formula += policy_type::root_branch_length();
-      }
     }
-
-    struct visitor : boost::default_dfs_visitor
-    {
-      // any changes to the state during the algorithm will be made to a copy of the visitor object,
-      std::string& formula;
-      //
-      void discover_vertex(auto vertex, auto /*const& graph*/)
-      {
-        //pre_order
-      }
-
-      void examine_edge(auto u, auto v, auto /*const& graph*/)
-      {
-        //in order
-      }
-
-      void finish_vertex(auto vertex, auto /*const& graph*/)
-      {
-      }
-        //post order
-    }; // end class visitor
 
   public:
     ///
     /// @brief Constructor
     ///
-    generator(P1 &&has_parent, P2 &&has_children, F1 &&label, F2 &&branch_length):
-    _has_parent(std::forward<P1>(has_parent)),
-    _has_children(std::forward<P2>(has_children)),
-    _label(std::forward<F1>(label)),
-    _branch_length(std::forward<F2>(branch_length))
-    {
-    }
+    generator(P1 has_parent, P2 has_children, F1 label, F2 branch_length, Policy pol = {})
+        : policy_type(std::move(pol))
+        , _has_parent(std::move(has_parent))
+        , _has_children(std::move(has_children))
+        , _label(std::move(label))
+        , _branch_length(std::move(branch_length)) {}
 
     ///
     /// @brief Operation called in the general DFS algorithm to open a parenthesis if node has children to be visited.
@@ -416,145 +399,29 @@ namespace quetzal::format::newick
 
       _formula = policy_type::treat_comments(_formula);
 
-      if(is_balanced<parenthesis>::check(_formula) == false)
+      if(detail::is_balanced<detail::parenthesis>::check(_formula) == false)
       {
         throw std::runtime_error(std::string("Failed: formula parenthesis are not balanced:") + _formula);
       }
 
-      if(is_balanced<square_bracket>::check(_formula) == false)
+      if(detail::is_balanced<detail::square_bracket>::check(_formula) == false)
       {
         throw std::runtime_error(std::string("Failed: formula square brackets are not balanced:") + _formula);
       }
 
       return std::move(_formula);
     }
-
-    auto make_boost_dfs_visitor()
-    {
-      return visitor{*_formula};
-    }
   }; // end structure generator
 
-  // Replacement for `std::function<T(U)>::argument_type`
-  template<typename T> struct single_function_argument;
-  template<typename Ret, typename Arg> struct single_function_argument<std::function<Ret(Arg)>> { using type = Arg; };
-
-  template<typename P1>
-  struct single_function_argument_impl
-  {
-    using type = typename single_function_argument<decltype(std::function{ std::declval<P1>() }) >::type;
-  };
-
-  template<typename P1>
-  using single_function_argument_t = typename single_function_argument_impl<P1>::type;
-
-  // Deduction guide: type T is deduced from P1
-  template<class P1, class P2, class F1, class F2, class Policy=PAUP>
-  generator(P1 &&, P2 &&, F1 &&, F2 &&) -> generator <single_function_argument_t<P1>, P1, P2, F1, F2, Policy>;
-
   ///
-  /// @brief Build a Newick generator for an external (custom) tree class
-  /// @remark Fully generic version - no concept check
-  ///
-  template<class P1, class P2, class F1, class F2, class Policy=PAUP>
-  auto make_generator(P1 &&has_parent, P2 &&has_children, F1 &&label, F2 && branch_length, Policy policy=Policy())
-  {
-    // Use Class template argument deduction (CTAD)
-    return generator<single_function_argument_t<P1>, P1, P2, F1, F2, Policy>(
-      std::forward<P1>(has_parent),
-      std::forward<P2>(has_children),
-      std::forward<F1>(label),
-      std::forward<F2>(branch_length)
-    );
-  }
-
-  ///
-  /// @brief Build a Newick generator for an external (custom) tree class
-  /// @remark Uses concepts
-  ///
-  template<class T, std::predicate<T> P1, std::predicate<T> P2, Formattable<T> F1, Formattable<T> F2, class Policy=PAUP>
-  auto make_generator(P1 &&has_parent, P2 &&has_children, F1 &&label, F2 && branch_length, Policy policy=Policy())
-  {
-    // Use Class template argument deduction (CTAD)
-    return generator<T, P1, P2, F1, F2, Policy>(
-      std::forward<P1>(has_parent),
-      std::forward<P2>(has_children),
-      std::forward<F1>(label),
-      std::forward<F2>(branch_length)
-    );
-  }
-
-  ///
-  /// @brief Build a Newick generator for a quetzal tree class defaulted to no bundled properties
-  ///
-  /// @remark It deduces what DFS to invoke and how to manipulate its interface
-  /// @remark Tree vertices labels will be empty strings in the Newick formula
-  /// @remark Tree edges branch lengths will be empty strings in the Newick formula
-  ///
-  template<class Policy=PAUP>
-  std::string&& generate(quetzal::coalescence::k_ary_tree<> tree, Policy policy=Policy())
-  {
-    // Make sure the default template deduction worked as expected
-    using tree_type = quetzal::coalescence::k_ary_tree<>;
-    static_assert(std::is_same<typename tree_type::vertex_properties, boost::no_property>());
-    static_assert(std::is_same<typename tree_type::edge_properties, boost::no_property>());
-
-    // adapters: these expressions are bound to an instance of a graph in Boost Graph
-    auto has_parent   = [&tree](auto v){return tree.has_parent(v); };
-    auto has_children = [&tree](auto v){return tree.has_children(v); };
-
-    // adapters: not bound to a graph because empty properties
-    constexpr auto label         = [](auto){return "";};
-    constexpr auto branch_length = [](auto){return "";};
-
-    // Owns the newick's string and provides access to a visitor for the BGL DFS
-    auto holder = make_generator(
-      std::forward<decltype(has_parent)   >(has_parent),
-      std::forward<decltype(has_children) >(has_children),
-      std::forward<decltype(label)        >(label),
-      std::forward<decltype(branch_length)>(branch_length),
-      policy
-    );
-
-    auto vis = holder.make_boost_dfs_visitor();
-    tree.depth_first_search(boost::visitor(vis));
-    return holder.take_result();
-
-  }
-
-  ///
-  /// @brief Build a Newick generator for a quetzal tree class
-  ///
-  /// @remark It deduces what DFS to invoke and how to manipulate its interface
-  ///
-  template<class VertexProperties, class EdgeProperties, class Policy=PAUP>
-  std::string&& generate(quetzal::coalescence::k_ary_tree<VertexProperties,EdgeProperties> tree, Policy policy=Policy())
-  {
-    using vertex_t = VertexProperties;
-    using edge_t = EdgeProperties;
-    using tree_t = quetzal::coalescence::k_ary_tree<VertexProperties,EdgeProperties>;
-
-    // adapters: lambdas are bound to an instance of a graph in BGL
-    auto has_parent    = [&tree](auto v){return tree.has_parent(v); };
-    auto has_children  = [&tree](auto v){return tree.has_children(v); };
-    auto label         = [&tree](auto v){return tree[v].label;};
-    auto branch_length = [&tree](auto v){return tree[v].out_edges.branch_length;};
-
-    // Owns the newick's string and provides access to a visitor for the BGL DFS
-    auto holder = make_generator(
-      std::forward<decltype(has_parent)   >(has_parent),
-      std::forward<decltype(has_children) >(has_children),
-      std::forward<decltype(label)        >(label),
-      std::forward<decltype(branch_length)>(branch_length),
-      policy
-    );
-
-    auto vis = holder.make_boost_dfs_visitor();
-    depth_first_search(tree, boost::visitor(vis));
-    return holder.take_result();
-  }
+  /// @brief User-defined deduction guide where the node/graph type T is deduced from P1
+  /// @remark Template deduction guides are patterns associated with a template
+  ///         class that tell the compiler how to translate a set of constructor
+  ///          arguments (and their types) into template parameters for the class.
+  template <class P1, class P2, class F1, class F2, class Policy = PAUP>
+  generator(P1, P2, F1, F2, Policy pol = {})
+      -> generator<detail::single_function_argument_t<P1>, P1, P2, F1, F2, Policy>;
 
 } // end namespace quetzal::format::newick
-
 
 #endif

@@ -32,8 +32,10 @@ namespace quetzal::coalescence
 			/// @brief We don't allow for inserting vertices except at the end and we don't remove vertices.
 			///        This means that neither reallocation cost nor stability are reasons for preferring listS to vecS.
 			using vertex_list_type                = boost::vecS;
-			/// @brief Coalescent trees are directed acyclic graphs
-			using directed_type                   = boost::directedS;
+			/// @brief Coalescent trees are directed acyclic graphs but we need bidirectionality for in-edges access
+			/// @remark Bidirectionality trades off storage/insertion overhead for the ability to get in-edges 
+			///         and in-degree without having to enumerate all vertices or edges
+			using directed_type                   = boost::bidirectionalS;
 		};
 	}
 
@@ -94,22 +96,16 @@ namespace quetzal::coalescence
 		 ///
 		 /// @brief Returns true if a given node has a parent node
 		 ///
-		 bool has_parent(vertex_descriptor v) const
-		 {
-			 auto [it1, it2] = out_edges(v, *this);
-			 // since it is a tree, at most 1 parent
-			 assert(std::distance(it1,it2) <= 1);
-			 // if iterators equal, then no parent
-			 return it1 == it2 ? false : true;
-		 }
+		bool has_parent(vertex_descriptor v) const {
+            return in_degree(v, *this);;
+        }
 
 		 ///
 		 /// @brief Returns true if a given node has children nodes
 		 ///
 		 bool has_children(vertex_descriptor v) const
 		 {
-			 auto [it1, it2] = in_edges(v, *this);
-			 return std::distance(it1, it2) >= 1;
+            return out_degree(v, *this);
 		 }
 
 		 auto depth_first_search(auto visitor)
