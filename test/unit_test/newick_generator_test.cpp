@@ -35,9 +35,8 @@ struct Node
     if(this->left != nullptr && this->right != nullptr)
     {
       this->left->depth_first_search(pre_order, in_order, post_order);
-      in_order(*this);
+      in_order();
       this->right->depth_first_search(pre_order, in_order, post_order);
-      in_order(*this);
     }
     post_order(*this);
   }
@@ -76,10 +75,10 @@ struct Fixture_simple_tree
     BOOST_TEST_MESSAGE( "setup fixture simple tree" );
     /* Topology :
     *             a
-    *           /  \
-    *          /    c
-    *         /      \\
-    *        b       d e
+    *           /   \
+    *          /     c
+    *         /     / \
+    *        b     d   e
      */
 
      a.data = 'a';
@@ -88,10 +87,14 @@ struct Fixture_simple_tree
      d.data = 'd';
      e.data = 'e';
 
-     a.left = &b ; b.parent = &a;
-     a.right = &c; c.parent = &a;
-     c.left = &d ; d.parent = &c;
-     c.right = &e; e.parent = &c;
+     a.left = &b ; 
+     b.parent = &a;
+     a.right = &c; 
+     c.parent = &a;
+     c.left = &d ; 
+     d.parent = &c;
+     c.right = &e; 
+     e.parent = &c;
   }
 
   ~Fixture_simple_tree()
@@ -216,6 +219,51 @@ BOOST_FIXTURE_TEST_CASE(external_tree_align_format, Fixture_simple_tree)
 
 }
 
+BOOST_FIXTURE_TEST_CASE(legacy_k_ary_comparison, Fixture_simple_tree)
+{
+  namespace newick = quetzal::format::newick;
+  using Flavor = quetzal::format::newick::TreeAlign;
+
+  // LEGACY 
+
+  // Interfacing Quetzal generator with non-quetzal tree types
+  std::predicate<Node> auto has_parent = [](const Node& n){ return n.parent; };
+  std::predicate<Node> auto has_children = [](const Node& n){ return n.left && n.right ;};
+
+  // We are not interested into formatting the branch_length or label information
+  newick::Formattable<Node> auto no_branch_length = [](const Node& n){ return ""; };
+  newick::Formattable<Node> auto print_label = [](const Node& n ){ return ""; };
+
+  // We configure a generator passing it the interfaces
+  auto generator = newick::generator(has_parent, has_children, print_label, no_branch_length, Flavor());
+
+  // We expose its interface to the user-defined class DFS algorithm
+  a.depth_first_search(generator.pre_order(), generator.in_order(), generator.post_order());
+
+  // We retrieve the formatted string
+  std::string const legacy = generator.take_result();
+  BOOST_CHECK_EQUAL(legacy , "(,(,)):0.0;");
+
+  // NOW WITH BGL GRAPHS
+  using G = quetzal::coalescence::k_ary_tree<>;
+
+  enum {a,b,c,d,e,N};
+  G tree(N);
+  add_edge(a, b, tree);
+  add_edge(a, c, tree);
+  add_edge(c, d, tree);
+  add_edge(c, e, tree);
+
+  // Generate the newick string
+  auto const bgl = newick::generate_from(tree, Flavor());
+
+    std::cout << quoted(bgl) << "\n";
+    std::cout << quoted(legacy) << "\n";
+    std::cout << (bgl == legacy?"matching":"MISMATCH") << "\n";
+
+  BOOST_CHECK_EQUAL(legacy , bgl);
+}
+
 BOOST_AUTO_TEST_CASE(k_ary_tree_no_property)
 {
   namespace newick = quetzal::format::newick;
@@ -241,9 +289,10 @@ BOOST_AUTO_TEST_CASE(k_ary_tree_default_property)
 {
   namespace newick = quetzal::format::newick;
   // Default generate trees with string/double as properties
-  // auto [tree,root] = newick::to_k_ary_tree<>("(ant:17, (bat:31, cow:22):7, dog:22, (elk:33, fox:12):40);");
-  // // Generate the newick string
-  // auto s = newick::generate_from(tree);
+  auto [tree,root] = newick::to_k_ary_tree<>("(ant:17, (bat:31, cow:22):7, dog:22, (elk:33, fox:12):40);");
+  // Generate the newick string
+  using Flavor = quetzal::format::newick::TreeAlign;
+  // auto s = newick::generate_from(tree, Flavor());
   // // Convert back, default would be no_property, so need something
   // auto [other_tree, other_root] = newick::to_k_ary_tree<vertex_t, edge_t>(s);
   // // Should be isomorphic

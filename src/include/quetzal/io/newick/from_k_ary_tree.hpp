@@ -57,7 +57,7 @@ namespace quetzal::format::newick
           }
           void tree_edge(Graph::edge_descriptor e, Graph const& g) const {
               if (stack_.top()++ > 0)
-                  gen_.in_order()(source(e, g));
+                  gen_.in_order()();
           }
       } vis{gen, nth_child};
 

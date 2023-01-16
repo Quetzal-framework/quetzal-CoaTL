@@ -257,10 +257,17 @@ namespace quetzal::format::newick
     /// @brief End character.
     ///
     static inline constexpr char _end = ';';
+
     ///
     /// @brief The string formula to be updated.
     ///
     mutable formula_type _formula;
+
+    ///
+    /// @brief The depth at which the generator is
+    ///
+    mutable int _depth=0;
+
     ///
     /// @brief Functor inspecting if the node being visited has a parent.
     ///
@@ -297,39 +304,34 @@ namespace quetzal::format::newick
       if(std::invoke(_has_children, node))
       {
         _formula += "(";
+        _depth += 1;
       }
     }
 
-    void _in_order(const node_type &) const
+    void _in_order() const
     {
       _formula += ",";
     }
 
-    void _post_order(node_type const& node) {
-        if (std::invoke(_has_children, node)) {
-            if (_formula.back() == ',')
-                _formula.pop_back();
-            _formula += ')';
-        }
+    void _post_order(node_type const& node)
+    {
+      // Not leaf
+      if(std::invoke(_has_children, node)) _formula += ")";
 
-        if (std::invoke(_has_parent, node)) {
-            auto label = std::invoke(_label, node);
-            if (has_forbidden_characters(remove_comments_of_depth<1>::edit(label))) {
-                throw std::invalid_argument(std::string("Label with forbidden characters:") +
-                                            std::string(label));
-            }
+      // Not root
+      if ( std::invoke(_has_parent, node) )
+      { 
+        auto const label = std::invoke(_label, node);
+        _formula += label;
+        std::string const branch( std::invoke(_branch_length, node) );
+        if ( !branch.empty() ) _formula.append(":").append(branch);
+      } else {
+        // Is root
+        _formula += std::invoke(_label, node);
+        _formula += policy_type::root_branch_length();
+      }
 
-            _formula += label;
-
-            std::string branch(std::invoke(_branch_length, node));
-            if (!branch.empty()) {
-                _formula += ":";
-                _formula += branch;
-            }
-        } else {
-            _formula += std::invoke(_label, node);
-            _formula += policy_type::root_branch_length();
-        }
+      _depth -= 1; 
     }
 
   public:
@@ -358,7 +360,7 @@ namespace quetzal::format::newick
     ///
     auto in_order()
     {
-      return [this](const node_type & node){this->_in_order(node);};
+      return [this](){this->_in_order();};
     }
 
     ///
