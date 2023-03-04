@@ -6,6 +6,16 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 //=======================================================================
 
+// Copyright 2021 Arnaud Becheler    <abechele@umich.edu>
+
+///////////////////////////////////////////////////////////////////////////                                                                       *
+/// This program is free software; you can redistribute it and/or modify ///
+/// it under the terms of the GNU General Public License as published by ///
+/// the Free Software Foundation; either version 2 of the License, or    ///
+/// (at your option) any later version.                                  ///
+///                                                                     ///
+///////////////////////////////////////////////////////////////////////////
+
 #ifndef BOOST_GRAPH_K_ARY_TREE
 #define BOOST_GRAPH_K_ARY_TREE
 
@@ -32,12 +42,14 @@
 #include <stack>
 #include <utility>
 
+#include "concepts.hpp"
+
 namespace boost
 {
   enum class visit { pre, in, post };
 }
 
-#include <boost/graph/detail/k-ary_tree.hpp>
+#include "detail_k_ary_tree.hpp"
 
 namespace boost
 {
@@ -47,33 +59,46 @@ namespace boost
     return u == graph_traits<Graph>::null_vertex();
   }
 
+  /// @brief Binary tree base definition for further specialization
+  ///
+  /// @tparam Vertex 
+  /// @tparam Predecessor : should predecessors be stored (bidirectional) or not (forward)
+  ///
+  /// @remarks Properties were not considered when implementing the class, so it's completely missing.
+  ///
   template <bool Predecessor, typename Vertex = std::size_t>
   class binary_tree;
 
-  /******************
-   *  Forward tree  *
-   ******************/
+  ///
+  /// @brief Forward Binary Tree
+  ///
+  /// @tparam Vertex 
+  ///
+  /// @remark Does not store predecessors
+  ///
   template <typename Vertex>
   class binary_tree<false, Vertex>
-    : public detail::binary_tree_base<Vertex,
-      detail::binary_tree_forward_node<binary_tree<false, Vertex> > >
+    : public detail::binary_tree_base<Vertex, detail::binary_tree_forward_node<binary_tree<false, Vertex> > >
   {
       typedef detail::binary_tree_base<Vertex,
               detail::binary_tree_forward_node<binary_tree<false, Vertex> > > super_t;
 
     public:
+
+      /// @brief Directed, undirected or bidirectional
       using directed_category = directed_tag;
-      class traversal_category : public incidence_graph_tag,
-        public vertex_list_graph_tag {};
+
+      class traversal_category : public incidence_graph_tag, public vertex_list_graph_tag {};
+
       using edge_descriptor = typename super_t::edge_descriptor;
+
       using vertex_descriptor = typename super_t::vertex_descriptor;
 
       using super_t::super_t;
 
       friend
       edge_descriptor
-      add_left_edge(vertex_descriptor parent, vertex_descriptor child,
-                         binary_tree &g)
+      add_left_edge(vertex_descriptor parent, vertex_descriptor child, binary_tree &g)
       {
         BOOST_ASSERT(parent != child);
 
@@ -82,8 +107,7 @@ namespace boost
 
       friend
       edge_descriptor
-      add_right_edge(vertex_descriptor parent, vertex_descriptor child,
-                          binary_tree &g)
+      add_right_edge(vertex_descriptor parent, vertex_descriptor child, binary_tree &g)
       {
         BOOST_ASSERT(parent != child);
 
@@ -123,25 +147,22 @@ namespace boost
   };
 
 
-  /************************
-   *  Bidirectional tree  *
-   ************************/
+  /// @brief Bidirectional Binary Tree
+  ///
+  /// @tparam Vertex 
+  ///
   template <typename Vertex>
   class binary_tree<true, Vertex>
-    : public detail::binary_tree_base<Vertex,
-      detail::binary_tree_bidirectional_node<binary_tree<true, Vertex> > >
+    : public detail::binary_tree_base<Vertex, detail::binary_tree_bidirectional_node<binary_tree<true, Vertex> > >
   {
-      typedef detail::binary_tree_base<Vertex,
-              detail::binary_tree_bidirectional_node<binary_tree<true, Vertex> > > super_t;
+    using super_t = detail::binary_tree_base<Vertex, detail::binary_tree_bidirectional_node<binary_tree<true, Vertex> > > ;
 
     public:
-      typedef bidirectional_tag directed_category;
-      class traversal_category : public bidirectional_graph_tag,
-        public vertex_list_graph_tag {};
-      typedef typename super_t::edge_descriptor edge_descriptor;
-      typedef typename super_t::vertex_descriptor vertex_descriptor;
-      typedef typename super_t::degree_size_type degree_size_type;
-
+      using directed_category = bidirectional_tag ;
+      class traversal_category : public bidirectional_graph_tag, public vertex_list_graph_tag {};
+      using edge_descriptor = typename super_t::edge_descriptor;
+      using vertex_descriptor = typename super_t::vertex_descriptor;
+      using degree_size_type = typename super_t::degree_size_type;
       using super_t::super_t;
 
       friend
@@ -227,27 +248,30 @@ namespace boost
       // *** BidirectionalGraph interface ***
 
     private:
-      struct make_in_edge_descriptor {
+
+      struct make_in_edge_descriptor
+      {
         make_in_edge_descriptor(vertex_descriptor target) : target(target) {}
 
-        edge_descriptor operator()(vertex_descriptor source) const {
+        edge_descriptor operator()(vertex_descriptor source) const
+        {
           return edge_descriptor(source, target);
         }
+
         vertex_descriptor target;
       };
 
     public:
-      typedef transform_iterator<make_in_edge_descriptor, vertex_descriptor const *,
-              edge_descriptor> in_edge_iterator;
+
+      using in_edge_iterator = transform_iterator<make_in_edge_descriptor, vertex_descriptor const *, edge_descriptor>;
 
       friend
       std::pair<in_edge_iterator, in_edge_iterator>
-      in_edges(vertex_descriptor u, binary_tree const &g) {
+      in_edges(vertex_descriptor u, binary_tree const &g)
+      {
         auto const p = has_predecessor(u, g);
-        return std::make_pair(in_edge_iterator(&g.nodes[u].predecessor,
-                                               make_in_edge_descriptor(u)),
-                              in_edge_iterator(&g.nodes[u].predecessor + p,
-                                               make_in_edge_descriptor(u)));
+        return std::make_pair(in_edge_iterator(&g.nodes[u].predecessor, make_in_edge_descriptor(u)),
+                              in_edge_iterator(&g.nodes[u].predecessor + p, make_in_edge_descriptor(u)));
       }
 
       friend
@@ -329,14 +353,14 @@ namespace boost
 
   template <typename Vertex = std::size_t>
   using forward_binary_tree = binary_tree<false, Vertex>;
+  
   template <typename Vertex = std::size_t>
   using bidirectional_binary_tree = binary_tree<true, Vertex>;
-
+ 
   namespace detail
   {
     template <typename BinaryTree, typename Visitor>
-    Visitor traverse_nonempty(vertex_descriptor_t<BinaryTree> u,
-                              BinaryTree const &g, Visitor vis)
+    Visitor traverse_nonempty(vertex_descriptor_t<BinaryTree> u, BinaryTree const &g, Visitor vis)
     {
       vis(visit::pre, u);
       if (has_left_successor(u, g))
@@ -372,8 +396,7 @@ namespace boost
     }
 
     template <typename BinaryTree, typename Visitor>
-    Visitor traverse(vertex_descriptor_t<BinaryTree> u,
-                     BinaryTree const &g, Visitor vis)
+    Visitor traverse(vertex_descriptor_t<BinaryTree> u, BinaryTree const &g, Visitor vis)
     {
       if (empty(u, g))
         return vis;

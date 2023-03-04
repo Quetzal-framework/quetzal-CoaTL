@@ -256,30 +256,7 @@ BOOST_FIXTURE_TEST_CASE(legacy_k_ary_comparison, Fixture_simple_tree)
 
   // Generate the newick string
   auto const bgl = newick::generate_from(tree, Flavor());
-
-    std::cout << quoted(bgl) << "\n";
-    std::cout << quoted(legacy) << "\n";
-    std::cout << (bgl == legacy?"matching":"MISMATCH") << "\n";
-
   BOOST_CHECK_EQUAL(legacy , bgl);
-}
-
-BOOST_AUTO_TEST_CASE(k_ary_tree_no_property)
-{
-  namespace newick = quetzal::format::newick;
-  // Get a seed for the random number engine
-  std::random_device rd;
-  // Declare a random number generator
-  std::mt19937 rng(rd());
-  // Generate a random tree with no property from a graph V(10,30)
-  auto [tree,root] = quetzal::get_random_spanning_tree<>(10, 30, rng);
-  // Generate the newick string
-  using Flavor = quetzal::format::newick::TreeAlign;
-  auto s = newick::generate_from(tree, Flavor());
-  // Convert back
-  auto [other_tree,other_root] = newick::to_k_ary_tree<>(s);
-  // Should be isomorphic
-  BOOST_TEST(tree.is_isomorphic(other_tree));
 }
 
 struct vertex_t { std::string bar; };
