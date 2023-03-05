@@ -20,7 +20,7 @@ namespace quetzal
     /// @remarks Inherits from boost::bidirectional_binary_tree, intends to hide the chaos
     template<class VertexProperty = boost::no_property, class EdgeProperty = boost::no_property>
     class binary_tree : 
-        public boost::bidirectional_binary_tree<>
+        protected boost::bidirectional_binary_tree<>
     {
         using base = boost::bidirectional_binary_tree<>;
 
@@ -59,19 +59,15 @@ namespace quetzal
             return {left_edge, right_edge};
         }
 
-        // /// @brief Add a left edge to the parent
-        // inline edge_descriptor add_left_edge(vertex_descriptor parent, vertex_descriptor child)
-        // {
-        //     assert(parent != child);
-        //     return add_left_edge(parent, child, *this);
-        // }
-
-        // /// @brief Add a right edge to the parent
-        // inline edge_descriptor add_right_edge(vertex_descriptor parent, vertex_descriptor child)
-        // {
-        //     assert(parent != child);
-        //     return add_right_edge(parent, child, *this);
-        // }
+        template<typename... Args>
+        friend 
+        vertex_descriptor add_vertex(binary_tree &g, Args&&... args)
+        {
+            vertex_descriptor key = g.add_vertex();
+            VertexProperty value = { std::forward<Args>(args)...};
+            put(g._vertex_property_map, key, value);
+            return key;
+        }
 
         /// @brief Find the root given a starting vertex
         /// @note  This function will be an infinite loop if called on a recurrent tree (which is not a tree any more).
