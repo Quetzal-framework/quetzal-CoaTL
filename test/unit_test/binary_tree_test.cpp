@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_SUITE( binary_tree )
 BOOST_AUTO_TEST_CASE(no_property_base_interface)
 {
   // default tree with no edge/vertex properties attached
-  using tree_type = quetzal::binary_tree<>;
+  using tree_type = quetzal::binary_tree<boost::no_property, boost::no_property>;
   using vertex_descriptor = tree_type::vertex_descriptor;
 
   tree_type tree;
@@ -50,23 +50,23 @@ BOOST_AUTO_TEST_CASE(no_property_base_interface)
 BOOST_AUTO_TEST_CASE(no_property_binary_interface)
 {
   // default tree with no edge/vertex properties attached
-  using tree_type = quetzal::binary_tree<>;
+  using tree_type = quetzal::binary_tree<boost::no_property, boost::no_property>;
   using vertex_descriptor = tree_type::vertex_descriptor;
 
   tree_type tree;
   
   vertex_descriptor a = add_vertex(tree);
 
-  auto [ab_edge, ac_edge] = tree.add_children(a, 1, 2);
-  auto [cd_edge, ce_edge] = tree.add_children(ac_edge.second, 3, 4);
+  auto [ab_edge, ac_edge] = add_children(tree, a, 1, 2);
+  auto [cd_edge, ce_edge] = add_children(tree, ac_edge.second, 3, 4);
 
 }
 
-BOOST_AUTO_TEST_CASE(binary_interface_bundled_properties_vertices)
+BOOST_AUTO_TEST_CASE(simple_vertex_properties)
 {
   // default tree with no edge/vertex properties attached
   using vertex_properties = std::string;
-  using tree_type = quetzal::binary_tree<vertex_properties>;
+  using tree_type = quetzal::binary_tree<vertex_properties, boost::no_property>;
   using vertex_descriptor = tree_type::vertex_descriptor;
 
   tree_type tree;
@@ -78,6 +78,51 @@ BOOST_AUTO_TEST_CASE(binary_interface_bundled_properties_vertices)
   vertex_descriptor e = add_vertex(tree, "e");
 
   assert(tree[a] == "a");
+}
+
+struct vertex_info { 
+    std::string whatever; 
+    int othervalue;
+};
+
+BOOST_AUTO_TEST_CASE(structure_vertex_properties)
+{
+  // default tree with no edge/vertex properties attached
+  using vertex_properties = vertex_info;
+  using tree_type = quetzal::binary_tree<vertex_properties, boost::no_property>;
+  using vertex_descriptor = tree_type::vertex_descriptor;
+
+  tree_type tree;
+  
+  vertex_descriptor a = add_vertex(tree, "a", 0);
+  vertex_descriptor b = add_vertex(tree, "b", 1);
+  vertex_descriptor c = add_vertex(tree, "c", 2);
+  vertex_descriptor d = add_vertex(tree, "d", 3);
+  vertex_descriptor e = add_vertex(tree, "e", 4);
+
+  assert(tree[e].whatever == "e");
+  assert(tree[e].otherwise == 1);
+}
+
+BOOST_AUTO_TEST_CASE(simple_edge_properties)
+{
+  // default tree with no edge/vertex properties attached
+  using vertex_properties = boost::no_property;
+  using edge_properties = std::string;
+  using tree_type = quetzal::binary_tree<vertex_properties, boost::no_property>;
+  using vertex_descriptor = tree_type::vertex_descriptor;
+
+  tree_type tree;
+  
+  vertex_descriptor a = add_vertex(tree);
+  vertex_descriptor b = add_vertex(tree);
+  vertex_descriptor c = add_vertex(tree);
+  vertex_descriptor d = add_vertex(tree);
+  vertex_descriptor e = add_vertex(tree);
+
+  auto [ab_edge, ac_edge] = add_children(tree, a, std::make_tuple(b, "b"), std::make_tuple(c, "c"));
+  auto [cd_edge, ce_edge] = add_children(tree, ac_edge.second, std::make_tuple(d, "d"), std::make_tuple(e, "e"));
+
 }
 
 BOOST_AUTO_TEST_SUITE_END()
