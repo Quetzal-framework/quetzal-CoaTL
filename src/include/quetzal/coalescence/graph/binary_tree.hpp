@@ -11,6 +11,8 @@
 #ifndef BINARY_TREE_H_INCLUDED
 #define BINARY_TREE_H_INCLUDED
 
+#include <type_traits>
+
 #include "detail/tree_traits.hpp"
 #include "detail/cardinal_k_ary_tree.hpp"
 #include <utility>
@@ -18,7 +20,12 @@
 namespace quetzal
 {
     namespace detail
-    {
+    {        
+        template<class... Types>
+        struct count {
+            static const std::size_t value = sizeof...(Types);
+        };
+
         template <typename T1, typename... Ts>
         std::tuple<Ts...> unshift_tuple(const std::tuple<T1, Ts...>& tuple)
         {
@@ -34,9 +41,10 @@ namespace quetzal
             boost::associative_property_map< vertex_hashmap_type > _vertex_property_map { _vertex_property_hashmap };
 
             template<typename... Args>
-            vertex_descriptor add_vertex(Graph &g, Args&&... args)
+            vertex_descriptor add_vertex_to_manager(Graph &g, Args&&... args)
             {
-                vertex_descriptor key = g.add_vertex();
+                std::cout << "in vertex manager" << std::endl;
+                vertex_descriptor key = add_vertex(g);
                 VertexProperty value = { std::forward<Args>(args)...};
                 put(_vertex_property_map, key, value);
                 return key;
@@ -63,8 +71,8 @@ namespace quetzal
                 assert(parent != get<0>(right));
                 assert(get<0>(left) != get<0>(right));
 
-                std::pair<vertex_descriptor,vertex_descriptor> left_edge = g.add_left_edge(parent, get<0>(left));
-                std::pair<vertex_descriptor,vertex_descriptor> right_edge = g.add_right_edge(parent, get<0>(right));
+                std::pair<vertex_descriptor,vertex_descriptor> left_edge = add_left_edge(parent, get<0>(left), g);
+                std::pair<vertex_descriptor,vertex_descriptor> right_edge = add_right_edge(parent, get<0>(right), g);
 
                 auto p1 = std::apply([](Args&&... ts){ return EdgeProperty(std::forward<Args>(ts)...);}, detail::unshift_tuple(left));
                 auto p2 = std::apply([](Args&&... ts){ return EdgeProperty(std::forward<Args>(ts)...);}, detail::unshift_tuple(right));
@@ -140,6 +148,7 @@ namespace quetzal
     /// @brief A binary tree class 
     /// @remarks Partial specialization where there is no edge property attached
     template<class VertexProperty>
+    requires (!std::is_same_v<VertexProperty, boost::no_property>)
     class binary_tree<VertexProperty, boost::no_property> :
     public boost::bidirectional_binary_tree<>
     {
@@ -167,10 +176,12 @@ namespace quetzal
 
         /// @brief Add a vertex to the graph
         template<typename... Args>
+        requires ( detail::count<Args...>::value != 0U  )
         friend
         vertex_descriptor add_vertex(self_type &g, Args&&... args)
         {
-            return g._vertex_manager.add_vertex(g, std::forward<Args>(args)...);
+            std::cout << "in add_vertex" << std::endl;
+            return g._vertex_manager.add_vertex_to_manager(g, std::forward<Args>(args)...);
         }
 
         /// @brief Add edges between the parent vertex and the two children.
@@ -196,6 +207,7 @@ namespace quetzal
     /// @brief A binary tree class 
     /// @remarks Partial specialization where there is no vertex property attached
     template<class EdgeProperty>
+    requires (!std::is_same_v<EdgeProperty, boost::no_property>)
     class binary_tree<boost::no_property, EdgeProperty> :
     public boost::bidirectional_binary_tree<>
     {
