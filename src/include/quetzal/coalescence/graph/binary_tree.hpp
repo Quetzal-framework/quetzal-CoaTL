@@ -43,11 +43,20 @@ namespace quetzal
             template<typename... Args>
             vertex_descriptor add_vertex_to_manager(Graph &g, Args&&... args)
             {
-                std::cout << "in vertex manager" << std::endl;
                 vertex_descriptor key = add_vertex(g);
                 VertexProperty value = { std::forward<Args>(args)...};
                 put(_vertex_property_map, key, value);
                 return key;
+            }
+
+            const VertexProperty& operator [](vertex_descriptor v) const
+            {
+                return get(_vertex_property_map, v);
+            }
+
+            VertexProperty & operator [](vertex_descriptor v)
+            {
+                return _vertex_property_map[v];
             }
         };
 
@@ -74,13 +83,23 @@ namespace quetzal
                 std::pair<vertex_descriptor,vertex_descriptor> left_edge = add_left_edge(parent, get<0>(left), g);
                 std::pair<vertex_descriptor,vertex_descriptor> right_edge = add_right_edge(parent, get<0>(right), g);
 
-                auto p1 = std::apply([](Args&&... ts){ return EdgeProperty(std::forward<Args>(ts)...);}, detail::unshift_tuple(left));
-                auto p2 = std::apply([](Args&&... ts){ return EdgeProperty(std::forward<Args>(ts)...);}, detail::unshift_tuple(right));
+                auto p1 = std::apply([](Args&&... ts){ return EdgeProperty { std::forward<Args>(ts)... }; }, detail::unshift_tuple(left));
+                auto p2 = std::apply([](Args&&... ts){ return EdgeProperty { std::forward<Args>(ts)... }; }, detail::unshift_tuple(right));
 
                 put(_edge_property_map, left_edge, p1);
                 put(_edge_property_map, right_edge, p2);
 
                 return {left_edge, right_edge};
+            }
+
+            const EdgeProperty& operator [](const std::pair<vertex_descriptor,vertex_descriptor>& edge) const
+            {
+                return get(_edge_property_map, edge);
+            }
+
+            EdgeProperty & operator [](const std::pair<vertex_descriptor,vertex_descriptor>& edge)
+            {
+                return _edge_property_map[edge];
             }
         };
 
@@ -202,6 +221,16 @@ namespace quetzal
 
             return {left_edge, right_edge};
         }
+
+        const VertexProperty& operator [](vertex_descriptor vertex) const
+        {
+            return _vertex_manager[vertex];
+        }
+
+        VertexProperty & operator [](vertex_descriptor vertex)
+        {
+            return _vertex_manager[vertex];
+        }
     };
 
     /// @brief A binary tree class 
@@ -250,6 +279,16 @@ namespace quetzal
         {
             return g._edge_manager.add_children(g, parent, left, right);
         }
+
+        const EdgeProperty& operator [](const std::pair<vertex_descriptor, vertex_descriptor>& edge) const
+        {
+            return _edge_manager[edge];
+        }
+
+        EdgeProperty & operator [](const std::pair<vertex_descriptor, vertex_descriptor>& edge)
+        {
+            return _edge_manager[edge];
+        }
     };
 
     /// @brief A binary tree class 
@@ -288,7 +327,7 @@ namespace quetzal
         friend
         vertex_descriptor add_vertex(self_type &g, Args&&... args)
         {
-            return g._vertex_manager.add_vertex(g, std::forward<Args>(args)...);
+            return g._vertex_manager.add_vertex_to_manager(g, std::forward<Args>(args)...);
         }
 
         /// @brief Add edges between the parent vertex and the two children.
@@ -301,6 +340,26 @@ namespace quetzal
                     std::tuple<vertex_descriptor, Args...> right)
         {
             return g._edge_manager.add_children(g, parent, left, right);
+        }
+
+        const VertexProperty& operator [](vertex_descriptor v) const
+        {
+            return _vertex_manager[v];
+        }
+
+        VertexProperty & operator [](vertex_descriptor v)
+        {
+            return _vertex_manager[v];
+        }
+
+        const EdgeProperty& operator [](const std::pair<vertex_descriptor, vertex_descriptor>& edge) const
+        {
+            return _edge_manager[edge];
+        }
+
+        EdgeProperty & operator [](const std::pair<vertex_descriptor, vertex_descriptor>& edge)
+        {
+            return _edge_manager[edge];
         }
     };
 }
