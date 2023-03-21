@@ -199,26 +199,26 @@ BOOST_AUTO_TEST_CASE(struct_both_properties)
   vertex_descriptor e = add_vertex(tree, "e", 4);
 
   // Pass info to build new edges
-  //auto [ab_edge, ac_edge] = add_children(tree, a, std::make_tuple(b, "a->b", 10), std::make_tuple(c, "a->c", 11));
-  //auto [cd_edge, ce_edge] = add_children(tree, ac_edge.second, std::make_tuple(d, "c->d", 12), std::make_tuple(e, "c->e", 13));
+  auto [ab_edge, ac_edge] = add_children(tree, a, std::make_tuple(b, "a->b", 10), std::make_tuple(c, "a->c", 11));
+  auto [cd_edge, ce_edge] = add_children(tree, ac_edge.second, std::make_tuple(d, "c->d", 12), std::make_tuple(e, "c->e", 13));
 
-  // // Read vertices
-  // assert(tree[e].whatever == "e");
-  // assert(tree[e].othervalue == 4);
+  // Read vertices
+  assert(tree[e].whatever == "e");
+  assert(tree[e].othervalue == 4);
 
-  // // Write vertices
-  // tree[e] = { "new", 5};
-  // assert(tree[e].whatever == "new");
-  // assert(tree[e].othervalue == 5);
+  // Write vertices
+  tree[e] = { "new", 5};
+  assert(tree[e].whatever == "new");
+  assert(tree[e].othervalue == 5);
 
-  // // Read edge info
-  // assert(tree[ab_edge].whatever == "a->b");
-  // assert(tree[ab_edge].othervalue == 10);
+  // Read edge info
+  assert(tree[ab_edge].whatever == "a->b");
+  assert(tree[ab_edge].othervalue == 10);
 
-  // // Write edge info
-  // tree[ab_edge] =  { "yolo", 99 };
-  // assert(tree[ab_edge].whatever == "yolo");
-  // assert(tree[ab_edge].othervalue == 99);
+  // Write edge info
+  tree[ab_edge] =  { "yolo", 99 };
+  assert(tree[ab_edge].whatever == "yolo");
+  assert(tree[ab_edge].othervalue == 99);
 
 }
 BOOST_AUTO_TEST_SUITE_END()

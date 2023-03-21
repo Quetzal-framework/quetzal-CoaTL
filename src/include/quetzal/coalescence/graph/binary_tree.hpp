@@ -199,7 +199,6 @@ namespace quetzal
         friend
         vertex_descriptor add_vertex(self_type &g, Args&&... args)
         {
-            std::cout << "in add_vertex" << std::endl;
             return g._vertex_manager.add_vertex_to_manager(g, std::forward<Args>(args)...);
         }
 
@@ -323,7 +322,9 @@ namespace quetzal
         using degree_size_type = typename base::degree_size_type;
 
         /// @brief Add a vertex to the graph
+          /// @brief Add a vertex to the graph
         template<typename... Args>
+        requires ( detail::count<Args...>::value != 0U  )
         friend
         vertex_descriptor add_vertex(self_type &g, Args&&... args)
         {
