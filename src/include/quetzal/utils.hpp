@@ -14,7 +14,7 @@
 #include "utils/PointWithId.hpp"
 
 #include "utils/random.hpp"
-#include "utils/get_random_spanning_tree.hpp"
+#include "utils/random_tree.hpp"
 
 ///
 /// @brief Miscellaneous details

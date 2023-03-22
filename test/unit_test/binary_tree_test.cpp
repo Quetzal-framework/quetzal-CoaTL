@@ -15,6 +15,7 @@
 namespace utf = boost::unit_test;
 
 #include <quetzal/coalescence/graph/binary_tree.hpp>
+#include <quetzal/utils/random_tree.hpp>
 
 BOOST_AUTO_TEST_SUITE( binary_tree )
 
@@ -29,7 +30,7 @@ BOOST_AUTO_TEST_SUITE( binary_tree )
 BOOST_AUTO_TEST_CASE(no_property_base_interface)
 {
   // default tree with no edge/vertex properties attached
-  using tree_type = quetzal::binary_tree<boost::no_property, boost::no_property>;
+  using tree_type = quetzal::coalescence::binary_tree<boost::no_property, boost::no_property>;
   using vertex_descriptor = tree_type::vertex_descriptor;
 
   tree_type tree;
@@ -51,7 +52,7 @@ BOOST_AUTO_TEST_CASE(no_property_base_interface)
 BOOST_AUTO_TEST_CASE(no_property_binary_interface)
 {
   // default tree with no edge/vertex properties attached
-  using tree_type = quetzal::binary_tree<boost::no_property, boost::no_property>;
+  using tree_type = quetzal::coalescence::binary_tree<boost::no_property, boost::no_property>;
   using vertex_descriptor = tree_type::vertex_descriptor;
 
   tree_type tree;
@@ -67,7 +68,7 @@ BOOST_AUTO_TEST_CASE(simple_vertex_properties)
 {
   // tree with string vertices but no edge properties
   using vertex_properties = std::string;
-  using tree_type = quetzal::binary_tree<vertex_properties, boost::no_property>;
+  using tree_type = quetzal::coalescence::binary_tree<vertex_properties, boost::no_property>;
   using vertex_descriptor = tree_type::vertex_descriptor;
 
   tree_type tree;
@@ -97,7 +98,7 @@ BOOST_AUTO_TEST_CASE(structure_vertex_properties)
 {
   // tree with string & int vertices but no edge properties
   using vertex_properties = vertex_info;
-  using tree_type = quetzal::binary_tree<vertex_properties, boost::no_property>;
+  using tree_type = quetzal::coalescence::binary_tree<vertex_properties, boost::no_property>;
   using vertex_descriptor = tree_type::vertex_descriptor;
 
   tree_type tree;
@@ -125,7 +126,7 @@ BOOST_AUTO_TEST_CASE(simple_edge_properties)
   // tree with string edges but no vertex properties attached
   using vertex_properties = boost::no_property;
   using edge_properties = std::string;
-  using tree_type = quetzal::binary_tree<vertex_properties, edge_properties>;
+  using tree_type = quetzal::coalescence::binary_tree<vertex_properties, edge_properties>;
   using vertex_descriptor = tree_type::vertex_descriptor;
 
   tree_type tree;
@@ -154,7 +155,7 @@ BOOST_AUTO_TEST_CASE(struct_edge_properties)
   // default tree with no edge/vertex properties attached
   using vertex_properties = boost::no_property;
   using edge_properties = edge_info;
-  using tree_type = quetzal::binary_tree<vertex_properties, edge_properties>;
+  using tree_type = quetzal::coalescence::binary_tree<vertex_properties, edge_properties>;
   using vertex_descriptor = tree_type::vertex_descriptor;
 
   tree_type tree;
@@ -187,7 +188,7 @@ BOOST_AUTO_TEST_CASE(struct_both_properties)
   // default tree with no edge/vertex properties attached
   using vertex_properties = vertex_info;
   using edge_properties = edge_info;
-  using tree_type = quetzal::binary_tree<vertex_properties, edge_properties>;
+  using tree_type = quetzal::coalescence::binary_tree<vertex_properties, edge_properties>;
   using vertex_descriptor = tree_type::vertex_descriptor;
 
   tree_type tree;
@@ -220,5 +221,13 @@ BOOST_AUTO_TEST_CASE(struct_both_properties)
   assert(tree[ab_edge].whatever == "yolo");
   assert(tree[ab_edge].othervalue == 99);
 
+}
+
+BOOST_AUTO_TEST_CASE(random_binary_tree)
+{
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  int nb_leaves = 5;
+  auto tree = quetzal::get_random_binary_tree(nb_leaves, gen);
 }
 BOOST_AUTO_TEST_SUITE_END()

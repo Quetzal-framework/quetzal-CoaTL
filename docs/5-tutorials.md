@@ -31,7 +31,7 @@
 
 
 [//]: # (----------------------------------------------------------------------)
-@page newick_parser Parsing a Newick tree
+@page newick_parser Parsing a Newick tree string
 
 @tableofcontents
 
@@ -155,7 +155,7 @@ on the github issue pages!
 
 
 [//]: # (----------------------------------------------------------------------)
-@page newick_generator Generating a Newick tree
+@page newick_generator Generating a Newick tree string
 
 @tableofcontents
 
@@ -165,7 +165,7 @@ on the github issue pages!
 
 As we saw with Newick parser logic, it can be interesting to isolate independent behaviors,
 as it makes Newick tree grammar reusable across different code bases even if
-these projects made different choices concerning tree-like graphs implementation.
+these codes made different choices concerning tree-like graphs implementation.
 
 In the same logic, when generating a Newick string, **Quetzal** considers independently
 1. the node data access logic, or *how to access the data stored in a node class*

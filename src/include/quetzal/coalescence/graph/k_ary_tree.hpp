@@ -37,8 +37,10 @@ namespace quetzal::coalescence
 	{
 		/// @brief Properties of an edge, e.g. a structure representing the series of demes visited or simply the branch length.
 		using edge_properties = EdgeProperties;
+		
 		/// @brief Properties of a vertex, e.g. a structure representing the mutational state.
 		using vertex_properties = VertexProperties;
+
 		/// @brief The type of graph hold by the tree class
 		using base_type = detail::tree_traits::model<
 			detail::tree_traits::out_edge_list_type, detail::tree_traits::vertex_list_type,
@@ -80,7 +82,6 @@ namespace quetzal::coalescence
 		bool has_parent(vertex_descriptor v) const
 		{
 			return in_degree(v, *this);
-			;
 		}
 
 		///

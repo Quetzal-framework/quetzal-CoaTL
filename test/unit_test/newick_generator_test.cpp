@@ -14,7 +14,7 @@
 namespace utf = boost::unit_test;
 
 #include <quetzal/io/newick/generator.hpp>
-#include <quetzal/utils/get_random_spanning_tree.hpp>
+#include <quetzal/utils/random_tree.hpp>
 #include <quetzal/io/newick/to_k_ary_tree.hpp>
 #include <quetzal/io/newick/from_k_ary_tree.hpp>
 #include <random>

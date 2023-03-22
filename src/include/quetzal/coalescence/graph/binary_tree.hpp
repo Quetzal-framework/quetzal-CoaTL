@@ -17,7 +17,7 @@
 #include "detail/cardinal_k_ary_tree.hpp"
 #include <utility>
 
-namespace quetzal
+namespace quetzal::coalescence
 {
     namespace detail
     {        
@@ -124,6 +124,8 @@ namespace quetzal
         
         public:
 
+        using edge_properties = boost::no_property;
+        using vertex_properties = boost::no_property;
         /// @brief Inheriting constructors
         using base::base;
 
