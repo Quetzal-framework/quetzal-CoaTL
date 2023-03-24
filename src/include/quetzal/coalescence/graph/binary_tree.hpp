@@ -19,6 +19,76 @@
 
 namespace quetzal::coalescence
 {
+    /// @brief A binary tree class
+    /// @remarks Primary template for partial specialization
+    template<class VertexProperty, class EdgeProperty>
+    class binary_tree {};
+}
+
+namespace boost
+{
+
+    namespace detail
+    {
+        template <class V>
+        struct has_vertex_property_type< quetzal::coalescence::binary_tree<V,boost::no_property> >
+        {
+            static constexpr bool value = !std::is_same_v<V, boost::no_property>;
+        };
+
+        template <class E>
+        struct has_edge_property_type< quetzal::coalescence::binary_tree<boost::no_property, E> >
+        {
+            static constexpr bool value = !std::is_same_v<E, boost::no_property>;
+        };
+    }
+ 
+
+    template <class V, class E> 
+        requires (!std::is_same_v<V, boost::no_property>)
+    struct property_map<quetzal::coalescence::binary_tree<V,E>, boost::vertex_index_t>
+    {
+        using type = typename quetzal::coalescence::binary_tree<V,E>::vertex_property_map_type;
+    };
+
+    template <class V, class E> 
+        requires (!std::is_same_v<E, boost::no_property>)
+    struct property_map<quetzal::coalescence::binary_tree<V,E>, boost::edge_index_t>
+    {
+        using type = typename quetzal::coalescence::binary_tree<V,E>::edge_property_map_type;
+    };
+}
+
+namespace quetzal::coalescence 
+{
+    template<class V, class E>
+    auto get(boost::vertex_index_t, binary_tree<V,E> const& g)
+    {
+        return g.get_vertex_property_map();
+    }
+
+    template<class V, class E>
+    auto get(boost::vertex_index_t, binary_tree<V,E> const& g, V const* v) 
+    {
+        return g.get_vertex_property_map()[v];
+    }
+
+    template<class V, class E>
+    auto get(boost::edge_index_t, binary_tree<V,E> const& g)
+    {
+        return g.get_edge_property_map();
+    }
+
+    template<class V, class E>
+    auto get(boost::edge_index_t, binary_tree<V,E> const& g, E const* e) 
+    {
+        return g.get_edge_property_map()[e];
+    }
+}
+
+
+namespace quetzal::coalescence
+{
     namespace detail
     {        
         template<class... Types>
@@ -32,15 +102,17 @@ namespace quetzal::coalescence
             return std::apply([](auto&&, const auto&... args) {return std::tie(args...);}, tuple);
         }
 
-        template<typename Graph, typename VertexProperty>
+        template<typename VertexDescriptor, typename VertexProperty>
         struct VertexManager
         {
-            using vertex_descriptor = typename Graph::vertex_descriptor;
+            using vertex_descriptor = VertexDescriptor;
             using vertex_hashmap_type = std::map<vertex_descriptor, VertexProperty>;
-            vertex_hashmap_type _vertex_property_hashmap;
-            boost::associative_property_map< vertex_hashmap_type > _vertex_property_map { _vertex_property_hashmap };
+            using map_type = boost::associative_property_map< vertex_hashmap_type >;
 
-            template<typename... Args>
+            vertex_hashmap_type _vertex_property_hashmap;
+            map_type _vertex_property_map { _vertex_property_hashmap };
+
+            template<class Graph, typename... Args>
             vertex_descriptor add_vertex_to_manager(Graph &g, Args&&... args)
             {
                 vertex_descriptor key = add_vertex(g);
@@ -60,28 +132,29 @@ namespace quetzal::coalescence
             }
         };
 
-        template<typename Graph, typename EdgeProperty>
+        template<typename EdgeDescriptor, typename EdgeProperty>
         struct EdgeManager
         {
-            using vertex_descriptor = typename Graph::vertex_descriptor;
-            using edge_descriptor = typename Graph::edge_descriptor;
-            using edge_hashmap_type   = std::map<edge_descriptor, EdgeProperty>;
-            edge_hashmap_type _edge_property_hashmap;
-            boost::associative_property_map< edge_hashmap_type > _edge_property_map { _edge_property_hashmap };
+            using edge_descriptor = EdgeDescriptor;
+            using edge_hashmap_type = std::map<edge_descriptor, EdgeProperty>;
+            using map_type = boost::associative_property_map< edge_hashmap_type >;
 
-            template<typename... Args>
+            edge_hashmap_type _edge_property_hashmap;
+            map_type _edge_property_map { _edge_property_hashmap };
+
+            template<class Graph, typename... Args>
             std::pair<edge_descriptor,edge_descriptor>
             add_children(Graph &g,
-                        vertex_descriptor parent, 
-                        std::tuple<vertex_descriptor, Args...> left, 
-                        std::tuple<vertex_descriptor, Args...> right)
+                        typename Graph::vertex_descriptor parent, 
+                        std::tuple<typename Graph::vertex_descriptor, Args...> left, 
+                        std::tuple<typename Graph::vertex_descriptor, Args...> right)
             {
                 assert(parent != get<0>(left));
                 assert(parent != get<0>(right));
                 assert(get<0>(left) != get<0>(right));
 
-                std::pair<vertex_descriptor,vertex_descriptor> left_edge = add_left_edge(parent, get<0>(left), g);
-                std::pair<vertex_descriptor,vertex_descriptor> right_edge = add_right_edge(parent, get<0>(right), g);
+                std::pair<typename Graph::vertex_descriptor, typename Graph::vertex_descriptor> left_edge = add_left_edge(parent, get<0>(left), g);
+                std::pair<typename Graph::vertex_descriptor, typename Graph::vertex_descriptor> right_edge = add_right_edge(parent, get<0>(right), g);
 
                 auto p1 = std::apply([](Args&&... ts){ return EdgeProperty { std::forward<Args>(ts)... }; }, detail::unshift_tuple(left));
                 auto p2 = std::apply([](Args&&... ts){ return EdgeProperty { std::forward<Args>(ts)... }; }, detail::unshift_tuple(right));
@@ -92,12 +165,14 @@ namespace quetzal::coalescence
                 return {left_edge, right_edge};
             }
 
-            const EdgeProperty& operator [](const std::pair<vertex_descriptor,vertex_descriptor>& edge) const
+            template<typename VertexDescriptor>
+            const EdgeProperty& operator [](const std::pair<VertexDescriptor,VertexDescriptor>& edge) const
             {
                 return get(_edge_property_map, edge);
             }
 
-            EdgeProperty & operator [](const std::pair<vertex_descriptor,vertex_descriptor>& edge)
+            template<typename VertexDescriptor>
+            EdgeProperty & operator [](const std::pair<VertexDescriptor,VertexDescriptor>& edge)
             {
                 return _edge_property_map[edge];
             }
@@ -105,10 +180,6 @@ namespace quetzal::coalescence
 
     }
 
-    /// @brief A binary tree class
-    /// @remarks Primary template for partial specialization
-    template<class VertexProperty, class EdgeProperty>
-    class binary_tree {};
 
     /// @brief A binary tree class 
     /// @remarks Explicit (full) specialization where there is no property attached to either vertices nor edges.
@@ -123,9 +194,7 @@ namespace quetzal::coalescence
         using base = boost::bidirectional_binary_tree<>;
         
         public:
-
-        using edge_properties = boost::no_property;
-        using vertex_properties = boost::no_property;
+ 
         /// @brief Inheriting constructors
         using base::base;
 
@@ -179,7 +248,7 @@ namespace quetzal::coalescence
 
         using base = boost::bidirectional_binary_tree<>;
 
-        detail::VertexManager<self_type, VertexProperty> _vertex_manager;
+        detail::VertexManager<base::vertex_descriptor, VertexProperty> _vertex_manager;
 
         public:
 
@@ -232,6 +301,8 @@ namespace quetzal::coalescence
         {
             return _vertex_manager[vertex];
         }
+
+        auto get_vertex_property_map(){return _vertex_manager;}
     };
 
     /// @brief A binary tree class 
@@ -247,9 +318,11 @@ namespace quetzal::coalescence
 
         using base = boost::bidirectional_binary_tree<>;
 
-        detail::EdgeManager<self_type, EdgeProperty> _edge_manager;
+        detail::EdgeManager<base::edge_descriptor, EdgeProperty> _edge_manager;
 
         public:
+
+        auto get_vedge_property_map(){return _edge_manager;}
 
         /// @brief Inheriting constructors
         using base::base;
@@ -305,9 +378,9 @@ namespace quetzal::coalescence
 
         using base = boost::bidirectional_binary_tree<>;
 
-        detail::EdgeManager<self_type, EdgeProperty> _edge_manager;
+        detail::EdgeManager<base::edge_descriptor, EdgeProperty> _edge_manager;
 
-        detail::VertexManager<self_type, VertexProperty> _vertex_manager;
+        detail::VertexManager<base::vertex_descriptor, VertexProperty> _vertex_manager;
 
         public:
  
@@ -322,6 +395,9 @@ namespace quetzal::coalescence
 
         /// @brief degree size type
         using degree_size_type = typename base::degree_size_type;
+
+        auto get_vertex_property_map(){return _vertex_manager;}
+        auto get_vedge_property_map(){return _edge_manager;}
 
         /// @brief Add a vertex to the graph
           /// @brief Add a vertex to the graph

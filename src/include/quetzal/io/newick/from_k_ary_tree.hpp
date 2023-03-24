@@ -109,49 +109,6 @@ namespace quetzal::format::newick
       return gen.take_result();
   }
 
-  //
-  // @brief Generate a Newick string from a k-ary tree with no properties attached to edges or vertices
-  //
-  std::string generate_from(boost::bidirectional_binary_tree<> const& graph, auto flavor) {
-      using Graph      = boost::bidirectional_binary_tree<>;
-      using Node       = Graph::vertex_descriptor;
-      namespace newick = quetzal::format::newick;
-
-      // Data access
-      std::predicate<Node> auto      has_parent    = [&graph](Node const& v) { return has_predecessor(v,graph); };
-      std::predicate<Node> auto      has_children  = [&graph](Node v) { return static_cast<bool>(out_degree(v, graph)); };
-      newick::Formattable<Node> auto branch_length = [](Node) { return ""; };
-      newick::Formattable<Node> auto label         = [](Node v) { return ""; };
-
-      // We declare a generator passing it the data interfaces
-      newick::generator gen{has_parent, has_children, label, branch_length, flavor};
-      using Gen = decltype(gen);
-      using Stack = std::stack<int>;
-      Stack nth_child;
-
-      // We expose its interface to the boost DFS algorithm
-      struct VisWrap : boost::default_dfs_visitor {
-          Gen& gen_;
-          Stack& stack_;
-          VisWrap(Gen& gen, Stack& s) : gen_(gen), stack_(s) {}
-          void discover_vertex(Node v, Graph const&) const {
-              stack_.push(0);
-              gen_.pre_order()(v);
-          }
-          void finish_vertex(Node v, Graph const&) const {
-              gen_.post_order()(v);
-              stack_.pop();
-          }
-          void tree_edge(Graph::edge_descriptor e, Graph const& g) const {
-              if (stack_.top()++ > 0)
-                  gen_.in_order()();
-          }
-      } vis{gen, nth_child};
-
-      depth_first_search(graph, boost::visitor(vis));
-      return gen.take_result();
-  }
-
   // ///
   // /// @brief Generate a Newick string from a k-ary tree with properties
   // ///

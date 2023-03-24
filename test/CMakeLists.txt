@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.19)
 
 set(CMAKE_FIND_PACKAGE_PREFER_CONFIG TRUE)
 
+message("Compiler Version: ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}") 
+
 # Include Boost as an imported target: 1.73 important for compilation with gcc 10 and C++20
 find_package(Boost 1.79 REQUIRED COMPONENTS unit_test_framework filesystem serialization)
 if(Boost_FOUND)

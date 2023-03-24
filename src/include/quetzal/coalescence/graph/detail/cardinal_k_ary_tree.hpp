@@ -19,8 +19,6 @@
 #ifndef BOOST_GRAPH_K_ARY_TREE
 #define BOOST_GRAPH_K_ARY_TREE
 
-#if __cplusplus > 201103L
-
 #include <boost/config.hpp>
 
 #include <boost/graph/graph_traits.hpp>
@@ -80,22 +78,36 @@ namespace boost
   class binary_tree<false, Vertex>
     : public detail::binary_tree_base<Vertex, detail::binary_tree_forward_node<binary_tree<false, Vertex> > >
   {
-      typedef detail::binary_tree_base<Vertex,
-              detail::binary_tree_forward_node<binary_tree<false, Vertex> > > super_t;
+    private:
+
+    using super_t = detail::binary_tree_base
+    <
+      Vertex, 
+      detail::binary_tree_forward_node<binary_tree<false, Vertex> > 
+    >;
 
     public:
 
       /// @brief Directed, undirected or bidirectional
       using directed_category = directed_tag;
 
+      /// @brief The ways in which the vertices in the graph can be traversed.
       class traversal_category : public incidence_graph_tag, public vertex_list_graph_tag {};
 
+      /// @brief The type for the objects used to identify edges in the graph.
       using edge_descriptor = typename super_t::edge_descriptor;
 
+      /// @brief The type for the objects used to identity vertices in the graph.
       using vertex_descriptor = typename super_t::vertex_descriptor;
 
+      /// @brief Inherit constructors
       using super_t::super_t;
 
+      /// @brief Add a left edge to the parent vertex.
+      /// @param parent The parent vertex
+      /// @param child The child vertex
+      /// @param g The binary tree graph
+      /// @return The descriptor of the edge added.
       friend
       edge_descriptor
       add_left_edge(vertex_descriptor parent, vertex_descriptor child, binary_tree &g)
@@ -105,6 +117,11 @@ namespace boost
         return g.add_left_edge(parent, child);
       }
 
+      /// @brief Add a left edge to the parent vertex.
+      /// @param parent The parent vertex
+      /// @param child The child vertex
+      /// @param g The binary tree graph
+      /// @return The descriptor of the edge added.
       friend
       edge_descriptor
       add_right_edge(vertex_descriptor parent, vertex_descriptor child, binary_tree &g)
@@ -115,8 +132,17 @@ namespace boost
       }
 
 
-      // *** MutableGraph interface ***
+      /// @name MutableGraph interface
+      /// @{
 
+      /// @brief Inserts the edge (u,v) into the graph.
+      /// @param u Vertex u
+      /// @param v Vertex v
+      /// @param g Binary tree graph
+      /// @return an edge descriptor pointing to the new edge.   
+      ///         If the edge (u,v) is already in the graph, 
+      ///         then the bool flag returned is false and the returned edge descriptor points to 
+      ///         the already existing edge.
       friend
       std::pair<edge_descriptor, bool>
       add_edge(vertex_descriptor u, vertex_descriptor v, binary_tree &g)
@@ -124,6 +150,10 @@ namespace boost
         return g.add_edge(u, v);
       }
 
+      /// @brief Remove the edge (u,v) from the graph.
+      /// @param u Vertex u
+      /// @param v Vertex v
+      /// @param g The binary tree graph
       friend
       void
       remove_edge(vertex_descriptor u, vertex_descriptor v, binary_tree &g)
@@ -131,6 +161,9 @@ namespace boost
         g.remove_edge(u, v);
       }
 
+      /// @brief Remove the edge e from the graph.
+      /// @param e The edge in the graph.
+      /// @param g The binary tree graph.
       friend
       void
       remove_edge(edge_descriptor e, binary_tree &g)
@@ -138,13 +171,18 @@ namespace boost
         remove_edge(e.first, e.second, g);
       }
 
+      /// @brief Remove all edges to and from vertex u from the graph.
+      /// @param u The vertex u
+      /// @param g The binary tree graph.
       friend
       void
       clear_vertex(vertex_descriptor u, binary_tree &g)
       {
         g.clear_vertex(u);
       }
-  };
+
+      /// @} // MutableGraph interface
+  }; // end class binary_tree<false, Vertex>
 
 
   /// @brief Bidirectional Binary Tree
@@ -158,38 +196,58 @@ namespace boost
     using super_t = detail::binary_tree_base<Vertex, detail::binary_tree_bidirectional_node<binary_tree<true, Vertex> > > ;
 
     public:
+
+      /// @brief Directed, undirected or bidirectional
       using directed_category = bidirectional_tag ;
+
+      /// @brief The ways in which the vertices in the graph can be traversed.
       class traversal_category : public bidirectional_graph_tag, public vertex_list_graph_tag {};
+
+      /// @brief The type for the objects used to identify edges in the graph.
       using edge_descriptor = typename super_t::edge_descriptor;
+
+      /// @brief The type for the objects used to identify vertices in the graph.
       using vertex_descriptor = typename super_t::vertex_descriptor;
+
+      /// @brief The integer type for vertex degree.
       using degree_size_type = typename super_t::degree_size_type;
+
+      /// Inherits constructors
       using super_t::super_t;
 
+      /// @brief Add a left edge to the parent vertex.
+      /// @param parent The parent vertex
+      /// @param child The child vertex
+      /// @param g The binary tree graph
+      /// @return The descriptor of the edge added.
       friend
       edge_descriptor
-      add_left_edge(vertex_descriptor parent, vertex_descriptor child,
-                         binary_tree &g)
+      add_left_edge(vertex_descriptor parent, vertex_descriptor child, binary_tree &g)
       {
         BOOST_ASSERT(parent != child);
-
         g.nodes[child].predecessor = parent;
         return g.add_left_edge(parent, child);
       }
 
+      /// @brief Add a right edge to the parent vertex.
+      /// @param parent The parent vertex
+      /// @param child The child vertex
+      /// @param g The binary tree graph
+      /// @return The descriptor of the edge added.
       friend
       edge_descriptor
-      add_right_edge(vertex_descriptor parent, vertex_descriptor child,
-                          binary_tree &g)
+      add_right_edge(vertex_descriptor parent, vertex_descriptor child, binary_tree &g)
       {
         BOOST_ASSERT(parent != child);
-
         g.nodes[child].predecessor = parent;
         return g.add_right_edge(parent, child);
       }
 
-  public:
-      // NOTE: This function will be an infinite loop if called on a recurrent
-      // tree (which is not a tree any more).
+      /// @brief Finds the root of the tree graph starting from a vertex u.
+      /// @param u The vertex to start from.
+      /// @param g The binary tree graph.
+      /// @remark This function will be an infinite loop if called on a recurrent
+      ///         tree (which is not a tree any more).
       friend
       vertex_descriptor
       root(vertex_descriptor u, binary_tree const &g)
@@ -204,17 +262,23 @@ namespace boost
         return u;
       }
 
+      /// @brief Evaluate if a vertex is a left successor (child)
+      /// @param u The vertex to be evaluated
+      /// @param g The binary tree graph
+      /// @return True if u is a left successoir, false otherwise.
       friend
       bool
       is_left_successor(vertex_descriptor u, binary_tree const &g)
       {
         BOOST_ASSERT(!empty(u, g));
-
         vertex_descriptor v = predecessor(u, g);
         return left_successor(v, g) == u;
       }
 
-
+      /// @brief Evaluate if a vertex is a right successor (child)
+      /// @param u The vertex to be evaluated
+      /// @param g The binary tree graph
+      /// @return True if u is a right successoir, false otherwise.
       friend
       bool
       is_right_successor(vertex_descriptor u, binary_tree const &g)
@@ -225,16 +289,23 @@ namespace boost
         return right_successor(v, g) == u;
       }
 
+      /// @brief Evaluates if the vertex has a predecessor (parent)
+      /// @param u The vertex to evaluate
+      /// @param g The binary tree graph
+      /// @return True if u has a predecessor, false otherwise
       friend
       bool
       has_predecessor(vertex_descriptor u, binary_tree const &g)
       {
         BOOST_ASSERT(!empty(u, g));
         BOOST_ASSERT(u < g.nodes.size());
-
         return g[u].predecessor != graph_traits<binary_tree>::null_vertex();
       }
 
+      /// @brief The predecessor of a given vertex
+      /// @param u The vertex 
+      /// @param g The binary tree graph.
+      /// @return The vertex that is the predecessor of u.
       friend
       vertex_descriptor
       predecessor(vertex_descriptor u, binary_tree const &g)
@@ -245,7 +316,8 @@ namespace boost
         return g[u].predecessor;
       }
 
-      // *** BidirectionalGraph interface ***
+    /// @name BidirectionalGraph interface
+    /// @{
 
     private:
 
@@ -263,8 +335,13 @@ namespace boost
 
     public:
 
+      /// @brief Iterate through the in-edges.
       using in_edge_iterator = transform_iterator<make_in_edge_descriptor, vertex_descriptor const *, edge_descriptor>;
 
+      /// @brief Provides iterators to iterate over the in-going edges of vertex u
+      /// @param u The vertex u
+      /// @param g The binary tree graph
+      /// @return A pair of iterators
       friend
       std::pair<in_edge_iterator, in_edge_iterator>
       in_edges(vertex_descriptor u, binary_tree const &g)
@@ -274,6 +351,10 @@ namespace boost
                               in_edge_iterator(&g.nodes[u].predecessor + p, make_in_edge_descriptor(u)));
       }
 
+      /// @brief Returns the number of in-edges of vertex v in graph g.
+      /// @param u The vertex u
+      /// @param g The binary tree graph
+      /// @return The number of in-edges.
       friend
       degree_size_type
       in_degree(vertex_descriptor u, binary_tree const &g)
@@ -281,15 +362,28 @@ namespace boost
         return has_predecessor(u, g);
       }
 
+      /// @brief Returns the number of in-edges plus out-edges.
+      /// @param u The vertex u
+      /// @param g The binary tree graph
+      /// @return Returns the number of in-edges plus out-edges 
       friend
       degree_size_type
       degree(vertex_descriptor u, binary_tree const &g)
       {
         return in_degree(u, g) + out_degree(u, g);
       }
+      /// @} // end BidirectionalGraph interface
 
-      // *** MutableGraph interface ***
+      /// @name MutableGraph interface
+      /// @{
 
+      /// @brief Inserts the edge (u,v) into the graph.
+      /// @remark If the graph disallows parallel edges, and the edge (u,v) is already in the graph,
+      ///         then the bool flag returned is false and the returned edge descriptor points to the already existing edge.
+      /// @param u Vertex u
+      /// @param v Vertex v
+      /// @param g Binary tree graph
+      /// @return An edge descriptor pointing to the new edge
       friend
       std::pair<edge_descriptor, bool>
       add_edge(vertex_descriptor u, vertex_descriptor v, binary_tree &g)
@@ -304,6 +398,10 @@ namespace boost
         return result;
       }
 
+      /// @brief Remove the edge (u,v) from the graph.
+      /// @param u Vertex u
+      /// @param v Vertex v
+      /// @param g The binary tree graph
       friend
       void
       remove_edge(vertex_descriptor u, vertex_descriptor v, binary_tree &g)
@@ -313,6 +411,9 @@ namespace boost
         g.nodes[v].predecessor = super_t::null_vertex();
       }
 
+      /// @brief Remove the edge e from the graph.
+      /// @param e The edge to be removed
+      /// @param g The binary tree graph
       friend
       void
       remove_edge(edge_descriptor e, binary_tree &g)
@@ -320,6 +421,9 @@ namespace boost
         remove_edge(e.first, e.second, g);
       }
 
+      /// @brief Remove all edges to and from vertex u from the graph.
+      /// @param u Vertex u
+      /// @param g The binary tree graph.
       friend
       void
       clear_vertex(vertex_descriptor u, binary_tree &g)
@@ -329,7 +433,11 @@ namespace boost
         g.nodes[u].predecessor = super_t::null_vertex();
       }
 
-
+      /// @brief Remove u from the vertex set of the graph. 
+      /// @note  Undefined behavior may result if there are edges remaining in the graph who's target is u. 
+      ///        Typically the clear_vertex() function should be called first.
+      /// @param u 
+      /// @param g 
       friend
       void
       remove_vertex(vertex_descriptor u, binary_tree &g)
@@ -339,7 +447,10 @@ namespace boost
         g.remove_vertex(u);
       }
 
+      /// @} // MutableGraph interface
 
+      /// @brief Clears the children's predecessor.
+      /// @param u 
       void
       clear_childrens_predecessor(vertex_descriptor u)
       {
@@ -349,14 +460,18 @@ namespace boost
       }
   };
 
-  // IncidenceGraph interface
-
+  /// @brief Forward Binary Tree alias
+  /// @tparam Vertex 
   template <typename Vertex = std::size_t>
   using forward_binary_tree = binary_tree<false, Vertex>;
   
+  /// @brief Bidirectional Binary Tree alias
+  /// @tparam Vertex
   template <typename Vertex = std::size_t>
   using bidirectional_binary_tree = binary_tree<true, Vertex>;
  
+  // IncidenceGraph interface
+
   namespace detail
   {
     template <typename BinaryTree, typename Visitor>
@@ -465,34 +580,54 @@ namespace boost
         if (u == root0 && visit0 == visit::post) return true;
       }
     }
-  }
+  } // end namespace detail
 
 
+  /// @brief performs a depth-first traversal of the vertices in a directed graph
+  /// @tparam Vertex 
+  /// @tparam DFSTreeVisitor 
+  /// @param g The binary tree graph
+  /// @param s The vertex to start from
+  /// @param vis The visitor to apply
+  /// @remark Similar to BFS, color markers are used to keep track of which vertices have been discovered. 
+  /// White marks vertices that have yet to be discovered, 
+  /// gray marks a vertex that is discovered but still has vertices adjacent to it that are undiscovered. 
+  /// A black vertex is discovered vertex that is not adjacent to any white vertices.
   template <typename Vertex, typename DFSTreeVisitor>
   void
-  depth_first_search(binary_tree<false, Vertex> &g,
-                     vertex_descriptor_t<binary_tree<false, Vertex>> s,
-                     DFSTreeVisitor &vis)
+  depth_first_search(binary_tree<false, Vertex> &g, vertex_descriptor_t<binary_tree<false, Vertex>> s, DFSTreeVisitor &vis)
   {
     if (!empty(s, g))
       vis = detail::traverse_nonempty(s, g, vis);
   }
 
-
+  /// @brief performs a depth-first traversal of the vertices in a directed graph
+  /// @tparam Vertex 
+  /// @tparam DFSTreeVisitor 
+  /// @param g The binary tree graph
+  /// @param s The vertex to start from
+  /// @param vis The visitor to apply
+  /// @remark Similar to BFS, color markers are used to keep track of which vertices have been discovered. 
+  /// White marks vertices that have yet to be discovered, 
+  /// gray marks a vertex that is discovered but still has vertices adjacent to it that are undiscovered. 
+  /// A black vertex is discovered vertex that is not adjacent to any white vertices.
   template <typename Vertex, typename DFSTreeVisitor>
   void
-  depth_first_search(binary_tree<true, Vertex> &g,
-                     vertex_descriptor_t<binary_tree<true, Vertex>> s,
-                     DFSTreeVisitor &vis)
+  depth_first_search(binary_tree<true, Vertex> &g, vertex_descriptor_t<binary_tree<true, Vertex>> s, DFSTreeVisitor &vis)
   {
     vis = detail::traverse(s, g, vis);
   }
 
 
+  /// @brief Detects if there is a 1-to-1 mapping of the vertices in one graph to the vertices of another graph such that adjacency is preserved. 
+  /// @tparam Vertex0 
+  /// @tparam Vertex1 
+  /// @param g A binary tree graph
+  /// @param h A binary tree graph
+  /// @return true if there exists an isomorphism between graph g and graph h and false otherwise
   template <typename Vertex0, typename Vertex1>
   bool
-  isomorphism(binary_tree<false, Vertex0> const &g,
-              binary_tree<false, Vertex1> const &h)
+  isomorphism(binary_tree<false, Vertex0> const &g, binary_tree<false, Vertex1> const &h)
   {
     if (num_vertices(g) != num_vertices(h))
       return false;
@@ -500,11 +635,15 @@ namespace boost
            || detail::bifurcate_isomorphic_nonempty(0, g, 0, h);
   }
 
-
+  /// @brief Detects if there is a 1-to-1 mapping of the vertices in one graph to the vertices of another graph such that adjacency is preserved. 
+  /// @tparam Vertex0 
+  /// @tparam Vertex1 
+  /// @param g A binary tree graph
+  /// @param h A binary tree graph
+  /// @return true if there exists an isomorphism between graph g and graph h and false otherwise
   template <typename Vertex0, typename Vertex1>
   bool
-  isomorphism(binary_tree<true, Vertex0> const &g,
-              binary_tree<true, Vertex1> const &h)
+  isomorphism(binary_tree<true, Vertex0> const &g, binary_tree<true, Vertex1> const &h)
   {
     if (num_vertices(g) != num_vertices(h))
       return false;
@@ -512,7 +651,5 @@ namespace boost
            detail::bifurcate_isomorphic(0, g, 0, h);
   }
 }
-
-#endif // #if __cplusplus > 201103L
 
 #endif // #ifndef BOOST_GRAPH_K_ARY_TREE

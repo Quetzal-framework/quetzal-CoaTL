@@ -22,6 +22,7 @@
 #include <boost/concept_check.hpp>
 #include <boost/concept/assert.hpp>
 #include <boost/concept/detail/concept_def.hpp>
+#include <boost/graph/graph_concepts.hpp>
 
 namespace boost::concepts
 {
