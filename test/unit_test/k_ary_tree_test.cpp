@@ -21,8 +21,8 @@ BOOST_AUTO_TEST_SUITE( k_ary_tree )
     *             a
     *           /   \
     *          /     c
-    *         /     / \
-    *        b     d   e
+    *         /    / | \
+    *        b    d  e  f
      */
 
 BOOST_AUTO_TEST_CASE(no_property)
@@ -56,11 +56,12 @@ BOOST_AUTO_TEST_CASE(name_property)
   vertex_descriptor c = add_vertex("c", tree);
   vertex_descriptor d = add_vertex("d", tree);
   vertex_descriptor e = add_vertex("e", tree);
+  vertex_descriptor f = add_vertex("f", tree);
 
   add_edge(a, b, tree);
   add_edge(a, c, tree);
   add_edge(c, d, tree);
   add_edge(c, e, tree);
-  
+  add_edge(c, f, tree);
 }
 BOOST_AUTO_TEST_SUITE_END()

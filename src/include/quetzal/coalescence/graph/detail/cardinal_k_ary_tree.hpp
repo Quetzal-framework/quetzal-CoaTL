@@ -27,13 +27,10 @@
 #include <boost/property_map/property_map.hpp>
 #include <boost/graph/detail/indexed_properties.hpp>
 #include <boost/graph/named_function_params.hpp>
-
 #include <boost/iterator/iterator_facade.hpp>
 #include <boost/iterator/transform_iterator.hpp>
-
 #include <boost/concept/assert.hpp>
 #include <boost/graph/graph_concepts.hpp>
-
 #include <boost/range.hpp>
 #include <boost/range/adaptor/reversed.hpp>
 
@@ -233,7 +230,7 @@ namespace boost
       /// @param parent The parent vertex
       /// @param child The child vertex
       /// @param g The binary tree graph
-      /// @return The descriptor of the edge added.
+      /// @return The descriptor of the edge added
       friend
       edge_descriptor
       add_right_edge(vertex_descriptor parent, vertex_descriptor child, binary_tree &g)
@@ -342,6 +339,7 @@ namespace boost
       /// @param u The vertex u
       /// @param g The binary tree graph
       /// @return A pair of iterators
+      /// @relates quetzal::coalescence::binary_tree
       friend
       std::pair<in_edge_iterator, in_edge_iterator>
       in_edges(vertex_descriptor u, binary_tree const &g)
@@ -474,6 +472,7 @@ namespace boost
 
   namespace detail
   {
+    
     template <typename BinaryTree, typename Visitor>
     Visitor traverse_nonempty(vertex_descriptor_t<BinaryTree> u, BinaryTree const &g, Visitor vis)
     {
@@ -489,24 +488,44 @@ namespace boost
 
 
     template <typename BinaryTree>
-    int traverse_step(visit &v, vertex_descriptor_t<BinaryTree> &u,
-                      BinaryTree const &g)
+    int traverse_step(visit &stage, vertex_descriptor_t<BinaryTree> &u, BinaryTree const &g)
     {
       BOOST_CONCEPT_ASSERT((concepts::BidirectionalBinaryTreeConcept<BinaryTree>));
 
-      switch (v) {
+      switch (stage)
+      {
+
       case visit::pre:
-        if (has_left_successor(u, g)) {
-          u = left_successor(u, g);                   return 1;
-        } v = visit::in;                              return 0;
+
+        if (has_left_successor(u, g))
+        {
+          u = left_successor(u, g);
+          return 1;
+        }
+
+        stage = visit::in;
+        return 0;
+
       case visit::in:
-        if (has_right_successor(u, g)) {
-          v = visit::pre; u = right_successor(u, g);  return 1;
-        } v = visit::post;                            return 0;
+
+        if (has_right_successor(u, g)) 
+        {
+          stage = visit::pre;
+          u = right_successor(u, g);  
+          return 1;
+        } 
+
+        stage = visit::post;
+        return 0;
+
       case visit::post:
-        if (is_left_successor(u, g)) {
-          v = visit::in;
-        }                 u = predecessor(u, g);      return -1;
+
+        if (is_left_successor(u, g))
+        {
+          stage = visit::in;
+        }
+        u = predecessor(u, g);
+        return -1;
       }
     }
 
@@ -515,13 +534,18 @@ namespace boost
     {
       if (empty(u, g))
         return vis;
+
       auto root = u;
-      visit v = visit::pre;
-      vis(v, u);
-      do {
-        traverse_step(v, u, g);
-        vis(v, u);
-      } while (u != root || v != visit::post);
+
+      visit stage = visit::pre;
+      vis(stage, u);
+
+      do 
+      {    
+        traverse_step(stage, u, g);
+        vis(stage, u);
+      } while (u != root || stage != visit::post);
+
       return vis;
     }
 
@@ -589,10 +613,6 @@ namespace boost
   /// @param g The binary tree graph
   /// @param s The vertex to start from
   /// @param vis The visitor to apply
-  /// @remark Similar to BFS, color markers are used to keep track of which vertices have been discovered. 
-  /// White marks vertices that have yet to be discovered, 
-  /// gray marks a vertex that is discovered but still has vertices adjacent to it that are undiscovered. 
-  /// A black vertex is discovered vertex that is not adjacent to any white vertices.
   template <typename Vertex, typename DFSTreeVisitor>
   void
   depth_first_search(binary_tree<false, Vertex> &g, vertex_descriptor_t<binary_tree<false, Vertex>> s, DFSTreeVisitor &vis)
@@ -607,17 +627,12 @@ namespace boost
   /// @param g The binary tree graph
   /// @param s The vertex to start from
   /// @param vis The visitor to apply
-  /// @remark Similar to BFS, color markers are used to keep track of which vertices have been discovered. 
-  /// White marks vertices that have yet to be discovered, 
-  /// gray marks a vertex that is discovered but still has vertices adjacent to it that are undiscovered. 
-  /// A black vertex is discovered vertex that is not adjacent to any white vertices.
   template <typename Vertex, typename DFSTreeVisitor>
   void
   depth_first_search(binary_tree<true, Vertex> &g, vertex_descriptor_t<binary_tree<true, Vertex>> s, DFSTreeVisitor &vis)
   {
     vis = detail::traverse(s, g, vis);
   }
-
 
   /// @brief Detects if there is a 1-to-1 mapping of the vertices in one graph to the vertices of another graph such that adjacency is preserved. 
   /// @tparam Vertex0 
@@ -653,3 +668,4 @@ namespace boost
 }
 
 #endif // #ifndef BOOST_GRAPH_K_ARY_TREE
+

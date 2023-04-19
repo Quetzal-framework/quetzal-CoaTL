@@ -31,22 +31,24 @@ namespace quetzal::coalescence
 	///
 	template <class VertexProperties = boost::no_property,
 			  class EdgeProperties = boost::no_property>
-	struct k_ary_tree : public detail::tree_traits::model<
+	class k_ary_tree : public detail::tree_traits::model<
 							detail::tree_traits::out_edge_list_type, detail::tree_traits::vertex_list_type,
 							detail::tree_traits::directed_type, VertexProperties, EdgeProperties>
 	{
-		/// @brief Properties of an edge, e.g. a structure representing the series of demes visited or simply the branch length.
-		using edge_properties = EdgeProperties;
-		
-		/// @brief Properties of a vertex, e.g. a structure representing the mutational state.
-		using vertex_properties = VertexProperties;
-
 		/// @brief The type of graph hold by the tree class
 		using base_type = detail::tree_traits::model<
 			detail::tree_traits::out_edge_list_type, detail::tree_traits::vertex_list_type,
-			detail::tree_traits::directed_type, vertex_properties, edge_properties>;
+			detail::tree_traits::directed_type, VertexProperties, EdgeProperties>;
 
-		using self_type = k_ary_tree<vertex_properties, edge_properties>;
+		using self_type = k_ary_tree<VertexProperties, EdgeProperties>;
+
+		public:
+		
+		/// @brief Properties of an edge
+		using edge_properties = EdgeProperties;
+		
+		/// @brief Properties of a vertex
+		using vertex_properties = VertexProperties;
 
 		/// @brief The type used for identifying vertices within the graph
 		using vertex_descriptor = typename self_type::vertex_descriptor;
@@ -79,7 +81,7 @@ namespace quetzal::coalescence
 		///
 		/// @brief Returns true if a given node has a parent node
 		///
-		bool has_parent(vertex_descriptor v) const
+		bool has_predecessor(vertex_descriptor v) const
 		{
 			return in_degree(v, *this);
 		}
@@ -87,7 +89,7 @@ namespace quetzal::coalescence
 		///
 		/// @brief Returns true if a given node has children nodes
 		///
-		bool has_children(vertex_descriptor v) const
+		bool has_successors(vertex_descriptor v) const
 		{
 			return out_degree(v, *this);
 		}

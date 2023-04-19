@@ -22,7 +22,6 @@
 #include <random>
 
 #include <quetzal/coalescence/graph/k_ary_tree.hpp>
-#include <quetzal/coalescence/graph/binary_tree.hpp>
 
 namespace quetzal
 {
@@ -100,47 +99,7 @@ namespace quetzal
     return std::tuple(std::move(tree), root);
   }
 
-  namespace detail
-  {
-    template<class T, class G, class Generator>
-    auto update_tree(G& tree, std::vector<T> leaves, Generator& rng)
-    {
-      // this is a leaf
-      if(leaves.size() == 1 ){
-        return leaves.front();
-      } else {
-        std::uniform_int_distribution<> distrib(1, leaves.size() -1 );
-        int split = distrib(rng);
 
-        std::vector<T> left(leaves.begin(), leaves.begin() + split);
-        std::vector<T> right(leaves.begin() + split, leaves.end());
-
-        auto parent = add_vertex(tree);
-
-        // recursion
-        add_children(tree, parent, update_tree(tree, left, rng), update_tree(tree, right, rng));
-        return parent;
-      }
-    }
-  }
-
-  template<typename Generator>
-  std::tuple<
-    quetzal::coalescence::binary_tree<boost::no_property, boost::no_property>, 
-    quetzal::coalescence::binary_tree<boost::no_property, boost::no_property>::vertex_descriptor>
-  get_random_binary_tree(int n_leaves, Generator& rng)
-  {
-    using tree_type = quetzal::coalescence::binary_tree<boost::no_property, boost::no_property>;
-    using vertex_descriptor = tree_type::vertex_descriptor;
-
-    tree_type tree;
-    std::vector<vertex_descriptor> v(n_leaves);
-    std::transform(v.cbegin(), v.cend(), v.begin(), [&tree](auto) { return add_vertex(tree); });
-
-    vertex_descriptor root = detail::update_tree(tree, v, rng);
-    return std::tuple(std::move(tree), root);
-
-  }
 } // end namespace quetzal
 
 #endif

@@ -16,6 +16,8 @@
 #include "detail/tree_traits.hpp"
 #include "detail/cardinal_k_ary_tree.hpp"
 #include <utility>
+#include <algorithm>
+#include <iterator>
 
 namespace quetzal::coalescence
 {
@@ -153,8 +155,11 @@ namespace quetzal::coalescence
                 assert(parent != get<0>(right));
                 assert(get<0>(left) != get<0>(right));
 
-                std::pair<typename Graph::vertex_descriptor, typename Graph::vertex_descriptor> left_edge = add_left_edge(parent, get<0>(left), g);
-                std::pair<typename Graph::vertex_descriptor, typename Graph::vertex_descriptor> right_edge = add_right_edge(parent, get<0>(right), g);
+                std::pair<typename Graph::vertex_descriptor, typename Graph::vertex_descriptor> 
+                left_edge = add_left_edge(parent, get<0>(left), g);
+
+                std::pair<typename Graph::vertex_descriptor, typename Graph::vertex_descriptor> 
+                right_edge = add_right_edge(parent, get<0>(right), g);
 
                 auto p1 = std::apply([](Args&&... ts){ return EdgeProperty { std::forward<Args>(ts)... }; }, detail::unshift_tuple(left));
                 auto p2 = std::apply([](Args&&... ts){ return EdgeProperty { std::forward<Args>(ts)... }; }, detail::unshift_tuple(right));
@@ -168,7 +173,14 @@ namespace quetzal::coalescence
             template<typename VertexDescriptor>
             const EdgeProperty& operator [](const std::pair<VertexDescriptor,VertexDescriptor>& edge) const
             {
-                return get(_edge_property_map, edge);
+                std::cout << "there" << std::endl;
+                for(auto it = _edge_property_hashmap.begin(); it != _edge_property_hashmap.end(); ++it)
+                {
+                    std::cout << it->first.first << " " << it->first.second << " " << it->second.label() << std::endl;
+                }
+                std::cout << _edge_property_map[edge].label() << std::endl;
+                std::cout << "not there" << std::endl;
+                return _edge_property_map[edge];
             }
 
             template<typename VertexDescriptor>
@@ -180,6 +192,11 @@ namespace quetzal::coalescence
 
     }
 
+    namespace detail::adl_resolution
+    {
+        void add_left_edge() = delete;
+        void add_right_edge() = delete;
+    }
 
     /// @brief A binary tree class 
     /// @remarks Explicit (full) specialization where there is no property attached to either vertices nor edges.
@@ -227,13 +244,21 @@ namespace quetzal::coalescence
             assert(parent != right);
             assert(left != right);
 
-            std::pair<vertex_descriptor,vertex_descriptor> left_edge = g.add_left_edge(parent, left);
-            std::pair<vertex_descriptor,vertex_descriptor> right_edge = g.add_right_edge(parent, right);
+            using detail::adl_resolution::add_left_edge;
+            using detail::adl_resolution::add_right_edge;
+
+            std::pair<vertex_descriptor,vertex_descriptor> left_edge = add_left_edge(parent, left, g);
+            std::pair<vertex_descriptor,vertex_descriptor> right_edge = add_right_edge(parent, right, g);
 
             return {left_edge, right_edge};
         }
 
     };
+
+    auto depth_first_search(auto& tree, auto s, auto& vis)
+    {
+        return boost::detail::traverse(s, tree, vis);
+    }
 
     /// @brief A binary tree class 
     /// @remarks Partial specialization where there is no edge property attached
@@ -433,6 +458,7 @@ namespace quetzal::coalescence
 
         const EdgeProperty& operator [](const std::pair<vertex_descriptor, vertex_descriptor>& edge) const
         {
+            std::cout << "here" << std::endl;
             return _edge_manager[edge];
         }
 
@@ -441,6 +467,64 @@ namespace quetzal::coalescence
             return _edge_manager[edge];
         }
     };
+
+
+
+    namespace detail
+    {
+        template<typename Vertex, typename Edge, typename Generator>
+        auto update_tree(
+            binary_tree<Vertex,Edge>& tree, 
+            std::vector<typename binary_tree<Vertex, Edge>::vertex_descriptor> leaves, 
+            Generator& rng)
+        {
+            using tree_type = binary_tree<Vertex, Edge>;
+            using vertex_descriptor = typename tree_type::vertex_descriptor;
+
+            if(leaves.size() == 1 ){
+                return leaves.front();
+            } else {
+                std::uniform_int_distribution<> distrib(1, leaves.size() -1 );
+                int split = distrib(rng);
+
+                std::vector<vertex_descriptor> left(leaves.begin(), leaves.begin() + split);
+                std::vector<vertex_descriptor> right(leaves.begin() + split, leaves.end());
+
+                auto parent = add_vertex(tree);
+                if constexpr(std::is_same_v<Edge, boost::no_property>)
+                    add_children(tree, parent, update_tree(tree, left, rng), update_tree(tree, right, rng));
+                else
+                    add_children(tree, parent, 
+                        std::make_tuple(update_tree(tree, left, rng), Edge() ), 
+                        std::make_tuple(update_tree(tree, right, rng), Edge() ));
+                return parent;
+            }
+        }
+    }
+
+    /// @brief Generate a random binary tree with no vertex/edge property attached.
+    /// @tparam Generator Random Number Generator
+    /// @param n_leaves Number of leaves in the binary tree
+    /// @param rng The random number generator
+    /// @return A binary tree with its root vertex descriptor
+    template<typename Vertex=boost::no_property, typename Edge=boost::no_property, typename Generator>
+    std::tuple
+    <
+    quetzal::coalescence::binary_tree<Vertex, Edge>, 
+    typename quetzal::coalescence::binary_tree<Vertex, Edge>::vertex_descriptor
+    >
+    get_random_binary_tree(int n_leaves, Generator& rng)
+    {
+    using tree_type = quetzal::coalescence::binary_tree<Vertex, Edge>;
+    using vertex_descriptor = typename tree_type::vertex_descriptor;
+
+    tree_type tree;
+    std::vector<vertex_descriptor> leaves(n_leaves);
+    std::transform(leaves.cbegin(), leaves.cend(), leaves.begin(), [&tree](auto) { return add_vertex(tree); });
+    vertex_descriptor root = detail::update_tree(tree, leaves, rng);
+    return std::tuple(std::move(tree), root);
+
+  }
 }
 
 #endif

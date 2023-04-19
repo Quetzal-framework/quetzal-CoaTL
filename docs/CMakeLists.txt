@@ -40,7 +40,7 @@ else ()
   set(DOXYGEN_USE_MATHJAX YES)
   set(DOXYGEN_WARN_IF_UNDOCUMENTED NO)
   set(DOXYGEN_HTML_COLORSTYLE LIGHT)
-
+  
   # run "make docs" to create the doxygen documentation
   doxygen_add_docs(docs ${PROJECT_SOURCE_DIR} COMMENT "Generate API-documents.")
 

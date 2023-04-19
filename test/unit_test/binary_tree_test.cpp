@@ -15,7 +15,29 @@
 namespace utf = boost::unit_test;
 
 #include <quetzal/coalescence/graph/binary_tree.hpp>
-#include <quetzal/utils/random_tree.hpp>
+#include <random>
+
+template <typename Order, typename Vertex>
+struct tree_visitor
+{
+  void operator()(Order stage, Vertex v)
+  {
+    switch(stage) {
+      case boost::visit::pre :
+        std::cout << "Pre " << v << std::endl;
+        break;
+      case boost::visit::in:
+        std::cout << "In " << v << std::endl;
+        break;
+      case boost::visit::post:
+        std::cout << "Post " << v << std::endl;
+        break;
+      default:
+        std::cout << "Oops" << std::endl;
+    }
+  }
+};
+
 
 BOOST_AUTO_TEST_SUITE( binary_tree )
 
@@ -30,23 +52,24 @@ BOOST_AUTO_TEST_SUITE( binary_tree )
 BOOST_AUTO_TEST_CASE(no_property_base_interface)
 {
   // default tree with no edge/vertex properties attached
-  using tree_type = quetzal::coalescence::binary_tree<boost::no_property, boost::no_property>;
+  using tree_type = boost::bidirectional_binary_tree<>;
   using vertex_descriptor = tree_type::vertex_descriptor;
 
   tree_type tree;
   
   vertex_descriptor a = add_vertex(tree);
-
   vertex_descriptor b = add_vertex(tree);
   vertex_descriptor c = add_vertex(tree);
   vertex_descriptor d = add_vertex(tree);
   vertex_descriptor e = add_vertex(tree);
 
-  // Can not compile or would break binary tree invariant
-  // add_edge(a, b, tree);
-  // add_edge(a, c, tree);
-  // add_edge(c, d, tree);
-  // add_edge(c, e, tree);
+  add_edge(a, b, tree);
+  add_edge(a, c, tree);
+  add_edge(c, d, tree);
+  add_edge(c, e, tree);
+
+  tree_visitor<boost::visit, vertex_descriptor> visitor;
+  depth_first_search(tree, a, visitor);
 }
 
 BOOST_AUTO_TEST_CASE(no_property_binary_interface)
@@ -58,10 +81,17 @@ BOOST_AUTO_TEST_CASE(no_property_binary_interface)
   tree_type tree;
   
   vertex_descriptor a = add_vertex(tree);
+  vertex_descriptor b = add_vertex(tree);
+  vertex_descriptor c = add_vertex(tree);
+  vertex_descriptor d = add_vertex(tree);
+  vertex_descriptor e = add_vertex(tree);
 
-  auto [ab_edge, ac_edge] = add_children(tree, a, 1, 2);
-  auto [cd_edge, ce_edge] = add_children(tree, ac_edge.second, 3, 4);
+  auto [ab_edge, ac_edge] = add_children(tree, a, b, c);
+  auto [cd_edge, ce_edge] = add_children(tree, c, d, e);
 
+  using vertex_descriptor = boost::graph_traits<quetzal::coalescence::binary_tree<boost::no_property, boost::no_property>>::vertex_descriptor;
+  tree_visitor<boost::visit, vertex_descriptor> visitor;
+  depth_first_search(tree, a, visitor);
 }
 
 BOOST_AUTO_TEST_CASE(simple_vertex_properties)
@@ -223,11 +253,23 @@ BOOST_AUTO_TEST_CASE(struct_both_properties)
 
 }
 
+
 BOOST_AUTO_TEST_CASE(random_binary_tree)
 {
   std::random_device rd;
+  
   std::mt19937 gen(rd());
+
   int nb_leaves = 5;
-  auto tree = quetzal::get_random_binary_tree(nb_leaves, gen);
+
+  auto [tree1, root1] = quetzal::coalescence::get_random_binary_tree(nb_leaves, gen);
+  auto [tree2, root2] = quetzal::coalescence::get_random_binary_tree(nb_leaves, gen);
+
+  assert( !isomorphism(tree1,tree2) );
+
+  using vertex_descriptor = boost::graph_traits<quetzal::coalescence::binary_tree<boost::no_property, boost::no_property>>::vertex_descriptor;
+  tree_visitor<boost::visit, vertex_descriptor> visitor;
+  depth_first_search(tree1, root1, visitor);
+
 }
 BOOST_AUTO_TEST_SUITE_END()

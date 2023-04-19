@@ -187,7 +187,13 @@ In this tutorial section you will learn how to:
 - Customize the behavior of the generator based on the **Quetzal** tree properties you used to describe your data and problem correctly,
 - Generate a Newick string from your own custom tree class.
 
-## From a Quetzal k-ary tree
+## From a Quetzal binary tree
+
+### With no property
+
+When a Newick string is generated from a tree that has no vertex nor edge properties attached to it, it is then assumed
+the only interest is the tree topology: as there is no clear way to populate the labels or branch length data fields in 
+the Newick string, those are left empty.
 
 **Input**
 
@@ -197,8 +203,18 @@ In this tutorial section you will learn how to:
 
 @include{lineno} newick_generator_1.txt
 
-### With default properties
-
 ### With custom properties
+
+When a Newick string is generated from a tree that has some information attached to its vertices and edges
+through a property class,
+the formatter can acccess this information as long as the property class defined a `std::string label() const` method.
+
+**Input**
+
+@include{lineno} newick_generator_2.cpp
+
+**Output**
+
+@include{lineno} newick_generator_2.txt
 
 ## From a custom k-ary tree
