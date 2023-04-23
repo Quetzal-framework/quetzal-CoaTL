@@ -19,6 +19,7 @@
 
 #include <concepts>
 #include <string>
+#include <algorithm>
 
 namespace quetzal::format::newick
 {
@@ -108,7 +109,7 @@ namespace quetzal::format::newick
         // We expose its interface to the boost DFS algorithm
         struct VisWrap
         {
-            Gen &_generator;
+            std::reference_wrapper<Gen> _generator;
             boost::visit _previous;
             VisWrap(Gen &gen) : _generator(gen) {}
             void operator()(boost::visit stage, vertex_type v)
@@ -116,23 +117,23 @@ namespace quetzal::format::newick
                 switch (stage)
                 {
                 case boost::visit::pre:
-                    _generator.pre_order()(v);
+                    _generator.get().pre_order()(v);
                     _previous = boost::visit::pre;
                     break;
                 case boost::visit::in:
                     if (_previous == boost::visit::post)
-                        _generator.in_order()();
+                        _generator.get().in_order()();
                     _previous = boost::visit::in;
                     break;
                 case boost::visit::post:
-                    _generator.post_order()(v);
+                    _generator.get().post_order()(v);
                     _previous = boost::visit::post;
                     break;
                 }
             }
         } vis{gen};
 
-        boost::detail::traverse(root, graph, vis);
+        quetzal::coalescence::depth_first_search(graph, root, vis);
         return gen.take_result();
     }
 
@@ -203,7 +204,7 @@ namespace quetzal::format::newick
             }
         } vis{gen};
 
-        boost::detail::traverse(root, graph, vis);
+        quetzal::coalescence::depth_first_search(graph, root, vis);
         return gen.take_result();
     }
 

@@ -209,6 +209,8 @@ namespace boost
       /// @brief The integer type for vertex degree.
       using degree_size_type = typename super_t::degree_size_type;
 
+      using edge_parallel_category = typename super_t::edge_parallel_category;
+      
       /// Inherits constructors
       using super_t::super_t;
 
@@ -621,6 +623,14 @@ namespace boost
       vis = detail::traverse_nonempty(s, g, vis);
   }
 
+  template <typename Vertex, typename DFSTreeVisitor>
+  void
+  depth_first_search(binary_tree<false, Vertex> const&g, vertex_descriptor_t<binary_tree<false, Vertex>> s, DFSTreeVisitor &vis)
+  {
+    if (!empty(s, g))
+      vis = detail::traverse_nonempty(s, g, vis);
+  }
+
   /// @brief performs a depth-first traversal of the vertices in a directed graph
   /// @tparam Vertex 
   /// @tparam DFSTreeVisitor 
@@ -630,6 +640,13 @@ namespace boost
   template <typename Vertex, typename DFSTreeVisitor>
   void
   depth_first_search(binary_tree<true, Vertex> &g, vertex_descriptor_t<binary_tree<true, Vertex>> s, DFSTreeVisitor &vis)
+  {
+    vis = detail::traverse(s, g, vis);
+  }
+
+  template <typename Vertex, typename DFSTreeVisitor>
+  void
+  depth_first_search(binary_tree<true, Vertex> const&g, vertex_descriptor_t<binary_tree<true, Vertex>> s, DFSTreeVisitor &vis)
   {
     vis = detail::traverse(s, g, vis);
   }
