@@ -10,7 +10,7 @@
 
 #include "io/newick/parser.hpp"
 #include "io/newick/generator.hpp"
-#include "io/newick/from_k_ary_tree.hpp"
+#include "io/newick/from_tree_graph.hpp"
 #include "io/newick/to_k_ary_tree.hpp"
 
 #include "io/genetics/wrapper.hpp"

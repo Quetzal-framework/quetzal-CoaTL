@@ -80,18 +80,18 @@ BOOST_AUTO_TEST_CASE(no_property_binary_interface)
 
   tree_type tree;
   
-  vertex_descriptor a = add_vertex(tree);
-  vertex_descriptor b = add_vertex(tree);
-  vertex_descriptor c = add_vertex(tree);
-  vertex_descriptor d = add_vertex(tree);
-  vertex_descriptor e = add_vertex(tree);
+  vertex_descriptor a = tree.add_vertex();
+  vertex_descriptor b = tree.add_vertex();
+  vertex_descriptor c = tree.add_vertex();
+  vertex_descriptor d = tree.add_vertex();
+  vertex_descriptor e = tree.add_vertex();
 
-  auto [ab_edge, ac_edge] = add_edges(tree, a, b, c);
-  auto [cd_edge, ce_edge] = add_edges(tree, c, d, e);
+  auto [ab_edge, ac_edge] = tree.add_edges(a, b, c);
+  auto [cd_edge, ce_edge] = tree.add_edges(c, d, e);
 
   using vertex_descriptor = boost::graph_traits<quetzal::coalescence::binary_tree<boost::no_property, boost::no_property>>::vertex_descriptor;
   tree_visitor<boost::visit, vertex_descriptor> visitor;
-  depth_first_search(tree, a, visitor);
+  tree.depth_first_search(a, visitor);
 }
 
 BOOST_AUTO_TEST_CASE(simple_vertex_properties)
@@ -103,11 +103,11 @@ BOOST_AUTO_TEST_CASE(simple_vertex_properties)
 
   tree_type tree;
 
-  vertex_descriptor a = add_vertex(tree, "a");
-  vertex_descriptor b = add_vertex(tree, "b");
-  vertex_descriptor c = add_vertex(tree, "c");
-  vertex_descriptor d = add_vertex(tree, "d");
-  vertex_descriptor e = add_vertex(tree, "e");
+  vertex_descriptor a = tree.add_vertex("a");
+  vertex_descriptor b = tree.add_vertex("b");
+  vertex_descriptor c = tree.add_vertex("c");
+  vertex_descriptor d = tree.add_vertex("d");
+  vertex_descriptor e = tree.add_vertex("e");
 
   // Read
   BOOST_CHECK(tree[a] == "a");
@@ -133,11 +133,11 @@ BOOST_AUTO_TEST_CASE(structure_vertex_properties)
 
   tree_type tree;
   
-  vertex_descriptor a = add_vertex(tree, "a", 0);
-  vertex_descriptor b = add_vertex(tree, "b", 1);
-  vertex_descriptor c = add_vertex(tree, "c", 2);
-  vertex_descriptor d = add_vertex(tree, "d", 3);
-  vertex_descriptor e = add_vertex(tree, "e", 4);
+  vertex_descriptor a = tree.add_vertex("a", 0);
+  vertex_descriptor b = tree.add_vertex("b", 1);
+  vertex_descriptor c = tree.add_vertex("c", 2);
+  vertex_descriptor d = tree.add_vertex("d", 3);
+  vertex_descriptor e = tree.add_vertex("e", 4);
 
   // Read
   BOOST_CHECK(tree[e].whatever == "e");
@@ -161,15 +161,15 @@ BOOST_AUTO_TEST_CASE(simple_edge_properties)
 
   tree_type tree;
   
-  vertex_descriptor a = add_vertex(tree);
-  vertex_descriptor b = add_vertex(tree);
-  vertex_descriptor c = add_vertex(tree);
-  vertex_descriptor d = add_vertex(tree);
-  vertex_descriptor e = add_vertex(tree);
+  vertex_descriptor a = tree.add_vertex();
+  vertex_descriptor b = tree.add_vertex();
+  vertex_descriptor c = tree.add_vertex();
+  vertex_descriptor d = tree.add_vertex();
+  vertex_descriptor e = tree.add_vertex();
 
   // Add two edges with two different edge properties
-  auto [ab_edge, ac_edge] = add_edges(tree, a, std::make_tuple(b, "a->b"), std::make_tuple(c, "a->c"));
-  auto [cd_edge, ce_edge] = add_edges(tree, ac_edge.second, std::make_tuple(d, "c->d"), std::make_tuple(e, "c->e"));
+  auto [ab_edge, ac_edge] = tree.add_edges(a, std::make_tuple(b, "a->b"), std::make_tuple(c, "a->c"));
+  auto [cd_edge, ce_edge] = tree.add_edges(ac_edge.second, std::make_tuple(d, "c->d"), std::make_tuple(e, "c->e"));
 
   tree[ab_edge] = "a...b";
   BOOST_CHECK(tree[ab_edge] == "a...b");
@@ -191,15 +191,15 @@ BOOST_AUTO_TEST_CASE(struct_edge_properties)
   tree_type tree;
   
   // No property on vertices
-  vertex_descriptor a = add_vertex(tree);
-  vertex_descriptor b = add_vertex(tree);
-  vertex_descriptor c = add_vertex(tree);
-  vertex_descriptor d = add_vertex(tree);
-  vertex_descriptor e = add_vertex(tree);
+  vertex_descriptor a = tree.add_vertex();
+  vertex_descriptor b = tree.add_vertex();
+  vertex_descriptor c = tree.add_vertex();
+  vertex_descriptor d = tree.add_vertex();
+  vertex_descriptor e = tree.add_vertex();
 
   // Pass info to build new edges
-  auto [ab_edge, ac_edge] = add_edges(tree, a, std::tuple(b, "a->b", 10), std::tuple(c, "a->c", 11));
-  auto [cd_edge, ce_edge] = add_edges(tree, ac_edge.second, std::tuple(d, "c->d", 12), std::tuple(e, "c->e", 13));
+  auto [ab_edge, ac_edge] = tree.add_edges(a, std::tuple(b, "a->b", 10), std::tuple(c, "a->c", 11));
+  auto [cd_edge, ce_edge] = tree.add_edges(ac_edge.second, std::tuple(d, "c->d", 12), std::tuple(e, "c->e", 13));
 
   // Read edge info
   BOOST_CHECK(tree[ab_edge].whatever == "a->b");
@@ -209,8 +209,6 @@ BOOST_AUTO_TEST_CASE(struct_edge_properties)
   tree[ab_edge] =  { "yolo", 99 };
   BOOST_CHECK(tree[ab_edge].whatever == "yolo");
   BOOST_CHECK(tree[ab_edge].othervalue == 99);
-
-
 }
 
 BOOST_AUTO_TEST_CASE(struct_both_properties)
@@ -223,15 +221,15 @@ BOOST_AUTO_TEST_CASE(struct_both_properties)
 
   tree_type tree;
   
-  vertex_descriptor a = add_vertex(tree, "a", 0);
-  vertex_descriptor b = add_vertex(tree, "b", 1);
-  vertex_descriptor c = add_vertex(tree, "c", 2);
-  vertex_descriptor d = add_vertex(tree, "d", 3);
-  vertex_descriptor e = add_vertex(tree, "e", 4);
+  vertex_descriptor a = tree.add_vertex("a", 0);
+  vertex_descriptor b = tree.add_vertex("b", 1);
+  vertex_descriptor c = tree.add_vertex("c", 2);
+  vertex_descriptor d = tree.add_vertex("d", 3);
+  vertex_descriptor e = tree.add_vertex("e", 4);
 
   // Pass info to build new edges
-  auto [ab_edge, ac_edge] = add_edges(tree, a, std::make_tuple(b, "a->b", 10), std::make_tuple(c, "a->c", 11));
-  auto [cd_edge, ce_edge] = add_edges(tree, ac_edge.second, std::make_tuple(d, "c->d", 12), std::make_tuple(e, "c->e", 13));
+  auto [ab_edge, ac_edge] = tree.add_edges(a, std::make_tuple(b, "a->b", 10), std::make_tuple(c, "a->c", 11));
+  auto [cd_edge, ce_edge] = tree.add_edges(ac_edge.second, std::make_tuple(d, "c->d", 12), std::make_tuple(e, "c->e", 13));
 
   // Read vertices
   assert(tree[e].whatever == "e");
@@ -265,11 +263,11 @@ BOOST_AUTO_TEST_CASE(random_binary_tree)
   auto [tree1, root1] = quetzal::coalescence::get_random_binary_tree(nb_leaves, gen);
   auto [tree2, root2] = quetzal::coalescence::get_random_binary_tree(nb_leaves, gen);
 
-  assert( !isomorphism(tree1,tree2) );
+  assert( !tree1.is_isomorphism(tree2) );
 
   using vertex_descriptor = boost::graph_traits<quetzal::coalescence::binary_tree<boost::no_property, boost::no_property>>::vertex_descriptor;
   tree_visitor<boost::visit, vertex_descriptor> visitor;
-  depth_first_search(tree1, root1, visitor);
+  tree1.depth_first_search(root1, visitor);
 
 }
 BOOST_AUTO_TEST_SUITE_END()

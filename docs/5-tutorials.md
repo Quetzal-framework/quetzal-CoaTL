@@ -199,6 +199,9 @@ the Newick string, those are left empty.
 
 @include{lineno} newick_generator_1.cpp
 
+Since there are no comments stored in the labels of the generated random tree, 
+the output of the different flavors are here quite similar:
+
 **Output**
 
 @include{lineno} newick_generator_1.txt

@@ -11,7 +11,7 @@ int main()
   struct vertex_info
   { 
     std::string data;
-    // constructor to randomly initialize the data
+    // constructor that randomly initializes the vertex data with a letter
     vertex_info(){ data = std::uniform_int_distribution<int>(0, 25)(rng) + 'A'; }
     // access point to the label by the formatter
     std::string label() const { return data; } 
@@ -19,8 +19,10 @@ int main()
 
   struct edge_info
   { 
-    double data;
-    edge_info(){ data = std::uniform_int_distribution<int>(0, 10)(rng); }
+    int data;
+    // constructor that randomly initializes the edge data with a number
+    edge_info(){ data = std::uniform_int_distribution<int>(0, 9)(rng); }
+    // access point to the label by the formatter
     std::string label() const { return std::to_string(data); }
   };
 

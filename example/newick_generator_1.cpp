@@ -10,13 +10,18 @@ int main()
   // Generate a random tree with 5 leaves
   using quetzal::coalescence::get_random_binary_tree;
   auto [tree, root] = get_random_binary_tree<>(5, rng);
-  assert( degree(root, tree) == 2);
+
+  // Chose a formatting standard
+  using Flavor1 = quetzal::format::newick::TreeAlign;
+  using Flavor2 = quetzal::format::newick::PAUP;
+  using Flavor3 = quetzal::format::newick::PHYLIP;
 
   // Generate the newick string
-  using Flavor = quetzal::format::newick::TreeAlign;
-  auto s = quetzal::format::newick::generate_from(tree, root, Flavor());
+  auto s1 = quetzal::format::newick::generate_from(tree, root, Flavor1());
+  auto s2 = quetzal::format::newick::generate_from(tree, root, Flavor2());
+  auto s3 = quetzal::format::newick::generate_from(tree, root, Flavor3());
 
-  std::cout << s << std::endl;
+  std::cout << s1 << "\n" << s2 << "\n" << s3 << std::endl;
 
   return 0;
 }

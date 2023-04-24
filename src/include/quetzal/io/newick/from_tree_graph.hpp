@@ -91,10 +91,10 @@ namespace quetzal::format::newick
 
         // Data access
         std::predicate<vertex_type> auto has_parent = [&graph](vertex_type const &v)
-        { return has_predecessor(v, graph); };
+        { return graph.has_predecessor(v); };
 
         std::predicate<vertex_type> auto has_children = [&graph](vertex_type v)
-        { return static_cast<bool>(out_degree(v, graph)); };
+        { return static_cast<bool>(graph.out_degree(v)); };
 
         newick::Formattable<vertex_type> auto branch_length = [](vertex_type)
         {  return ""; };
@@ -133,7 +133,7 @@ namespace quetzal::format::newick
             }
         } vis{gen};
 
-        quetzal::coalescence::depth_first_search(graph, root, vis);
+        graph.depth_first_search(root, vis);
         return gen.take_result();
     }
 
@@ -153,21 +153,15 @@ namespace quetzal::format::newick
 
         // Data access
         std::predicate<vertex_descriptor> auto has_parent = [&graph](vertex_descriptor const &v)
-        { return has_predecessor(v, graph); };
+        { return graph.has_predecessor(v); };
 
         std::predicate<vertex_descriptor> auto has_children = [&graph](vertex_descriptor v)
-        { return static_cast<bool>(out_degree(v, graph)); };
+        { return static_cast<bool>(graph.out_degree(v)); };
 
         newick::Formattable<vertex_descriptor> auto branch_length = [&graph = std::as_const(graph)](vertex_descriptor v)
         {  
-            if(has_predecessor(v, graph))
-            {
-                edge_descriptor e = std::make_pair(predecessor(v, graph), v);
-                std::cout << e.first << " ---> "<< e.second << std::endl;
-                std::cout << graph[e].label() << std::endl;
-            }
-            //std::string s = has_predecessor(v, graph)? graph[ std::make_pair(predecessor(v, graph), v)].label() : "" ;
-            return "";
+            std::string s = graph.has_predecessor(v)? graph[ std::make_pair(graph.predecessor(v), v)].label() : "" ;
+            return s;
         };
 
         newick::Formattable<vertex_descriptor> auto label = [&graph](vertex_descriptor v)
@@ -180,7 +174,7 @@ namespace quetzal::format::newick
         // We expose its interface to the boost DFS algorithm
         struct VisWrap
         {
-            Gen &_generator;
+            std::reference_wrapper<Gen> _generator;
             boost::visit _previous;
             VisWrap(Gen &gen) : _generator(gen) {}
             void operator()(boost::visit stage, vertex_descriptor v)
@@ -188,23 +182,23 @@ namespace quetzal::format::newick
                 switch (stage)
                 {
                 case boost::visit::pre:
-                    _generator.pre_order()(v);
+                    _generator.get().pre_order()(v);
                     _previous = boost::visit::pre;
                     break;
                 case boost::visit::in:
                     if (_previous == boost::visit::post)
-                        _generator.in_order()();
+                        _generator.get().in_order()();
                     _previous = boost::visit::in;
                     break;
                 case boost::visit::post:
-                    _generator.post_order()(v);
+                    _generator.get().post_order()(v);
                     _previous = boost::visit::post;
                     break;
                 }
             }
         } vis{gen};
 
-        quetzal::coalescence::depth_first_search(graph, root, vis);
+        graph.depth_first_search(root, vis);
         return gen.take_result();
     }
 
