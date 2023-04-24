@@ -159,41 +159,18 @@ on the github issue pages!
 
 @tableofcontents
 
-## Introduction
-
-### Design choices
-
-As we saw with Newick parser logic, it can be interesting to isolate independent behaviors,
-as it makes Newick tree grammar reusable across different code bases even if
-these codes made different choices concerning tree-like graphs implementation.
-
-In the same logic, when generating a Newick string, **Quetzal** considers independently
-1. the node data access logic, or *how to access the data stored in a node class*
-2. the recursion logic, or *how to traverse a tree from the root to the tips*
-3. the formatting logic, or *the grammar - that is the correspondence between the tree topology and the Newick string characters*
-
-### Justification
-
-Although you may find it requires a -small- effort to use this generator,
-this decoupling allows to generalize the **Quetzal** generator over any class that
-a user may have used to represent a tree in their own code bases - even classes
-that **Quetzal** does'nt know anything about. Doing so, it hopefully saves the
-community the time and effort to develop their own grammars and generators independently.
-
 ### Objectives
 
 In this tutorial section you will learn how to:
-- Generate a Newick string from a **Quetzal** k-ary tree class,
-- Customize the behavior of the generator based on the **Quetzal** tree properties you used to describe your data and problem correctly,
-- Generate a Newick string from your own custom tree class.
+- Generate a Newick string from a **Quetzal** coalescence binary tree.
+- Customize the behavior of the generator based on the type of information you wish to format.
 
 ## From a Quetzal binary tree
 
 ### With no property
 
-When a Newick string is generated from a tree that has no vertex nor edge properties attached to it, it is then assumed
-the only interest is the tree topology: as there is no clear way to populate the labels or branch length data fields in 
-the Newick string, those are left empty.
+When a Newick string is generated from a tree that has no vertex nor edge information (properties) 
+attached to it, it is then assumed the only interest is the tree topology: as there is no clear way to populate the labels or branch length data fields in the Newick string, those are left empty.
 
 **Input**
 
