@@ -21,6 +21,15 @@
 
 - Genetic Format
   -
+
+## Graphs
+
+  - @subpage graphs_in_quetzal
+  - Coalescence 
+    - @subpage coalescence_binary_tree
+    - k-ary tree
+    - network
+
 ## Demographic Histories
 
 ### Growth Expressions
@@ -198,3 +207,100 @@ the formatter can acccess this information as long as the property class defined
 @include{lineno} newick_generator_2.txt
 
 ## From a custom k-ary tree
+
+[//]: # (----------------------------------------------------------------------)
+@page graphs_in_quetzal Graphs in Quetzal
+
+@tableofcontents
+
+Although graphs are ubiquitous in phylogeography and coalescence frameworks,
+they can represent quite different objects depending on the exact context.
+Consequently Quetzal had to make a number of design choices in their implementation.
+
+## Invariants Guarantee
+
+As geneticists, we expect from a simple Kingman coalescent tree to exhibit certain characteristics
+(for example the guarantee of having either 0 or 2 children but never only 1)
+that we don't expect from a phylogenetic network (that would in contrast exhibit cycles 
+and hybrid nodes). 
+
+In programming jargon, these expectations are called *class invariants*. 
+
+Rather than exposing a 1-fit-all type of graph and be prone to programming mistakes, 
+Quetzal comes with more specialized classes that maintain their invariants.
+
+## Edge and Vertices descriptors
+
+A point common to all class of graphs is that vertices and edges have unique
+identifiers. 
+
+This identifier is implementation-dependent and not always of type `int`. 
+It is instead referred by a type nested in each graph class: `vertex_descriptor` and `edge_descriptor`.
+
+Methods of a class that receive or return specific edges/vertices will manipulate objects of this type.
+
+## Edge and Vertices Information (Property Classes)
+
+The quality of information attached to the vertices and edges of a graph also varies depending on the user problem.
+
+For example, a spatial coalescent tree may need a way to store the geographic 
+location of the visited locations, whereas a Kingman coalescent tree does not need to allocated storage 
+for this. Similarly, Phylogenetic Networks will surely embed completely different types of information, 
+like \f$\gamma\f$, the inheritance probability.
+
+To reflect this variability in the type of information, graphs can embed arbitrary information along edges and vertices 
+through small user-defined classes called *property classes*.
+
+The type of information a graph class embeds is referred by a nested type: `vertex_property` and `edge_property`.
+
+[//]: # (----------------------------------------------------------------------)
+@page coalescence_binary_tree Coalescence Binary Trees
+@tableofcontents
+
+# Introduction
+
+Coalescence Binary Trees classes
+interface, provide a way to guarantee that each vertex \f$v\f$ has exactly 
+  - 0 successor (the vertex is a leaf)
+  - 2 successors (the vertex is an internal node)
+
+The graph structure is bidirectional and allows to model a forest of disconnected trees.
+That is, if a vertex has no predecessor, then it's either a root (if it has 2 successors) 
+or an isolated vertex (if it has no successor).
+
+Users will encounter this type of tree when returning from coalescence binary mergers, 
+or if they simply want to build and manipulate graphs while enforcing a binary tree 
+structure.
+
+# Implementations 
+
+Coalescence Binary Trees can store an additional arbitrary type of information 
+(called a *Property Class*) along their vertices or edges: if the user decide to do so, 
+the tree class interface adapts to offer ways
+to manipulate this information.
+
+There are logically 4 different classes resulting from this: 
+- A class to represent a simple topology with no additional information (no property): <br>
+  `quetzal::coalescence::binary_tree< boost::no_property, boost::no_property >`
+- A class to embed a user-defined class `VertexProperty` on each vertex: <br>
+  `quetzal::coalescence::binary_tree< VertexProperty, boost::no_property >`
+- A class to embed  a user-defined class `EdgeProperty` on each edge: <br>
+`quetzal::coalescence::binary_tree< boost::no_property, EdgeProperty >`
+- A class to embed  a user-defined class `VertexProperty` (resp. `EdgeProperty`) on each of its vertex (resp. edge):<br>
+  `binary_tree<VertexProperty, EdgeProperty>` 
+
+Their usage is described below.
+
+# Binary tree topology
+
+You can simply use the `no_property` tag to indicate you're only interested 
+by building a tree graph topology and that you don't want to embed
+any type of information along its vertices and edges.
+
+**Input**
+
+@include{lineno} coalescence_binary_tree_1.cpp
+
+**Output**
+
+@include{lineno} coalescence_binary_tree_1.txt
