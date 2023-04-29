@@ -163,19 +163,19 @@ namespace quetzal::coalescence
       /// @brief Constructs a tree with \f$n\f$ vertices
       binary_tree_common(size_t n) : _graph(n) {}
 
+      /// @brief Vertex descriptor ("node ID" in other words).
+      using vertex_descriptor = typename base::vertex_descriptor;
+
       /// @brief Edge descriptor
       using edge_descriptor = typename base::edge_descriptor;
 
-      /// @brief Vertex descriptor
-      using vertex_descriptor = typename base::vertex_descriptor;
-
-      /// @brief Degree size type
+      /// @brief Degree size type.
       using degree_size_type = typename base::degree_size_type;
 
       /// @brief The ways in which the vertices in the graph can be traversed.
       using traversal_category = typename base::traversal_category;
 
-      /// @brief Bidirectional
+      /// @brief The graph is bidirected.
       using directed_category = typename base::directed_category;
 
       /// @brief Iterate through the in-edges.
@@ -199,8 +199,7 @@ namespace quetzal::coalescence
       /// @param u The vertex to start from.
       /// @remark This function will be an infinite loop if called on a recurrent
       ///         tree (which is not a tree any more).
-      vertex_descriptor
-      find_root_from(vertex_descriptor u) const
+      vertex_descriptor find_root_from(vertex_descriptor u) const
       {
         using detail::adl_resolution::root;
         return root(u, _graph);
@@ -209,8 +208,7 @@ namespace quetzal::coalescence
       /// @brief Returns the number of in-edges plus out-edges.
       /// @param u The vertex \f$u\f$
       /// @return Returns the number of in-edges plus out-edges.
-      degree_size_type
-      degree(vertex_descriptor u) const
+      degree_size_type degree(vertex_descriptor u) const
       {
         using detail::adl_resolution::degree;
         return degree(u, _graph);
@@ -219,15 +217,13 @@ namespace quetzal::coalescence
       /// @brief Returns the number of in-edges of vertex \f$u\f$.
       /// @param u The vertex \f$u\f$
       /// @return The number of in-edges.
-      degree_size_type
-      in_degree(vertex_descriptor u) const
+      degree_size_type in_degree(vertex_descriptor u) const
       {
         return has_predecessor(u);
       }
 
       /// @brief Returns the number of out-edges of vertex \f$v\f$.
-      degree_size_type
-      out_degree(vertex_descriptor v) const
+      degree_size_type out_degree(vertex_descriptor v) const
       {
         using detail::adl_resolution::out_degree;
         return out_degree(v, _graph);
@@ -236,8 +232,7 @@ namespace quetzal::coalescence
       /// @brief Evaluates if vertex \f$u\f$ has a predecessor.
       /// @param u The vertex to evaluate
       /// @return True if u has a predecessor, false otherwise
-      bool
-      has_predecessor(vertex_descriptor u) const
+      bool has_predecessor(vertex_descriptor u) const
       {
         using detail::adl_resolution::has_predecessor;
         return has_predecessor(u, _graph);
@@ -246,8 +241,7 @@ namespace quetzal::coalescence
       /// @brief The predecessor of vertex \f$u\f$
       /// @param u The vertex
       /// @return The vertex that is the predecessor of \f$u\f$.
-      vertex_descriptor
-      predecessor(vertex_descriptor u) const
+      vertex_descriptor predecessor(vertex_descriptor u) const
       {
         using detail::adl_resolution::predecessor;
         return predecessor(u, _graph);
@@ -256,8 +250,7 @@ namespace quetzal::coalescence
       /// @brief Evaluate if vertex \f$u\f$ is a left successor.
       /// @param u The vertex to be evaluated
       /// @return True if u is a left successoir, false otherwise.
-      bool
-      is_left_successor(vertex_descriptor u) const
+      bool is_left_successor(vertex_descriptor u) const
       {
         using detail::adl_resolution::is_left_successor;
         return is_left_successor(u, _graph);
@@ -266,8 +259,7 @@ namespace quetzal::coalescence
       /// @brief Evaluate if vertex \f$u\f$ is a right successor.
       /// @param u The vertex to be evaluated
       /// @return True if u is a right successoir, false otherwise.
-      bool
-      is_right_successor(vertex_descriptor u) const
+      bool is_right_successor(vertex_descriptor u) const
       {
         using detail::adl_resolution::is_right_successor;
         return is_right_successor(u, _graph);
@@ -281,8 +273,7 @@ namespace quetzal::coalescence
       /// @brief Provides iterators to iterate over the in-going edges of vertex \f$u\f$.
       /// @param u The vertex \f$u\f$.
       /// @return A pair of iterators.
-      std::pair<in_edge_iterator, in_edge_iterator>
-      in_edges(vertex_descriptor u) const
+      std::pair<in_edge_iterator, in_edge_iterator> in_edges(vertex_descriptor u) const
       {
         using detail::adl_resolution::in_edges;
         return in_edges(u, _graph);
@@ -298,8 +289,7 @@ namespace quetzal::coalescence
       /// @param s The vertex to start from.
       /// @param vis The visitor to apply.
       template <typename DFSTreeVisitor>
-      void
-      depth_first_search(vertex_descriptor s, DFSTreeVisitor &vis)
+      void depth_first_search(vertex_descriptor s, DFSTreeVisitor &vis)
       {
         using detail::adl_resolution::depth_first_search;
         return depth_first_search(_graph, s, vis);
@@ -310,8 +300,7 @@ namespace quetzal::coalescence
       /// @param s The vertex to start from.
       /// @param vis The visitor to apply.
       template <typename DFSTreeVisitor>
-      void
-      depth_first_search(vertex_descriptor s, DFSTreeVisitor &vis) const
+      void depth_first_search(vertex_descriptor s, DFSTreeVisitor &vis) const
       {
         using detail::adl_resolution::depth_first_search;
         return depth_first_search(_graph, s, vis);
@@ -348,7 +337,19 @@ namespace quetzal::coalescence
   {
   };
 
-  /// @brief A binary tree class where no property is attached to either vertices nor edges.
+  /// @brief @anchor CoalescenceBinaryTreeNoPropertyNoProperty A binary tree class with no information attached to either vertices nor edges.
+  /// @details This class can be used as a simple way to describe the kind of topology that emerges from evolutionary relationships 
+  ///          between a sample of sequences for a non-recombining locus. 
+  ///          Vertices and edges embed no additional information.
+  ///          This graph structure is bidirected and allows to model a forest of disconnected trees and isolated vertices.
+  /// @invariant Guarantees that each vertex \f$v\f$ has exactly 0 or 2 successors, never 1.
+  /// @invariant Guarantees that each vertex \f$v\f$ has exactly 0 or 1 predecessor.
+  /// @invariant Guarantees that if \f$(u,v)\f$ is an edge of the graph, then \f$(v,u)\f$ is also an edge.
+  /// @remark As it would be too costly to enforce non-cyclicity, it is left to the user responsability not to introduce any cycle.
+  /// @section ex1 Example
+  /// @include coalescence_binary_tree_1.cpp
+  /// @section ex2 Output
+  /// @include coalescence_binary_tree_1.txt
   template <>
   class binary_tree<no_property, no_property> : public detail::binary_tree_common<no_property, no_property>
   {
@@ -390,8 +391,20 @@ namespace quetzal::coalescence
 
   }; // end specialization binary_tree<boost::no::property, boost::no_property>
 
-  /// @brief A binary tree class where property is attached to vertices.
+  /// @brief @anchor CoalescenceBinaryTreeVertexPropertyNoProperty A binary tree class with information attached to vertices.
   /// @tparam VertexProperty The type of information to store at each vertex.
+  /// @details This class can be used as a simple way to describe the kind of topology and mutational process that emerge from evolutionary relationships 
+  ///          between a sample of sequences for a non-recombining locus. 
+  ///          Vertices embed a user-defined type of information. Edges embed no additional information.
+  ///          This graph structure is bidirected and allows to model a forest of disconnected trees and isolated vertices.
+  /// @invariant Guarantees that each vertex \f$v\f$ has exactly 0 or 2 successors, never 1.
+  /// @invariant Guarantees that each vertex \f$v\f$ has exactly 0 or 1 predecessor.
+  /// @invariant Guarantees that if \f$(u,v)\f$ is an edge of the graph, then \f$(v,u)\f$ is also an edge.
+  /// @remark As it would be too costly to enforce non-cyclicity, it is left to the user responsability not to introduce any cycle.
+  /// @section ex1 Example
+  /// @include coalescence_binary_tree_2.cpp
+  /// @section ex2 Output
+  /// @include coalescence_binary_tree_2.txt
   template <class VertexProperty>
     requires(!std::is_same_v<VertexProperty,no_property>)
   class binary_tree<VertexProperty, no_property> : public detail::binary_tree_common<VertexProperty, no_property>
@@ -464,8 +477,16 @@ namespace quetzal::coalescence
   }; // end specialization binary_tree<Vertex, boost::no_property>
 
 
-  /// @brief A binary tree class where property is attached to edges
+  /// @brief @anchor CoalescenceBinaryTreeNoPropertyEdgeProperty A binary tree class with information attached to vertices.
   /// @tparam EdgeProperty The type of information to store at each edge.
+  /// @details This class can be used as a simple way to describe the kind of topology and mutational process that emerge from evolutionary relationships 
+  ///          between a sample of sequences for a non-recombining locus. 
+  ///          Vertices embed no additional information. Edges embed an user-defined type of information.
+  ///          This graph structure is bidirected and allows to model a forest of disconnected trees and isolated vertices.
+  /// @invariant Guarantees that each vertex \f$v\f$ has exactly 0 or 2 successors, never 1.
+  /// @invariant Guarantees that each vertex \f$v\f$ has exactly 0 or 1 predecessor.
+  /// @invariant Guarantees that if \f$(u,v)\f$ is an edge of the graph, then \f$(v,u)\f$ is also an edge.
+  /// @remark As it would be too costly to enforce non-cyclicity, it is left to the user responsability not to introduce any cycle.
   template <class EdgeProperty>
     requires(!std::is_same_v<EdgeProperty, no_property>)
   class binary_tree<no_property, EdgeProperty> : public detail::binary_tree_common<no_property, EdgeProperty>
@@ -541,9 +562,22 @@ namespace quetzal::coalescence
 
   }; // end specialization binary_tree<boost::no_property, Edge>
 
-  /// @brief A binary tree class with property attached to both edges and vertices.
+
+  /// @brief @anchor CoalescenceBinaryTreeVertexPropertyEdgeProperty A binary tree class with information attached to vertices.
   /// @tparam VertexProperty The type of information to store at each vertex.
   /// @tparam EdgeProperty The type of information to store at each edge.
+  /// @details This class can be used as a simple way to describe the kind of topology and mutational process that emerge from evolutionary relationships 
+  ///          between a sample of sequences for a non-recombining locus. 
+  ///          Vertices and edges embed additional information as user-defined types.
+  ///          This graph structure is bidirected and allows to model a forest of disconnected trees and isolated vertices.
+  /// @invariant Guarantees that each vertex \f$v\f$ has exactly 0 or 2 successors, never 1.
+  /// @invariant Guarantees that each vertex \f$v\f$ has exactly 0 or 1 predecessor.
+  /// @invariant Guarantees that if \f$(u,v)\f$ is an edge of the graph, then \f$(v,u)\f$ is also an edge.
+  /// @remark As it would be too costly to enforce non-cyclicity, it is left to the user responsability not to introduce any cycle.
+  /// @section ex1 Example
+  /// @include coalescence_binary_tree_4.cpp
+  /// @section ex2 Output
+  /// @include coalescence_binary_tree_4.txt
   template <class VertexProperty, class EdgeProperty>
     requires(!std::is_same_v<VertexProperty, no_property> && !std::is_same_v<EdgeProperty, no_property>)
   class binary_tree<VertexProperty, EdgeProperty> : public detail::binary_tree_common<VertexProperty, EdgeProperty>

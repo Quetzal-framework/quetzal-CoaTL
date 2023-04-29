@@ -281,13 +281,13 @@ to manipulate this information.
 
 There are logically 4 different classes resulting from this: 
 - A class to represent a simple topology with no additional information (no property): <br>
-  `quetzal::coalescence::binary_tree< boost::no_property, boost::no_property >`
+  \ref CoalescenceBinaryTreeNoPropertyNoProperty "quetzal::coalescence::binary_tree< no_property, no_property >"
 - A class to embed a user-defined class `VertexProperty` on each vertex: <br>
-  `quetzal::coalescence::binary_tree< VertexProperty, boost::no_property >`
+  \ref CoalescenceBinaryTreeVertexPropertyNoProperty "quetzal::coalescence::binary_tree< VertexProperty, no_property >"
 - A class to embed  a user-defined class `EdgeProperty` on each edge: <br>
-`quetzal::coalescence::binary_tree< boost::no_property, EdgeProperty >`
+  \ref CoalescenceBinaryTreeVertexPropertyNoProperty "quetzal::coalescence::binary_tree< boost::no_property, EdgeProperty >"
 - A class to embed  a user-defined class `VertexProperty` (resp. `EdgeProperty`) on each of its vertex (resp. edge):<br>
-  `binary_tree<VertexProperty, EdgeProperty>` 
+  \ref CoalescenceBinaryTreeVertexPropertyEdgeProperty "quetzal::coalescence::binary_tree< VertexProperty, EdgeProperty >"
 
 Their usage is described below.
 

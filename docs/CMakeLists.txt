@@ -42,7 +42,10 @@ else ()
   set(DOXYGEN_USE_MATHJAX YES)
   set(DOXYGEN_WARN_IF_UNDOCUMENTED NO)
   set(DOXYGEN_HTML_COLORSTYLE LIGHT)
-  
+  set(DOXYGEN_LAYOUT_FILE "DoxygenLayout.xml")
+  set(DOXYGEN_FULL_PATH_NAME YES)
+  set(DOXYGEN_STRIP_FROM_INC_PATH "../src/include")
+
   # run "make docs" to create the doxygen documentation
   doxygen_add_docs(docs ${PROJECT_SOURCE_DIR} COMMENT "Generate API-documents.")
 
