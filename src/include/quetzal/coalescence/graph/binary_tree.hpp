@@ -17,6 +17,9 @@
 
 #include "detail/tree_traits.hpp"
 #include "detail/cardinal_k_ary_tree.hpp"
+#include "detail/adl_resolution.hpp"
+#include "detail/utils.hpp"
+
 #include <utility>
 #include <algorithm>
 #include <iterator>
@@ -28,14 +31,6 @@ namespace quetzal::coalescence
 
   namespace detail
   {
-
-    template <typename T1, typename... Ts>
-    std::tuple<Ts...> unshift_tuple(const std::tuple<T1, Ts...> &tuple)
-    {
-      return std::apply([](auto &&, const auto &...args)
-                        { return std::tie(args...); },
-                        tuple);
-    }
 
     // Getting std::map::emplace to work with aggregate initialization for POD EdgeProperties
     template <typename T>
@@ -131,24 +126,6 @@ namespace quetzal::coalescence
       }
     };
 
-    namespace adl_resolution
-    {
-      void add_left_edge() = delete;
-      void add_right_edge() = delete;
-      void add_vertex() = delete;
-      void out_degree() = delete;
-      void root() = delete;
-      void is_left_successor() = delete;
-      void is_right_successor() = delete;
-      void has_predecessor() = delete;
-      void predecessor() = delete;
-      void depth_first_search() = delete;
-      void isomorphism() = delete;
-      void in_edges() = delete;
-      void degree() = delete;
-
-    }
-
     template <class VertexProperty, class EdgeProperty>
     class binary_tree_common
     {
@@ -179,7 +156,7 @@ namespace quetzal::coalescence
       using directed_category = typename base::directed_category;
 
       /// @brief Iterate through the in-edges.
-      using in_edge_iterator = base::in_edge_iterator;
+      using in_edge_iterator = typename base::in_edge_iterator;
 
       using edge_parallel_category = typename base::edge_parallel_category;
 

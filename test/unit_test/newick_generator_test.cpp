@@ -245,14 +245,12 @@ BOOST_FIXTURE_TEST_CASE(legacy_k_ary_comparison, Fixture_simple_tree)
   BOOST_CHECK_EQUAL(legacy , "(,(,)):0.0;");
 
   // NOW WITH BGL GRAPHS
-  using G = quetzal::coalescence::k_ary_tree<>;
+  using G = quetzal::coalescence::k_ary_tree<boost::no_property,boost::no_property>;
 
   enum {a,b,c,d,e,N};
   G tree(N);
-  add_edge(a, b, tree);
-  add_edge(a, c, tree);
-  add_edge(c, d, tree);
-  add_edge(c, e, tree);
+  tree.add_edges(a, {b,c});
+  tree.add_edges(c, {d,e});
 
   // Generate the newick string
   auto const bgl = newick::generate_from(tree, Flavor());

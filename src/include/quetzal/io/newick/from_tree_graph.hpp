@@ -29,7 +29,7 @@ namespace quetzal::format::newick
     //
     std::string generate_from(quetzal::coalescence::k_ary_tree<boost::no_property, boost::no_property> const &graph, auto flavor)
     {
-        using tree_type = quetzal::coalescence::k_ary_tree<>;
+        using tree_type = quetzal::coalescence::k_ary_tree<boost::no_property, boost::no_property>;
         using vertex_type = tree_type::vertex_descriptor;
 
         namespace newick = quetzal::format::newick;

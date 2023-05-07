@@ -279,28 +279,14 @@ Coalescence Binary Trees can store an additional arbitrary type of information
 the tree class interface adapts to offer ways
 to manipulate this information.
 
-There are logically 4 different classes resulting from this: 
+There are logically 4 different classes (equivalently interfaces) resulting from this: 
 - A class to represent a simple topology with no additional information (no property): <br>
   \ref CoalescenceBinaryTreeNoPropertyNoProperty "quetzal::coalescence::binary_tree< no_property, no_property >"
 - A class to embed a user-defined class `VertexProperty` on each vertex: <br>
   \ref CoalescenceBinaryTreeVertexPropertyNoProperty "quetzal::coalescence::binary_tree< VertexProperty, no_property >"
 - A class to embed  a user-defined class `EdgeProperty` on each edge: <br>
   \ref CoalescenceBinaryTreeVertexPropertyNoProperty "quetzal::coalescence::binary_tree< boost::no_property, EdgeProperty >"
-- A class to embed  a user-defined class `VertexProperty` (resp. `EdgeProperty`) on each of its vertex (resp. edge):<br>
+- A class to embed  both `VertexProperty` and `EdgeProperty` information :<br>
   \ref CoalescenceBinaryTreeVertexPropertyEdgeProperty "quetzal::coalescence::binary_tree< VertexProperty, EdgeProperty >"
 
-Their usage is described below.
-
-# Binary tree topology
-
-You can simply use the `no_property` tag to indicate you're only interested 
-by building a tree graph topology and that you don't want to embed
-any type of information along its vertices and edges.
-
-**Input**
-
-@include{lineno} coalescence_binary_tree_1.cpp
-
-**Output**
-
-@include{lineno} coalescence_binary_tree_1.txt
+Usage examples are described in their respective class documentation.

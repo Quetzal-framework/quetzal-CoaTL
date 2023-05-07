@@ -51,7 +51,7 @@ namespace quetzal
   ///
   /// @brief Generates a random directed tree
   ///
-  template<class Graph=quetzal::coalescence::k_ary_tree<>, class Generator>
+  template<class Graph=quetzal::coalescence::k_ary_tree<boost::no_property,boost::no_property>, class Generator>
   auto get_random_spanning_tree(int n_vertices, int n_edges, Generator& rng)
   {
     using UG = detail::Undirect<Graph>;
