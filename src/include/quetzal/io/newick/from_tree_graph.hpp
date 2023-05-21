@@ -23,11 +23,41 @@
 
 namespace quetzal::format::newick
 {
+    namespace detail
+    {
+        // We expose its interface to the boost DFS algorithm
+        template<typename Gen, typename Stack>
+        struct KaryTreeVisitorWrap : boost::default_dfs_visitor
+        {
+            Gen &gen_;
+            Stack &stack_;
+            KaryTreeVisitorWrap(Gen &gen, Stack &s) : gen_(gen), stack_(s) {}
+            void discover_vertex(auto v, auto const &) const
+            {
+                stack_.push(0);
+                gen_.pre_order()(v);
+            }
+            void finish_vertex(auto v, auto const &) const
+            {
+                gen_.post_order()(v);
+                stack_.pop();
+            }
+            void tree_edge(auto e, auto const &g) const
+            {
+                if (stack_.top()++ > 0)
+                    gen_.in_order()();
+            }
+        };
+    }
 
     //
     // @brief Generate a Newick string from a k-ary tree with no properties attached to edges or vertices
     //
-    std::string generate_from(quetzal::coalescence::k_ary_tree<boost::no_property, boost::no_property> const &graph, auto flavor)
+    template<typename Flavor>
+    std::string generate_from(
+        quetzal::coalescence::k_ary_tree<boost::no_property, boost::no_property> const &graph,
+        typename quetzal::coalescence::k_ary_tree<boost::no_property, boost::no_property>::vertex_descriptor root,
+        Flavor flavor)
     {
         using tree_type = quetzal::coalescence::k_ary_tree<boost::no_property, boost::no_property>;
         using vertex_type = tree_type::vertex_descriptor;
@@ -50,30 +80,8 @@ namespace quetzal::format::newick
         using Stack = std::stack<int>;
         Stack nth_child;
 
-        // We expose its interface to the boost DFS algorithm
-        struct VisWrap : boost::default_dfs_visitor
-        {
-            Gen &gen_;
-            Stack &stack_;
-            VisWrap(Gen &gen, Stack &s) : gen_(gen), stack_(s) {}
-            void discover_vertex(vertex_type v, tree_type const &) const
-            {
-                stack_.push(0);
-                gen_.pre_order()(v);
-            }
-            void finish_vertex(vertex_type v, tree_type const &) const
-            {
-                gen_.post_order()(v);
-                stack_.pop();
-            }
-            void tree_edge(tree_type::edge_descriptor e, tree_type const &g) const
-            {
-                if (stack_.top()++ > 0)
-                    gen_.in_order()();
-            }
-        } vis{gen, nth_child};
-
-        depth_first_search(graph, boost::visitor(vis));
+        detail::KaryTreeVisitorWrap vis{gen, nth_child};
+        graph.depth_first_search(root, vis);
         return gen.take_result();
     }
 

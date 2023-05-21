@@ -34,12 +34,12 @@ namespace quetzal::format::newick::ast
     ///
     /// @brief The type of vertex described by the AST
     ///
-    using vertex_properties = std::string;
+    using vertex_property = std::string;
 
     ///
     /// @brief The type of edge described by the AST
     ///
-    using edge_properties = double;
+    using edge_property = double;
 
     ///
     /// @brief A container of nodes
@@ -49,12 +49,12 @@ namespace quetzal::format::newick::ast
     ///
     /// @brief the name of the node
     ///
-    vertex_properties name;
+    vertex_property name;
 
     ///
     ///@brief the length of the branch
     ///
-    edge_properties distance_to_parent;
+    edge_property distance_to_parent;
 
   };
 

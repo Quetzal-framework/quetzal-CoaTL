@@ -1,6 +1,5 @@
 #include "quetzal/quetzal.hpp"
 #include <iostream>               
-#include <boost/graph/depth_first_search.hpp>
 
 // Your custom little vertex class
 struct my_vertex{ std::string name; };
@@ -30,7 +29,8 @@ int main()
   auto [tree, root] = newick::to_k_ary_tree<my_vertex, my_edge>(s);
 
   // depth-first traversal of the vertices in the directed graph
-  boost::depth_first_search(tree, visitor(MyVisitor{}));
+  MyVisitor visitor;
+  tree.depth_first_search(root, visitor);
 
   return 0;
 }

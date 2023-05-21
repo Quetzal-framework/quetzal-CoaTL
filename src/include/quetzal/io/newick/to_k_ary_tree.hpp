@@ -18,6 +18,9 @@
 
 #include <concepts>
 #include <string>
+#include <vector>
+#include <tuple>
+#include <ranges>
 
 namespace quetzal::format::newick
 {
@@ -27,32 +30,43 @@ namespace quetzal::format::newick
   ///
   template
   <
-    class VertexProperties = quetzal::format::newick::ast::node::vertex_properties,
-    class EdgeProperties= quetzal::format::newick::ast::node::edge_properties
+    class VertexProperty = quetzal::format::newick::ast::node::vertex_property,
+    class EdgeProperty= quetzal::format::newick::ast::node::edge_property
   >
   std::tuple
   <
-    quetzal::coalescence::k_ary_tree<VertexProperties,EdgeProperties>,
-    typename quetzal::coalescence::k_ary_tree<VertexProperties,EdgeProperties>::vertex_descriptor
+    quetzal::coalescence::k_ary_tree<VertexProperty,EdgeProperty>,
+    typename quetzal::coalescence::k_ary_tree<VertexProperty,EdgeProperty>::vertex_descriptor
   >
   to_k_ary_tree(quetzal::format::newick::ast::node ast_root)
   {
-    quetzal::coalescence::k_ary_tree<VertexProperties,EdgeProperties> tree;
-    auto root = add_vertex( {ast_root.name}, tree);
+    using tree_type = quetzal::coalescence::k_ary_tree<VertexProperty,EdgeProperty>;
+    using vertex_descriptor = typename tree_type::vertex_descriptor;
+    tree_type tree;
+    auto root = tree.add_vertex( VertexProperty{ast_root.name} );
 
     // A hacky recursive lambda (C++23 will make this much simpler)
-    static const auto populate = [](auto& graph, auto parent, const auto& ast){
-      static auto recursive = [](auto& graph, auto parent, const auto& ast, auto& self) mutable -> void {
-        // the idea is simple: while traversing the ast ...
+    static const auto populate = [](tree_type& graph, vertex_descriptor parent, const auto& ast)
+    {
+      static auto recursive = [](tree_type& graph, vertex_descriptor parent, const auto& ast, auto& self) mutable -> void 
+      {
+        std::vector<std::tuple< vertex_descriptor, EdgeProperty>> children;
+
+        children.reserve(ast.children.size());
+
         for(const auto& ast_child : ast.children){
-          // add node to the quetzal tree graph
-          auto child = add_vertex( {ast_child.name}, graph);
-          // add directed edge from child to parent
-          add_edge(child, parent, {ast_child.distance_to_parent}, graph);
-          // and propagate to the next level
-          self(graph, child, ast_child, self);}};
+          children.push_back(std::make_tuple( graph.add_vertex( VertexProperty {ast_child.name} ), EdgeProperty{ast_child.distance_to_parent} ));
+        }
+
+        graph.add_edges(parent, children);
+
+        for ( int i = 0; i < children.size(); i++){
+          self(graph, std::get<0>(children[i]), ast.children[i], self);
+        }
+        
+      }; // end recursive
       recursive(graph, parent, ast, recursive);
-    };
+    }; // end populate
 
     populate(tree, root, ast_root);
     return {std::move(tree), root};
@@ -64,13 +78,13 @@ namespace quetzal::format::newick
   ///
   template
   <
-    class VertexProperties = quetzal::format::newick::ast::node::vertex_properties,
-    class EdgeProperties= quetzal::format::newick::ast::node::edge_properties
+    class VertexProperty = quetzal::format::newick::ast::node::vertex_property,
+    class EdgeProperty= quetzal::format::newick::ast::node::edge_property
   >
   std::tuple
   <
-    quetzal::coalescence::k_ary_tree<VertexProperties,EdgeProperties>,
-    typename quetzal::coalescence::k_ary_tree<VertexProperties,EdgeProperties>::vertex_descriptor
+    quetzal::coalescence::k_ary_tree<VertexProperty,EdgeProperty>,
+    typename quetzal::coalescence::k_ary_tree<VertexProperty,EdgeProperty>::vertex_descriptor
   >
   to_k_ary_tree(const std::string& newick)
   {
@@ -80,7 +94,7 @@ namespace quetzal::format::newick
     auto ok = quetzal::parse(begin(newick), end(newick), quetzal::format::newick::parser::tree, ast);
     // todo: handling exceptions in boost::spirit
     assert(ok);
-    return to_k_ary_tree<VertexProperties,EdgeProperties>(ast);
+    return to_k_ary_tree<VertexProperty,EdgeProperty>(ast);
   }
 
 } // end namespace quetzal::format::newick

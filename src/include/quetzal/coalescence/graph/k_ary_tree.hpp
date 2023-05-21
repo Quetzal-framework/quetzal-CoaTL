@@ -182,24 +182,26 @@ namespace quetzal::coalescence
 
 			/// @brief Performs a read-and-write depth-first traversal of the vertices starting at vertex \f$s\f$.
 			/// @tparam DFSTreeVisitor
-			/// @param s The vertex to start from.
+			/// @param start The vertex to start from.
 			/// @param vis The visitor to apply.
 			template <typename DFSTreeVisitor>
-			void depth_first_search(vertex_descriptor s, DFSTreeVisitor &vis)
+			void depth_first_search(vertex_descriptor start, DFSTreeVisitor &vis)
 			{
-				using detail::adl_resolution::depth_first_search;
-				return depth_first_search(_graph, s, vis);
+        std::vector<boost::default_color_type> colors(boost::num_vertices(_graph));
+        boost::iterator_property_map color_map(colors.begin(), boost::get(boost::vertex_index, _graph));
+				return boost::depth_first_search(_graph, boost::visitor(vis).color_map(color_map).root_vertex(start));
 			}
 
 			/// @brief Performs a read-only depth-first traversal of the vertices starting at vertex \f$s\f$.
 			/// @tparam DFSTreeVisitor
-			/// @param s The vertex to start from.
+			/// @param start The vertex to start from.
 			/// @param vis The visitor to apply.
 			template <typename DFSTreeVisitor>
-			void depth_first_search(vertex_descriptor s, DFSTreeVisitor &vis) const
+			void depth_first_search(vertex_descriptor start, DFSTreeVisitor &vis) const
 			{
-				using detail::adl_resolution::depth_first_search;
-				return depth_first_search(_graph, s, vis);
+        std::vector<boost::default_color_type> colors(boost::num_vertices(_graph));
+        boost::iterator_property_map color_map(colors.begin(), boost::get(boost::vertex_index, _graph));
+				return boost::depth_first_search(_graph, boost::visitor(vis).color_map(color_map).root_vertex(start));
 			}
 
 			/// @}
@@ -248,7 +250,7 @@ namespace quetzal::coalescence
           std::vector<vertex_descriptor> left(leaves.begin(), leaves.begin() + split);
           std::vector<vertex_descriptor> right(leaves.begin() + split, leaves.end());
 
-          auto parent = add_vertex(tree._graph);
+          auto parent = boost::add_vertex(tree._graph);
           if constexpr (std::is_same_v<EdgeProperty, boost::no_property>)
             tree.add_edges(parent, { update_tree(tree, left, rng), update_tree(tree, right, rng) });
           else
@@ -324,7 +326,7 @@ namespace quetzal::coalescence
       return boost::add_vertex(_graph);
     }
 
-    /// @brief Add edges between the parent vertex and the two children.
+    /// @brief Add edges between the parent vertex and the children.
     std::vector<edge_descriptor>
     add_edges(vertex_descriptor parent, std::vector<vertex_descriptor> children)
     {
@@ -349,7 +351,6 @@ namespace quetzal::coalescence
   ///          between a sample of sequences for a non-recombining locus. 
   ///          Vertices embed a user-defined type of information. Edges embed no additional information.
   ///          This graph structure is bidirected and allows to model a forest of disconnected trees and isolated vertices.
-  /// @invariant Guarantees that each vertex \f$v\f$ has exactly 0 or 2 successors, never 1.
   /// @invariant Guarantees that each vertex \f$v\f$ has exactly \f$0\f$ or \f$n \geq 2\f$ successors, never \f$1\f$.
   /// @invariant Guarantees that each vertex \f$v\f$ has exactly\f$0\f$ or\f$1\f$ predecessor.
   /// @invariant Guarantees that if \f$(u,v)\f$ is an edge of the graph, then \f$(v,u)\f$ is also an edge.
@@ -394,14 +395,19 @@ namespace quetzal::coalescence
       return add_vertex( p, this->_graph);
     }
 
-    /// @brief Add edges between the parent vertex and the two children.
-    std::pair<edge_descriptor, edge_descriptor>
-    add_edges(vertex_descriptor parent, vertex_descriptor left, vertex_descriptor right)
+    /// @brief Add edges between the parent vertex and the children.
+    std::vector<edge_descriptor>
+    add_edges(vertex_descriptor parent, std::vector<vertex_descriptor> children)
     {
-      assert(parent != left);
-      assert(parent != right);
-      assert(left != right);
-      return {add_left_edge(parent, left, this->_graph).first, add_right_edge(parent, right, this->_graph).first};
+      assert( children.size() > 1);
+      for(auto const& c : children){ assert(parent != c); }
+
+      std::vector<edge_descriptor> edges (children.size());
+      std::transform(children.cbegin(), 
+                     children.cend(), 
+                     edges.begin(), 
+                     [parent, this](auto c){ return boost::add_edge(parent, c, this->_graph).first; } );
+      return edges;
     }
 
     /// @}
@@ -427,7 +433,7 @@ namespace quetzal::coalescence
   }; // end specialization k_ary_tree<Vertex, boost::no_property>
 
 
-  /// @brief @anchor CoalescenceKaryTreeNoPropertyEdgeProperty A k-ary tree class with information attached to vertices.
+  /// @brief @anchor CoalescenceKaryTreeNoPropertyEdgeProperty A k-ary tree class with information attached to edges.
   /// @tparam EdgeProperty The type of information to store at each edge.
   /// @details This class can be used as a simple way to describe the kind of topology and mutational process that emerge from evolutionary relationships 
   ///          between a sample of sequences for a non-recombining locus. 
@@ -468,23 +474,26 @@ namespace quetzal::coalescence
     /// @brief Add a vertex to the graph.
     vertex_descriptor add_vertex()
     {
-      return add_vertex(this->_graph);
+      return boost::add_vertex(this->_graph);
     }
 
-    /// @brief Add edges between the parent vertex and the two children.
+    /// @brief Add edges between the parent vertex and the children.
     template <typename... Args>
     std::pair<edge_descriptor, edge_descriptor>
     add_edges(vertex_descriptor parent,
-              std::tuple<vertex_descriptor, Args...> left,
-              std::tuple<vertex_descriptor, Args...> right)
+              std::vector<std::tuple<vertex_descriptor, Args...>> children)
     {
-      assert(parent != get<0>(left));
-      assert(parent != get<0>(right));
-      assert(get<0>(left) != get<0>(right));
+      assert( children.size() > 1);
+      for(auto const& c : children){ assert(parent != c); }
 
-      auto left_edge = add_left_edge(parent, get<0>(left), EdgeProperty{detail::unshift_tuple(left)}, this->_graph).first;
-      auto right_edge = add_right_edge(parent, get<0>(right), EdgeProperty{detail::unshift_tuple(right)}, this->_graph).first;
-      return {left_edge, right_edge};
+      std::vector<edge_descriptor> edges (children.size());
+      std::transform(children.cbegin(), 
+                     children.cend(), 
+                     edges.begin(), 
+                     [parent, this](const auto& c){ 
+                      return boost::add_edge(parent, std::get<0>(c), detail::unshift_tuple(c), this->_graph).first; 
+                      } );
+      return edges;
     }
 
     /// @}
@@ -557,22 +566,44 @@ namespace quetzal::coalescence
     vertex_descriptor
     add_vertex(Args &&...args)
     {
-      return add_vertex( VertexProperty{std::forward<Args>(args)...} , this->_graph);
+      return boost::add_vertex( VertexProperty(std::forward<Args>(args)...) , this->_graph);
     }
 
-    /// @brief Add edges between the parent vertex and the two children.
-    template <typename... Args>
-    std::pair<edge_descriptor, edge_descriptor>
+    /// @brief Add edges between the parent vertex and the children.
+    // template <typename... Args>
+    // std::vector<edge_descriptor>
+    // add_edges(vertex_descriptor parent,
+    //           std::vector<std::tuple<vertex_descriptor, Args...>> children)
+    // {
+    //   assert( children.size() > 1);
+    //   for(auto const& c : children){ assert(parent != c); }
+
+    //   std::vector<edge_descriptor> edges (children.size());
+    //   std::transform(children.cbegin(), 
+    //                  children.cend(), 
+    //                  edges.begin(), 
+    //                  [parent, this](const auto& c){ 
+    //                   return boost::add_edge(parent, std::get<0>(c), detail::unshift_tuple(c), this->_graph).first; 
+    //                   } );
+    //   return edges;
+    // }
+
+    /// @brief Add edges between the parent vertex and the children.
+    std::vector<edge_descriptor>
     add_edges(vertex_descriptor parent,
-              std::tuple<vertex_descriptor, Args...> left,
-              std::tuple<vertex_descriptor, Args...> right)
+              std::vector<std::tuple<vertex_descriptor, EdgeProperty>> children)
     {
-      assert(parent != get<0>(left));
-      assert(parent != get<0>(right));
-      assert(get<0>(left) != get<0>(right));
-      auto left_edge = add_left_edge(parent, get<0>(left), EdgeProperty{detail::unshift_tuple(left)}, this->_graph).first;
-      auto right_edge = add_right_edge(parent, get<0>(right), EdgeProperty{detail::unshift_tuple(right)}, this->_graph).first;
-      return {left_edge, right_edge};
+      assert( children.size() > 1);
+      for(auto const& c : children){ assert(parent != c); }
+
+      std::vector<edge_descriptor> edges (children.size());
+      std::transform(children.cbegin(), 
+                     children.cend(), 
+                     edges.begin(), 
+                     [parent, this](const auto& c){ 
+                      return boost::add_edge(parent, std::get<0>(c), std::get<1>(c), this->_graph).first; 
+                      } );
+      return edges;
     }
 
     /// @}
