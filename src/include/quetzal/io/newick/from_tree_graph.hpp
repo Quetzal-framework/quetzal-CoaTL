@@ -210,35 +210,36 @@ namespace quetzal::format::newick
         return gen.take_result();
     }
 
-    // ///
-    // /// @brief Generate a Newick string from a k-ary tree with properties
-    // ///
-    // template<class VertexProperties, class EdgeProperties>
-    // std::string generate_from(quetzal::coalescence::k_ary_tree<VertexProperties, EdgeProperties> graph)
-    // {
-    //   namespace newick = quetzal::format::newick;
+    ///
+    /// @brief Generate a Newick string from a k-ary tree with properties
+    ///
+    template<class VertexProperty, class EdgeProperty>
+    requires (!std::is_same_v<VertexProperty, boost::no_property> &&  !std::is_same_v<VertexProperty, boost::no_property>)
+    std::string generate_from(quetzal::coalescence::k_ary_tree<VertexProperty, EdgeProperty> graph)
+    {
+      namespace newick = quetzal::format::newick;
 
-    //   using vertex_t = typename quetzal::coalescence::k_ary_tree<>::vertex_descriptor;
+      using vertex_t = typename quetzal::coalescence::k_ary_tree<>::vertex_descriptor;
 
-    //   std::predicate<vertex_t>      auto has_parent    = [&graph](vertex_t v){return graph.has_parent(v);};
-    //   std::predicate<vertex_t>      auto has_children  = [&graph](vertex_t v){return graph.has_children(v);};
-    //   newick::Formattable<vertex_t> auto label         = [&graph](vertex_t v ){return graph[v];};
-    //   newick::Formattable<vertex_t> auto branch_length = [&graph](vertex_t v)
-    //   {
-    //     std::string result;
-    //     auto [it1, it2] = out_edges(v, graph);
-    //     assert(std::distance(it1,it2) <= 1);
-    //     if(std::distance(it1,it2) == 1) result = std::to_string(graph[*it1]);
-    //     return result;
-    //   };
+      std::predicate<vertex_t>      auto has_parent    = [&graph](vertex_t v){return graph.has_parent(v);};
+      std::predicate<vertex_t>      auto has_children  = [&graph](vertex_t v){return graph.has_children(v);};
+      newick::Formattable<vertex_t> auto label         = [&graph](vertex_t v ){return graph[v];};
+      newick::Formattable<vertex_t> auto branch_length = [&graph](vertex_t v)
+      {
+        std::string result;
+        auto [it1, it2] = out_edges(v, graph);
+        assert(std::distance(it1,it2) <= 1);
+        if(std::distance(it1,it2) == 1) result = std::to_string(graph[*it1]);
+        return result;
+      };
 
-    //   // We declare a generator passing it the interfaces
-    //   auto generator = newick::make_generator(has_parent, has_children, label, branch_length);
+      // We declare a generator passing it the interfaces
+      auto generator = newick::make_generator(has_parent, has_children, label, branch_length);
 
-    //   // We expose its interface to the user-defined class DFS algorithm
-    //   graph.depth_first_search(generator.pre_order(), generator.in_order(), generator.post_order());
+      // We expose its interface to the user-defined class DFS algorithm
+      graph.depth_first_search(generator.pre_order(), generator.in_order(), generator.post_order());
 
-    // }
+    }
 
 } // end namespace quetzal::format::newick
 

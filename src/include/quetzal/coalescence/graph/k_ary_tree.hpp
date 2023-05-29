@@ -388,11 +388,9 @@ namespace quetzal::coalescence
     /// @{
 
     /// @brief Add a vertex and its properties to the graph
-    template <typename... Args>
-    auto add_vertex(Args &&...args)
+    auto add_vertex( const VertexProperty &p )
     {
-      auto p = VertexProperty(std::forward<Args>(args)...);
-      return add_vertex( p, this->_graph);
+      return boost::add_vertex( p, this->_graph);
     }
 
     /// @brief Add edges between the parent vertex and the children.
@@ -443,6 +441,10 @@ namespace quetzal::coalescence
   /// @invariant Guarantees that each vertex \f$v\f$ has exactly\f$0\f$ or\f$1\f$ predecessor.
   /// @invariant Guarantees that if \f$(u,v)\f$ is an edge of the graph, then \f$(v,u)\f$ is also an edge.
   /// @remark As it would be too costly to enforce non-cyclicity, it is left to the user responsability not to introduce any cycle.
+    /// @section ex1 Example
+  /// @include coalescence_k_ary_tree_3.cpp
+  /// @section ex2 Output
+  /// @include coalescence_k_ary_tree_3.txt
   template <class EdgeProperty>
     requires(!std::is_same_v<EdgeProperty, no_property>)
   class k_ary_tree<no_property, EdgeProperty> : public detail::k_ary_tree_common<no_property, EdgeProperty, k_ary_tree<no_property, EdgeProperty>>
@@ -478,10 +480,8 @@ namespace quetzal::coalescence
     }
 
     /// @brief Add edges between the parent vertex and the children.
-    template <typename... Args>
-    std::pair<edge_descriptor, edge_descriptor>
-    add_edges(vertex_descriptor parent,
-              std::vector<std::tuple<vertex_descriptor, Args...>> children)
+    std::vector<edge_descriptor>
+    add_edges(vertex_descriptor parent, const std::vector<std::pair<vertex_descriptor, EdgeProperty>> &children)
     {
       assert( children.size() > 1);
       for(auto const& c : children){ assert(parent != c); }
@@ -491,7 +491,7 @@ namespace quetzal::coalescence
                      children.cend(), 
                      edges.begin(), 
                      [parent, this](const auto& c){ 
-                      return boost::add_edge(parent, std::get<0>(c), detail::unshift_tuple(c), this->_graph).first; 
+                      return boost::add_edge(parent, c.first, c.second, this->_graph).first; 
                       } );
       return edges;
     }
@@ -562,31 +562,11 @@ namespace quetzal::coalescence
     /// @{
 
     /// @brief Add a vertex and its properties to the graph
-    template <typename... Args>
     vertex_descriptor
-    add_vertex(Args &&...args)
+    add_vertex(const VertexProperty &p)
     {
-      return boost::add_vertex( VertexProperty(std::forward<Args>(args)...) , this->_graph);
+      return boost::add_vertex( p , this->_graph);
     }
-
-    /// @brief Add edges between the parent vertex and the children.
-    // template <typename... Args>
-    // std::vector<edge_descriptor>
-    // add_edges(vertex_descriptor parent,
-    //           std::vector<std::tuple<vertex_descriptor, Args...>> children)
-    // {
-    //   assert( children.size() > 1);
-    //   for(auto const& c : children){ assert(parent != c); }
-
-    //   std::vector<edge_descriptor> edges (children.size());
-    //   std::transform(children.cbegin(), 
-    //                  children.cend(), 
-    //                  edges.begin(), 
-    //                  [parent, this](const auto& c){ 
-    //                   return boost::add_edge(parent, std::get<0>(c), detail::unshift_tuple(c), this->_graph).first; 
-    //                   } );
-    //   return edges;
-    // }
 
     /// @brief Add edges between the parent vertex and the children.
     std::vector<edge_descriptor>
@@ -638,8 +618,73 @@ namespace quetzal::coalescence
     /// @}
   };
 
-	
+  namespace detail
+  {
+    template <typename Vertex, typename Edge, typename Generator>
+    auto update_tree(
+        k_ary_tree<Vertex, Edge> &tree,
+        std::vector<typename k_ary_tree<Vertex, Edge>::vertex_descriptor> leaves,
+        Generator &rng)
+    {
+      using tree_type = k_ary_tree<Vertex, Edge>;
+      using vertex_descriptor = typename tree_type::vertex_descriptor;
 
+      if (leaves.size() == 1)
+      {
+        return leaves.front();
+      }
+      else
+      {
+        std::uniform_int_distribution<> distrib(1, leaves.size() - 1);
+        int split = distrib(rng);
+
+        std::vector<vertex_descriptor> left(leaves.begin(), leaves.begin() + split);
+        std::vector<vertex_descriptor> right(leaves.begin() + split, leaves.end());
+
+        vertex_descriptor parent;
+        
+        if constexpr (std::is_same_v<Vertex, boost::no_property>)
+          parent = tree.add_vertex();
+        else
+          parent = tree.add_vertex(Vertex());
+
+        if constexpr (std::is_same_v<Edge, boost::no_property>)
+          tree.add_edges(parent, update_tree(tree, left, rng), update_tree(tree, right, rng));
+        else
+          tree.add_edges(parent, { { update_tree(tree, left, rng), Edge() }, { update_tree(tree, right, rng), Edge()} } );
+        return parent;
+      }
+    }
+  } // end namespace detail
+
+  /// @brief Generate a random k-ary tree.
+  /// @tparam Generator Random Number Generator
+  /// @param n_leaves Number of leaves in the k-ary tree
+  /// @param rng The random number generator
+  /// @return A k-ary tree with its root vertex descriptor
+  template <typename Vertex = boost::no_property, typename Edge = boost::no_property, typename Generator>
+  std::pair< quetzal::coalescence::k_ary_tree<Vertex, Edge>, typename quetzal::coalescence::k_ary_tree<Vertex, Edge>::vertex_descriptor>
+  get_random_k_ary_tree(int n_leaves, Generator &rng)
+  {
+    using tree_type = quetzal::coalescence::k_ary_tree<Vertex, Edge>;
+    using vertex_descriptor = typename tree_type::vertex_descriptor;
+
+    tree_type tree;
+
+    std::vector<vertex_descriptor> leaves(n_leaves);
+
+    std::transform(leaves.cbegin(), leaves.cend(), leaves.begin(),
+      [&tree](auto)
+      {
+        if constexpr (std::is_same_v<Vertex, boost::no_property>)
+          return tree.add_vertex();
+        else
+          return tree.add_vertex(Vertex());
+      });
+
+    vertex_descriptor root = detail::update_tree(tree, leaves, rng);
+    return std::tuple(std::move(tree), root);
+  }
 	
 } // end namespace quetzal::coalescence
 

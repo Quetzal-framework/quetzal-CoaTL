@@ -97,6 +97,12 @@ namespace quetzal::coalescence
 
       edge_hashmap_type _property_map;
 
+      void add_edges(EdgeDescriptor u, const EdgeProperty &left, EdgeDescriptor v, const EdgeProperty &right)
+      {
+        _property_map.insert({u, left});
+        _property_map.insert({v, right});
+      }
+
       template <typename... Args>
       void
       add_edges(EdgeDescriptor u, std::tuple<Args...> left, EdgeDescriptor v, std::tuple<Args...> right)
@@ -412,12 +418,11 @@ namespace quetzal::coalescence
     /// @{
 
     /// @brief Add a vertex and its properties to the graph
-    template <typename... Args>
-    vertex_descriptor add_vertex(Args &&...args)
+    vertex_descriptor add_vertex(const VertexProperty &p)
     {
       using detail::adl_resolution::add_vertex;
       vertex_descriptor v = add_vertex(this->_graph);
-      _vertex_manager.add_vertex_to_manager(v, std::forward<Args>(args)...);
+      _vertex_manager.add_vertex_to_manager(v, p);
       return v;
     }
 
@@ -501,20 +506,19 @@ namespace quetzal::coalescence
     }
 
     /// @brief Add edges between the parent vertex and the two children.
-    template <typename... Args>
     std::pair<edge_descriptor, edge_descriptor>
     add_edges(vertex_descriptor parent,
-              std::tuple<vertex_descriptor, Args...> left,
-              std::tuple<vertex_descriptor, Args...> right)
+              const std::pair<vertex_descriptor, EdgeProperty> &left,
+              const std::pair<vertex_descriptor, EdgeProperty> &right)
     {
-      assert(parent != get<0>(left));
-      assert(parent != get<0>(right));
-      assert(get<0>(left) != get<0>(right));
+      assert(parent != left.first);
+      assert(parent != right.first);
+      assert(left.first != right.first);
 
-      auto left_edge = add_left_edge(parent, get<0>(left), this->_graph);
-      auto right_edge = add_right_edge(parent, get<0>(right), this->_graph);
+      auto left_edge = add_left_edge(parent, left.first, this->_graph);
+      auto right_edge = add_right_edge(parent, right.first, this->_graph);
 
-      _edge_manager.add_edges(left_edge, detail::unshift_tuple(left), right_edge, detail::unshift_tuple(right));
+      _edge_manager.add_edges(left_edge, left.second, right_edge, right.second);
       return {left_edge, right_edge};
     }
 
@@ -586,29 +590,29 @@ namespace quetzal::coalescence
     /// @{
 
     /// @brief Add a vertex and its properties to the graph
-    template <typename... Args>
     vertex_descriptor
-    add_vertex(Args &&...args)
+    add_vertex(const VertexProperty &p)
     {
       using detail::adl_resolution::add_vertex;
       vertex_descriptor v = add_vertex(this->_graph);
-      _vertex_manager.add_vertex_to_manager(v, std::forward<Args>(args)...);
+      _vertex_manager.add_vertex_to_manager(v, p);
       return v;
     }
 
     /// @brief Add edges between the parent vertex and the two children.
-    template <typename... Args>
     std::pair<edge_descriptor, edge_descriptor>
     add_edges(vertex_descriptor parent,
-              std::tuple<vertex_descriptor, Args...> left,
-              std::tuple<vertex_descriptor, Args...> right)
+              const std::pair<vertex_descriptor, EdgeProperty> &left,
+              const std::pair<vertex_descriptor, EdgeProperty> &right)
     {
-      assert(parent != get<0>(left));
-      assert(parent != get<0>(right));
-      assert(get<0>(left) != get<0>(right));
-      auto left_edge = add_left_edge(parent, get<0>(left), this->_graph);
-      auto right_edge = add_right_edge(parent, get<0>(right), this->_graph);
-      _edge_manager.add_edges(left_edge, detail::unshift_tuple(left), right_edge, detail::unshift_tuple(right));
+      assert(parent != left.first);
+      assert(parent != right.first);
+      assert(left.first != right.first);
+
+      auto left_edge = add_left_edge(parent, left.first, this->_graph);
+      auto right_edge = add_right_edge(parent, right.first, this->_graph);
+
+      _edge_manager.add_edges(left_edge, left.second, right_edge, right.second);
       return {left_edge, right_edge};
     }
 
@@ -667,36 +671,49 @@ namespace quetzal::coalescence
         std::vector<vertex_descriptor> left(leaves.begin(), leaves.begin() + split);
         std::vector<vertex_descriptor> right(leaves.begin() + split, leaves.end());
 
-        auto parent = tree.add_vertex();
+        vertex_descriptor parent;
+        
+        if constexpr (std::is_same_v<Vertex, boost::no_property>)
+          parent = tree.add_vertex();
+        else
+          parent = tree.add_vertex(Vertex());
+
         if constexpr (std::is_same_v<Edge, boost::no_property>)
           tree.add_edges(parent, update_tree(tree, left, rng), update_tree(tree, right, rng));
         else
           tree.add_edges(parent,
-                         std::make_tuple(update_tree(tree, left, rng), Edge()),
-                         std::make_tuple(update_tree(tree, right, rng), Edge()));
+                         { update_tree(tree, left, rng), Edge() },
+                         { update_tree(tree, right, rng), Edge()});
         return parent;
       }
     }
   }
 
-  /// @brief Generate a random binary tree with no vertex/edge property attached.
+  /// @brief Generate a random binary tree.
   /// @tparam Generator Random Number Generator
   /// @param n_leaves Number of leaves in the binary tree
   /// @param rng The random number generator
   /// @return A binary tree with its root vertex descriptor
   template <typename Vertex = boost::no_property, typename Edge = boost::no_property, typename Generator>
-  std::tuple<
-      quetzal::coalescence::binary_tree<Vertex, Edge>,
-      typename quetzal::coalescence::binary_tree<Vertex, Edge>::vertex_descriptor>
+  std::pair< quetzal::coalescence::binary_tree<Vertex, Edge>, typename quetzal::coalescence::binary_tree<Vertex, Edge>::vertex_descriptor>
   get_random_binary_tree(int n_leaves, Generator &rng)
   {
     using tree_type = quetzal::coalescence::binary_tree<Vertex, Edge>;
     using vertex_descriptor = typename tree_type::vertex_descriptor;
 
     tree_type tree;
+
     std::vector<vertex_descriptor> leaves(n_leaves);
-    std::transform(leaves.cbegin(), leaves.cend(), leaves.begin(), [&tree](auto)
-                   { return tree.add_vertex(); });
+
+    std::transform(leaves.cbegin(), leaves.cend(), leaves.begin(),
+      [&tree](auto)
+      {
+        if constexpr (std::is_same_v<Vertex, boost::no_property>)
+          return tree.add_vertex();
+        else
+          return tree.add_vertex(Vertex());
+      });
+
     vertex_descriptor root = detail::update_tree(tree, leaves, rng);
     return std::tuple(std::move(tree), root);
   }

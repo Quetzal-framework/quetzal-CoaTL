@@ -1,4 +1,9 @@
-# Abstracts
+# Abstract
+
+This page lists the features available in the library. 
+
+Please refer to the tutorial
+section for more details on how to use them.
 
 ## Input/Output
 
@@ -6,8 +11,7 @@ Quetzal-CoaTL defines functions and classes to help reading (parsers) and writin
 (generators) data structures of general importance for coalescence problems:
 
 - Newick tree format
-- Extending Newick network format
-- [Demes](https://academic.oup.com/genetics/article/222/3/iyac131/6730747) format
+- Extended Newick network format
 - Spatio-temporal raster datasets
 
 ## Algorithms

@@ -10,30 +10,31 @@ struct vertex_info
 int main()
 {
   using edge_info = boost::no_property;
-  using tree_type = quetzal::coalescence::binary_tree<vertex_info, edge_info>;
+  using tree_type = quetzal::coalescence::k_ary_tree<vertex_info, edge_info>;
 
   /*
-  *             a
-  *           /   \
-  *          /     c
-  *         /     / \
-  *        b     d   e
+  *              a
+  *            /   \
+  *           /     c
+  *          /    / | \
+  *         b    d  e  f
   */
 
   tree_type tree;
 
   // Let's attach information to the root vertex
-  auto a = tree.add_vertex( vertex_info{ "Im Root", 47 });
+  auto a = tree.add_vertex( vertex_info{ "Im Root", 47 } );
 
   // Other vertices have default values
   auto b = tree.add_vertex( vertex_info{} );
   auto c = tree.add_vertex( vertex_info{} );
   auto d = tree.add_vertex( vertex_info{} );
   auto e = tree.add_vertex( vertex_info{} );
+  auto f = tree.add_vertex( vertex_info{} );
 
   // No information are attached to edges
-  auto [ab_edge, ac_edge] = tree.add_edges(a, b, c);
-  auto [cd_edge, ce_edge] = tree.add_edges(c, d, e);
+  auto first_edges = tree.add_edges(a, {b, c} );
+  auto other_edges = tree.add_edges(c, {d, e, f} );
 
   auto root = tree.find_root_from(e);
   assert(root == a && !tree.has_predecessor(root));
@@ -41,8 +42,8 @@ int main()
   std::cout << "Degree of inner vertex c is " << tree.degree(c) << std::endl;
 
   // Root vertex field values were assigned
-  std::cout << "Root first field is:\t" << tree[a].field1 << std::endl;
-  std::cout << "Root other field is:\t" << tree[a].field2 << std::endl;
+  std::cout << "Root vertex first field is:\t" << tree[root].field1 << std::endl;
+  std::cout << "Root other field is:\t"<< tree[a].field2 << std::endl;
 
   // Other vertices fields values were left default initialized
   assert(tree[b].field1.size() == tree[b].field2);

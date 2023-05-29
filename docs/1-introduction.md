@@ -21,11 +21,12 @@ softwares, or
 - a video-game company looking for implementing realistic
 models of evolution :eyes:
 
-you will surely hope to develop your own program without having to start from scratch. And that's why we need something that looks like a standard pile of small components.
+you will surely hope to develop your own program without having to start from scratch. 
+And that's why we need something that looks like a standard box of small components.
 
-:v: Quetzal can help you doing so by offering atomic components (structures,
+:v: Quetzal can help by offering atomic components (structures,
 algorithms, concepts) that can be reused to build a new program.
-The template mechanism allow to adapt them efficiently to each particular situation
+The template mechanism allows to adapt them efficiently to each particular situation
 you may encounter.
 
 The Quetzal-CoaTL interfaces and components are generic, in the same sense as the

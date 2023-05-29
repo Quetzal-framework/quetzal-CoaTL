@@ -27,7 +27,7 @@
   - @subpage graphs_in_quetzal
   - Coalescence 
     - @subpage coalescence_binary_tree
-    - k-ary tree
+    - @subpage coalescence_k_ary_tree
     - network
 
 ## Demographic Histories
@@ -58,13 +58,6 @@ trees.
 
 **Quetzal** provides some utilities to parse, generate and manipulate such format.
 
-@note
-To provide users with sensical defaults, **Quetzal** made to choice to generate
-and manipulate graphs objects from the [Boost Graph Library](https://www.boost.org/doc/libs/1_81_0/libs/graph/doc/index.html) when not told otherwise by the user.
-This choice is mostly practical and not hard coded, as **Quetzal** interfaces
-still remain open-ended and offer the possibility to generate and manipulate
-your own custom graph classes if required to.
-
 ### Grammar
 
 Whitespace here refer to any of the following: spaces, tabs, carriage returns, and linefeeds.
@@ -86,8 +79,8 @@ In this tutorial section you will learn how to:
 ### With default properties
 
 In this example we will use the default (and simplistic) properties of the graph synthetized by the parsing.
-By *properties* we mean the type of the data structures that describe vertices
-and edges in a graph.
+By *properties* we mean the type the data structures used to store arbitrary information along the vertices
+and edges of a graph.
 
 For general graphs it could be anything, but since we are parsing Newick formats,
 we can reasonably expect *ad minima*:
@@ -124,9 +117,7 @@ You can think of pretty much any type of events here:
 - convert the branch length to coalescence units, generations, etc
 - update a mutational state data member,
 - construct a slightly modified copy of the tree while visiting its clone
-- etc
-
-This is surprisingly easy to inject your own classes into a graph!
+- etc ...
 
 **Input**
 
@@ -172,13 +163,14 @@ on the github issue pages!
 
 In this tutorial section you will learn how to:
 - Generate a Newick string from a **Quetzal** coalescence binary tree.
+- Generate a Newick string from a **Quetzal** coalescence k-ary tree.
 - Customize the behavior of the generator based on the type of information you wish to format.
 
 ## From a Quetzal binary tree
 
 ### With no property
 
-When a Newick string is generated from a tree that has no vertex nor edge information (properties) 
+When a Newick string is generated from a tree that has no vertex nor edge information/properties
 attached to it, it is then assumed the only interest is the tree topology: as there is no clear way to populate the labels or branch length data fields in the Newick string, those are left empty.
 
 **Input**
@@ -254,13 +246,12 @@ through small user-defined classes called *property classes*.
 The type of information a graph class embeds is referred by a nested type: `vertex_property` and `edge_property`.
 
 [//]: # (----------------------------------------------------------------------)
-@page coalescence_binary_tree Coalescence Binary Trees
+@page coalescence_binary_tree Binary Trees
 @tableofcontents
 
 # Introduction
 
-Coalescence Binary Trees classes
-interface, provide a way to guarantee that each vertex \f$v\f$ has exactly 
+Coalescence Binary Trees classes provide a way to guarantee that each vertex \f$v\f$ has exactly 
   - 0 successor (the vertex is a leaf)
   - 2 successors (the vertex is an internal node)
 
@@ -275,7 +266,7 @@ structure.
 # Implementations 
 
 Coalescence Binary Trees can store an additional arbitrary type of information 
-(called a *Property Class*) along their vertices or edges: if the user decide to do so, 
+(called a *Property Class*) along their vertices or edges: if the user decides to do so, 
 the tree class interface adapts to offer ways
 to manipulate this information.
 
@@ -288,5 +279,43 @@ There are logically 4 different classes (equivalently interfaces) resulting from
   \ref CoalescenceBinaryTreeVertexPropertyNoProperty "quetzal::coalescence::binary_tree< boost::no_property, EdgeProperty >"
 - A class to embed  both `VertexProperty` and `EdgeProperty` information :<br>
   \ref CoalescenceBinaryTreeVertexPropertyEdgeProperty "quetzal::coalescence::binary_tree< VertexProperty, EdgeProperty >"
+
+Usage examples are described in their respective class documentation.
+
+[//]: # (----------------------------------------------------------------------)
+@page coalescence_k_ary_tree K-ary Trees
+@tableofcontents
+
+
+# Introduction
+
+Coalescence k-ary Trees classes are similar to Binary Trees, but provide an interface guaranteeing that each vertex \f$v\f$ has exactly 
+  - \f$0\f$ successor (the vertex is a leaf)
+  - \f$k \geq 2\f$ successors (the vertex is an internal node)
+
+The graph structure is bidirectional and allows to model a forest of disconnected trees.
+That is, if a vertex has no predecessor, then it's either a root (if it has 2 or more successors) 
+or an isolated vertex (if it has no successor).
+
+Users will encounter this type of tree when returning from coalescence multiple mergers, 
+or if they simply want to build and manipulate graphs that do not make strong assumptions on
+the tree structure.
+
+# Implementations 
+
+Coalescence K-ary Trees can store an additional arbitrary type of information 
+(called a *Property Class*) along their vertices or edges: if the user decides to do so, 
+the tree class interface adapts to offer ways
+to manipulate this information.
+
+There are logically 4 different classes (equivalently interfaces) resulting from this: 
+- A class to represent a simple topology with no additional information (no property): <br>
+  \ref CoalescenceKaryTreeNoPropertyNoProperty "quetzal::coalescence::k_ary_tree< no_property, no_property >"
+- A class to embed a user-defined class `VertexProperty` on each vertex: <br>
+  \ref CoalescenceKaryTreeVertexPropertyNoProperty "quetzal::coalescence::k_ary_tree< VertexProperty, no_property >"
+- A class to embed  a user-defined class `EdgeProperty` on each edge: <br>
+  \ref CoalescenceKaryTreeNoPropertyEdgeProperty "quetzal::coalescence::k_ary_tree< boost::no_property, EdgeProperty >"
+- A class to embed  both `VertexProperty` and `EdgeProperty` information :<br>
+  \ref CoalescenceKaryTreeVertexPropertyEdgeProperty "quetzal::coalescence::k_ary_tree< VertexProperty, EdgeProperty >"
 
 Usage examples are described in their respective class documentation.
