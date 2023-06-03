@@ -254,6 +254,7 @@ BOOST_FIXTURE_TEST_CASE(legacy_k_ary_comparison, Fixture_simple_tree)
 
   // Generate the newick string
   auto bgl = newick::generate_from(tree, a, Flavor());
+  
   BOOST_CHECK_EQUAL(legacy , bgl);
 }
 

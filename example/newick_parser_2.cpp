@@ -11,11 +11,26 @@ struct edge_info{ double length; };
 static inline auto& operator<<(std::ostream& os, vertex_info const& v) { return os << quoted(v.name); }
 
 // we want to trigger a custom event when a vertex is discovered by the DFS
-struct MyVisitor : boost::default_dfs_visitor {
-    auto discover_vertex(auto u, auto const& graph) {
-      // vertex_info g[u] is streamable!
-      std::cout << "Discover vertex " << u << " (" << graph[u] << ")\n";
+template<class Graph>
+struct MyVisitor
+{
+  Graph& _tree;
+  MyVisitor(Graph &tree) : _tree(tree) {}
+  void operator()(auto stage, auto vertex)
+  {
+    switch(stage) {
+      case boost::visit::pre :
+        // vertex_info g[u] is streamable!
+        std::cout << "Discover vertex " << vertex << " (" << _tree[vertex] << ")\n";
+        break;
+      case boost::visit::in:
+        break;
+      case boost::visit::post:
+        break;
+      default:
+        throw std::invalid_argument( "received invalid DFS order" );
     }
+  }
 };
 
 // Define a namespace alias to shorten notation
@@ -30,7 +45,7 @@ int main()
   auto [tree, root] = newick::to_k_ary_tree<vertex_info, edge_info>(s);
 
   // depth-first traversal of the vertices in the directed graph
-  MyVisitor visitor;
+  MyVisitor visitor(tree);
   tree.depth_first_search(root, visitor);
 
   return 0;

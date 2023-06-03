@@ -38,12 +38,7 @@
 #include <utility>
 
 #include "concepts.hpp"
-
-namespace boost
-{
-  enum class visit { pre, in, post };
-}
-
+#include "visit.hpp"
 #include "detail_k_ary_tree.hpp"
 
 namespace boost

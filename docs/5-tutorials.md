@@ -245,6 +245,73 @@ through small user-defined classes called *property classes*.
 
 The type of information a graph class embeds is referred by a nested type: `vertex_property` and `edge_property`.
 
+## Depth First Search (DFS)  Algorithms
+
+DFS is a form of graph traversal referering to the process of visiting (e.g. retrieving, updating, or deleting) each node in a tree data structure, exactly once.
+
+## DFS on trees
+
+When the graph has the structure of a tree, there are only three operations that are worth
+worrying about:
+- `pre-order`, 
+- `in-order`, 
+- `post-order`.  
+
+\image html dfs_tree.png width=33%
+
+When you perform a DFS on a tree with *Quetzal* you need to pass to the DFS method a starting vertex (probably the root of the tree) and a visitor object: you would write `tree.depth_first_search(start, visitor)`. This visitor must be a cheap-to-copy instance of a class that implements the details of the DFS operations as decided by the user, for example:
+
+```cpp
+template <typename Order, typename Vertex>
+struct tree_visitor
+{
+  void operator()(Order stage, Vertex v)
+  {
+    switch(stage) {
+      case boost::visit::pre :
+        // this line can be whatever the user sees fit
+        std::cout << "Pre " << v << std::endl;
+        break;
+      case boost::visit::in:
+        std::cout << "In " << v << std::endl; // same
+        break;
+      case boost::visit::post:
+        std::cout << "Post " << v << std::endl; // same
+        break;
+      default:
+        throw std::invalid_argument( "received invalid DFS order" );
+    }
+  }
+};
+```
+You could also capture a reference to the tree graph instance if you need it:
+
+```cpp
+template <typename Graph, typename Order>
+struct tree_visitor
+{
+  Graph& _tree;
+
+  void operator()(Order stage, Vertex v)
+  {
+    switch(stage) {
+      case boost::visit::pre :
+        // this line can be whatever the user sees fit
+        std::cout << "Pre " << _tree[v] << std::endl;
+        break;
+      case boost::visit::in:
+        std::cout << "In " <<_tree[v] << std::endl; // same
+        break;
+      case boost::visit::post:
+        std::cout << "Post " << _tree[v] << std::endl; // same
+        break;
+      default:
+        throw std::invalid_argument( "received invalid DFS order" );
+    }
+  }
+};
+```
+     
 [//]: # (----------------------------------------------------------------------)
 @page coalescence_binary_tree Binary Trees
 @tableofcontents

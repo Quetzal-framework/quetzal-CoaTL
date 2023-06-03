@@ -25,8 +25,36 @@ namespace quetzal::format::newick
 {
     namespace detail
     {
+        template<class Gen>
+        struct TreeVisitorWrapper
+        {
+            std::reference_wrapper<Gen> _generator;
+            boost::visit _previous;
+            TreeVisitorWrapper(Gen &gen) : _generator(gen) {}
+
+            void operator()(boost::visit stage, auto v)
+            {
+                switch (stage)
+                {
+                case boost::visit::pre:
+                    _generator.get().pre_order()(v);
+                    _previous = boost::visit::pre;
+                    break;
+                case boost::visit::in:
+                    if (_previous == boost::visit::post)
+                        _generator.get().in_order()();
+                    _previous = boost::visit::in;
+                    break;
+                case boost::visit::post:
+                    _generator.get().post_order()(v);
+                    _previous = boost::visit::post;
+                    break;
+                }
+            }
+        };
+
         // We expose its interface to the boost DFS algorithm
-        template<typename Gen, typename Stack>
+        template <typename Gen, typename Stack>
         struct KaryTreeVisitorWrap : boost::default_dfs_visitor
         {
             Gen &gen_;
@@ -53,7 +81,7 @@ namespace quetzal::format::newick
     //
     // @brief Generate a Newick string from a k-ary tree with no properties attached to edges or vertices
     //
-    template<typename Flavor>
+    template <typename Flavor>
     std::string generate_from(
         quetzal::coalescence::k_ary_tree<boost::no_property, boost::no_property> const &graph,
         typename quetzal::coalescence::k_ary_tree<boost::no_property, boost::no_property>::vertex_descriptor root,
@@ -77,10 +105,8 @@ namespace quetzal::format::newick
         // We declare a generator passing it the data interfaces
         newick::generator gen{has_parent, has_children, label, branch_length, flavor};
         using Gen = decltype(gen);
-        using Stack = std::stack<int>;
-        Stack nth_child;
 
-        detail::KaryTreeVisitorWrap vis{gen, nth_child};
+        detail::TreeVisitorWrapper vis(gen);
         graph.depth_first_search(root, vis);
         return gen.take_result();
     }
@@ -88,9 +114,9 @@ namespace quetzal::format::newick
     //
     // @brief Generate a Newick string from a k-ary tree with no properties attached to edges or vertices
     //
-    template<typename Flavor>
+    template <typename Flavor>
     std::string generate_from(quetzal::coalescence::binary_tree<boost::no_property, boost::no_property> const &graph,
-                              typename quetzal::coalescence::binary_tree<boost::no_property, boost::no_property>::vertex_descriptor root, 
+                              typename quetzal::coalescence::binary_tree<boost::no_property, boost::no_property>::vertex_descriptor root,
                               Flavor flavor)
     {
         using tree_type = quetzal::coalescence::binary_tree<boost::no_property, boost::no_property>;
@@ -105,7 +131,7 @@ namespace quetzal::format::newick
         { return static_cast<bool>(graph.out_degree(v)); };
 
         newick::Formattable<vertex_type> auto branch_length = [](vertex_type)
-        {  return ""; };
+        { return ""; };
 
         newick::Formattable<vertex_type> auto label = [](vertex_type)
         { return ""; };
@@ -113,7 +139,7 @@ namespace quetzal::format::newick
         // We declare a generator passing it the data interfaces
         newick::generator gen{has_parent, has_children, label, branch_length, flavor};
         using Gen = decltype(gen);
-        
+
         // We expose its interface to the boost DFS algorithm
         struct VisWrap
         {
@@ -146,12 +172,12 @@ namespace quetzal::format::newick
     }
 
     //
-    // @brief Generate a Newick string from a k-ary tree with properties attached to edges and vertices
+    // @brief Generate a Newick string from a binary tree with properties attached to edges and vertices
     //
-    template<class VertexProperty, class EdgeProperty, typename Flavor>
-    requires (!std::is_same_v<VertexProperty, boost::no_property> &&  !std::is_same_v<VertexProperty, boost::no_property>)
+    template <class VertexProperty, class EdgeProperty, typename Flavor>
+        requires(!std::is_same_v<VertexProperty, boost::no_property> && !std::is_same_v<VertexProperty, boost::no_property>)
     std::string generate_from(quetzal::coalescence::binary_tree<VertexProperty, EdgeProperty> const &graph,
-                              typename quetzal::coalescence::binary_tree<VertexProperty, EdgeProperty>::vertex_descriptor root, 
+                              typename quetzal::coalescence::binary_tree<VertexProperty, EdgeProperty>::vertex_descriptor root,
                               Flavor flavor)
     {
         using tree_type = quetzal::coalescence::binary_tree<VertexProperty, EdgeProperty>;
@@ -167,8 +193,8 @@ namespace quetzal::format::newick
         { return static_cast<bool>(graph.out_degree(v)); };
 
         newick::Formattable<vertex_descriptor> auto branch_length = [&graph = std::as_const(graph)](vertex_descriptor v)
-        {  
-            std::string s = graph.has_predecessor(v)? graph[ std::make_pair(graph.predecessor(v), v)].label() : "" ;
+        {
+            std::string s = graph.has_predecessor(v) ? graph[edge_descriptor(graph.predecessor(v), v)].label() : "";
             return s;
         };
 
@@ -178,7 +204,7 @@ namespace quetzal::format::newick
         // We declare a generator passing it the data interfaces
         newick::generator gen{has_parent, has_children, label, branch_length, flavor};
         using Gen = decltype(gen);
-        
+
         // We expose its interface to the boost DFS algorithm
         struct VisWrap
         {
@@ -213,32 +239,67 @@ namespace quetzal::format::newick
     ///
     /// @brief Generate a Newick string from a k-ary tree with properties
     ///
-    template<class VertexProperty, class EdgeProperty>
-    requires (!std::is_same_v<VertexProperty, boost::no_property> &&  !std::is_same_v<VertexProperty, boost::no_property>)
-    std::string generate_from(quetzal::coalescence::k_ary_tree<VertexProperty, EdgeProperty> graph)
+    template <class VertexProperty, class EdgeProperty, typename Flavor>
+        requires(!std::is_same_v<VertexProperty, boost::no_property> && !std::is_same_v<VertexProperty, boost::no_property>)
+    std::string generate_from(const quetzal::coalescence::k_ary_tree<VertexProperty, EdgeProperty> &graph,
+                              typename quetzal::coalescence::binary_tree<VertexProperty, EdgeProperty>::vertex_descriptor root,
+                              Flavor flavor)
     {
-      namespace newick = quetzal::format::newick;
+        namespace newick = quetzal::format::newick;
+        using tree_type = quetzal::coalescence::k_ary_tree<VertexProperty, EdgeProperty>;
+        using vertex_descriptor = typename tree_type::vertex_descriptor;
+        using edge_descriptor = typename tree_type::edge_descriptor;
+        namespace newick = quetzal::format::newick;
 
-      using vertex_t = typename quetzal::coalescence::k_ary_tree<>::vertex_descriptor;
+        // Data access
+        std::predicate<vertex_descriptor> auto has_parent = [&graph](vertex_descriptor const &v)
+        { return graph.has_predecessor(v); };
 
-      std::predicate<vertex_t>      auto has_parent    = [&graph](vertex_t v){return graph.has_parent(v);};
-      std::predicate<vertex_t>      auto has_children  = [&graph](vertex_t v){return graph.has_children(v);};
-      newick::Formattable<vertex_t> auto label         = [&graph](vertex_t v ){return graph[v];};
-      newick::Formattable<vertex_t> auto branch_length = [&graph](vertex_t v)
-      {
-        std::string result;
-        auto [it1, it2] = out_edges(v, graph);
-        assert(std::distance(it1,it2) <= 1);
-        if(std::distance(it1,it2) == 1) result = std::to_string(graph[*it1]);
-        return result;
-      };
+        std::predicate<vertex_descriptor> auto has_children = [&graph](vertex_descriptor v)
+        { return static_cast<bool>(graph.out_degree(v)); };
 
-      // We declare a generator passing it the interfaces
-      auto generator = newick::make_generator(has_parent, has_children, label, branch_length);
+        newick::Formattable<vertex_descriptor> auto branch_length = [&graph = std::as_const(graph)](vertex_descriptor v)
+        {
+            std::string s = graph.has_predecessor(v) ? graph[graph.edge(graph.predecessor(v), v).value()].label() : "";
+            return s;
+        };
 
-      // We expose its interface to the user-defined class DFS algorithm
-      graph.depth_first_search(generator.pre_order(), generator.in_order(), generator.post_order());
+        newick::Formattable<vertex_descriptor> auto label = [&graph](vertex_descriptor v)
+        { return graph[v].label(); };
 
+        // We declare a generator passing it the interfaces
+        newick::generator gen(has_parent, has_children, label, branch_length);
+        using Gen = decltype(gen);
+
+        // We expose its interface to the boost DFS algorithm
+        struct VisWrap
+        {
+            std::reference_wrapper<Gen> _generator;
+            boost::visit _previous;
+            VisWrap(Gen &gen) : _generator(gen) {}
+            void operator()(boost::visit stage, vertex_descriptor v)
+            {
+                switch (stage)
+                {
+                case boost::visit::pre:
+                    _generator.get().pre_order()(v);
+                    _previous = boost::visit::pre;
+                    break;
+                case boost::visit::in:
+                    if (_previous == boost::visit::post)
+                        _generator.get().in_order()();
+                    _previous = boost::visit::in;
+                    break;
+                case boost::visit::post:
+                    _generator.get().post_order()(v);
+                    _previous = boost::visit::post;
+                    break;
+                }
+            }
+        } vis{gen};
+
+        graph.depth_first_search(root, vis);
+        return gen.take_result();
     }
 
 } // end namespace quetzal::format::newick

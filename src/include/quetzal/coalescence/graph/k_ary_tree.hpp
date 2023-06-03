@@ -12,6 +12,8 @@
 #define TREE_BGL_H_INCLUDED
 
 #include "detail/tree_traits.hpp"
+#include "detail/visit.hpp"
+
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graphviz.hpp>
 #include <boost/graph/isomorphism.hpp>
@@ -140,7 +142,7 @@ namespace quetzal::coalescence
 			{
         auto range = boost::in_edges(u, _graph);
         assert(std::distance(range.first, range.second) == 1 );
-        return *range.first;
+        return source(*range.first);
 			}
 
 			/// @brief Evaluates if vertex \f$u\f$ has successors.
@@ -160,6 +162,32 @@ namespace quetzal::coalescence
 			{
         return boost::out_edges(u, _graph);
 			}
+
+      /// @brief Returns the edge between two vertices of the graph if the edge exists
+      /// @param u The first vertex
+      /// @param u The second vertex
+			/// @return An optional edge descriptor \f$e\f$.
+      std::optional<edge_descriptor> edge(vertex_descriptor u, vertex_descriptor v) const
+      {
+        auto p = boost::edge( u, v, _graph );
+        return p.second ? std::make_optional(p.first) : std::nullopt;
+      }
+
+      /// @brief Returns the source vertex of a directed edge
+      /// @param e The edge
+			/// @return The source vertex of the edge \f$e\f$.
+      vertex_descriptor source(edge_descriptor e) const
+      {
+        return boost::source(e, _graph);
+      }
+
+      /// @brief Returns the target vertex of a directed edge
+      /// @param e The edge
+			/// @return The target vertex of the edge \f$e\f$.
+      vertex_descriptor target(edge_descriptor e) const
+      {
+        return boost::target(e, _graph);
+      }
 
 			/// @}
 
@@ -187,9 +215,19 @@ namespace quetzal::coalescence
 			template <typename DFSTreeVisitor>
 			void depth_first_search(vertex_descriptor start, DFSTreeVisitor &vis)
 			{
+        // convert tree visitor to graph visitor
+        struct VisWrap : boost::default_dfs_visitor
+        {
+          k_ary_tree_common &_tree;
+          DFSTreeVisitor &_tree_visitor;
+          VisWrap(k_ary_tree_common &tree, DFSTreeVisitor &v) : _tree(tree), _tree_visitor(v) {}
+          void discover_vertex(vertex_descriptor v, const base& g) { _tree_visitor(boost::visit::pre, v); }
+          void back_edge(const edge_descriptor & e, const base& g)  { _tree_visitor(boost::visit::in, _tree.target(e) ); }
+          void finish_vertex(vertex_descriptor v, const base& g)  { _tree_visitor(boost::visit::post, v); }
+        } graph_visitor(*this, vis);
         std::vector<boost::default_color_type> colors(boost::num_vertices(_graph));
         boost::iterator_property_map color_map(colors.begin(), boost::get(boost::vertex_index, _graph));
-				return boost::depth_first_search(_graph, boost::visitor(vis).color_map(color_map).root_vertex(start));
+				return boost::depth_first_search(_graph, boost::visitor(graph_visitor).color_map(color_map).root_vertex(start));
 			}
 
 			/// @brief Performs a read-only depth-first traversal of the vertices starting at vertex \f$s\f$.
@@ -199,9 +237,19 @@ namespace quetzal::coalescence
 			template <typename DFSTreeVisitor>
 			void depth_first_search(vertex_descriptor start, DFSTreeVisitor &vis) const
 			{
+        // convert tree visitor to graph visitor
+        struct VisWrap : boost::default_dfs_visitor
+        {
+          const k_ary_tree_common &_tree;
+          DFSTreeVisitor &_tree_visitor;
+          VisWrap(const k_ary_tree_common &tree, DFSTreeVisitor &v) : _tree(tree), _tree_visitor(v) {}
+          void discover_vertex(vertex_descriptor v, const base& g) { _tree_visitor(boost::visit::pre, v); }
+          void back_edge(const edge_descriptor & e, const base& g)  { _tree_visitor(boost::visit::in, _tree.target(e) ); }
+          void finish_vertex(vertex_descriptor v, const base& g)  { _tree_visitor(boost::visit::post, v); }
+        } graph_visitor(*this, vis);
         std::vector<boost::default_color_type> colors(boost::num_vertices(_graph));
         boost::iterator_property_map color_map(colors.begin(), boost::get(boost::vertex_index, _graph));
-				return boost::depth_first_search(_graph, boost::visitor(vis).color_map(color_map).root_vertex(start));
+				return boost::depth_first_search(_graph, boost::visitor(graph_visitor).color_map(color_map).root_vertex(start));
 			}
 
 			/// @}
@@ -326,7 +374,7 @@ namespace quetzal::coalescence
       return boost::add_vertex(_graph);
     }
 
-    /// @brief Add edges between the parent vertex and the children.
+    /// @brief Add edges from the parent vertex (source) to the children (target)
     std::vector<edge_descriptor>
     add_edges(vertex_descriptor parent, std::vector<vertex_descriptor> children)
     {
@@ -393,7 +441,7 @@ namespace quetzal::coalescence
       return boost::add_vertex( p, this->_graph);
     }
 
-    /// @brief Add edges between the parent vertex and the children.
+    /// @brief Add edges from the parent vertex (source) to the children (target)
     std::vector<edge_descriptor>
     add_edges(vertex_descriptor parent, std::vector<vertex_descriptor> children)
     {
@@ -479,7 +527,7 @@ namespace quetzal::coalescence
       return boost::add_vertex(this->_graph);
     }
 
-    /// @brief Add edges between the parent vertex and the children.
+    /// @brief Add edges from the parent vertex (source) to the children (target)
     std::vector<edge_descriptor>
     add_edges(vertex_descriptor parent, const std::vector<std::pair<vertex_descriptor, EdgeProperty>> &children)
     {
@@ -568,7 +616,7 @@ namespace quetzal::coalescence
       return boost::add_vertex( p , this->_graph);
     }
 
-    /// @brief Add edges between the parent vertex and the children.
+    /// @brief Add edges from the parent vertex (source) to the children (target)
     std::vector<edge_descriptor>
     add_edges(vertex_descriptor parent,
               std::vector<std::tuple<vertex_descriptor, EdgeProperty>> children)

@@ -28,6 +28,7 @@ else ()
                                     "doxygen-awesome-css/doxygen-awesome-fragment-copy-button.js")
   # Documentation for tutorials requires ctest call to populate build folder
   set(DOXYGEN_EXAMPLE_PATH "../example" "../build/example/output")
+  set(DOXYGEN_IMAGE_PATH "assets")
 
   # Required by doxygen awesome
   set(DOXYGEN_GENERATE_TREEVIEW YES)

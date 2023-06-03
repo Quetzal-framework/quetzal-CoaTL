@@ -8,30 +8,12 @@
 ///                                                                     ///
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef QUETZAL_TREE_ADL_H_INCLUDED
-#define QUETZAL_TREE_ADL_H_INCLUDED
+#ifndef VISIT_STAGES_H_INCLUDED
+#define VISIT_STAGES_H_INCLUDED
 
-namespace quetzal::coalescence::detail
+namespace boost
 {
-
-    namespace adl_resolution
-    {
-      void add_edge() = delete;
-      void add_left_edge() = delete;
-      void add_right_edge() = delete;
-      void add_vertex() = delete;
-      void out_degree() = delete;
-      void root() = delete;
-      void is_left_successor() = delete;
-      void is_right_successor() = delete;
-      void has_predecessor() = delete;
-      void predecessor() = delete;
-      void depth_first_search() = delete;
-      void isomorphism() = delete;
-      void in_edges() = delete;
-      void degree() = delete;
-      void edge() = delete;
-    }
+  enum class visit { pre, in, post };
 }
 
 #endif

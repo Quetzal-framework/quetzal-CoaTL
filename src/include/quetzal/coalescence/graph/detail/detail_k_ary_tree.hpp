@@ -26,6 +26,7 @@
 #include <cstddef>
 #include <utility>
 #include <vector>
+#include <stack>
 
 namespace boost
 {
