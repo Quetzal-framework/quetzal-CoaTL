@@ -10,10 +10,6 @@
   - @subpage extended_newick_parser
   - @subpage extended_newick_generator
 
-- Demes Format
-  - @subpage demes_parser
-  - @subpage demes_generator
-
 - Geospatial Formats
   - https://gdal.org/drivers/raster/index.html
   - @subpage geospatial_parser
@@ -127,12 +123,12 @@ You can think of pretty much any type of events here:
 
 @include{lineno} newick_parser_2.txt
 
-## To a custom k-ary tree
+## Interfacing legacy code
 
 If you have been coding for a while, you may already depend heavily on your own
 class to describe a tree graph, and not feel very excited about refactoring your whole
 project to switch to **Quetzal** tree classes. Fair enough. This section shows how to use **Quetzal** parser to populate
-your own custom class and then forget about **Quetzal**.
+your own legacy class and then forget about **Quetzal**.
 
 1. You will need to parse Newick strings into an AST (Abstract Syntax Tree): this
 is a temporary data structure that represents the syntactic structure of the tree.
@@ -198,7 +194,42 @@ the formatter can acccess this information as long as the property class defined
 
 @include{lineno} newick_generator_2.txt
 
-## From a custom k-ary tree
+
+## From a Quetzal k-ary tree
+
+Extending the string generation to a k-ary tree is straightforward.
+
+### With no property
+
+No vertex nor edge properties are embedded: the vertices labels and branch length data fields of the Newick string are left empty.
+
+**Input**
+
+@include{lineno} newick_generator_3.cpp
+
+Since there are no comments stored in the labels of the generated random tree, 
+the output of the different flavors are here quite similar:
+
+**Output**
+
+@include{lineno} newick_generator_3.txt
+
+### With custom properties
+
+The Newick string is generated from a tree that embeds some information attached to its vertices and edges
+through a property class,
+the formatter can acccess this information as long as the property class defined a `std::string label() const` method.
+
+**Input**
+
+@include{lineno} newick_generator_4.cpp
+
+**Output**
+
+@include{lineno} newick_generator_4.txt
+
+## Interfacing legacy code
+
 
 [//]: # (----------------------------------------------------------------------)
 @page graphs_in_quetzal Graphs in Quetzal
@@ -386,3 +417,45 @@ There are logically 4 different classes (equivalently interfaces) resulting from
   \ref CoalescenceKaryTreeVertexPropertyEdgeProperty "quetzal::coalescence::k_ary_tree< VertexProperty, EdgeProperty >"
 
 Usage examples are described in their respective class documentation.
+
+[//]: # (----------------------------------------------------------------------)
+@page geographic_rasters Reading environmental variables from rasters
+
+*Quetzal* provides a `quetzal::geography::variable` class with a small interface to integrate spatial grids into a georeferenced coalescence simulation.
+
+With `quetzal::geography::variable` you can define a variable that exhibits:
+- spatial heterogeneity: rasters delineate a geographic space into a number of cells identified by their row/columns.
+- temporal heterogeneity: raster have a *depth*, *i.e.* a number of bands (layers) that are used to model the temporal scale.
+
+## Use the grid structure to define a spatial graph
+
+Rasters are used to build a fully-connected spatial graph that will be used to simulate the demographic process.
+- Vertices are the demes (populations) represented by the centroid of the raster cells.
+- Edges are the distance between demes. Their connectivity can be altered by dispersal kernels.
+
+## Use Digital Elevation Models to define a spatial graph
+
+Digital Elevation Models can also be used to link the dynamic of sea levels to the dynamic of species.
+In that case the connectivity of the graph will be a function of the elevation.
+
+## Use the environmental information to inform processes
+
+Ecological niche models (ENMs) are an important tool to model likely responses of populations to past and future climatic variations.
+In most case, the output of these analysis is a raster referencing suitability estimates. In turn the suitability
+coefficient is used to inform growth rates and carrying capacity.
+
+The values of the raster can be used to inform the demographic quantities by composing mathematical expressions
+of time and space (see `quetzal::expressive`).
+
+NA values (e.g. oceanic cells or beyond the raster spatial extent) are manipulated through `std::optional`: they may 
+or not have a value, and it's up to the user to decide what to do when they don't.
+
+**Input**
+
+@include{lineno} environmental_variable_1.cpp
+
+**Output**
+
+@include{lineno} environmental_variable_1.txt
+
+@tableofcontents

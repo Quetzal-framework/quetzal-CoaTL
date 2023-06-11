@@ -158,9 +158,12 @@ namespace quetzal::coalescence
 			/// @brief The successors of vertex \f$u\f$
 			/// @param u The vertex
 			/// @return A pair of iterators on the vertices that are the successors of \f$u\f$.
-			std::pair<out_edge_iterator,out_edge_iterator> successors(vertex_descriptor u) const
+			auto successors(vertex_descriptor u) const
 			{
-        return boost::out_edges(u, _graph);
+        // boost::out_edges returns std::pair<out_edge_iterator,out_edge_iterator>
+        // this->target(*out_edge_it) returns vertex_descriptor
+        // what type does this line return?
+        return boost::out_edges(u, _graph) | std::views::transform(target());
 			}
 
       /// @brief Returns the edge between two vertices of the graph if the edge exists

@@ -16,9 +16,9 @@ Besides,
 ## Build process
 
 ```bash
-conan install conanfile.py --build=missing --install-folder=build -pr:b=conan/profiles/clang_13 -pr:h=conan/profiles/clang_13
+conan install conanfile.py --build=missing --install-folder=build -pr:b=conan/profiles/macos-armv8-appleclang13 -pr:h=conan/profiles/macos-armv8-appleclang13
 cd build
-cmake -D CMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake ..
+cmake -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Debug ..
 cmake --build .
 ctest
 make docs

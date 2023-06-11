@@ -70,10 +70,10 @@ BOOST_AUTO_TEST_CASE( DiscreteLandscape, * utf::disabled())
   }
 }
 
-BOOST_AUTO_TEST_CASE( EnvironmentalQuantity, * utf::disabled() )
+BOOST_AUTO_TEST_CASE( variable, * utf::disabled() )
 {
   using time_type = unsigned int;
-	using quantity_type = quetzal::geography::EnvironmentalQuantity<time_type>;
+	using quantity_type = quetzal::geography::variable<time_type>;
 	using coord_type = typename quantity_type::coord_type;
   auto path1 = resolvePath("test/data/bio1.tif");
 	quantity_type bio1( path1, {2001,2002,2003,2004,2005,2006,2007,2008,2009,2010} );

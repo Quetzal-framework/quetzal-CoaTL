@@ -6,6 +6,8 @@ The following compilers (or newer) are supported:
 - gcc-12
 - clang-13
 
+@tableofcontents
+
 ## Structure and Dependencies
 
 This repository contains three independent CMake-based projects:

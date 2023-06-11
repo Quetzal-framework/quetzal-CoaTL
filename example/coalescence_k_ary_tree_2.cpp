@@ -37,8 +37,17 @@ int main()
   auto other_edges = tree.add_edges(c, {d, e, f} );
 
   auto root = tree.find_root_from(e);
-  assert(root == a && !tree.has_predecessor(root));
 
+  assert(root == a && !tree.has_predecessor(root));
+  assert(root == a && !tree.has_predecessor(root));
+  assert(tree.degree(c) == 4);
+  assert(tree.in_degree(c) == 1);
+  assert(tree.out_degree(c) == 3);
+  assert(tree.has_predecessor(root) == false);
+  assert(tree.predecessor(c) == root);
+  assert(tree.has_successors(root) == true);
+  assert( ! std::ranges::none_of( tree.successors(c), [&t = std::as_const(tree)](auto v){ t.has_successors(v);} ));
+  
   std::cout << "Degree of inner vertex c is " << tree.degree(c) << std::endl;
 
   // Root vertex field values were assigned

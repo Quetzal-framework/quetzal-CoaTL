@@ -41,7 +41,7 @@ template<typename Key, typename Time>
 class DiscreteLandscape
 {
 
-	using geo_data_type = EnvironmentalQuantity<Time>;
+	using geo_data_type = variable<Time>;
 
 public:
 

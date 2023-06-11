@@ -67,7 +67,17 @@ BOOST_AUTO_TEST_CASE(no_property_binary_interface)
   auto [ab_edge, ac_edge] = tree.add_edges(a, b, c);
   auto [cd_edge, ce_edge] = tree.add_edges(c, d, e);
 
-  using vertex_descriptor = boost::graph_traits<quetzal::coalescence::binary_tree<boost::no_property, boost::no_property>>::vertex_descriptor;
+  auto root = tree.find_root_from(f);
+  BOOST_CHECK(root == a);
+  BOOST_CHECK(tree.degree(c) == 3);
+  BOOST_CHECK(tree.in_degree(c) == 1);
+  BOOST_CHECK(tree.out_degree(c) == 2);
+  BOOST_CHECK(tree.has_predecessor(root) == false);
+  BOOST_CHECK(tree.predecessor(c) == root);
+  BOOST_CHECK(tree.has_successors(root) == true);
+  BOOST_CHECK( ! std::all_of( tree.successors(c) | std::views::transform(has_successors())));
+
+  using vertex_descriptor = boost::graph_traits<tree_type>::vertex_descriptor;
   tree_visitor<boost::visit, vertex_descriptor> visitor;
   tree.depth_first_search(a, visitor);
 }
