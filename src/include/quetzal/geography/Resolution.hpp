@@ -8,97 +8,78 @@
 *                                                                      *
 ***************************************************************************/
 
-#ifndef __RESOLUTION_H_INCLUDED
-#define __RESOLUTION_H_INCLUDED
+#pragma once
 
-namespace quetzal {
-namespace geography {
-	/*!
-	 * \brief %Resolution of a spatial grid
-	 *
-	 * \ingroup geography
-	 */
+namespace quetzal::geography
+{
+	/// @brief Resolution of a spatial grid
+	/// @ingroup geography
 	template<typename T>
-	class Resolution{
+	class resolution
+	{
+		
+	private:
+
+		T _lat;
+      	T _lon;
 
 	public:
 
-	  //! \typedef type used to represent the values of  latitude and longitude
+		/// @typedef type used to represent the values of  latitude and longitude
 		using value_type = T;
 
-	  /**
-	    * \brief Constructor
-	    *
-			* \param lat the resolution of the spatial grid latitude
-	    * \param lon the resolution of the spatial grid longitude
-	    */
-	  explicit Resolution(value_type lat, value_type lon) : m_lat(lat), m_lon(lon) {}
+		/// @brief Constructor
+		/// @param lat the resolution of the spatial grid latitude
+		/// @param lon the resolution of the spatial grid longitude
+		constexpr explicit resolution(value_type lat, value_type lon) : _lat(lat), _lon(lon) {}
 
-	  /**
-	    * \brief Gets latitude resolution
-	    *
-	    */
-	  value_type lat() const {
-	    return m_lat;
-	  }
+		/// @brief Gets latitude resolution
+		constexpr value_type lat() const noexcept
+		{
+			return _lat;
+		}
 
-		/**
-	    * \brief Gets longitude resolution
-	    */
-	  value_type lon() const {
-	    return m_lon;
-	  }
+		/// @brief Gets longitude resolution
+		constexpr  value_type lon() const noexcept
+		{
+			return _lon;
+		}
 
-		/**
-	    * \brief Sets latitude resolution
-	    *
-			* \param value the new value for latitude resolution.
-			* \return a reference on the Resolution object.
-	    */
-	  Resolution& lat(value_type value) {
-	    m_lat = value;
+		/// @brief Sets latitude resolution
+		/// @param value the new value for latitude resolution.
+		/// @return a reference on the Resolution object.
+		constexpr resolution& lat(value_type value) noexcept 
+		{
+			_lat = value;
 			return *this;
-	  }
+		}
 
-	  /**
-	    * \brief Sets longitude resolution
-	    *
-			* \param value the new value for longitude resolution.
-			* \return a reference on the Resolution object.
-	    */
-	  Resolution& lon(value_type value) {
-	    m_lon = value;
+		/// @brief Sets longitude resolution
+		/// @param value the new value for longitude resolution.
+		/// @return a reference on the Resolution object.
+		constexpr resolution& lon(value_type value) noexcept
+		{
+			_lon = value;
 			return *this;
-	  }
+		}
 
-	  /**
-	    * \brief EqualityComparable
-	    *
-	    * Checks if two resolutions objects are equals
-	    * \return true if latitude and longitude have same resolution, else returns false.
-	    */
-	  bool operator==(const Resolution& other) const {
-	      if(m_lat == other.lat() && m_lon == other.lon() ) return true;
-	      return false;
-	    }
+		/// @brief EqualityComparable
+		/// @details Checks if two resolutions objects are equals
+		/// @return true if latitude and longitude have same resolution, else returns false.
+		constexpr bool operator==(const resolution& other) const noexcept
+		{
+			if(_lat == other.lat() && _lon == other.lon() ) return true;
+			return false;
+		}
 
-		/**
-	    * \brief Unequality comparison operator
-	    *
-	    * Checks if two resolutions objects are equals
-	    * \return false if latitude and longitude have same resolution, else returns true.
-	    */
-	  bool operator!=(const Resolution& other) const {
-	     return !(operator==(other));
-	    }
+		/// @brief Unequality comparison operator
+		/// @details Checks if two resolutions objects are equals
+		/// @return false if latitude and longitude have same resolution, else returns true.
+		constexpr bool operator!=(const resolution& other) const  noexcept
+		{
+			return !(operator==(other));
+		}
+		
+	};
 
-	  private:
-			value_type m_lat;
-      value_type m_lon;
-
-	  };
-
-} // namespace quetzal
 } // namespace geography
-
-#endif

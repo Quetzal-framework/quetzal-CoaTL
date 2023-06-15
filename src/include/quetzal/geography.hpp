@@ -9,8 +9,8 @@
 ***************************************************************************/
 
 
-#include "geography/DiscreteLandscape.hpp"
-
+#include "geography/landscape.hpp"
+#include "geography/coordinates.hpp"
 ///
 /// @brief Geospatial data formatting and processing
 ///

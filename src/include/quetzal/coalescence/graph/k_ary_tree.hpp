@@ -29,6 +29,8 @@
 #include <iostream>
 #include <algorithm>
 
+#include <range/v3/all.hpp>
+
 namespace quetzal::coalescence
 {
 	using no_property = boost::no_property;
@@ -163,7 +165,7 @@ namespace quetzal::coalescence
         // boost::out_edges returns std::pair<out_edge_iterator,out_edge_iterator>
         // this->target(*out_edge_it) returns vertex_descriptor
         // what type does this line return?
-        return boost::out_edges(u, _graph) | std::views::transform(target());
+        return boost::out_edges(u, _graph) | ranges::views::transform([](auto it){return it->target();});
 			}
 
       /// @brief Returns the edge between two vertices of the graph if the edge exists

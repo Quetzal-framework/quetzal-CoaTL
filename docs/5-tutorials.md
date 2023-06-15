@@ -11,12 +11,9 @@
   - @subpage extended_newick_generator
 
 - Geospatial Formats
-  - https://gdal.org/drivers/raster/index.html
-  - @subpage geospatial_parser
-  - @subpage geospatial_generator
-
-- Genetic Format
-  -
+  - @subpage geotiff_parser
+  - @subpage geotiff_generator
+  - @subpage shapefile_generator
 
 ## Graphs
 
@@ -419,26 +416,64 @@ There are logically 4 different classes (equivalently interfaces) resulting from
 Usage examples are described in their respective class documentation.
 
 [//]: # (----------------------------------------------------------------------)
-@page geographic_rasters Reading environmental variables from rasters
+@page geospatial_parser Reading environmental variables from rasters
 
-*Quetzal* provides a `quetzal::geography::variable` class with a small interface to integrate spatial grids into a georeferenced coalescence simulation.
+@tableofcontents
 
-With `quetzal::geography::variable` you can define a variable that exhibits:
+## Reading a single variable
+
+*Quetzal* provides a `quetzal::geography::raster` class with a small interface to integrate spatial grids into a georeferenced coalescence simulation.
+
+With `quetzal::geography::raster` you can define a single variable that exhibits:
 - spatial heterogeneity: rasters delineate a geographic space into a number of cells identified by their row/columns.
-- temporal heterogeneity: raster have a *depth*, *i.e.* a number of bands (layers) that are used to model the temporal scale.
+- temporal heterogeneity: raster have a *depth*, *i.e.* multiple bands (layers) that are used to model the temporal scale.
 
-## Use the grid structure to define a spatial graph
+**Input**
+
+@include{lineno} geography_raster_1.cpp
+
+**Output**
+
+@include{lineno} geography_raster_1.txt
+
+## Reading multiple variables
+
+If you are working with multiple variables (*e.g.* a suitability raster and an elevation raster), you could run into 
+simulation problems if the two rasters have even slightly different grid properties, like different resolutions, origins or extent. 
+To prevent these problems from happening, you can use `quetzal::geography::landscape` that wraps multiple rasters into
+one single coherent object and checks that all rasters are aligned.
+
+**Input**
+
+@include{lineno} environmental_variable_1.cpp
+
+**Output**
+
+@include{lineno} environmental_variable_1.txt
+
+## What to do after
+
+Geospatial datasets are useful in coalescence to inform the demographic process. There are mainly
+3 things you may want to do once you successfully parsed a raster:
+
+----------------------------------------------------
+
+### Use the grid structure to define a spatial graph
 
 Rasters are used to build a fully-connected spatial graph that will be used to simulate the demographic process.
 - Vertices are the demes (populations) represented by the centroid of the raster cells.
 - Edges are the distance between demes. Their connectivity can be altered by dispersal kernels.
 
-## Use Digital Elevation Models to define a spatial graph
+----------------------------------------------------
+
+### Use Digital Elevation Models to define a spatial graph
 
 Digital Elevation Models can also be used to link the dynamic of sea levels to the dynamic of species.
 In that case the connectivity of the graph will be a function of the elevation.
 
-## Use the environmental information to inform processes
+----------------------------------------------------
+
+### Use the environmental information to inform processes
 
 Ecological niche models (ENMs) are an important tool to model likely responses of populations to past and future climatic variations.
 In most case, the output of these analysis is a raster referencing suitability estimates. In turn the suitability
@@ -458,4 +493,6 @@ or not have a value, and it's up to the user to decide what to do when they don'
 
 @include{lineno} environmental_variable_1.txt
 
-@tableofcontents
+
+[//]: # (----------------------------------------------------------------------)
+@page geospatial_generatorr Reading environmental variables from rasters

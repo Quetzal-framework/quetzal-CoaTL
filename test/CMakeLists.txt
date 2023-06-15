@@ -13,6 +13,9 @@ ENDIF()
 # Global approach Gdal
 find_package(GDAL REQUIRED)
 
+# range-v3
+find_package(range-v3)
+
 ### UNIT TEST
 file(GLOB TEST_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} unit_test/*.cpp)
 foreach(testSrc ${TEST_SRCS})
@@ -23,7 +26,7 @@ foreach(testSrc ${TEST_SRCS})
   # Require the standard
   target_compile_features(${testName} PRIVATE cxx_std_20)
   # Link to targets and dependencies
-  target_link_libraries(${testName} quetzal::quetzal boost::boost GDAL::GDAL)
+  target_link_libraries(${testName} quetzal::quetzal boost::boost GDAL::GDAL range-v3::range-v3)
   # Specifies include directories to use when compiling the target
   target_include_directories(
     ${testName} PRIVATE
@@ -46,7 +49,7 @@ foreach(testSrc ${INTEGRATION_SRCS})
   # Require the standard
   target_compile_features(${testName} PRIVATE cxx_std_20)
   # Link to targets and dependencies
-  target_link_libraries(${testName} quetzal::quetzal boost::boost GDAL::GDAL)
+  target_link_libraries(${testName} quetzal::quetzal boost::boost GDAL::GDAL range-v3::range-v3)
   # Specifies include directories to use when compiling the target
   target_include_directories(
     ${testName} PRIVATE

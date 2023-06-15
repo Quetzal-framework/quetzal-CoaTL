@@ -10,7 +10,7 @@ int main()
 	int step = 1;
 	auto file = std::filesystem::current_path() / "test/data/bio1.tif";
 
-	auto bio1 = geography::variable::from_file(file, start, step);
+	auto bio1 = geography::raster::from_file(file, start, step);
 	std::cout << bio1 << std::endl;
 
 	// There are 10 bands/layers/temporal coordinates
@@ -37,7 +37,7 @@ int main()
 	assess(point_3);
 
 	// Location descriptors can be converted
-	geography::variable::location_descriptor x = bio1.origin();
+	geography::raster::location_descriptor x = bio1.origin();
 	std::cout << "All equivalent:\t" 
 			  << x << "\t"
 			  << bio1.to_rowcol(x) << "\t"
@@ -48,7 +48,7 @@ int main()
 	// Distance between two points on Earth with Haversine formula
 	std::cout << "Point 1 distance to origin: " << point_1.great_circle_distance_to(x);
 
-	// The class is callable to retrieve the variable value.
+	// The class is callable to retrieve the raster value.
 	std::optional<double> o = bio1(x,t);
 
 	// It may be a NA, let's check for it:
