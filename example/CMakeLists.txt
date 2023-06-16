@@ -7,6 +7,9 @@ set(CMAKE_FIND_PACKAGE_PREFER_CONFIG TRUE)
 # Global approach Gdal
 find_package(GDAL REQUIRED)
 
+# range-v3
+find_package(range-v3)
+
 # Include Boost as an imported target: 1.73 important for compilation with gcc 10 and C++20
 find_package(Boost 1.79 REQUIRED COMPONENTS unit_test_framework filesystem serialization)
 if(Boost_FOUND)
@@ -25,7 +28,7 @@ foreach(testSrc ${SRCS})
   # Require the standard
   target_compile_features(${testName} PUBLIC cxx_std_20)
   # Link to Boost libraries AND other targets and dependencies
-  target_link_libraries(${testName} quetzal::quetzal boost::boost GDAL::GDAL)
+  target_link_libraries(${testName} quetzal::quetzal boost::boost GDAL::GDAL range-v3::range-v3)
   # Specifies include directories to use when compiling a given target
   target_include_directories(
     ${testName} PRIVATE

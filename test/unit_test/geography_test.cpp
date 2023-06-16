@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE(landscape, *utf::disabled())
 		landscape_type::latlon Bordeaux(44.5, 0.34);
 
 		BOOST_TEST(env.contains(Bordeaux));
-		BOOST_TEST(env.contains( env.to_lonlat(env.to_colrow(Bordeaux).value()) ) );
+		BOOST_TEST(env.contains( env.to_centroid(Bordeaux) ) );
 
 		const auto& f = env["bio1"];
 		const auto& g = env["bio12"];
@@ -76,7 +76,7 @@ BOOST_AUTO_TEST_CASE(raster, *utf::disabled())
 	BOOST_CHECK_EQUAL(bio1.locations().size(), 9);
 	BOOST_CHECK_EQUAL( bio1.origin(), raster_type::latlon(52., -5.));
 
-	BOOST_TEST( bio1( bio1.to_descriptor(bio1.origin()).value(), bio1.times().front()) .has_value());
+	BOOST_TEST( bio1( bio1.to_descriptor(bio1.origin()), bio1.times().front()) .has_value());
 
 	auto space = bio1.locations() 
 				| ranges::views::transform([&r = std::as_const(bio1)](auto i){return r.to_latlon(i); })

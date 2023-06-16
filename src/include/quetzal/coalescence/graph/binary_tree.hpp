@@ -8,10 +8,12 @@
 ///                                                                     ///
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef BINARY_TREE_H_INCLUDED
-#define BINARY_TREE_H_INCLUDED
+#pragma once
 
 #include <type_traits>
+
+#include <range/v3/all.hpp>
+#include <boost/range/iterator_range.hpp>
 
 #include <boost/graph/graphviz.hpp>
 
@@ -229,6 +231,23 @@ namespace quetzal::coalescence
         using detail::adl_resolution::predecessor;
         return predecessor(u, _graph);
       }
+
+			/// @brief Evaluates if vertex \f$u\f$ has successors.
+			/// @param u The vertex to evaluate
+			/// @return True if u has successors, false otherwise
+			bool has_successors(vertex_descriptor u) const
+			{
+        return out_degree(u) == 2;
+			}
+
+			/// @brief The successors of vertex \f$u\f$
+			/// @param u The vertex
+			/// @return A pair of iterators on the vertices that are the successors of \f$u\f$.
+			auto successors(vertex_descriptor u) const
+			{
+        return boost::make_iterator_range(out_edges(u, _graph)) 
+                | boost::adaptors::transformed([this](auto it){return target(it, _graph); } );
+			}
 
       /// @brief Evaluate if vertex \f$u\f$ is a left successor.
       /// @param u The vertex to be evaluated
@@ -718,5 +737,3 @@ namespace quetzal::coalescence
     return std::tuple(std::move(tree), root);
   }
 }
-
-#endif

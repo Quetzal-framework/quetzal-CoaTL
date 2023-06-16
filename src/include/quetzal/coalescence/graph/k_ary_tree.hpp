@@ -8,8 +8,7 @@
 ///                                                                     ///
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef TREE_BGL_H_INCLUDED
-#define TREE_BGL_H_INCLUDED
+#pragma once
 
 #include "detail/tree_traits.hpp"
 #include "detail/visit.hpp"
@@ -162,9 +161,6 @@ namespace quetzal::coalescence
 			/// @return A pair of iterators on the vertices that are the successors of \f$u\f$.
 			auto successors(vertex_descriptor u) const
 			{
-        // boost::out_edges returns std::pair<out_edge_iterator,out_edge_iterator>
-        // this->target(*out_edge_it) returns vertex_descriptor
-        // what type does this line return?
         return boost::out_edges(u, _graph) | ranges::views::transform([](auto it){return it->target();});
 			}
 
@@ -740,5 +736,3 @@ namespace quetzal::coalescence
   }
 	
 } // end namespace quetzal::coalescence
-
-#endif

@@ -7,10 +7,7 @@ Like the C++ Standard Library and Boost and numerous other libraries, Quetzal fo
 - Macro names use upper case with underscores: `INT_MAX`.
 - Template parameter names use camel case: `InputIterator`.
 - All other names use snake case: `unordered_map`.
-
-Besides,
-
-- Private data have a `m_` prefix to distinguish it from public data. `m_` stands for "member" data
+- Private data have a `_` prefix to distinguish it from public data.
 
 
 ## Build process

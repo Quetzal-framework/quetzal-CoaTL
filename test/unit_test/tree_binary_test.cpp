@@ -12,6 +12,8 @@
 #include <assert.h>
 #include <string>
 #include <boost/test/unit_test.hpp>
+#include <range/v3/all.hpp>
+
 namespace utf = boost::unit_test;
 
 #include <quetzal/coalescence/graph/binary_tree.hpp>
@@ -67,7 +69,7 @@ BOOST_AUTO_TEST_CASE(no_property_binary_interface)
   auto [ab_edge, ac_edge] = tree.add_edges(a, b, c);
   auto [cd_edge, ce_edge] = tree.add_edges(c, d, e);
 
-  auto root = tree.find_root_from(f);
+  auto root = tree.find_root_from(e);
   BOOST_CHECK(root == a);
   BOOST_CHECK(tree.degree(c) == 3);
   BOOST_CHECK(tree.in_degree(c) == 1);
@@ -75,7 +77,8 @@ BOOST_AUTO_TEST_CASE(no_property_binary_interface)
   BOOST_CHECK(tree.has_predecessor(root) == false);
   BOOST_CHECK(tree.predecessor(c) == root);
   BOOST_CHECK(tree.has_successors(root) == true);
-  BOOST_CHECK( ! std::all_of( tree.successors(c) | std::views::transform(has_successors())));
+  auto have_children = [ &tree=std::as_const(tree) ](auto v){return tree.has_successors(v);};
+  BOOST_CHECK( ! ranges::all_of(tree.successors(c), have_children));
 
   using vertex_descriptor = boost::graph_traits<tree_type>::vertex_descriptor;
   tree_visitor<boost::visit, vertex_descriptor> visitor;

@@ -245,10 +245,9 @@ namespace quetzal::geography
     /// @brief Read the value at location x and time t
     std::optional<value_type> at(location_descriptor x, time_descriptor t) const noexcept
     {
+      assert(x >= 0 && x < locations().size());
       const auto colrow = to_colrow(x);
-      if (colrow.has_value())
-        return read(colrow->first, colrow->second, t);
-      return {};
+      return read(colrow.first, colrow.second, t);
     }
 
     /// @brief Makes the raster a callable returning the value at location x and time t
@@ -272,74 +271,73 @@ namespace quetzal::geography
     /// @{
 
     /// @brief Location descriptor of the cell identified by its column/row.
-    /// @param x the latitude/longitude coordinate to evaluate.
-    /// @return An optional with the descriptor value if x is in the spatial extent, empty otherwise.
-    std::optional<location_descriptor> to_descriptor(const colrow &x) const noexcept
+    ///        If no such cell exists, an exception of type std::out_of_range is thrown.
+    /// @param x the 1D coordinate to evaluate.
+    /// @return The descriptor value of x
+    location_descriptor to_descriptor(const colrow &x) const
     {
-      const auto colrow = to_colrow(x);
-      if (colrow.has_value())
-        return {colrow->second * width() + colrow->first};
-      return {};
+      if(x.first >= width() || x.first < 0 || x.second < 0 || x.second >= height() )
+        throw std::out_of_range("colrow has invalid indices and can not be converted to a location descriptor");
+      return x.second * width() + x.first;
     }
 
     /// @brief Location descriptor of the cell to which the given coordinate belongs.
+    ///        If no such cell exists, an exception of type std::out_of_range is thrown.
     /// @param x the latitude/longitude coordinate to evaluate.
-    /// @return An optional with the descriptor value if x is in the spatial extent, empty otherwise.
-    std::optional<location_descriptor> to_descriptor(const latlon &x) const noexcept
+    /// @return The descriptor value of x
+    location_descriptor to_descriptor(const latlon &x) const
     {
-      if (contains(x))
-      {
-        const auto o = to_colrow(x);
-        return to_descriptor(*o);
-      }
-      return {};
+      if ( ! contains(x) )
+        throw std::out_of_range("latlon does not belong to spatial extent and can not be converted to a location descriptor");
+      return to_descriptor( to_colrow(x) );
     }
 
     /// @brief Column and row of the cell to which the given coordinate belongs.
+    ///        If no such cell exists, an exception of type std::out_of_range is thrown.
     /// @param x the latitude/longitude coordinate to evaluate.
-    /// @return An optional with a pair (column, row) if x is in the spatial extent, empty otherwise.
-    std::optional<colrow> to_colrow(const latlon &x) const noexcept
+    /// @return A pair (column, row)
+    colrow to_colrow(const latlon &x) const
     {
-      if (contains(x))
-      {
-        const auto [lat, lon] = x;
-        const int col = (lon - _gT[0]) / _gT[1];
-        const int row = (lat - _gT[3]) / _gT[5];
-        return {{col, row}};
-      }
-      return {};
+      if ( !contains(x))
+        throw std::out_of_range("latlon does not belong to spatial extent and can not be converted to a col/row pair");
+
+      const auto [lat, lon] = x;
+      const int col = (lon - _gT[0]) / _gT[1];
+      const int row = (lat - _gT[3]) / _gT[5];
+      return {col, row};
     }
 
     /// @brief Row and column of the cell to which the given coordinate belongs.
+    ///        If no such cell exists, an exception of type std::out_of_range is thrown.
     /// @param x the latitude/longitude coordinate to evaluate.
-    /// @return An optional with a pair (row, column) if x is in the spatial extent, empty otherwise.
-    std::optional<rowcol> to_rowcol(const latlon &x) const noexcept
+    /// @return A pair (row, column)
+    rowcol to_rowcol(const latlon &x) const noexcept
     {
+      if ( !contains(x))
+        throw std::out_of_range("latlon does not belong to spatial extent and can not be converted to a row/col pair.");
+
       auto colrow = to_colrow(x);
-      if (colrow.has_value())
-        std::swap(colrow->first, colrow->second);
+      std::swap(colrow.first, colrow.second);
       return colrow;
     }
 
     /// @brief Column and row of the cell to which the given descriptor belongs.
     /// @param x the location to evaluate.
-    /// @return An optional with a pair (column, row) if x is in the spatial extent, empty otherwise.
-    std::optional<colrow> to_colrow(location_descriptor x) const noexcept
+    /// @return A pair (column, row)
+    colrow to_colrow(location_descriptor x) const noexcept
     {
       const int col = x % width();
       const int row = x / width();
-      if (row < height())
-        return {{col, row}};
-      return {};
+      assert (row < height());
+      return {col, row};
     }
 
     /// @brief Latitude and longitude of the cell to which the given coordinate belongs.
     /// @param x the location to evaluate.
     /// @return An optional with a pair (lat, lon) if x is in the spatial extent, empty otherwise.
-    std::optional<latlon> to_latlon(location_descriptor x) const noexcept
+    latlon to_latlon(location_descriptor x) const noexcept
     {
-      const auto o = to_colrow(x);
-      return to_latlon(*o);
+      return to_latlon( to_colrow(x) );
     }
 
     /// @brief Latitude and longitude of the cell identified by its column/row.
@@ -368,9 +366,10 @@ namespace quetzal::geography
     /// @return The coordinate of the centroid of the cell it belongs.
     latlon to_centroid(const latlon &x) const 
     {
-      if (contains(x))
-        return to_latlon( to_colrow(x).value());
-      throw std::out_of_range("coordinate not belong to the raster spatial extent.");
+      if ( !contains(x))
+        throw std::out_of_range("latlon does not belong to spatial extent and can not be reprojected to a cell centroid.");
+
+      return to_latlon( to_colrow(x));
     }
 
     /// @}

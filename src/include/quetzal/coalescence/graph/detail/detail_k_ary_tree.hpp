@@ -21,6 +21,7 @@
 #include <boost/range.hpp>
 #include <boost/range/algorithm.hpp>
 #include <boost/range/algorithm_ext/is_sorted.hpp>
+#include <boost/range/adaptors.hpp>
 
 #include <algorithm>
 #include <cstddef>

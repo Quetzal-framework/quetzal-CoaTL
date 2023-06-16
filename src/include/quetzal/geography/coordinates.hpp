@@ -12,9 +12,7 @@
 
 #include <assert.h>
 #include <cmath> // trigonometry
-#include <string> // error
 #include <ostream>
-#include <unordered_map>
 
 namespace quetzal::geography
 {
@@ -32,13 +30,21 @@ namespace quetzal::geography
 	/// @brief Coordinates are equality comparable
 	template<Coordinate C1, Coordinate C2>
 	auto operator==(const C1& c1, const C2& c2) {
-		return std::make_pair(c1.lat, c1.lon) == std::make_pair(c2.lat, c2.lon);
+		return std::tie(c1.lat, c1.lon) == std::tie(c2.lat, c2.lon);
 	}
 
 	/// @brief Coordinates are three-way comparable
 	template<Coordinate C1, Coordinate C2>
 	auto operator<=>(const C1& c1, const C2& c2) {
-		return std::make_pair(c1.lat, c1.lon) <=> std::make_pair(c2.lat, c2.lon);
+		return std::tie(c1.lat, c1.lon) <=> std::tie(c2.lat, c2.lon);
+	}
+
+	/// @brief Coordinates are streamable
+	template<quetzal::geography::Coordinate C>
+	std::ostream& operator <<(std::ostream& stream, const C & c)
+	{
+		stream << "(Lat: " << c.lat << " , Lon: " << c.lon << ")";
+		return stream;
 	}
 
 	namespace details 
@@ -164,10 +170,3 @@ namespace quetzal::geography
 	static_assert(Coordinate<lonlat>);
 
 } // namespace geography
-
-template<quetzal::geography::Coordinate C>
-std::ostream& operator <<(std::ostream& stream, const C & c)
-{
-    stream << "(Lat: " << c.lat << " , Lon: " << c.lon << ")";
-    return stream;
-}
