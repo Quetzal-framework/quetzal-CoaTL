@@ -27,8 +27,8 @@ int main()
   };
 
   // Generate a random tree with 5 leaves
-  using quetzal::coalescence::get_random_binary_tree;
-  auto [tree, root] = get_random_binary_tree<vertex_info, edge_info>(5, rng);
+  using quetzal::coalescence::get_random_k_ary_tree;
+  auto [tree, root] = get_random_k_ary_tree<vertex_info, edge_info>(5, rng);
 
   // Generate the newick string
   using Flavor = quetzal::format::newick::TreeAlign;

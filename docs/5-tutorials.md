@@ -33,11 +33,13 @@
 
 
 [//]: # (----------------------------------------------------------------------)
-@page newick_parser Parsing a Newick tree string
+@page newick_parser Parsing a Newick string
 
 @tableofcontents
 
 ## Introduction
+
+--- 
 
 ### Background
 
@@ -51,6 +53,8 @@ trees.
 
 **Quetzal** provides some utilities to parse, generate and manipulate such format.
 
+--- 
+
 ### Grammar
 
 Whitespace here refer to any of the following: spaces, tabs, carriage returns, and linefeeds.
@@ -60,16 +64,22 @@ Whitespace here refer to any of the following: spaces, tabs, carriage returns, a
 - Grammar characters (semicolon, parentheses, comma, and colon) are prohibited
 - Comments are enclosed in square brackets.
 
+--- 
+
 ### Objectives
 
 In this tutorial section you will learn how to:
 - Parse a Newick string to a **Quetzal** k-ary tree class,
 - Customize the default **Quetzal** tree properties to describe your data and problem correctly,
-- Parse a Newick string to your own custom tree class to limit ripple effects in your code base.
+- Parse a Newick string to your own legacy tree class
+
+----------------------------------------------------
 
 ## To a Quetzal k-ary tree
 
-### With default properties
+--- 
+
+### Default properties
 
 In this example we will use the default (and simplistic) properties of the graph synthetized by the parsing.
 By *properties* we mean the type the data structures used to store arbitrary information along the vertices
@@ -94,7 +104,9 @@ structures - as long as vertices (*resp.* edges) remain constructible from a sim
 
 @include{lineno} newick_parser_1.txt
 
-### With custom properties
+--- 
+
+### Custom properties
 
 In the previous example we used default types to represent the properties of a vertex and an edge.
 These defaults are useful, but not always sufficient. For example, you may want to visit
@@ -120,11 +132,15 @@ You can think of pretty much any type of events here:
 
 @include{lineno} newick_parser_2.txt
 
+----------------------------------------------------
+
 ## Interfacing legacy code
 
 If you have been coding for a while, you may already depend heavily on your own
 class to describe a tree graph, and not feel very excited about refactoring your whole
-project to switch to **Quetzal** tree classes. Fair enough. This section shows how to use **Quetzal** parser to populate
+project to switch to **Quetzal** trees. Fair enough. 
+
+This section shows how to use **Quetzal** parser to populate
 your own legacy class and then forget about **Quetzal**.
 
 1. You will need to parse Newick strings into an AST (Abstract Syntax Tree): this
@@ -134,8 +150,7 @@ is a temporary data structure that represents the syntactic structure of the tre
 @note
 1. **Quetzal** does not know anything about your own classes, so you will need a bit of extra effort to write a recursion on the AST data
 2. But at least you don't have to worry about the parsing logic anymore!
-3. Adapting your own classes can be tedious, don't hesitate to ask for help
-on the github issue pages!
+3. If the task becomes tedious, don't hesitate to [ask for help](https://github.com/Quetzal-framework/quetzal-CoaTL/issues) !
 4. On most compilers but Apple Clang, you could simplify the example code by writing: `subtree.left_child = std::make_unique<MyNode>(ast.name, ast.distance_to_parent);` in the recursion function.
 
 **Input**
@@ -148,23 +163,30 @@ on the github issue pages!
 
 
 [//]: # (----------------------------------------------------------------------)
-@page newick_generator Generating a Newick tree string
+@page newick_generator Generating a Newick string
 
 @tableofcontents
 
-### Objectives
+## Objectives
 
 In this tutorial section you will learn how to:
-- Generate a Newick string from a **Quetzal** coalescence binary tree.
-- Generate a Newick string from a **Quetzal** coalescence k-ary tree.
-- Customize the behavior of the generator based on the type of information you wish to format.
+- Use the `quetzal::format::newick::generate_from` function to generate a Newick string
+    - from a **Quetzal** coalescence binary tree.
+    - from a **Quetzal** coalescence k-ary tree.
+- Generate a Newick string from your own (non-Quetzal) legacy tree class.
+- Customize the behavior of the generator based on the type of information (properties) you wish to format.
+
+----------------------------------------------------
 
 ## From a Quetzal binary tree
 
-### With no property
+--- 
+
+### No property
 
 When a Newick string is generated from a tree that has no vertex nor edge information/properties
-attached to it, it is then assumed the only interest is the tree topology: as there is no clear way to populate the labels or branch length data fields in the Newick string, those are left empty.
+attached to it, it is then assumed the only interest is the tree topology: as there is no clear 
+way to populate the labels or branch length data fields in the Newick string, those are left empty.
 
 **Input**
 
@@ -177,11 +199,13 @@ the output of the different flavors are here quite similar:
 
 @include{lineno} newick_generator_1.txt
 
-### With custom properties
+--- 
+
+### Custom properties
 
 When a Newick string is generated from a tree that has some information attached to its vertices and edges
-through a property class,
-the formatter can acccess this information as long as the property class defined a `std::string label() const` method.
+through a property class, the formatter can acccess this information as long as the property class 
+defined a `std::string label() const` method.
 
 **Input**
 
@@ -191,12 +215,17 @@ the formatter can acccess this information as long as the property class defined
 
 @include{lineno} newick_generator_2.txt
 
+----------------------------------------------------
 
 ## From a Quetzal k-ary tree
 
-Extending the string generation to a k-ary tree is straightforward.
+Extending the string generation to a k-ary tree is straightforward: 
+instead of passing a `quetzal::coalescence::binary_tree` object, just pass a 
+`quetzal::coalescence::k_ary_tree` to the `quetzal::format::newick::generate_from` function.
 
-### With no property
+--- 
+
+### No property
 
 No vertex nor edge properties are embedded: the vertices labels and branch length data fields of the Newick string are left empty.
 
@@ -211,7 +240,9 @@ the output of the different flavors are here quite similar:
 
 @include{lineno} newick_generator_3.txt
 
-### With custom properties
+--- 
+
+### Custom properties
 
 The Newick string is generated from a tree that embeds some information attached to its vertices and edges
 through a property class,
@@ -225,8 +256,58 @@ the formatter can acccess this information as long as the property class defined
 
 @include{lineno} newick_generator_4.txt
 
+----------------------------------------------------
+
 ## Interfacing legacy code
 
+If your existing code heavily dependson your own class to describe a tree graph, then refactoring your whole
+project to switch to **Quetzal** trees may be too costly. 
+
+In this case, you can connect the `quetzal::format::newick::generator` class to your own legacy code.
+
+@note
+1. **Quetzal** does not know anything about your own classes, so you will need a bit of extra effort to make the  `quetzal::format::newick::generator` aware of your own design.
+2. But at least you don't have to worry about the grammar logic anymore: if you can connect the dots the generator 
+internals will handle the Newick string generation.
+3. If the task becomes tedious, don't hesitate to [ask for help](https://github.com/Quetzal-framework/quetzal-CoaTL/issues)!
+
+--- 
+
+### No property
+
+ **Quetzal** implements a `quetzal::format::newick::generator` that consumes a tree graph and produces a newick string.
+ 
+This generator is not aware of your class. Instead, it requires you to defined 4 functors that embed all the information there is to know about a vertex \f$v\f$:
+ - `has_parent(v)`: returns `false` if \f$v\f$ is the root, `true` otherwise.
+ - `has_children(v)`: returns `false` if \f$v\f$ is a leaf, `true` otherwise.
+ - `label(v)`: returns a (possibly empty) `std::string` used as label for vertex \f$v\f$
+ - `branch_length_to_parent(v)`: returns a (possibly empty) `std::string` used as label for the edge between \f$v\f$ and its parent.
+
+**Input**
+
+@include{lineno} newick_generator_5.cpp
+
+**Output**
+
+@include{lineno} newick_generator_5.txt
+
+--- 
+
+### Custom properties
+
+Once you understand the previous example with no property, then generating a Newick string from one of your legacy tree 
+class object with added vertices and/or edge labels is pretty straightforward. 
+
+You only need to modify three things:
+- Your class somehow embeds a data field
+- the `label(v)` lambda looks into the vertex to return a `std::string` used as its label
+- the `branch_length_to_parent(v)`: can also look into the vertex to return a `std::string` to label the edge between \f$v\f$ and its parent.
+
+@include{lineno} newick_generator_6.cpp
+
+**Output**
+
+@include{lineno} newick_generator_6.txt
 
 [//]: # (----------------------------------------------------------------------)
 @page graphs_in_quetzal Graphs in Quetzal

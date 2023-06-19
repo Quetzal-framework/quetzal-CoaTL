@@ -604,6 +604,7 @@ namespace quetzal::coalescence
     /// @{
 
     /// @brief Default constructor. Initializes a graph with 0 vertices.
+    
     explicit k_ary_tree() : base() {}
 
     /// @brief Construct graph with \f$n\f$ vertices
@@ -702,7 +703,7 @@ namespace quetzal::coalescence
           parent = tree.add_vertex(Vertex());
 
         if constexpr (std::is_same_v<Edge, boost::no_property>)
-          tree.add_edges(parent, update_tree(tree, left, rng), update_tree(tree, right, rng));
+          tree.add_edges(parent, { update_tree(tree, left, rng), update_tree(tree, right, rng) } );
         else
           tree.add_edges(parent, { { update_tree(tree, left, rng), Edge() }, { update_tree(tree, right, rng), Edge()} } );
         return parent;

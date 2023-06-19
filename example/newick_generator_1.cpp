@@ -1,4 +1,4 @@
-#include "quetzal/io.hpp"
+#include "quetzal/quetzal.hpp"
 #include <random>
 #include <assert.h>
 
