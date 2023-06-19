@@ -13,6 +13,9 @@
 #include "detail/tree_traits.hpp"
 #include "detail/visit.hpp"
 
+#include <boost/range/iterator_range.hpp>
+#include <boost/range/adaptor/transformed.hpp>
+
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graphviz.hpp>
 #include <boost/graph/isomorphism.hpp>
@@ -161,7 +164,8 @@ namespace quetzal::coalescence
 			/// @return A pair of iterators on the vertices that are the successors of \f$u\f$.
 			auto successors(vertex_descriptor u) const
 			{
-        return boost::out_edges(u, _graph) | ranges::views::transform([](auto it){return it->target();});
+        return boost::make_iterator_range(out_edges(u, _graph))
+                | boost::adaptors::transformed([this](auto it){return target(it); } );
 			}
 
       /// @brief Returns the edge between two vertices of the graph if the edge exists
@@ -223,7 +227,7 @@ namespace quetzal::coalescence
           DFSTreeVisitor &_tree_visitor;
           VisWrap(k_ary_tree_common &tree, DFSTreeVisitor &v) : _tree(tree), _tree_visitor(v) {}
           void discover_vertex(vertex_descriptor v, const base& g) { _tree_visitor(boost::visit::pre, v); }
-          void back_edge(const edge_descriptor & e, const base& g)  { _tree_visitor(boost::visit::in, _tree.target(e) ); }
+          void tree_edge(const edge_descriptor & e, const base& g)  { _tree_visitor(boost::visit::in, _tree.target(e) ); }
           void finish_vertex(vertex_descriptor v, const base& g)  { _tree_visitor(boost::visit::post, v); }
         } graph_visitor(*this, vis);
         std::vector<boost::default_color_type> colors(boost::num_vertices(_graph));
@@ -245,7 +249,7 @@ namespace quetzal::coalescence
           DFSTreeVisitor &_tree_visitor;
           VisWrap(const k_ary_tree_common &tree, DFSTreeVisitor &v) : _tree(tree), _tree_visitor(v) {}
           void discover_vertex(vertex_descriptor v, const base& g) { _tree_visitor(boost::visit::pre, v); }
-          void back_edge(const edge_descriptor & e, const base& g)  { _tree_visitor(boost::visit::in, _tree.target(e) ); }
+          void tree_edge(const edge_descriptor & e, const base& g)  { _tree_visitor(boost::visit::in, _tree.target(e) ); }
           void finish_vertex(vertex_descriptor v, const base& g)  { _tree_visitor(boost::visit::post, v); }
         } graph_visitor(*this, vis);
         std::vector<boost::default_color_type> colors(boost::num_vertices(_graph));

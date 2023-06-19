@@ -21,20 +21,8 @@
 #include <vector>
 #include <filesystem>
 #include <algorithm>
-#include <numeric>   // std::iota
 #include <stdexcept> // std::invalid_argument
 #include <cmath>
-
-namespace quetzal::geography::detail
-{
-  /// @brief Generate a sequence from start to end with increasing step
-  std::vector<int> stepped_iota(int start, int end, int step)
-  {
-    return ranges::views::iota(0, (end - start + step - 1) / step)
-           | ranges::views::transform([=](int x){ return x * step + start; })
-           | ranges::to<std::vector>();
-  }
-}
 
 namespace quetzal::geography
 {
@@ -49,6 +37,7 @@ namespace quetzal::geography
   {
 
   public:
+
     /// @typedef Location unique identifier
     using location_descriptor = int;
 
@@ -62,10 +51,10 @@ namespace quetzal::geography
     using lonlat = quetzal::geography::lonlat;
 
     /// @typedef A column/row pair of indices.
-    using colrow = std::pair<int, int>;
+    using colrow = quetzal::geography::colrow;
 
     /// @typedef A row/column pair of indices.
-    using rowcol = std::pair<int, int>;
+    using rowcol = quetzal::geography::rowcol;
 
     /// @typedef Time period for every band.
     using time_type = Time;
@@ -166,6 +155,25 @@ namespace quetzal::geography
       counts_to_shapefile(counts, file);
     }
 
+    /// @brief Raster is streamable
+    std::ostream& write(std::ostream& stream) const
+    {
+      stream << "Origin: " << origin() << 
+                "\nWidth: " << width() <<
+                "\nHeight: " << height() <<
+                "\nDepth: " << depth() <<
+                "\nResolution: " <<
+                  "\n\tLat: " << resolution().lat() <<
+                  "\n\tLon: " << resolution().lon() <<
+                "\nExtent:" <<
+                  "\n\tLat min: " << extent().lat_min() <<
+                  "\n\tLat max: " << extent().lat_max() <<
+                  "\n\tLon min: " << extent().lon_min() <<
+                  "\n\tLon max: " << extent().lon_max() <<
+                "\nNA value: " << NA() << std::endl;
+      return stream;
+    }
+    
     /// @}
 
     /// @name Spatial Grid properties
@@ -237,6 +245,12 @@ namespace quetzal::geography
     }
 
     ///@brief checks if the raster contains a layer with specific time
+    bool contains(const lonlat &x) const noexcept
+    {
+      return is_in_spatial_extent(to_latlon(x));
+    }
+
+    ///@brief checks if the raster contains a layer with specific time
     bool contains(const time_type &t) const noexcept
     {
       return is_in_temporal_extent(t);
@@ -247,7 +261,7 @@ namespace quetzal::geography
     {
       assert(x >= 0 && x < locations().size());
       const auto colrow = to_colrow(x);
-      return read(colrow.first, colrow.second, t);
+      return read(colrow.col, colrow.row, t);
     }
 
     /// @brief Makes the raster a callable returning the value at location x and time t
@@ -276,12 +290,12 @@ namespace quetzal::geography
     /// @return The descriptor value of x
     location_descriptor to_descriptor(const colrow &x) const
     {
-      if(x.first >= width() || x.first < 0 || x.second < 0 || x.second >= height() )
+      if(x.col >= width() || x.col < 0 || x.row < 0 || x.row >= height() )
         throw std::out_of_range("colrow has invalid indices and can not be converted to a location descriptor");
-      return x.second * width() + x.first;
+      return x.col * width() + x.col;
     }
 
-    /// @brief Location descriptor of the cell to which the given coordinate belongs.
+    ///  @brief Location descriptor of the cell to which the given coordinate belongs.
     ///        If no such cell exists, an exception of type std::out_of_range is thrown.
     /// @param x the latitude/longitude coordinate to evaluate.
     /// @return The descriptor value of x
@@ -304,7 +318,7 @@ namespace quetzal::geography
       const auto [lat, lon] = x;
       const int col = (lon - _gT[0]) / _gT[1];
       const int row = (lat - _gT[3]) / _gT[5];
-      return {col, row};
+      return colrow(col, row);
     }
 
     /// @brief Row and column of the cell to which the given coordinate belongs.
@@ -317,7 +331,7 @@ namespace quetzal::geography
         throw std::out_of_range("latlon does not belong to spatial extent and can not be converted to a row/col pair.");
 
       auto colrow = to_colrow(x);
-      std::swap(colrow.first, colrow.second);
+      std::swap(colrow.col, colrow.row);
       return colrow;
     }
 
@@ -329,7 +343,16 @@ namespace quetzal::geography
       const int col = x % width();
       const int row = x / width();
       assert (row < height());
-      return {col, row};
+      return colrow(col, row);
+    }
+
+    /// @brief Column and row of the cell to which the given descriptor belongs.
+    /// @param x the location to evaluate.
+    /// @return A pair (column, row)
+    rowcol to_rowcol(location_descriptor x) const noexcept
+    {
+      auto c = to_colrow(x);
+      return rowcol(c.row, c.col);
     }
 
     /// @brief Latitude and longitude of the cell to which the given coordinate belongs.
@@ -351,6 +374,14 @@ namespace quetzal::geography
       return latlon(lat, lon);
     }
 
+    /// @brief Latitude and longitude of the cell identified by its row/column.
+    /// @param x the location to evaluate.
+    /// @return A pair (latitude, longitude)
+    latlon to_latlon(const rowcol &x) const noexcept
+    {
+      return to_latlon(colrow(x.col, x.row));
+    }
+
     /// @brief Longitude and latitude of the deme identified by its column/row.
     /// @param x the location to evaluate.
     /// @return A pair (latitude, longitude)
@@ -358,6 +389,30 @@ namespace quetzal::geography
     {
       const auto [lat, lon] = to_latlon(x);
       return lonlat(lon, lat);
+    }
+
+    /// @brief Latlon to lonlat conversation
+    /// @param x the location to evaluate.
+    /// @return A pair (longitude, latitude)
+    lonlat to_lonlat(const latlon &x) const noexcept
+    {
+      return lonlat(x.lon, x.lat);
+    }
+
+    /// @brief Latlon to lonlat conversation
+    /// @param x the location to evaluate.
+    /// @return A pair (longitude, latitude)
+    latlon to_latlon(const lonlat &x) const noexcept
+    {
+      return latlon(x.lat, x.lon);
+    }
+
+    /// @brief Longitude and latitude of the deme identified by its column/row.
+    /// @param x the location to evaluate.
+    /// @return A pair (latitude, longitude)
+    lonlat to_lonlat(location_descriptor x) const noexcept
+    {
+      return to_lonlat(to_latlon(x));
     }
 
     /// @brief Reprojects a coordinate to the centroid of the cell it belongs.
@@ -563,5 +618,10 @@ namespace quetzal::geography
     }
 
   }; // end class raster
+
+template<typename Time>
+std::ostream &operator<<(std::ostream &os, const raster<Time> &r) { 
+   return r.write(os);
+}
 
 } // namespace quetzal::geography

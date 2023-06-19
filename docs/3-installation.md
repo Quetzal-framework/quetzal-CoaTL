@@ -26,27 +26,39 @@ This repository contains three independent CMake-based projects:
   - installs the library and verifies Conan packaging.
 
 ---
+
 ## Obtaining Dependencies
 
-Quetzal-CoaTL assumes that most of the dependencies will be retrieved by the Conan Package Manager.
+Quetzal-CoaTL assumes that most of the dependencies will be retrieved by the Conan Package Manager
+and the code built with CMake.
+
 If you don't wish to use Conan, some modifications of the CMake files may be necessary.
+
+---
 
 ### CMake
 
 [CMake](https://cmake.org/cmake/help/latest/manual/cmake.1.html) is the C++ build
-systems first choice for cross-platform development. Technically, CMake is a build
+systems first choice for cross-platform development. 
+
+Technically, CMake is a build
 system generator but the level of abstraction it offers allows us to consider
-it as a cross-platform build system
+it as a cross-platform build system.
+
 Users can build, test, and install packages with `cmake` and `ctest` commands.
 
 @note
 Please refer to the [CMake official documentation](https://cmake.org/install/)
 for installation on your specific OS.
 
+---
+
 ### Conan
 
 [Conan](https://conan.io/) is one of the leading options for cross-platform package
-manager with C/C++ projects. We chose it because it interfaces with CMake in a nice
+manager with C/C++ projects. 
+
+We chose it because it interfaces with CMake in a nice
 way. Conan will handle the dependencies and version conflicts management, and pass
 the paths of the installed dependencies to CMake so it can build the project.
 
@@ -54,16 +66,14 @@ the paths of the installed dependencies to CMake so it can build the project.
 Please refer to the [Conan official documentation](https://docs.conan.io/en/latest/installation.html)
 for installation on your specific OS.
 
-#### Quick start with Conan
-
 After installing Conan, you may need a custom profile file in `~/.conan/profiles` directory.
 
-[Profiles](https://docs.conan.io/en/latest/reference/profiles.html) can be a bit
-confusing at first, but they simply allows users to set a
+[Profiles](https://docs.conan.io/en/latest/reference/profiles.html) simply allow users to define a
 complete configuration set for settings, options, environment variables,
 and build requirements in a single reusable file.
 
 An example profile can look as follows:
+
 ```ini
 [settings]
 os=Macos
@@ -87,6 +97,8 @@ every time you run a Conan command.
 
 Depending on your needs and constraints, there are several ways to reuse the library code.
 
+---
+
 ### Copy
 
 Since Quetzal-CoaTL is a header-only library, you can copy-paste the `./src` subdirectory
@@ -96,6 +108,8 @@ to your source tree.
 If you go this way, you will be responsible for ensuring that the dependencies are installed,
 that the header files can be located at build-time and that the right flags are
 passed to the compiler.
+
+---
 
 ### Copy + CMake
 
@@ -113,7 +127,9 @@ target_link_libraries(<your_target> <PUBLIC|PRIVATE|INTERFACE> quetzal::quetzal)
 You are still responsible to ensure that the dependencies are installed
 and that the header files can be located at build-time.
 
-### Conan + CMake
+---
+
+### Conan + CMake (favored)
 
 > If you are new to Conan, I recommend read [Obtaining Dependencies](##obtaining-dependencies),
 > and the chapters [Getting Started](https://docs.conan.io/en/latest/getting_started.html)

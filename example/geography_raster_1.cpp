@@ -6,14 +6,14 @@ using namespace quetzal;
 
 int main()
 {
-	int start = 2001;
-	int end = 2011
-	int step = 1;
+	using time_type = int;
+	using raster_type = geography::raster<time_type>;
+
+	std::vector<time_type> times(10);
+    std::iota(times.begin(), times.end(), 2001);
 	auto file = std::filesystem::current_path() / "test/data/bio1.tif";
 
-	auto bio1 = geography::raster::from_file(file, start, end);
-
-	using latlon =  decltype(bio1)::latlon;
+	auto bio1 = raster_type::from_file(file, times);
 
 	std::cout << bio1 << std::endl;
 
@@ -24,9 +24,13 @@ int main()
 	assert( bio1.locations().size() == 9 );
 
 	// You will typically have georeferenced sampling points
+	using latlon =  typename raster_type::latlon;
+	using lonlat =  typename raster_type::lonlat;
+
 	auto point_1 = latlon(52., -5.);
 	auto point_2 = lonlat(-5., 52.);
-	assert(point_1 == point_2)
+
+	assert(point_1 == point_2);
 
 	// Defines a lambda expression for checking extent
 	auto check = [&bio1](auto x){
@@ -36,17 +40,19 @@ int main()
 	};
 
 	check(point_1);
-	auto point_3 = bio1.lonlat(-99., 99);
+	auto point_3 = lonlat(-99., 99);
 	check(point_3);
 
+	// Coordinates
+	auto x = bio1.to_descriptor(bio1.origin());
+	auto t = bio1.times().front();
+
 	// 1D location descriptors can be converted to 2D coordinate systems
-	auto x = bio1.origin();
 	std::cout << "All equivalent:\t" 
 			  << x << "\t"
 			  << bio1.to_rowcol(x) << "\t"
 			  << bio1.to_colrow(x) << "\t"
-	          << bio1.to_lonlat(x) << "\t"
-			  << bio1.to_latlon(x) << std::endl;
+	          << bio1.to_lonlat(x) << std::endl;
 
 	// Retrieve the raster value.
 	std::optional<double> maybe_bio1 = bio1.at(x,t);

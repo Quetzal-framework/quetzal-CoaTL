@@ -74,7 +74,8 @@ BOOST_AUTO_TEST_CASE(no_property_kary_interface)
   BOOST_CHECK(tree.has_predecessor(root) == false);
   BOOST_CHECK(tree.predecessor(c) == root);
   BOOST_CHECK(tree.has_successors(root) == true);
-  BOOST_CHECK( ! std::all_of( tree.successors(c) | std::views::transform(has_successors())));
+  auto have_children = [ &tree=std::as_const(tree) ](auto v){return tree.has_successors(v);};
+  BOOST_CHECK( ! ranges::all_of(tree.successors(c), have_children));
 
   using vertex_descriptor = boost::graph_traits<tree_type>::vertex_descriptor;
   tree_visitor<boost::visit, vertex_descriptor> visitor;
@@ -115,6 +116,8 @@ struct vertex_info
 { 
     std::string whatever; 
     int othervalue;
+    vertex_info(auto s, auto i) : whatever(s), othervalue(i) {}
+    vertex_info() = default;
 };
 
 BOOST_AUTO_TEST_CASE(structure_vertex_property)
@@ -146,9 +149,9 @@ BOOST_AUTO_TEST_CASE(structure_vertex_property)
 BOOST_AUTO_TEST_CASE(simple_edge_properties)
 {
   // tree with string edges but no vertex properties attached
-  using vertex_properties = boost::no_property;
+  using vertex_property = boost::no_property;
   using edge_property = std::string;
-  using tree_type = quetzal::coalescence::k_ary_tree<vertex_properties, edge_properties>;
+  using tree_type = quetzal::coalescence::k_ary_tree<vertex_property, edge_property>;
   using vertex_descriptor = tree_type::vertex_descriptor;
 
   tree_type tree;
@@ -160,24 +163,26 @@ BOOST_AUTO_TEST_CASE(simple_edge_properties)
   vertex_descriptor e = tree.add_vertex();
 
   // Add two edges with two different edge properties
-  auto [ab_edge, ac_edge] = tree.add_edges(a, {b, edge_property("a->b")}, {c, edge_property("a->c")});
-  auto [cd_edge, ce_edge] = tree.add_edges(ac_edge.second, {d, edge_property("c->d")}, {e, edge_property("c->e")});
+  auto edges_from_a = tree.add_edges(a, {{b, edge_property("a->b")}, {c, edge_property("a->c")}});
+  auto edges_from_c = tree.add_edges(tree.target(edges_from_a[1]), {{d, edge_property("c->d")}, {e, edge_property("c->e")}});
 
-  tree[ab_edge] = "a...b";
-  BOOST_CHECK(tree[ab_edge] == "a...b");
+  tree[edges_from_a.front()] = "a...b";
+  BOOST_CHECK(tree[edges_from_a.front()] == "a...b");
 }
 
 struct edge_info { 
     std::string whatever; 
     int othervalue;
+    edge_info(auto s, auto i) : whatever(s), othervalue(i) {}
+    edge_info() = default;
 };
 
 BOOST_AUTO_TEST_CASE(struct_edge_properties)
 {
   // default tree with no edge/vertex properties attached
-  using vertex_properties = boost::no_property;
-  using edge_properties = edge_info;
-  using tree_type = quetzal::coalescence::k_ary_tree<vertex_properties, edge_properties>;
+  using vertex_property = boost::no_property;
+  using edge_property = edge_info;
+  using tree_type = quetzal::coalescence::k_ary_tree<vertex_property, edge_property>;
   using vertex_descriptor = tree_type::vertex_descriptor;
 
   tree_type tree;
@@ -190,50 +195,53 @@ BOOST_AUTO_TEST_CASE(struct_edge_properties)
   vertex_descriptor e = tree.add_vertex();
 
   // Pass info to build new edges
-  auto [ab_edge, ac_edge] = tree.add_edges(a, { {b, edge_propertie("a->b", 10) }, {c, edge_properties("a->c", 11) } } );
-  auto [cd_edge, ce_edge, cf_edge] = tree.add_edges(ac_edge.second, { 
-    {d, edge_properties("c->d", 12)}, 
-    {e, edge_properties("c->e", 13)},
-    {e, edge_properties("c->f", 14)}
+  auto edges_from_a = tree.add_edges(a, { {b, edge_property("a->b", 10) }, {c, edge_property("a->c", 11) } } );
+  auto c_descr = tree.target(edges_from_a[1]);
+
+  auto edges_from_c = tree.add_edges(c_descr, { 
+    {d, edge_property("c->d", 12)}, 
+    {e, edge_property("c->e", 13)},
+    {e, edge_property("c->f", 14)}
   });
 
   // Read edge info
-  BOOST_CHECK(tree[ab_edge].whatever == "a->b");
-  BOOST_CHECK(tree[ab_edge].othervalue == 10);
+  BOOST_CHECK(tree[edges_from_a[0]].whatever == "a->b");
+  BOOST_CHECK(tree[edges_from_a[0]].othervalue == 10);
 
   // Write edge info
-  tree[ab_edge] =  { "yolo", 99 };
-  BOOST_CHECK(tree[ab_edge].whatever == "yolo");
-  BOOST_CHECK(tree[ab_edge].othervalue == 99);
+  tree[edges_from_a[0]] =  { "yolo", 99 };
+  BOOST_CHECK(tree[edges_from_a[0]].whatever == "yolo");
+  BOOST_CHECK(tree[edges_from_a[0]].othervalue == 99);
 }
 
 BOOST_AUTO_TEST_CASE(struct_both_properties)
 {
 
-  using vertex_properties = boost::no_property;
-  using edge_properties = edge_info;
-  using tree_type = quetzal::coalescence::k_ary_tree<vertex_properties, edge_properties>;
+  using vertex_property = vertex_info;
+  using edge_property = edge_info;
+  using tree_type = quetzal::coalescence::k_ary_tree<vertex_property, edge_property>;
   using vertex_descriptor = tree_type::vertex_descriptor;
-  using edge_properties = edge_info;
+  using edge_property = edge_info;
 
   tree_type tree;
   
-  vertex_descriptor a = tree.add_vertex(vertex_properties("a", 0));
-  vertex_descriptor b = tree.add_vertex(vertex_properties("b", 1));
-  vertex_descriptor c = tree.add_vertex(vertex_properties("c", 2));
-  vertex_descriptor d = tree.add_vertex(vertex_properties("d", 3));
-  vertex_descriptor e = tree.add_vertex(vertex_properties("e", 4));
+  vertex_descriptor a = tree.add_vertex(vertex_property("a", 0));
+  vertex_descriptor b = tree.add_vertex(vertex_property("b", 1));
+  vertex_descriptor c = tree.add_vertex(vertex_property("c", 2));
+  vertex_descriptor d = tree.add_vertex(vertex_property("d", 3));
+  vertex_descriptor e = tree.add_vertex(vertex_property("e", 4));
 
   // Pass info to build new edges
-  auto [ab_edge, ac_edge] = tree.add_edges(a, 
-    {b, edge_info("a->b", 10)},
-    {c, edge_info("a->c", 11)}
-  );
+  auto edges_from_a = tree.add_edges(a, 
+  {
+    {b, edge_property("a->b", 10)},
+    {c, edge_property("a->c", 11)}
+  } );
 
-  auto [cd_edge, ce_edge, cf_edge] = tree.add_edges(ac_edge.second, { 
-    {d, edge_properties("c->d", 12)}, 
-    {e, edge_properties("c->e", 13)},
-    {e, edge_properties("c->f", 14)}
+  auto edges_from_c = tree.add_edges( c , { 
+    {d, edge_property("c->d", 12)}, 
+    {e, edge_property("c->e", 13)},
+    {e, edge_property("c->f", 14)}
   });
 
   // Read vertices
@@ -246,13 +254,13 @@ BOOST_AUTO_TEST_CASE(struct_both_properties)
   BOOST_CHECK(tree[e].othervalue == 5);
 
   // Read edge info
-  BOOST_CHECK(tree[ab_edge].whatever == "a->b");
-  BOOST_CHECK(tree[ab_edge].othervalue == 10);
+  BOOST_CHECK(tree[edges_from_a[0]].whatever == "a->b");
+  BOOST_CHECK(tree[edges_from_a[0]].othervalue == 10);
 
   // Write edge info
-  tree[ab_edge] =  { "yolo", 99 };
-  BOOST_CHECK(tree[ab_edge].whatever == "yolo");
-  BOOST_CHECK(tree[ab_edge].othervalue == 99);
+  tree[edges_from_c[0]] =  { "yolo", 99 };
+  BOOST_CHECK(tree[edges_from_c[0]].whatever == "yolo");
+  BOOST_CHECK(tree[edges_from_c[0]].othervalue == 99);
 
 }
 

@@ -20,29 +20,6 @@ namespace utf = boost::unit_test;
 #include <random>
 #include <concepts>
 
-// Simplistic tree for testing
-struct Node
-{
-  Node *parent = nullptr;
-  Node *left = nullptr;
-  Node *right = nullptr;
-  char data;
-
-  template<class Op1, class Op2, class Op3>
-  void depth_first_search(Op1 pre_order, Op2 in_order, Op3 post_order)
-  {
-    pre_order(*this);
-    if(this->left != nullptr && this->right != nullptr)
-    {
-      this->left->depth_first_search(pre_order, in_order, post_order);
-      in_order();
-      this->right->depth_first_search(pre_order, in_order, post_order);
-    }
-    post_order(*this);
-  }
-};
-
-
 BOOST_AUTO_TEST_SUITE( newick_formatting )
 
 
@@ -67,6 +44,27 @@ BOOST_AUTO_TEST_CASE(newick_filters)
   BOOST_CHECK_EQUAL(fmt::remove_comments_of_depth<2>::edit(s3) , s2);
 }
 
+/// @brief "Legacy" tree for testing
+struct Node
+{
+  Node *parent = nullptr;
+  Node *left = nullptr;
+  Node *right = nullptr;
+  char data;
+
+  template<class Op1, class Op2, class Op3>
+  void depth_first_search(Op1 pre_order, Op2 in_order, Op3 post_order)
+  {
+    pre_order(*this);
+    if(this->left != nullptr && this->right != nullptr)
+    {
+      this->left->depth_first_search(pre_order, in_order, post_order);
+      in_order();
+      this->right->depth_first_search(pre_order, in_order, post_order);
+    }
+    post_order(*this);
+  }
+};
 
 struct Fixture_simple_tree
 {
@@ -253,9 +251,10 @@ BOOST_FIXTURE_TEST_CASE(legacy_k_ary_comparison, Fixture_simple_tree)
   tree.add_edges(c, {d,e});
 
   // Generate the newick string
-  auto bgl = newick::generate_from(tree, a, Flavor());
+  auto quetzal = newick::generate_from(tree, a, Flavor());
+  BOOST_CHECK_EQUAL(quetzal , "(,(,)):0.0;");
   
-  BOOST_CHECK_EQUAL(legacy , bgl);
+  BOOST_CHECK_EQUAL(legacy , quetzal);
 }
 
 struct vertex_t { std::string bar; };
