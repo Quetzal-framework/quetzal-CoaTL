@@ -1,7 +1,7 @@
 
 # Introduction
 
----
+@tableofcontents
 
 ## Why Quetzal?
 
@@ -26,7 +26,7 @@ Sadly, the price to pay is that none of these resources
 look at the small picture to solve a basic engineering problem: providing the 
 research community with reusable classes and algorithms in a reasonably efficient language.
 
-Despite numerous applications out-there, there is to our knowledge nothing outside of Quetzal
+Despite numerous applications out-there, there is to our knowledge nothing out-there
 that can help a Computer Science student who simply needs to parse and manipulate a programmatic object 
 with the semantic of a phylogenetic network.
 
@@ -36,7 +36,7 @@ Top-down approaches are great **and** also we need something that looks like a t
 
 ---
 
-## Why C++
+## Why C++?
 
 When the limits of a project is how many millions of simulations you can run in a limited time
 with a constrained budget, it becomes natural to opt for a language that is know for its performance.
@@ -57,18 +57,19 @@ feasible for a beginner to use generic components with a near-pythonic syntax. T
 ## Why templates?
 
 The Quetzal-CoaTL interfaces and components are generic, in the same sense as the
-Standard Template Library (STL) [2]. Genericity is what make Python a friendly
+Standard Template Library (STL) [2]. 
+
+Genericity is what make Python a friendly
 language: you don't have to worry too much about the exact types that are manipulated.
+
 Templates in C++ give to the user of a library a similar experience 
 (although that may be another story for the actual developers of the library).
 
-So templates enable **Quetzal** to be generic in 3 ways:
-
 --- 
 
-### 1 - Algorithm and Data-Structure are Interoperable
+## Why decoupling algorithms from data structures?
 
-Each algorithm is written to be **data-structure agnostic**.
+**Quetzal** algorithms are written to be **data-structure agnostic**.
 
 This allows a single function to operate on many different classes of data structures.
 In other words you can import a **Quetzal** algorithm in your code without being invaded 
@@ -78,21 +79,9 @@ This decoupling has a huge impact on the code size, falling from \f$O(M*N)\f$ to
 
 @note
 This is important for researchers in computational biology:
-for 20 algorithms and 5 data-structures, it is the difference between having to write, debug, document and maintain 100 functions versus 25. And this difference grows faster and faster with the number of algorithms and data-structures.
+for 20 algorithms applied to 5 data-structures, it is the difference between having to write, debug, document and maintain 100 functions versus 25. And this difference grows faster and faster with the number of algorithms and data-structures.
 
 ---
-
-### 2 - Extensibility through Function Objects
-
-The second reason why the library is generic is because its algorithms and structures are **extensible**. Users can adapt and customize **Quetzal** by using *function objects*. This flexibility is what makes it such a great tool for solving general coalescence problems.
-
----
-
-### 3 - Element Type Parameterization
-
-The third way that this library is generic is that its containers are parameterized on the element type.
-Meaning that data structures like population size history may be represented as `list<T>`,
-where T is any type you want (integers, double, floats, high-precision types...).
 
 [1] M. H. Austern.
 Generic Programming and the STL.
