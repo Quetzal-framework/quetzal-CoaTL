@@ -60,7 +60,8 @@ jobs:
     - name: CMake configuration
       run:  |
             cmake -B ${{github.workspace}}/build \
-                  -D CMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
+                  -S . \
+                  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
                   -DCMAKE_TOOLCHAIN_FILE= ${{github.workspace}}/build/conan_toolchain.cmake
 
     - name: CMake build

@@ -7,7 +7,7 @@
 
 Infering the evolutionary history of populations from genetic datasets
 an be a complex task. In some settings it is a mathematically intractable
-problem, so simulations methods are needed.
+problem, so simulation-intensive methods are needed.
 
 Many softwares exist out-there:
 - [SPLATCHE](http://splatche.com/),
@@ -19,20 +19,31 @@ Many softwares exist out-there:
 All are very useful and user-friendly resources that should be used whenever possible.
 
 These resources are very *top-down*: they focus on enabling researchers 
-to easily simulate complex evolutionary models and assemble pipelines to analyze data.
-Consequently, none of these resources solve a basic problem: providing the 
-research community with reusable classes and algorithms in an efficient language.
+to simulate complex evolutionary models and quickly assemble pipelines to analyze data.
+They are very good at solving the big picture. 
+
+Sadly, the price to pay is that none of these resources 
+look at the small picture to solve a basic engineering problem: providing the 
+research community with reusable classes and algorithms in a reasonably efficient language.
 
 Despite numerous applications out-there, there is to our knowledge nothing outside of Quetzal
-that can help a Computer Science student who simply needs a class with the semantic of a phylogenetic network
-where they could store some data.
+that can help a Computer Science student who simply needs to parse and manipulate a programmatic object 
+with the semantic of a phylogenetic network.
 
-Top-down approaches are great *and* we also need something that looks like a box of small components.
+Top-down approaches are great **and** also we need something that looks like a toolbox of very small components.
 
-Quetzal comes here to provide small components (structures, algorithms, concepts) that can be reused to build programs.
+**Quetzal** provides these components (structures, algorithms, concepts) that can be reused to build programs.
 
-Despite C++ bad reputation, C++ changed tremendously in the last two decades. It is now completely
-feasible to use generic components with a near-pythonic syntax. There is nothing inaccessible in writing:
+---
+
+## Why C++
+
+When the limits of a project is how many millions of simulations you can run in a limited time
+with a constrained budget, it becomes natural to opt for a language that is know for its performance.
+It could have been Rust, but C++ is popular in Computer Science classes, and widely used, so we chose C++.
+
+Despite C++ difficult reputation, the language changed tremendously in the last two decades. It is now completely
+feasible for a beginner to use generic components with a near-pythonic syntax. There is nothing inaccessible in writing:
 
 ```cpp
   auto [tree, root] = get_random_binary_tree<>(number_of_leaves, rng);
@@ -41,19 +52,27 @@ feasible to use generic components with a near-pythonic syntax. There is nothing
   std::cout << s << std::endl;
 ```
 
+--- 
+
+## Why templates?
+
 The Quetzal-CoaTL interfaces and components are generic, in the same sense as the
-Standard Template Library (STL) [2].
+Standard Template Library (STL) [2]. Genericity is what make Python a friendly
+language: you don't have to worry too much about the exact types that are manipulated.
+Templates in C++ give to the user of a library a similar experience 
+(although that may be another story for the actual developers of the library).
 
-## Genericity in Quetzal-CoaTL
+So templates enable **Quetzal** to be generic in 3 ways:
 
-The Quetzal-CoaTL library is generic in 3 ways:
+--- 
 
-### 1 - Algorithm and Data-Structure Interoperability
+### 1 - Algorithm and Data-Structure are Interoperable
 
 Each algorithm is written to be **data-structure agnostic**.
 
 This allows a single function to operate on many different classes of data structures.
-In other words you can import a **quetzal** algorithm in your code without being invaded by new data-structures.
+In other words you can import a **Quetzal** algorithm in your code without being invaded 
+by an avalanche of new data-structures.
 
 This decoupling has a huge impact on the code size, falling from \f$O(M*N)\f$ to \f$O(M+N)\f$, \f$M\f$ being the number of algorithms and \f$N\f$ the number of data structures.
 
@@ -61,9 +80,13 @@ This decoupling has a huge impact on the code size, falling from \f$O(M*N)\f$ to
 This is important for researchers in computational biology:
 for 20 algorithms and 5 data-structures, it is the difference between having to write, debug, document and maintain 100 functions versus 25. And this difference grows faster and faster with the number of algorithms and data-structures.
 
+---
+
 ### 2 - Extensibility through Function Objects
 
-The second reason why the library is generic is because its algorithms and containers are **extensible**. Users can adapt and customize Quetzal-CoaTL by using *function objects*. This flexibility is what makes it such a great tool for solving general coalescence problems.
+The second reason why the library is generic is because its algorithms and structures are **extensible**. Users can adapt and customize **Quetzal** by using *function objects*. This flexibility is what makes it such a great tool for solving general coalescence problems.
+
+---
 
 ### 3 - Element Type Parameterization
 
