@@ -50,7 +50,7 @@ jobs:
 
     - name: Conan install dependencies
       run: |
-           conan install conan/conanfile.py \
+           conan install conanfile.py \
               --build=missing \
               --install-folder=build \
               -pr:b=quetzal-profile \
