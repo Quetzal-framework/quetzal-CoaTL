@@ -592,7 +592,7 @@ namespace quetzal::geography
     {
       const auto [lat, lon] = x;
       bool answer = false;
-      if (lon >= _extent.lon_min() && lon < _extent.lon_max() && lat <= _extent.lat_min() && lat > _extent.lat_max())
+      if (lon >= _extent.lon_min() && lon < _extent.lon_max() && lat > _extent.lat_min() && lat <= _extent.lat_max())
         answer = true;
       return answer;
     }

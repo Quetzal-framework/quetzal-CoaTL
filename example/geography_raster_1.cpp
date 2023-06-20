@@ -85,10 +85,11 @@ int main()
 	auto t = bio1.times().front();
 
 	// 1D location descriptors can be converted to 2D coordinate systems
-	std::cout << "All equivalent:\t" 
-			  << x << "\t"
-			  << bio1.to_rowcol(x) << "\t"
-			  << bio1.to_colrow(x) << "\t"
+	std::cout << "All equivalent:\n\t" 
+			  << x << "\n\t"
+			  << bio1.to_rowcol(x) << "\n\t"
+			  << bio1.to_colrow(x) << "\n\t"
+			  << bio1.to_latlon(x) << "\n\t"
 	          << bio1.to_lonlat(x) << std::endl;
 
 	// Retrieve the raster value.

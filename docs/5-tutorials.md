@@ -521,7 +521,7 @@ When you read a variable with the `from_file()` function you will need to think 
   - `lonlat` or `latlon`: decimal longitude and latitude values, that may or may not be contained in the spatial extent of the grid. 
     Users inputs such as genetic samples will often been given as such, and will need to be reprojected into a `location_descriptor`
   - `colrow` or `rowcol`: the most intuitive way to index the cells of a grid.
-  - `location_descriptor` is a 1-dimensional index of the grid cells. You can think of it has the way to map  \f$0\f$ to the grid origin (top left cell) \f$ width \times height - 1\f$ to the bottom right cell. Since it's just an integer, this 1D system is cheap to copy and is meant to used in intensive simulations.
+  - `location_descriptor` is a 1-dimensional index of the grid cells. You can think of it has the way to map  \f$0\f$ to the grid origin (top left cell) \f$ width \times height - 1\f$ to the bottom right cell. Since it's just an integer, this 1D system is cheap to copy and is meant to used in intensive simulations. Converting a `location_descritptor` to a `latlon` or `lonlat` will return the coordinates of the cell centroid. See also `to_centroid`.
 - When the value of the variable at a given location is read, it may exist or not (in which case it is a NA). In that last case, an empty optional is returned. The actual value of a NA as represented in the dataset is given by the `NA()` function.
 
 **Input**
