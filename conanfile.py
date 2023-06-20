@@ -9,7 +9,7 @@ class QuetzalCoaTLConan(ConanFile):
     url             = "https://github.com/Quetzal-framework/quetzal-CoaTL"
     license         = "GPLv3"
     description     = "Coalescence library for C++"
-    version         = "0.1"
+    version         = "3.1.0"
 
     settings        = "os", "compiler", "arch", "build_type"
     exports_sources = "src/*", "CMakeLists.txt", "test/*", "cmake/*", "docs/*"
