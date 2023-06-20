@@ -61,8 +61,8 @@ jobs:
       run:  |
             cmake -B ${{github.workspace}}/build \
                   -D CMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
-                  -D CMAKE_C_COMPILER=/usr/bin/gcc-12 \
-                  -D CMAKE_CXX_COMPILER=/usr/bin/g++-12
+                  -G "Ninja Multi-Config"
+                  -DCMAKE_TOOLCHAIN_FILE= ${{github.workspace}}/build/conan_toolchain.cmake
 
     - name: CMake build
       run:  |
@@ -72,12 +72,6 @@ jobs:
     - name: CMake test
       working-directory: ${{github.workspace}}/build
       run: ctest -C ${{env.BUILD_TYPE}}
-
-      # Update tutorials documentations based on tests output
-    - name: Markdown autodocs
-      uses: dineshsonachalam/markdown-autodocs@v1.0.7
-      with:
-        output_file_paths: '[./docs/tutorials/newick_parser.md]'
 
     - name: Doxygen documentation generation
       working-directory: ${{github.workspace}}/build
@@ -89,7 +83,6 @@ jobs:
 
     - name: Deploy to Github Pages
       uses: peaceiris/actions-gh-pages@v3
-
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./
