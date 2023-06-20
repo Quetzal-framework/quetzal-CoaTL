@@ -28,6 +28,7 @@ jobs:
              sudo apt install -y gcc-12 g++-12
              sudo apt install -y python3-pip
              sudo apt install -y cmake
+             sudo apt install -y doxygen
 
     - name: Conan installation
       id: conan

@@ -15,9 +15,7 @@ class QuetzalCoaTLConan(ConanFile):
     exports_sources = "src/*", "CMakeLists.txt", "test/*", "cmake/*", "docs/*"
     no_copy_source  = True
     build_policy    = "missing"
-    #requires        = "boost/[>1.75 <1.80]", "gdal/[>=3.4.0]", "range-v3/0.12.0"     # on Macos Monterey clang 13
-    #requires       = "boost/1.80.0", "gdal/3.5.2", "zlib/1.2.13" # on Ubuntu 22.04 for gh-actions
-
+    
     def generate(self):
         tc = CMakeToolchain(self)
         tc.generate()
