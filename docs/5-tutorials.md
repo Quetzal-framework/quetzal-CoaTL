@@ -497,17 +497,32 @@ There are logically 4 different classes (equivalently interfaces) resulting from
 Usage examples are described in their respective class documentation.
 
 [//]: # (----------------------------------------------------------------------)
-@page geospatial_parser Reading environmental variables from rasters
+@page geotiff_parser Reading spatial variables from rasters
 
 @tableofcontents
 
 ## Reading a single variable
 
-*Quetzal* provides a `quetzal::geography::raster` class with a small interface to integrate spatial grids into a georeferenced coalescence simulation.
+Landscapes and their spatial/temporal heterogeneity affect the dynamics of populations and lineages.
+These landscapes are often incorporated into computational models as geospatialized grids, or rasters.
+
+*Quetzal* provides a `quetzal::geography::raster` class with a small interface to integrate these spatial 
+grids into a georeferenced coalescence simulation.
 
 With `quetzal::geography::raster` you can define a single variable that exhibits:
 - spatial heterogeneity: rasters delineate a geographic space into a number of cells identified by their row/columns.
 - temporal heterogeneity: raster have a *depth*, *i.e.* multiple bands (layers) that are used to model the temporal scale.
+
+When you read a variable with the `from_file()` function you will need to think about a few things:
+- you need to decide what the raster template argument `time_type` is. In most cases that will be an integer mapping a band to
+  a year (e.g 2023 for the last band), but you could chose to make it a slightly more complex type like a time period (e.g. 7000–3000 BCE).
+- keep in mind that you don't need to duplicate identical bands (what could make the raster heavy): you can virtualize repeated bands with the VRT format.
+- there are multiple ways to identify locations in a spatial grid: which way is best depends on the usage context. The `quetzal::geography::raster` interface allows to switch between them:
+  - `lonlat` or `latlon`: decimal longitude and latitude values, that may or may not be contained in the spatial extent of the grid. 
+    Users inputs such as genetic samples will often been given as such, and will need to be reprojected into a `location_descriptor`
+  - `colrow` or `rowcol`: the most intuitive way to index the cells of a grid.
+  - `location_descriptor` is a 1-dimensional index of the grid cells. You can think of it has the way to map  \f$0\f$ to the grid origin (top left cell) \f$ width \times height - 1\f$ to the bottom right cell. Since it's just an integer, this 1D system is cheap to copy and is meant to used in intensive simulations.
+- When the value of the variable at a given location is read, it may exist or not (in which case it is a NA). In that last case, an empty optional is returned. The actual value of a NA as represented in the dataset is given by the `NA()` function.
 
 **Input**
 
@@ -576,4 +591,7 @@ or not have a value, and it's up to the user to decide what to do when they don'
 
 
 [//]: # (----------------------------------------------------------------------)
-@page geospatial_generatorr Reading environmental variables from rasters
+@page geotiff_generator Writing spatial variables to rasters
+
+[//]: # (----------------------------------------------------------------------)
+@page shapefile_generator Writing spatial samples to shapefile

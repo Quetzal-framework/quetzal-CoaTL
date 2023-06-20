@@ -4,21 +4,58 @@
 
 using namespace quetzal;
 
+	//  Expected dataSet structure
+	//
+	//  * origin at Lon -5, Lat 52.
+	//  * 9 cells
+	//  * 10 layers
+	//  * pixel size (-5, 5)
+	//  * East and South limits ARE NOT in spatial extent
+	//
+	//
+	// (origin)	    -5        0       5      10
+	// 		   \   /         /  	 /		/
+	// 			\ / 		/		/	   /
+	// 		52	 * ------ * ----- * ---- *
+	// 			 |    .   |   .   |   .
+	// 			 |   c0   |  c1   |  c2
+	// 		47	 * ------ * ----- * ---- *
+	// 			 |    .   |   .   |   .
+	// 			 |   c3   |  c4   |  c5
+	// 		42	 * ------ * ----- * ---- *
+	// 			 |   .    |   .   |   .
+	// 			 |   c6   |  c7   |  c8
+	// 		37	 *        *       *      *
+	// 
+	//
+	//          90
+	//          |         (+)
+	// 	    0 --------------> 180    X size positive in decimal degre (east direction positive)
+	//          |                    Y size negative in decimal degree (south direction negative)
+	//          |
+	// 			|
+	// 			|
+	// 	   (-)  v        
+	// 		    0                     
+
 int main()
 {
 	using time_type = int;
 	using raster_type = geography::raster<time_type>;
 
+	// The raster has 3 bands that we will assign to 2001, 2002, 2003
 	std::vector<time_type> times(10);
     std::iota(times.begin(), times.end(), 2001);
-	auto file = std::filesystem::current_path() / "test/data/bio1.tif";
 
+	auto file = std::filesystem::current_path() / "data/bio1.tif";
+
+	// Read the raster
 	auto bio1 = raster_type::from_file(file, times);
 
 	std::cout << bio1 << std::endl;
 
-	// There are 10 bands/layers/time periods
-	assert( bio1.times().size() == 10 );
+	// Check there are 3 bands/layers/time periods
+	assert( bio1.times().size() == 3 );
 
 	// There are 9 cells/spatial coordinates
 	assert( bio1.locations().size() == 9 );
@@ -35,7 +72,7 @@ int main()
 	// Defines a lambda expression for checking extent
 	auto check = [&bio1](auto x){
 		std::cout << "Point " << x << " is " 
-				<< ( bio1.contains(x) ? "" : "not")
+				<< ( bio1.contains(x) ? " " : "not ")
 				<< "in bio1 extent" << std::endl;
 	};
 

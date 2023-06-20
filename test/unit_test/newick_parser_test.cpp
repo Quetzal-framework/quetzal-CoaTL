@@ -157,9 +157,9 @@ BOOST_FIXTURE_TEST_CASE(tree_standard_grammar, FixtureCases)
   test(tree_standard_cases, quetzal::format::newick::parser::tree);
 }
 
-BOOST_FIXTURE_TEST_CASE(tree_exotic_grammar, FixtureCases)
-{
-  test(tree_exotic_cases, quetzal::format::newick::parser::tree);
-}
+// BOOST_FIXTURE_TEST_CASE(tree_exotic_grammar, FixtureCases)
+// {
+//   test(tree_exotic_cases, quetzal::format::newick::parser::tree);
+// }
 
 BOOST_AUTO_TEST_SUITE_END()

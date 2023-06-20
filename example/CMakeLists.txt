@@ -16,6 +16,9 @@ if(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS}) # Find Boost headers only
 ENDIF()
 
+# Copy the data required by I/O examples
+file(COPY data DESTINATION ${CMAKE_BINARY_DIR}/example)
+
 # Create director to store the examples output (for future doc)
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/example/output)
 

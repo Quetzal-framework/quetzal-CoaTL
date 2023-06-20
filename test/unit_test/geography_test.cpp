@@ -40,8 +40,8 @@ BOOST_AUTO_TEST_CASE(landscape, *utf::disabled())
 		BOOST_TEST(env.contains(Bordeaux));
 		BOOST_TEST(env.contains( env.to_centroid(Bordeaux) ) );
 
-		const auto& f = env["bio1"];
-		const auto& g = env["bio12"];
+		const auto& f = env["bio1"].to_view();
+		const auto& g = env["bio12"].to_view();
 
 		BOOST_CHECK_EQUAL(env.times().size(), 10);
 		BOOST_TEST(env.locations().size() < 100);
@@ -75,8 +75,8 @@ BOOST_AUTO_TEST_CASE(raster, *utf::disabled())
 	BOOST_CHECK_EQUAL(bio1.times().size(), 10);
 	BOOST_CHECK_EQUAL(bio1.locations().size(), 9);
 	BOOST_CHECK_EQUAL( bio1.origin(), raster_type::latlon(52., -5.));
-
-	BOOST_TEST( bio1( bio1.to_descriptor(bio1.origin()), bio1.times().front()) .has_value());
+	auto f = bio1.to_view();
+	BOOST_TEST( f( bio1.to_descriptor(bio1.origin()), bio1.times().front()) .has_value());
 
 	auto space = bio1.locations() 
 				| ranges::views::transform([&r = std::as_const(bio1)](auto i){return r.to_latlon(i); })

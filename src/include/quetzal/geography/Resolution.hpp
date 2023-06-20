@@ -34,6 +34,7 @@ namespace quetzal::geography
 		constexpr explicit resolution(value_type lat, value_type lon) : _lat(lat), _lon(lon) {}
 
 		/// @brief Gets latitude resolution
+		/// @note Negative in decimal degree if the raster is north-up oriented.
 		constexpr value_type lat() const noexcept
 		{
 			return _lat;

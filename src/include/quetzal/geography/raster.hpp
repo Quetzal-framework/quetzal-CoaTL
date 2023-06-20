@@ -71,11 +71,12 @@ namespace quetzal::geography
     std::vector<time_type> _times;
     std::vector<double> _gT;
     latlon _origin;
-    resolution<decimal_degree> _resolution;
-    extent<double> _extent;
     int _width;
     int _height;
     int _depth;
+    resolution<decimal_degree> _resolution;
+    extent<double> _extent;
+
     value_type _no_data;
     
     // Pixel size in x and y
@@ -85,12 +86,12 @@ namespace quetzal::geography
     }
 
     // Top left corner and bottom right corner geographic coordinates
-    auto compute_extent(const latlon &o, const quetzal::geography::resolution<decimal_degree> &r) const
-    {
-      const auto [lat, lon] = o;
-      const auto lon_max = lon + width() * r.lon();
-      const auto lat_max = lat + height() * r.lat();
-      return quetzal::geography::extent<decimal_degree>(lat, lat_max, lon, lon_max);
+    auto compute_extent(const latlon &origin, const quetzal::geography::resolution<decimal_degree> &r) const
+     {
+      const auto [lat_max, lon_min] = origin;
+      const auto lon_max = lon_min + width() * r.lon();
+      const auto lat_min = lat_max + height() * r.lat();
+      return quetzal::geography::extent<decimal_degree>(lat_min, lat_max, lon_min, lon_max);
     }
 
   public:
@@ -103,11 +104,11 @@ namespace quetzal::geography
                                                                                                            _times(times),
                                                                                                            _gT(_dataset.affine_transformation_coefficients()),
                                                                                                            _origin(compute_origin(_gT)),
-                                                                                                           _resolution(compute_resolution(_gT)),
-                                                                                                           _extent(compute_extent(_origin, _resolution)),
                                                                                                            _width( _dataset.width()),
                                                                                                            _height( _dataset.height()),
-                                                                                                           _depth( _dataset.width()),
+                                                                                                           _depth( _dataset.depth()),
+                                                                                                           _resolution(compute_resolution(_gT)),
+                                                                                                           _extent(compute_extent(_origin, _resolution)),
                                                                                                            _no_data(nodata_first_band())
     {
       check_times_equals_depth();
@@ -186,6 +187,7 @@ namespace quetzal::geography
     }
 
     /// @brief Resolution of the spatial grid
+    /// @note The vertical pixel size will be negative (south pointing)
     resolution<decimal_degree> resolution() const noexcept
     {
       return _resolution;
@@ -257,17 +259,14 @@ namespace quetzal::geography
     }
 
     /// @brief Read the value at location x and time t
+    /// @param x the location
+    /// @param t the time
+    /// @return An optional that is empty if the value read is equal to NA.
     std::optional<value_type> at(location_descriptor x, time_descriptor t) const noexcept
     {
       assert(x >= 0 && x < locations().size());
       const auto colrow = to_colrow(x);
       return read(colrow.col, colrow.row, t);
-    }
-
-    /// @brief Makes the raster a callable returning the value at location x and time t
-    std::optional<value_type> operator()(location_descriptor x, time_descriptor t) const noexcept
-    {
-      return at(x,t);
     }
 
     /// @brief Makes the raster a callable with signature 
@@ -444,6 +443,7 @@ namespace quetzal::geography
 
     /// @brief Read 1 value using GDAL API.
     /// @note To change if access is too slow
+    /// @return An optional that is empty if the value read is equal to NA.
     std::optional<double> read(int col, int row, int band) const
     {
       const int nXSize = 1;
@@ -457,7 +457,7 @@ namespace quetzal::geography
 
       const double val = static_cast<double>(*line);
       CPLFree(line);
-      if (val > std::numeric_limits<double>::min())
+      if (val != this->NA() )
         return {val};
       return {};
     }
