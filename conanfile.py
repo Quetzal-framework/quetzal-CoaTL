@@ -45,5 +45,3 @@ class QuetzalCoaTLConan(ConanFile):
        if self.settings.os == "Ubuntu":
             if self.settings.compiler == "gcc":
                 self.requires("boost/1.80.0", "gdal/3.5.2", "zlib/1.2.13", "range-v3/0.12.0")
-
-g
