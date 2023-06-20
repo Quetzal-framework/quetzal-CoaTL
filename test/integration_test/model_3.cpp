@@ -9,7 +9,7 @@
 ************************************************************************/
 
 //! [Demonstrate use]
-#include "quetzal/quetzal.h"
+#include "quetzal/quetzal.hpp"
 #include <random> // rng
 #include <iostream>
 #include <fstream>
@@ -17,7 +17,6 @@
 
 // Namespace shortnames
 namespace geo = quetzal::geography;
-namespace schemes = quetzal::sampling_scheme;
 namespace expr = quetzal::expressive;
 
 // Parameter 1 : path to geoTiff environmental dataset
@@ -45,7 +44,7 @@ int main(int argc, char* argv[])
   using demographic_policy = quetzal::demography::demographic_policy::mass_based;
   using coalescence_policy = quetzal::coalescence::newick_with_distance_to_parent<coord_type, time_type>;
   using memory_policy      = quetzal::demography::memory_policy::on_disk;
-  using simulator_type     = quetzal::ForwardBackwardSpatiallyExplicit<coord_type, demographic_policy, coalescence_policy, memory_policy>;
+  using simulator_type     = quetzal::simulator::ForwardBackwardSpatiallyExplicit<coord_type, demographic_policy, coalescence_policy, memory_policy>;
   // Initial distribution
   coord_type x_0 = env.reproject_to_centroid(coord_type(40.0, -3.0));
   // Number of introduced gene copies
@@ -117,7 +116,7 @@ int main(int argc, char* argv[])
   // Declare a functor to get the population size at sampling time
   auto last_N = [N, sampling_time](coord_type const& x){return N(x, sampling_time);};
   // Give the required information to the sampling scheme simulator
-  auto unif_sampler = quetzal::sampling_scheme::make_unif_constrained_sampler(distribution_area, last_N, n);
+  auto unif_sampler = quetzal::sampling::make_unif_constrained_sampler(distribution_area, last_N, n);
   // Generate a random sample
   auto sample = unif_sampler(gen);
 

@@ -1,19 +1,21 @@
 
-<div align="left">
+# The Quetzal Coalescence Library
 
-<a href="https://becheler.github.io/softwares/quetzal-CoalTL/home/">![Website becheler.github.io](https://img.shields.io/website-up-down-green-red/https/becheler.github.io.svg)</a>
-<a href="https://www.gnu.org/licenses/gpl-3.0">![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)</a>
+**Arnaud Becheler**
+Copyright © 2016-2023 Arnaud Becheler
 
-</div>
+@note
+This documentation is meant for C++ developers who want to include the Quetzal
+Coalescence Template Library (Quetzal-CoalTL) in their own code project.
 
-<div align="left">
+Coalescence is a mathematical abstraction of the genealogical relationships between 
+DNA sequences that is useful for solving types
+of problems in computational population genetics. Consequently, the abstractions of
+coalescence theory must be represented in computer programs.
 
-  <a href="">![GitHub release (latest by date)](https://img.shields.io/github/v/release/Becheler/quetzal-CoalTL)</a>
-  <a href="">![Lines of code](https://img.shields.io/tokei/lines/github/Becheler/quetzal-CoalTL)</a>
-  <a href="">![GitHub last commit](https://img.shields.io/github/last-commit/Becheler/quetzal-CoalTL)</a>
+A standardized generic interface for manipulating concepts like genes genealogies, 
+lineages colliders, mutation models, recombination, landscapes,
+demographic histories, reproduction, migration is of utmost importance to
+encourage reuse of algorithms and data structures. 
 
-</div>
-# Welcome, developers!
-
-This documentation is meant for C++ developers who want to include the Quetzal-CoalTL library in their own code project.
-For more ample resource, check our [website](https://becheler.github.io/softwares/quetzal-CoalTL/home/).
+This library intends to do this for the C++ language.

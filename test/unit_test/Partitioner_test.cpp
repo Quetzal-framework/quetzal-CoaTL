@@ -10,15 +10,15 @@
 
 // g++ -o Partitioner_test Partitioner_test.cpp -std=c++14 -Wall
 
-#include "quetzal/fuzzy_transfer_distance.h"
+#include "quetzal/polymorphism/fuzzy_transfer_distance.hpp"
 
 #include <vector>
 #include "assert.h"
 #include <iostream>
 
 int main(){
-	using quetzal::fuzzy_transfer_distance::Partitioner;
-	using quetzal::fuzzy_transfer_distance::RestrictedGrowthString;
+	using quetzal::polymorphism::fuzzy_transfer_distance::Partitioner;
+	using quetzal::polymorphism::fuzzy_transfer_distance::RestrictedGrowthString;
 
 	std::vector<unsigned int> set = {1,2,3,4,5};
 

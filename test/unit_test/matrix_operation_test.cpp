@@ -7,10 +7,9 @@
 * (at your option) any later version.                                  *
 *                                                                      *
 ***************************************************************************/
-#define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE utils_test
 
-#include <quetzal/utils.h>
+#include <quetzal/utils/matrix_operation.hpp>
 
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/io.hpp>
