@@ -1,33 +1,45 @@
 
 # Introduction
 
-## Motivations
+---
 
-:seedling: Infering the evolutionary history of populations from genetic datasets
-an be a complex task. In some settings it is
-actually a mathematically intractable problem, so simulations methods are needed.
+## Why Quetzal?
 
-Existing softwares like
-[SPLATCHE](http://splatche.com/),
-[simcoal2](http://cmpg.unibe.ch/software/simcoal2/),
-[egglib](http://mycor.nancy.inra.fr/egglib/index.html), or
-[msprime](http://msprime.readthedocs.io/en/stable/index.html) are very useful and
-user-friendly resources that should be used whenever possible to achieve this task.
+Infering the evolutionary history of populations from genetic datasets
+an be a complex task. In some settings it is a mathematically intractable
+problem, so simulations methods are needed.
 
-However if you are:
-- a phD student working on developing some border case simulation model, or
-- a post-doctoral researcher uncomfortable with some assumptions/constraints of the existing
-softwares, or
-- a video-game company looking for implementing realistic
-models of evolution :eyes:
+Many softwares exist out-there:
+- [SPLATCHE](http://splatche.com/),
+- [simcoal2](http://cmpg.unibe.ch/software/simcoal2/),
+- [egglib](http://mycor.nancy.inra.fr/egglib/index.html),
+- [msprime](http://msprime.readthedocs.io/en/stable/index.html),
+- [SLiM](https://messerlab.org/slim/) 
 
-you will surely hope to develop your own program without having to start from scratch. 
-And that's why we need something that looks like a standard box of small components.
+All are very useful and user-friendly resources that should be used whenever possible.
 
-:v: Quetzal can help by offering atomic components (structures,
-algorithms, concepts) that can be reused to build a new program.
-The template mechanism allows to adapt them efficiently to each particular situation
-you may encounter.
+These resources are very *top-down*: they focus on enabling researchers 
+to easily simulate complex evolutionary models and assemble pipelines to analyze data.
+Consequently, none of these resources solve a basic problem: providing the 
+research community with reusable classes and algorithms in an efficient language.
+
+Despite numerous applications out-there, there is to our knowledge nothing outside of Quetzal
+that can help a Computer Science student who simply needs a class with the semantic of a phylogenetic network
+where they could store some data.
+
+Top-down approaches are great *and* we also need something that looks like a box of small components.
+
+Quetzal comes here to provide small components (structures, algorithms, concepts) that can be reused to build programs.
+
+Despite C++ bad reputation, C++ changed tremendously in the last two decades. It is now completely
+feasible to use generic components with a near-pythonic syntax. There is nothing inaccessible in writing:
+
+```cpp
+  auto [tree, root] = get_random_binary_tree<>(number_of_leaves, rng);
+  using Flavor = quetzal::format::newick::TreeAlign;
+  auto s = quetzal::format::newick::generate_from(tree, root, Flavor());
+  std::cout << s << std::endl;
+```
 
 The Quetzal-CoaTL interfaces and components are generic, in the same sense as the
 Standard Template Library (STL) [2].

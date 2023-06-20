@@ -61,7 +61,6 @@ jobs:
       run:  |
             cmake -B ${{github.workspace}}/build \
                   -D CMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
-                  -G "Ninja Multi-Config"
                   -DCMAKE_TOOLCHAIN_FILE= ${{github.workspace}}/build/conan_toolchain.cmake
 
     - name: CMake build
