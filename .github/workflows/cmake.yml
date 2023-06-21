@@ -50,19 +50,20 @@ jobs:
            conan profile update env.CXX=[/usr/bin/g++-12] quetzal-profile
 
     - name: Conan install dependencies
-      run: |
-           conan install conanfile.py \
-              --build=missing \
-              --install-folder=build \
-              -pr:b=quetzal-profile \
-              -pr:h=quetzal-profile \
+      run: >
+           conan install conanfile.py
+              --build=missing
+              --install-folder=build
+              -pr:b=quetzal-profile
+              -pr:h=quetzal-profile
 
     - name: CMake configuration
-      run:  |
-            cmake -B ${{github.workspace}}/build \
-                  -S . \
-                  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
-                  -DCMAKE_TOOLCHAIN_FILE= ${{github.workspace}}/build/conan_toolchain.cmake
+      run:  >
+            cmake 
+              -B ${{github.workspace}}/build 
+              -S .
+              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+              --toolchain ${{github.workspace}}/build/conan_toolchain.cmake
 
     - name: CMake build
       run:  |
