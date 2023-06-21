@@ -15,8 +15,8 @@ int main()
 	// Let's define a shorter alias
 	using landscape_type = quetzal::geography::landscape<key_type, time_type>;
 
-	auto file1 = std::filesystem::current_path() / "test/data/bio1.tif";
-	auto file2 = std::filesystem::current_path() / "test/data/bio12.tif";
+	auto file1 = std::filesystem::current_path() / "data/bio1.tif";
+	auto file2 = std::filesystem::current_path() / "data/bio12.tif";
 
 	// Initialize the landscape: for each var a key and a file, for all a time series.
 	auto env = landscape_type::from_files( { {"bio1", file1}, {"bio12", file2} }, {2001, 2002, 2003,2004,2005,2006,2007,2008,2009,2010} );
