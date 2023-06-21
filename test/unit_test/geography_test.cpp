@@ -22,7 +22,7 @@ BOOST_AUTO_TEST_SUITE(geography)
 
 BOOST_AUTO_TEST_CASE(landscape, *utf::disabled())
 {
-	using time_type = unsigned int;
+	using time_type = int;
 	using landscape_type = quetzal::geography::landscape<std::string, time_type>;
 
 	auto file1 = std::filesystem::current_path() / "test/data/bio1.tif";

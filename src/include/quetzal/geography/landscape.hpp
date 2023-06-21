@@ -88,7 +88,7 @@ namespace quetzal::geography
 			}
 
 			auto have_same_extent = [this](auto const &it)
-			{ return it.second.extent() == _variables.cbegin()->second.extent(); };
+			{ return it.second.get_extent() == _variables.cbegin()->second.get_extent(); };
 
 			if (!all_of(_variables.cbegin(), _variables.cend(), have_same_extent))
 			{
@@ -96,7 +96,7 @@ namespace quetzal::geography
 			}
 
 			auto have_same_resolution = [this](auto const &it)
-			{ return it.second.resolution() == _variables.cbegin()->second.resolution(); };
+			{ return it.second.get_resolution() == _variables.cbegin()->second.get_resolution(); };
 
 			if (!all_of(_variables.cbegin(), _variables.cend(), have_same_resolution))
 			{
@@ -203,15 +203,15 @@ namespace quetzal::geography
 		}
 
 		/// @brief Resolution of the spatial grid
-		resolution<decimal_degree> resolution() const noexcept
+		resolution<decimal_degree> get_resolution() const noexcept
 		{
-			return _variables.cbegin()->second.resolution();
+			return _variables.cbegin()->second.get_resolution();
 		}
 
 		/// @brief Extent of the spatial grid
-		extent<decimal_degree> extent() const noexcept
+		extent<decimal_degree> get_extent() const noexcept
 		{
-			return _variables.cbegin()->second.extent();
+			return _variables.cbegin()->second.get_extent();
 		}
 
 		/// @brief Width of the spatial grid

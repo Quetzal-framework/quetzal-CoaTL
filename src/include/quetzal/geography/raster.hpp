@@ -165,13 +165,13 @@ namespace quetzal::geography
                 "\nHeight: " << height() <<
                 "\nDepth: " << depth() <<
                 "\nResolution: " <<
-                  "\n\tLat: " << resolution().lat() <<
-                  "\n\tLon: " << resolution().lon() <<
+                  "\n\tLat: " << get_resolution().lat() <<
+                  "\n\tLon: " << get_resolution().lon() <<
                 "\nExtent:" <<
-                  "\n\tLat min: " << extent().lat_min() <<
-                  "\n\tLat max: " << extent().lat_max() <<
-                  "\n\tLon min: " << extent().lon_min() <<
-                  "\n\tLon max: " << extent().lon_max() <<
+                  "\n\tLat min: " << get_extent().lat_min() <<
+                  "\n\tLat max: " << get_extent().lat_max() <<
+                  "\n\tLon min: " << get_extent().lon_min() <<
+                  "\n\tLon max: " << get_extent().lon_max() <<
                 "\nNA value: " << NA() << std::endl;
       return stream;
     }
@@ -189,13 +189,13 @@ namespace quetzal::geography
 
     /// @brief Resolution of the spatial grid
     /// @note The vertical pixel size will be negative (south pointing)
-    geography::resolution<decimal_degree> resolution() const noexcept
+    geography::resolution<decimal_degree> get_resolution() const noexcept
     {
       return _resolution;
     }
 
     /// @brief Extent of the spatial grid
-    geography::extent<decimal_degree> extent() const noexcept
+    geography::extent<decimal_degree> get_extent() const noexcept
     {
       return _extent;
     }

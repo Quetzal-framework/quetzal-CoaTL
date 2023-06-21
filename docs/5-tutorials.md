@@ -536,22 +536,24 @@ When reading a variable using the `from_file`() function, there are a few consid
 
 ## Reading multiple variables
 
-If you are working with multiple variables (*e.g.* a suitability raster and an elevation raster), you could run into 
-simulation problems if the two rasters have even slightly different grid properties, like different resolutions, origins or extent. 
-To prevent these problems from happening, you can use `quetzal::geography::landscape` that wraps multiple rasters into
-one single coherent object and checks that all rasters are aligned.
+Aligning rasters refers to a spatial data representation technique used in Geographic Information Systems (GIS). In this
+context, raster data layers are aligned and registered to a common coordinate system and grid structure. This ensures that the cells or pixels in the raster layers are spatially aligned and correspond to the same geographic locations.
+
+Alignment is achieved in `quetzal::geography::raster` objects by defining a consistent grid structure, such as a uniform cell size and orientation, for all raster layers.
+
+In situations where multiple GIS variables that change over time are involved (such as a suitability and an elevation across geological times), an additional alignment mechanism is required. The `quetzal::geography::landscape` class addresses this need by combining multiple raster datasets, each potentially having multiple layers, into a single cohesive object. It ensures that all spatial grids are properly aligned and maintains the temporal dimension represented by multiple layers.  This allows for accurate overlay, simulation, and composition of multiple datasets within the GIS environment.
 
 **Input**
 
-@include{lineno} environmental_variable_1.cpp
+@include{lineno} geography_landscape_1.cpp
 
 **Output**
 
-@include{lineno} environmental_variable_1.txt
+@include{lineno} geography_landscape_1.txt
 
 ---
 
-## What to do after
+## Next steps
 
 Geospatial datasets play a crucial role in coalescence by providing valuable information about the demographic process. Once a raster is successfully parsed, users typically have three primary objectives they may want to pursue:
 
