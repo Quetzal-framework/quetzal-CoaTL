@@ -514,12 +514,12 @@ By utilizing quetzal::geography::raster, you can define a single variable that e
 - Spatial heterogeneity: Rasters divide a geographical space into cells identified by their row and column coordinates.
 - Temporal heterogeneity: Rasters have a depth, meaning multiple bands (layers) that are utilized to model the temporal dimension.
 
-When reading a variable using the from_file() function, there are a few considerations to keep in mind:
+When reading a variable using the `from_file`() function, there are a few considerations to keep in mind:
 
 1. You need to decide on the raster template argument `time_type`. In most cases, it would be an integer representing a band mapped to a year (e.g., 2023 for the latest band). However, you can opt for a more complex type such as a time period (e.g., 7000–3000 BCE).
-2. Keep in mind that duplicating identical bands is unnecessary and can make the raster bulky. Instead, you can virtualize repeated bands using the VRT (Virtual Dataset) format.
+2. Keep in mind that duplicating identical bands is unnecessary and can make the raster bulky. Instead, you can virtualize repeated bands using the VRT (Virtual Dataset) format. See the Python **Quetzal-CRUMBS** helper library to do so.
 3. There are multiple ways to identify locations within a spatial grid, and the choice depends on the specific usage context. The `quetzal::geography::raster` interface allows for switching between them:
-  - `lonlat` or `latlon`: Decimal longitude and latitude values, which may or may not fall within the spatial extent of the grid. Genetic samples and other user inputs will generally use these real-world coordinate formats and may require projection into a location_descriptor.
+  - `lonlat` or `latlon`: Decimal longitude and latitude values, which may or may not fall within the spatial extent of the grid. Genetic samples and other user inputs will generally use these real-world coordinate formats and may require projection into a `location_descriptor`.
   - `colrow` or `rowcol:` The most intuitive way to index the cells of a grid.
   - `location_descriptor`: A one-dimensional index representing the grid cells. It can be thought of as mapping 0 to the top-left cell (grid origin) and width × height - 1 to the bottom-right cell. Since it's a simple integer, this 1D system is computationally efficient and designed for intensive simulations. Converting a `location_descriptor` to `latlon` or `lonlat` will provide the coordinates of the cell centroid. The `to_centroid` function is also available for this purpose.
 4. When reading the value of a variable at a specific location, it may or may not exist. In the latter case, it is considered a NA (Not Available) value, and an empty optional is returned. The actual representation of NA in the dataset can be obtained using the `NA()` function.
@@ -531,6 +531,8 @@ When reading a variable using the from_file() function, there are a few consider
 **Output**
 
 @include{lineno} geography_raster_1.txt
+
+---
 
 ## Reading multiple variables
 
@@ -547,39 +549,40 @@ one single coherent object and checks that all rasters are aligned.
 
 @include{lineno} environmental_variable_1.txt
 
+---
+
 ## What to do after
 
-Geospatial datasets are useful in coalescence to inform the demographic process. There are mainly
-3 things you may want to do once you successfully parsed a raster:
+Geospatial datasets play a crucial role in coalescence by providing valuable information about the demographic process. Once a raster is successfully parsed, users typically have three primary objectives they may want to pursue:
 
-----------------------------------------------------
+---
 
-### Use the grid structure to define a spatial graph
+### Demes on a regular spatial grid
 
-Rasters are used to build a fully-connected spatial graph that will be used to simulate the demographic process.
-- Vertices are the demes (populations) represented by the centroid of the raster cells.
-- Edges are the distance between demes. Their connectivity can be altered by dispersal kernels.
+The rasters grid structure can be employed to construct a spatial graph of demes that is fully connected and utilized for simulating the demographic process. This is pertinent when looking at very larged continuous land masses. In this context:
 
-----------------------------------------------------
+- Vertices correspond to demes (populations) and are represented by the centroids of the raster cells.
+- Edges represent the distances between demes, and their connectivity can be modified using dispersal kernels.
 
-### Use Digital Elevation Models to define a spatial graph
+---
 
-Digital Elevation Models can also be used to link the dynamic of sea levels to the dynamic of species.
-In that case the connectivity of the graph will be a function of the elevation.
+### Demes on a variable spatial graph
 
-----------------------------------------------------
+In archipelagos or clusters of loosely connected islands, the fluctuations in sea levels have a notable impact on the dynamics of species. These variations cause the intermittent connection and separation of land masses and their corresponding populations. Similarly, climatic shifts in sky-island complexes can have similar effects. As a result, the assumption of a completely interconnected graph representing population units (demes) is no longer applicable in these situations.
 
-### Use the environmental information to inform processes
+To address this, Digital Elevation Models (DEMs) can be utilized to establish a relationship between the dynamics of sea levels and species. In these cases, the connectivity of the graph at any given time is determined by the current elevation, and changes in elevation directly impact the level of connectivity between different areas.
 
-Ecological niche models (ENMs) are an important tool to model likely responses of populations to past and future climatic variations.
-In most case, the output of these analysis is a raster referencing suitability estimates. In turn the suitability
-coefficient is used to inform growth rates and carrying capacity.
+---
 
-The values of the raster can be used to inform the demographic quantities by composing mathematical expressions
-of time and space (see `quetzal::expressive`).
+### Inform local processes
 
-NA values (e.g. oceanic cells or beyond the raster spatial extent) are manipulated through `std::optional`: they may 
-or not have a value, and it's up to the user to decide what to do when they don't.
+Ecological Niche Models (ENMs) play a crucial role in predicting how populations might respond to changes in climate, both in the past and the future.
+
+Typically, these models produce raster outputs that represent estimates of suitability. These suitability values are then utilized to determine growth rates and carrying capacity.
+
+By utilizing the values within the raster, it becomes possible to derive demographic quantities through the construction of mathematical expressions that incorporate both time and space. This approach is exemplified in the `quetzal::expressive` framework.
+
+When encountering NA values, such as cells representing oceanic areas or those lying outside the spatial extent of the raster, the `std::optional` mechanism is employed. This means that these values may or may not have a defined value, leaving it to the user to decide how to handle such cases.
 
 **Input**
 

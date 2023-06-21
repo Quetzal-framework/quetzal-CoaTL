@@ -189,13 +189,13 @@ namespace quetzal::geography
 
     /// @brief Resolution of the spatial grid
     /// @note The vertical pixel size will be negative (south pointing)
-    resolution<decimal_degree> resolution() const noexcept
+    geography::resolution<decimal_degree> resolution() const noexcept
     {
       return _resolution;
     }
 
     /// @brief Extent of the spatial grid
-    extent<decimal_degree> extent() const noexcept
+    geography::extent<decimal_degree> extent() const noexcept
     {
       return _extent;
     }

@@ -43,7 +43,7 @@ int main()
 	using time_type = int;
 	using raster_type = geography::raster<time_type>;
 
-	// The raster has 3 bands that we will assign to 2001, 2002, 2003
+	// The raster has 10 bands that we will assign to 2001 ... 2011.
 	std::vector<time_type> times(10);
     std::iota(times.begin(), times.end(), 2001);
 
@@ -54,8 +54,8 @@ int main()
 
 	std::cout << bio1 << std::endl;
 
-	// Check there are 3 bands/layers/time periods
-	assert( bio1.times().size() == 3 );
+	// Check there are 10 bands/layers/time periods
+	assert( bio1.times().size() == 10 );
 
 	// There are 9 cells/spatial coordinates
 	assert( bio1.locations().size() == 9 );
@@ -80,6 +80,11 @@ int main()
 	auto point_3 = lonlat(-99., 99);
 	check(point_3);
 
+	// Computing distance will come handy for spatial graphs
+	std::cout << point_1 << " is " 
+			  << point_1.great_circle_distance_to(point_3)
+			  << " km away from " << point_3 << std::endl;
+
 	// Coordinates
 	auto x = bio1.to_descriptor(bio1.origin());
 	auto t = bio1.times().front();
@@ -92,11 +97,11 @@ int main()
 			  << bio1.to_latlon(x) << "\n\t"
 	          << bio1.to_lonlat(x) << std::endl;
 
-	// Retrieve the raster value.
+	// Retrieve the raster value, that may be defined.
 	std::optional<double> maybe_bio1 = bio1.at(x,t);
 
 	// It may be a NA, let's check for it:
-	std::cout << "bio1( " << x << "," << t << ") is "
+	std::cout << "bio1(" << x << "," << t << ") is "
 			  << ( maybe_bio1.has_value() ? "" : "not")
 			  << "defined." << std::endl;
 
