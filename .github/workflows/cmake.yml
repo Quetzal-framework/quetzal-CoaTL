@@ -51,19 +51,19 @@ jobs:
 
     - name: Conan install dependencies
       run: >
-           conan install conanfile.py
-              --build=missing
-              --install-folder=build
-              -pr:b=quetzal-profile
-              -pr:h=quetzal-profile
+        conan install conanfile.py
+        --build=missing
+        --install-folder=build
+        -pr:b=quetzal-profile
+        -pr:h=quetzal-profile
 
     - name: CMake configuration
       run:  >
-            cmake 
-              -B ${{github.workspace}}/build 
-              -S .
-              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-              --toolchain ${{github.workspace}}/build/conan_toolchain.cmake
+        cmake 
+        -B ${{github.workspace}}/build 
+        -S .
+        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        --toolchain ${{github.workspace}}/build/conan_toolchain.cmake
 
     - name: CMake build
       run:  |
