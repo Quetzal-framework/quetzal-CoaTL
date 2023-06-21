@@ -66,9 +66,10 @@ jobs:
         --toolchain ${{github.workspace}}/build/conan_toolchain.cmake
 
     - name: CMake build
-      run:  |
-            cmake --build .
-            cd ..
+      run:  >
+        cmake 
+        --build ${{github.workspace}}/build 
+        --config ${{env.BUILD_TYPE}}
 
     - name: CMake test
       working-directory: ${{github.workspace}}/build

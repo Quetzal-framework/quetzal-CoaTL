@@ -18,19 +18,19 @@ Many softwares exist out-there:
 
 All are very useful and user-friendly resources that should be used whenever possible.
 
-These resources are very *top-down*: they focus on enabling researchers 
+These resources are *top-down*-focused: they seek to enable researchers 
 to simulate complex evolutionary models and quickly assemble pipelines to analyze data.
 They are very good at solving the big picture. 
 
-Sadly, the price to pay is that none of these resources 
+The price to pay is that none of these resources 
 look at the small picture to solve a basic engineering problem: providing the 
 research community with reusable classes and algorithms in a reasonably efficient language.
 
 Despite numerous applications out-there, there is to our knowledge nothing out-there
-that can help a Computer Science student who simply needs to parse and manipulate a programmatic object 
-with the semantic of a phylogenetic network.
+that can help a Computer Science, C++-taught student who simply needs to parse and manipulate programmatic objects
+having the semantic of a phylogenetic network.
 
-Top-down approaches are great **and** also we need something that looks like a toolbox of very small components.
+Top-down approaches are great **and** also we need something that looks like a toolbox of (very) small components.
 
 **Quetzal** provides these components (structures, algorithms, concepts) that can be reused to build programs.
 
@@ -38,12 +38,9 @@ Top-down approaches are great **and** also we need something that looks like a t
 
 ## Why C++?
 
-When the limits of a project is how many millions of simulations you can run in a limited time
-with a constrained budget, it becomes natural to opt for a language that is know for its performance.
-It could have been Rust, but C++ is popular in Computer Science classes, and widely used, so we chose C++.
+When the limitations of a project revolve around the number of simulations that can be executed within a limited timeframe and with a restricted budget, it becomes natural to choose a language renowned for its performance. While Rust could have been an option, C++ is commonly taught in Computer Science courses and extensively utilized in Ecology and Evolution software, such as msprime, SLiM, and Splatche, making it a logical choice.
 
-Despite C++ difficult reputation, the language changed tremendously in the last two decades. It is now completely
-feasible for a beginner to use generic components with a near-pythonic syntax. There is nothing inaccessible in writing:
+Despite C++ being known for its complexity, the language has undergone significant changes over the past two decades. Now, even beginners can comfortably utilize generic components with a syntax that closely resembles Python. There are no barriers to writing code like the following:
 
 ```cpp
   auto [tree, root] = get_random_binary_tree<>(number_of_leaves, rng);
@@ -59,8 +56,8 @@ feasible for a beginner to use generic components with a near-pythonic syntax. T
 The Quetzal-CoaTL interfaces and components are generic, in the same sense as the
 Standard Template Library (STL) [2]. 
 
-Genericity is what make Python a friendly
-language: you don't have to worry too much about the exact types that are manipulated.
+Genericity is what makes Python a friendly language: as a user of a library you don't 
+have to worry too much about the exact types that are manipulated.
 
 Templates in C++ give to the user of a library a similar experience 
 (although that may be another story for the actual developers of the library).
@@ -71,15 +68,11 @@ Templates in C++ give to the user of a library a similar experience
 
 **Quetzal** algorithms are written to be **data-structure agnostic**.
 
-This allows a single function to operate on many different classes of data structures.
-In other words you can import a **Quetzal** algorithm in your code without being invaded 
-by an avalanche of new data-structures.
+In contrast to other programs, the **Quetzal** algorithms have a more abstract nature. This distinction enables a single function to handle a diverse range of data structures. Essentially, you can integrate a  **Quetzal** algorithm into your code without being inundated with a vast array of unfamiliar data structures.
 
-This decoupling has a huge impact on the code size, falling from \f$O(M*N)\f$ to \f$O(M+N)\f$, \f$M\f$ being the number of algorithms and \f$N\f$ the number of data structures.
+This decoupling also has a significant impact on the size of the code. It reduces the complexity from O(M*N) to O(M+N), where M represents the number of algorithms and N represents the number of data structures.
 
-@note
-This is important for researchers in computational biology:
-for 20 algorithms applied to 5 data-structures, it is the difference between having to write, debug, document and maintain 100 functions versus 25. And this difference grows faster and faster with the number of algorithms and data-structures.
+This feature holds particular importance for computational biology researchers. When dealing with 20 algorithms applied to 5 data structures, it makes the difference between having to create, debug, document, and maintain 100 functions versus just 25. And as the number of algorithms and data structures grows, this difference becomes even more pronounced at an exponential rate.
 
 ---
 
