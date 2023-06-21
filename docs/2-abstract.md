@@ -1,9 +1,8 @@
 # Abstract
 
-This page lists the features available in the library. 
+This page gives an overview of the features available in the library. 
 
-Please refer to the tutorial
-section for more details on how to use them.
+Please refer to the [Tutorials](tutorials) section for more detals on how to use them.
 
 ## Input/Output
 
@@ -12,7 +11,9 @@ Quetzal-CoaTL defines functions and classes to help reading (parsers) and writin
 
 - Newick tree format
 - Extended Newick network format
-- Spatio-temporal raster datasets
+- Raster datasets
+- Genetic datasets
+- Spatial points
 
 ## Algorithms
 
@@ -38,7 +39,9 @@ By themselves, these algorithm patterns do not compute or update any meaningful
 quantities over lineages; they are merely building blocks for instantiating
 coalescence algorithms.
 
-## Spatio-temporal heterogeneity
+## Graphs
+
+Since algorithms are decoupled from data-structures, these need to
 
 ## Compile-time units system
 
@@ -56,7 +59,8 @@ units of generations.
 The objective here is to secure your code by *actually* triggering
 compilation errors if you are not doing things right.
 
-If you don't feel like using it, it's fine, you don't have to. If you want, then see [Defining and using systems of units](system-of-units.md)
+If you don't feel like using it, it's fine, you don't have to. 
+If you want, then see [Defining and using systems of units](system-of-units.md)
 for explanations about how you can use and extend Quetzal's unit system:
 
 - Landscape quantities

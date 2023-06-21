@@ -16,23 +16,17 @@ Many softwares exist out-there:
 - [msprime](http://msprime.readthedocs.io/en/stable/index.html),
 - [SLiM](https://messerlab.org/slim/) 
 
-All are very useful and user-friendly resources that should be used whenever possible.
+Whenever possible, it is highly recommended to utilize these resources as they are incredibly valuable and user-friendly.
 
-These resources are *top-down*-focused: they seek to enable researchers 
-to simulate complex evolutionary models and quickly assemble pipelines to analyze data.
-They are very good at solving the big picture. 
+These resources have a top-down focus, aiming to empower researchers in simulating complex evolutionary models and swiftly constructing pipelines for data analysis. They excel at solving high-level challenges and providing a comprehensive overview.
 
-The price to pay is that none of these resources 
-look at the small picture to solve a basic engineering problem: providing the 
-research community with reusable classes and algorithms in a reasonably efficient language.
+However, the trade-off is that these resources do not address the smaller-scale engineering problems, such as offering reusable classes and algorithms in an efficient language, which are essential for the research community.
 
-Despite numerous applications out-there, there is to our knowledge nothing out-there
-that can help a Computer Science, C++-taught student who simply needs to parse and manipulate programmatic objects
-having the semantic of a phylogenetic network.
+Despite the existence of numerous applications, to our knowledge, there is currently no solution available to assist Computer Science students, specifically those familiar with C++, who simply need to parse and manipulate programmatic objects with the semantic of a phylogenetic network.
 
-Top-down approaches are great **and** also we need something that looks like a toolbox of (very) small components.
+While top-down approaches are valuable, there is also a need for a toolbox of extremely modular components.
 
-**Quetzal** provides these components (structures, algorithms, concepts) that can be reused to build programs.
+Quetzal fills this gap by providing these components (structures, algorithms, and concepts) that can be reused to construct programs.
 
 ---
 
@@ -72,7 +66,7 @@ In contrast to other programs, the **Quetzal** algorithms have a more abstract n
 
 This decoupling also has a significant impact on the size of the code. It reduces the complexity from O(M*N) to O(M+N), where M represents the number of algorithms and N represents the number of data structures.
 
-This feature holds particular importance for computational biology researchers. When dealing with 20 algorithms applied to 5 data structures, it makes the difference between having to create, debug, document, and maintain 100 functions versus just 25. And as the number of algorithms and data structures grows, this difference becomes even more pronounced at an exponential rate.
+This feature holds particular importance for computational biology researchers. When dealing with 20 algorithms applied to 5 data structures, it makes the difference between having to create, debug, document, and maintain 100 functions versus just 25. And as the number of algorithms and data structures grows, this difference becomes even more pronounced, growing at an exponential rate.
 
 ---
 
