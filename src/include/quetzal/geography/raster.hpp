@@ -23,6 +23,7 @@
 #include <algorithm>
 #include <stdexcept> // std::invalid_argument
 #include <cmath>
+#include <optional>
 
 namespace quetzal::geography
 {

@@ -503,26 +503,26 @@ Usage examples are described in their respective class documentation.
 
 ## Reading a single variable
 
-Landscapes and their spatial/temporal heterogeneity affect the dynamics of populations and lineages.
-These landscapes are often incorporated into computational models as geospatialized grids, or rasters.
+Landscapes, along with their spatial and temporal heterogeneity, play a significant role in shaping the dynamics of populations and lineages. In computational models, these landscapes are often represented as geospatial grids or rasters.
 
-*Quetzal* provides a `quetzal::geography::raster` class with a small interface to integrate these spatial 
-grids into a georeferenced coalescence simulation.
+In most analyses, it is common for users to establish connections between local growth processes and a habitability raster obtained from Ecological Niche Models. Additionally, they may associate dispersal or connectivity with a Digital Elevation Model.
 
-With `quetzal::geography::raster` you can define a single variable that exhibits:
-- spatial heterogeneity: rasters delineate a geographic space into a number of cells identified by their row/columns.
-- temporal heterogeneity: raster have a *depth*, *i.e.* multiple bands (layers) that are used to model the temporal scale.
+The Quetzal library offers a quetzal::geography::raster class with a streamlined interface to incorporate these spatial grids into georeferenced coalescence simulations.
 
-When you read a variable with the `from_file()` function you will need to think about a few things:
-- you need to decide what the raster template argument `time_type` is. In most cases that will be an integer mapping a band to
-  a year (e.g 2023 for the last band), but you could chose to make it a slightly more complex type like a time period (e.g. 7000–3000 BCE).
-- keep in mind that you don't need to duplicate identical bands (what could make the raster heavy): you can virtualize repeated bands with the VRT format.
-- there are multiple ways to identify locations in a spatial grid: which way is best depends on the usage context. The `quetzal::geography::raster` interface allows to switch between them:
-  - `lonlat` or `latlon`: decimal longitude and latitude values, that may or may not be contained in the spatial extent of the grid. 
-    Users inputs such as genetic samples will often been given as such, and will need to be reprojected into a `location_descriptor`
-  - `colrow` or `rowcol`: the most intuitive way to index the cells of a grid.
-  - `location_descriptor` is a 1-dimensional index of the grid cells. You can think of it has the way to map  \f$0\f$ to the grid origin (top left cell) \f$ width \times height - 1\f$ to the bottom right cell. Since it's just an integer, this 1D system is cheap to copy and is meant to used in intensive simulations. Converting a `location_descritptor` to a `latlon` or `lonlat` will return the coordinates of the cell centroid. See also `to_centroid`.
-- When the value of the variable at a given location is read, it may exist or not (in which case it is a NA). In that last case, an empty optional is returned. The actual value of a NA as represented in the dataset is given by the `NA()` function.
+By utilizing quetzal::geography::raster, you can define a single variable that encompasses:
+
+- Spatial heterogeneity: Rasters divide a geographical space into cells identified by their row and column coordinates.
+- Temporal heterogeneity: Rasters have a depth, meaning multiple bands (layers) that are utilized to model the temporal dimension.
+
+When reading a variable using the from_file() function, there are a few considerations to keep in mind:
+
+1. You need to decide on the raster template argument `time_type`. In most cases, it would be an integer representing a band mapped to a year (e.g., 2023 for the latest band). However, you can opt for a more complex type such as a time period (e.g., 7000–3000 BCE).
+2. Keep in mind that duplicating identical bands is unnecessary and can make the raster bulky. Instead, you can virtualize repeated bands using the VRT (Virtual Dataset) format.
+3. There are multiple ways to identify locations within a spatial grid, and the choice depends on the specific usage context. The `quetzal::geography::raster` interface allows for switching between them:
+  - `lonlat` or `latlon`: Decimal longitude and latitude values, which may or may not fall within the spatial extent of the grid. Genetic samples and other user inputs will generally use these real-world coordinate formats and may require projection into a location_descriptor.
+  - `colrow` or `rowcol:` The most intuitive way to index the cells of a grid.
+  - `location_descriptor`: A one-dimensional index representing the grid cells. It can be thought of as mapping 0 to the top-left cell (grid origin) and width × height - 1 to the bottom-right cell. Since it's a simple integer, this 1D system is computationally efficient and designed for intensive simulations. Converting a `location_descriptor` to `latlon` or `lonlat` will provide the coordinates of the cell centroid. The `to_centroid` function is also available for this purpose.
+4. When reading the value of a variable at a specific location, it may or may not exist. In the latter case, it is considered a NA (Not Available) value, and an empty optional is returned. The actual representation of NA in the dataset can be obtained using the `NA()` function.
 
 **Input**
 

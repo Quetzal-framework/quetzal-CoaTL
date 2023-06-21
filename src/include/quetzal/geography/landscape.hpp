@@ -19,6 +19,7 @@
 #include <algorithm>
 #include <tuple>	  // std::forward_as_tuple
 #include <functional> // std::cref
+#include <optional>
 
 namespace quetzal::geography
 {

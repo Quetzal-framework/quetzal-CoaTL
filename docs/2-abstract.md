@@ -2,18 +2,18 @@
 
 This page gives an overview of the features available in the library. 
 
-Please refer to the [Tutorials](tutorials) section for more detals on how to use them.
+Please refer to the [Tutorials](tutorials) section for more detals on how to use them. If proper
+documentation does not exist yet, or lacks of clarity, please [open an issue](https://github.com/Quetzal-framework/quetzal-CoaTL/issues).
 
 ## Input/Output
 
-Quetzal-CoaTL defines functions and classes to help reading (parsers) and writing
-(generators) data structures of general importance for coalescence problems:
+Quetzal-CoaTL provides a set of functions and classes that facilitate the reading of data structures (using parsers) and the writing of data structures (using generators) that are crucial for addressing coalescence problems.
 
 - Newick tree format
 - Extended Newick network format
 - Raster datasets
-- Genetic datasets
 - Spatial points
+- Genetic datasets
 
 ## Algorithms
 
