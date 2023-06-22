@@ -24,6 +24,7 @@
 #include <stdexcept> // std::invalid_argument
 #include <cmath>
 #include <optional>
+#include <iostream>
 
 namespace quetzal::geography
 {

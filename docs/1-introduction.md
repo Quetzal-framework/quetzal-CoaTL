@@ -5,11 +5,9 @@
 
 ## Why Quetzal?
 
-Infering the evolutionary history of populations from genetic datasets
-an be a complex task. In some settings it is a mathematically intractable
-problem, so simulation-intensive methods are needed.
+Inferring the evolutionary history of populations based on genetic datasets can pose a challenging undertaking. In certain scenarios, the task becomes mathematically intractable, necessitating the utilization of simulation-intensive methods.
 
-Many softwares exist out-there:
+Many softwares solving for this exist out-there:
 - [SPLATCHE](http://splatche.com/),
 - [simcoal2](http://cmpg.unibe.ch/software/simcoal2/),
 - [egglib](http://mycor.nancy.inra.fr/egglib/index.html),
@@ -20,7 +18,7 @@ Whenever possible, it is highly recommended to utilize these resources as they a
 
 These resources have a top-down focus, aiming to empower researchers in simulating complex evolutionary models and swiftly constructing pipelines for data analysis. They excel at solving high-level challenges and providing a comprehensive overview.
 
-However, the trade-off is that these resources do not address the smaller-scale engineering problems, such as offering reusable classes and algorithms in an efficient language, which are essential for the research community.
+However, the trade-off is that these resources do not address the smaller-scale engineering problems, such as offering reusable classes and algorithms in an efficient language, which are essential for the research activity.
 
 Despite the existence of numerous applications, to our knowledge, there is currently no solution available to assist Computer Science students, specifically those familiar with C++, who simply need to parse and manipulate programmatic objects with the semantic of a phylogenetic network.
 
@@ -29,6 +27,19 @@ While top-down approaches are valuable, there is also a need for a toolbox of ex
 Quetzal fills this gap by providing these components (structures, algorithms, and concepts) that can be reused to construct programs.
 
 ---
+
+## Why -CoaTL ?
+
+For **Coa**-lescence **T**-emplate **L**-ibrary.
+
+Quetzalcoatl, the Feathered Serpent, was a powerful divinity from Mesoamerica who created the world (it still took him 600 years to reach a satisfying version, and we strongly identify to this part of the tale).
+
+The god’s name is a combination of two Nahuatl words:
+
+- `quetzal` refers to the Resplendant Quetzal (an emerald bird symbol of freedom)
+- `coatl` basically means snake (remember, all that glitters is not gold…) and conveniently aligns with Coalescence Template Library.
+
+But let's be honest, the full name is quite a mouthful, so let's just focus on the dazzling aspects and call it Quetzal for short (because who doesn't love a little sparkle in their code?).
 
 ## Why C++?
 
@@ -47,14 +58,11 @@ Despite C++ being known for its complexity, the language has undergone significa
 
 ## Why templates?
 
-The Quetzal-CoaTL interfaces and components are generic, in the same sense as the
-Standard Template Library (STL) [2]. 
+The interfaces and components of Quetzal-CoaTL are designed to be generic, similar to the concept of the Standard Template Library (STL) [2].
 
-Genericity is what makes Python a friendly language: as a user of a library you don't 
-have to worry too much about the exact types that are manipulated.
+Genericity is what contributes to Python's user-friendly nature, where library users don't need to overly concern themselves with specific types being manipulated.
 
-Templates in C++ give to the user of a library a similar experience 
-(although that may be another story for the actual developers of the library).
+In C++, templates offer library users a similar experience (though, for the actual developers of the library, it may be a different story altogether).
 
 --- 
 
@@ -64,7 +72,8 @@ Templates in C++ give to the user of a library a similar experience
 
 In contrast to other programs, the **Quetzal** algorithms have a more abstract nature. This distinction enables a single function to handle a diverse range of data structures. Essentially, you can integrate a  **Quetzal** algorithm into your code without being inundated with a vast array of unfamiliar data structures.
 
-This decoupling also has a significant impact on the size of the code. It reduces the complexity from O(M*N) to O(M+N), where M represents the number of algorithms and N represents the number of data structures.
+@note
+This decoupling also has a significant impact on the size of the code. It reduces the complexity from \f$O(M*N)\f$ to \f$O(M+N)\f$, where \f$M\f$ represents the number of algorithms and \f$N\f$ represents the number of data structures.
 
 This feature holds particular importance for computational biology researchers. When dealing with 20 algorithms applied to 5 data structures, it makes the difference between having to create, debug, document, and maintain 100 functions versus just 25. And as the number of algorithms and data structures grows, this difference becomes even more pronounced, growing at an exponential rate.
 

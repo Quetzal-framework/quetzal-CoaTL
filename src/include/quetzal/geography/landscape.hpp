@@ -20,6 +20,7 @@
 #include <tuple>	  // std::forward_as_tuple
 #include <functional> // std::cref
 #include <optional>
+#include <iostream>
 
 namespace quetzal::geography
 {
@@ -154,6 +155,29 @@ namespace quetzal::geography
 		void to_shapefile(std::map<latlon, int> counts, const std::filesystem::path &file) const
 		{
 			_variables.cbegin()->second.to_shapefile(counts, file);
+		}
+
+		/// @brief Landscape is streamable
+		std::ostream& write(std::ostream& stream) const
+		{
+		stream << "Landscape of " << _variables.size() << " aligned rasters:\n";
+
+		for (const auto &it : _variables)
+			stream << it.first << " ";
+
+		stream << "\nOrigin: " << origin() << 
+					"\nWidth: " << width() <<
+					"\nHeight: " << height() <<
+					"\nDepth: " << depth() <<
+					"\nResolution: " <<
+					"\n\tLat: " << get_resolution().lat() <<
+					"\n\tLon: " << get_resolution().lon() <<
+					"\nExtent:" <<
+					"\n\tLat min: " << get_extent().lat_min() <<
+					"\n\tLat max: " << get_extent().lat_max() <<
+					"\n\tLon min: " << get_extent().lon_min() <<
+					"\n\tLon max: " << get_extent().lon_max();
+		return stream;
 		}
 
 		/// @}
@@ -347,5 +371,10 @@ namespace quetzal::geography
 
 		/// @}
 	};
+
+template<typename Key, typename Time>
+std::ostream &operator<<(std::ostream &os, const landscape<Key, Time> &l) { 
+   return l.write(os);
+}
 
 } // geography

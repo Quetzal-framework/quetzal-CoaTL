@@ -2,7 +2,7 @@
 
 This page gives an overview of the features available in the library. 
 
-Please refer to the [Tutorials](5-tutorials) section for more detals on how to use them. If proper
+Please refer to the Tutorials section for more detals on how to use them. If proper
 documentation does not exist yet, or lacks of clarity, please [open an issue](https://github.com/Quetzal-framework/quetzal-CoaTL/issues).
 
 ## Input/Output
