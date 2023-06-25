@@ -283,21 +283,3 @@ To run the Docker image, you can follow these steps:
   You can view the running containers on your system using the `docker ps` command. To stop a running container, you can use the `docker stop arnaudbecheler/quetzal-nest`  command followed by the container ID or name.
 
 These steps provide a basic overview of running a Docker image as a container. Docker offers many additional features and commands to manage containers. For more advanced usage, it's recommended to explore the Docker documentation and resources available online. Don't hesitate to ask for help by opening a Github issue on the **Quetzal** repository.
-
-[//]: # (----------------------------------------------------------------------)
-@page easy_start Quick Start with Visual Studio Code and Devcontainer
-
-The "Remote - Containers" extension for Visual Studio Code is a tool that lets you develop your projects inside isolated environments called containers. These containers provide a consistent and reproducible setup for your development, making it easier to work on projects with complex dependencies.
-
-With this extension, you can open your project in a development container directly from VS Code. It uses Docker behind the scenes to create a containerized environment that includes all the tools and dependencies needed for your project.
-
-The benefit of using a development container is that it ensures everyone working on the project has the same development environment, regardless of their operating system. It eliminates issues caused by different setups and makes collaboration smoother.
-
-Once your project is inside a container, you can use all the features of VS Code as you normally would, including code editing, debugging, and using extensions. It feels like working in a regular VS Code environment, but with the added benefit of a consistent development setup.
-
-The "Remote - Containers" extension is especially useful for beginners as it simplifies the setup process and provides a reliable development environment. It's like having a ready-to-use workspace that you can quickly start coding in without worrying about installing dependencies or dealing with compatibility issues.
-
-To use the extension, you'll need to have Docker installed on your machine, but once that's set up, you can easily get started with containerized development using the "Remote - Containers" extension in Visual Studio Code.
-
-### VSCode devcontainer
-

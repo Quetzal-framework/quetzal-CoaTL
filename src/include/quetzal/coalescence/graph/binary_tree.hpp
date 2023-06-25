@@ -15,6 +15,7 @@
 #include <range/v3/all.hpp>
 #include <boost/range/iterator_range.hpp>
 
+#include <boost/graph/depth_first_search.hpp>
 #include <boost/graph/graphviz.hpp>
 
 #include "detail/tree_traits.hpp"
