@@ -39,7 +39,7 @@ class QuetzalCoaTLConan(ConanFile):
     def requirements(self):
        if self.settings.os == "Macos":
             if self.settings.compiler == "apple-clang":
-                self.requires("boost/[>1.75 <1.80")
+                self.requires("boost/[>1.75, <1.80]")
                 self.requires("gdal/[>=3.4.0]")
                 self.requires("range-v3/0.12.0")
        if self.settings.os == "Linux":
