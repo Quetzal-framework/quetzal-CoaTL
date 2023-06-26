@@ -524,7 +524,11 @@ namespace boost
         }
         u = predecessor(u, g);
         return -1;
+
+      default:
+        throw std::logic_error("Unexpected visit stage encountered");
       }
+
     }
 
     template <typename BinaryTree, typename Visitor>
