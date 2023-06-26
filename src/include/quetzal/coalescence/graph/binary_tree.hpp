@@ -444,7 +444,9 @@ namespace quetzal::coalescence
     /// @brief Add a vertex and its properties to the graph
     vertex_descriptor add_vertex(const VertexProperty &p)
     {
+      // delete the member function
       using detail::adl_resolution::add_vertex;
+      // ADL enabled
       vertex_descriptor v = add_vertex(this->_graph);
       _vertex_manager.add_vertex_to_manager(v, p);
       return v;
