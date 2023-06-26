@@ -1,4 +1,0 @@
-<map id="quetzal::demography::FlowHashMapImplementation&lt; Space, Time, Value &gt;::reverse_key_hash" name="quetzal::demography::FlowHashMapImplementation&lt; Space, Time, Value &gt;::reverse_key_hash">
-<area shape="rect" id="node1" title="Makes reverse_key_type hashable (can be stored in hash maps)" alt="" coords="5,109,239,180"/>
-<area shape="rect" id="node2" title=" " alt="" coords="44,5,200,61"/>
-</map>

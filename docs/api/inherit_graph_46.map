@@ -1,6 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,108,124,135"/>
-<area shape="rect" id="node2" href="$structquetzal_1_1demography_1_1FlowHashMapImplementation_1_1key__hash.html" title="Makes key_type hashable (can be stored in hash maps)" alt="" coords="172,5,417,61"/>
-<area shape="rect" id="node3" href="$structquetzal_1_1demography_1_1FlowHashMapImplementation_1_1reverse__key__hash.html" title="Makes reverse_key_type hashable (can be stored in hash maps)" alt="" coords="178,86,411,157"/>
-<area shape="rect" id="node4" href="$structquetzal_1_1demography_1_1FlowOnDiskImplementation_1_1key__hash.html" title="Makes key_type hashable in unordered_map." alt="" coords="189,181,401,251"/>
-</map>

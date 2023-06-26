@@ -7,20 +7,19 @@
 * (at your option) any later version.                                  *
 *                                                                      *
 ***************************************************************************/
-#define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE random_test
 
 #include <boost/test/unit_test.hpp>
 namespace utf = boost::unit_test;
 
-#include <quetzal/random.h>
+#include <quetzal/utils/random.hpp>
 #include <iostream>
 
 BOOST_AUTO_TEST_SUITE( random_suite )
 
 BOOST_AUTO_TEST_CASE( discrete_distribution )
 {
-  using quetzal::random::DiscreteDistribution;
+  using quetzal::utils::random::DiscreteDistribution;
   std::mt19937 gen;
 	DiscreteDistribution<std::string> d({"Bordeaux", "Paris"}, {0.2,0.8});
   std::map<std::string, int> m;
@@ -35,7 +34,7 @@ BOOST_AUTO_TEST_CASE( discrete_distribution )
 BOOST_AUTO_TEST_CASE( discrete_distribution_init )
 {
   std::mt19937 gen;
-  using quetzal::random::DiscreteDistribution;
+  using quetzal::utils::random::DiscreteDistribution;
 
 	// initialization by default constructor
 	DiscreteDistribution<int> first;
@@ -68,7 +67,7 @@ BOOST_AUTO_TEST_CASE( time_transition_kernel_init )
   	using State = int;
   	using Time = int;
   	using Distribution = std::discrete_distribution<State>;
-  	using Kernel = quetzal::random::TransitionKernel<Time, Distribution>;
+  	using Kernel = quetzal::utils::random::TransitionKernel<Time, Distribution>;
 
   	// initialization by default constructor
   	Kernel first;
@@ -102,7 +101,7 @@ BOOST_AUTO_TEST_CASE (time_transition_kernel)
   using deme_ID_type = int;
   using time_type = int;
   using law_type = std::discrete_distribution<deme_ID_type>;
-  using kernel_type = quetzal::random::TransitionKernel<time_type, law_type>;
+  using kernel_type = quetzal::utils::random::TransitionKernel<time_type, law_type>;
 
   std::mt19937 gen;
   law_type d({0.5,0.5});
@@ -124,7 +123,7 @@ BOOST_AUTO_TEST_CASE (transition_kernel_init)
 {
   using state_type = int;
   using distribution_type = std::discrete_distribution<state_type>;
-  using kernel_type = quetzal::random::TransitionKernel<distribution_type>;
+  using kernel_type = quetzal::utils::random::TransitionKernel<distribution_type>;
 
   // initialization by default constructor
   kernel_type first;
@@ -153,7 +152,7 @@ BOOST_AUTO_TEST_CASE (transition_kernel)
 {
   using deme_ID_type = int;
   using law_type = std::discrete_distribution<deme_ID_type>;
-  using kernel_type = quetzal::random::TransitionKernel<law_type>;
+  using kernel_type = quetzal::utils::random::TransitionKernel<law_type>;
 
   law_type distribution({0.5,0.5}); // return deme 0 or deme 1 with same probability
   kernel_type kernel;

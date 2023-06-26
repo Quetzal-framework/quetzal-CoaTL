@@ -1,5 +1,0 @@
-//the path to the version.h file is relative to your build directory.
-#include "../include/quetzal/version.h"
-
-const std::string gVERSION = "@VERSION@";
-const std::string gVERSION_SHORT = "@VERSION_SHORT@";

@@ -1,8 +1,0 @@
-<map id="quetzal::geography::gdalcpp::Feature" name="quetzal::geography::gdalcpp::Feature">
-<area shape="rect" id="node1" title=" " alt="" coords="280,332,427,373"/>
-<area shape="rect" id="node2" href="$classquetzal_1_1geography_1_1gdalcpp_1_1Layer.html" title=" " alt="" coords="280,228,427,269"/>
-<area shape="rect" id="node3" href="$classquetzal_1_1geography_1_1gdalcpp_1_1Dataset.html" title=" " alt="" coords="191,124,337,165"/>
-<area shape="rect" id="node4" href="$classquetzal_1_1geography_1_1gdalcpp_1_1SRS.html" title=" " alt="" coords="5,5,152,47"/>
-<area shape="rect" id="node5" title=" " alt="" coords="176,13,235,39"/>
-<area shape="rect" id="node6" href="$structquetzal_1_1geography_1_1gdalcpp_1_1detail_1_1Options.html" title=" " alt="" coords="304,5,488,47"/>
-</map>

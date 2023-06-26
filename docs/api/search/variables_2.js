@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['k_553',['k',['../classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrum.html#ac5e62da68f33e00268c8e27a10dad113',1,'quetzal::coalescence::occupancy_spectrum::OccupancySpectrum']]]
+  ['formattable_871',['Formattable',['../namespacequetzal_1_1format_1_1newick.html#ad541166fae72d249f209dbf086039e6d',1,'quetzal::format::newick']]],
+  ['from_872',['from',['../structquetzal_1_1demography_1_1FlowHashMapImplementation_1_1key__type.html#a486c29379fcb0d5318729c0d79d13022',1,'quetzal::demography::FlowHashMapImplementation::key_type::from()'],['../structquetzal_1_1demography_1_1FlowOnDiskImplementation_1_1key__type.html#ad2d8ebdd238a75d6a5ea91c77613a17b',1,'quetzal::demography::FlowOnDiskImplementation::key_type::from()']]]
 ];

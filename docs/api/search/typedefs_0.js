@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['coord_5ftype_568',['coord_type',['../classquetzal_1_1coalescence_1_1newick__with__distance__to__parent.html#adee0faa30658c89a38e58a1cf90cc903',1,'quetzal::coalescence::newick_with_distance_to_parent::coord_type()'],['../classquetzal_1_1coalescence_1_1newick__with__distance__to__parent__and__leaf__name.html#abf9eb015892154ec62166453baf6c527',1,'quetzal::coalescence::newick_with_distance_to_parent_and_leaf_name::coord_type()']]]
+  ['base_880',['base',['../classquetzal_1_1coalescence_1_1detail_1_1binary__tree__common.html#aa74af67f0fd0f12addd4371057a99893',1,'quetzal::coalescence::detail::binary_tree_common::base()'],['../classquetzal_1_1coalescence_1_1detail_1_1k__ary__tree__common.html#ac6e34a3a6e0e70eba53489a3097b1753',1,'quetzal::coalescence::detail::k_ary_tree_common::base()']]],
+  ['bidirectional_5fbinary_5ftree_881',['bidirectional_binary_tree',['../namespaceboost.html#aaa55a8be4c0e30675215f8b0ca637706',1,'boost']]]
 ];

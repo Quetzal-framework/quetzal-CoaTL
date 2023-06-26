@@ -1,0 +1,4 @@
+var structquetzal_1_1detail_1_1make__undirected_3_01boost_1_1adjacency__list_3_01A_00_01B_00_01C_00_01D_00_01E_00_01F_01_4_01_4 =
+[
+    [ "type", "structquetzal_1_1detail_1_1make__undirected_3_01boost_1_1adjacency__list_3_01A_00_01B_00_01C_00_01D_00_01E_00_01F_01_4_01_4.html#ac33a2f8371a1c48e306be86a1a7017e4", null ]
+];

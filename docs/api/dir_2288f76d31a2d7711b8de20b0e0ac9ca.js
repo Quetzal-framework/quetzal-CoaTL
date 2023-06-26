@@ -1,0 +1,26 @@
+var dir_2288f76d31a2d7711b8de20b0e0ac9ca =
+[
+    [ "coalescence", "dir_96ed4a8670fc12bbad23bffbfb7b5d2a.html", "dir_96ed4a8670fc12bbad23bffbfb7b5d2a" ],
+    [ "demography", "dir_54250a38c941d94b6cafe5990ac95c84.html", "dir_54250a38c941d94b6cafe5990ac95c84" ],
+    [ "expressive", "dir_b90b260fac8470289e8254951088b582.html", "dir_b90b260fac8470289e8254951088b582" ],
+    [ "geography", "dir_e57e5c9ba83947f39b44cd6f07f9341d.html", "dir_e57e5c9ba83947f39b44cd6f07f9341d" ],
+    [ "io", "dir_9db9c42188994bf6848ac086f4ad3c59.html", "dir_9db9c42188994bf6848ac086f4ad3c59" ],
+    [ "mutation", "dir_df9f58777bb9bddccf0034c3ba9843f2.html", "dir_df9f58777bb9bddccf0034c3ba9843f2" ],
+    [ "polymorphism", "dir_11fa7c8273a9f2fb741865a584ad267e.html", "dir_11fa7c8273a9f2fb741865a584ad267e" ],
+    [ "simulator", "dir_5990ccb28c221af38b9e87cd25e7f3e8.html", "dir_5990ccb28c221af38b9e87cd25e7f3e8" ],
+    [ "units", "dir_67cc38b8dbe6aa37a948ade52d8d8a79.html", "dir_67cc38b8dbe6aa37a948ade52d8d8a79" ],
+    [ "utils", "dir_1ec746fd7cd1428d7c47245faacb5a8f.html", "dir_1ec746fd7cd1428d7c47245faacb5a8f" ],
+    [ "coalescence.hpp", "coalescence_8hpp_source.html", null ],
+    [ "demography.hpp", "demography_8hpp_source.html", null ],
+    [ "expressive.hpp", "expressive_8hpp_source.html", null ],
+    [ "geography.hpp", "geography_8hpp_source.html", null ],
+    [ "io.hpp", "io_8hpp_source.html", null ],
+    [ "mutation.hpp", "mutation_8hpp_source.html", null ],
+    [ "polymorphism.hpp", "polymorphism_8hpp_source.html", null ],
+    [ "quetzal.hpp", "quetzal_8hpp_source.html", null ],
+    [ "sampling.hpp", "sampling_8hpp_source.html", null ],
+    [ "simulator.hpp", "simulator_8hpp_source.html", null ],
+    [ "units.hpp", "units_8hpp_source.html", null ],
+    [ "utils.hpp", "utils_8hpp_source.html", null ],
+    [ "version.hpp", "version_8hpp_source.html", null ]
+];

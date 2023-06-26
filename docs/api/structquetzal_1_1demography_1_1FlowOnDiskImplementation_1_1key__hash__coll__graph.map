@@ -1,4 +1,0 @@
-<map id="quetzal::demography::FlowOnDiskImplementation&lt; Space, Time, Value &gt;::key_hash" name="quetzal::demography::FlowOnDiskImplementation&lt; Space, Time, Value &gt;::key_hash">
-<area shape="rect" id="node1" title="Makes key_type hashable in unordered_map." alt="" coords="5,95,217,165"/>
-<area shape="rect" id="node2" title=" " alt="" coords="19,5,204,47"/>
-</map>

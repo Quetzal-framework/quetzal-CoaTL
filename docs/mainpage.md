@@ -1,19 +1,23 @@
 
-<div align="left">
+# The Quetzal Coalescence Library
 
-<a href="https://becheler.github.io/softwares/quetzal-CoalTL/home/">![Website becheler.github.io](https://img.shields.io/website-up-down-green-red/https/becheler.github.io.svg)</a>
-<a href="https://www.gnu.org/licenses/gpl-3.0">![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)</a>
+**Arnaud Becheler**
+Copyright © 2016-2023 Arnaud Becheler
 
-</div>
+@note
+This documentation targets C++ developers seeking to integrate the Quetzal Coalescence Template Library (Quetzal-CoalTL) into their own code projects.
 
-<div align="left">
+Coalescence theory, also known as the coalescent theory, is a fundamental concept in population genetics that describes the genealogical relationships and ancestry of individuals within a population. It provides a theoretical framework for understanding how genetic variation arises and is inherited over temporal and spatial scales.
 
-  <a href="">![GitHub release (latest by date)](https://img.shields.io/github/v/release/Becheler/quetzal-CoalTL)</a>
-  <a href="">![Lines of code](https://img.shields.io/tokei/lines/github/Becheler/quetzal-CoalTL)</a>
-  <a href="">![GitHub last commit](https://img.shields.io/github/last-commit/Becheler/quetzal-CoalTL)</a>
+In coalescence theory, the focus is on tracing back the genetic history of individuals to identify their common ancestors. It assumes that all individuals within a population share a common ancestor at some point in the past. As we move back in time, the number of ancestors of a particular gene or allele decreases, and eventually, all lineages **coalesce** into a single ancestral lineage.
 
-</div>
-# Welcome, developers!
+Coalescence theory has been widely used in population genetics research to investigate topics such as molecular evolution, species divergence, demographic history, and the inference of population parameters from genetic data. It has provided valuable insights into the evolutionary processes that shape genetic diversity and the relationships among individuals within and between populations.
 
-This documentation is meant for C++ developers who want to include the Quetzal-CoalTL library in their own code project.
-For more ample resource, check our [website](https://becheler.github.io/softwares/quetzal-CoalTL/home/).
+The theory considers various factors such as genetic mutations, genetic drift, spatial heterogeneity and population size changes. It provides simulation-based approaches to study the patterns of genetic diversity, gene flow, and the effects of environmental changes and evolutionary forces on genetic variation within populations.
+
+**Consequently, the abstractions of coalescence theory must be represented in computer programs.**
+
+A standardized generic interface for manipulating concepts like genes genealogies, lineages colliders, mutation models, recombination, landscapes, demographic histories, reproduction, migration is of utmost importance to
+encourage reuse of algorithms and data structures. 
+
+This library intends to do this for the C++ language.

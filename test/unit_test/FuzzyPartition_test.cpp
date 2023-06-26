@@ -10,7 +10,7 @@
 
 // g++ -o FuzzyPartition_test FuzzyPartition_test.cpp -std=c++14 -Wall
 
-#include "quetzal/fuzzy_transfer_distance.h"
+#include "quetzal/polymorphism/fuzzy_transfer_distance.hpp"
 
 #include <map>
 #include <set>
@@ -19,8 +19,8 @@
 #include <iostream>
 
 int main(){
-	using quetzal::fuzzy_transfer_distance::FuzzyPartition;
-	using quetzal::fuzzy_transfer_distance::RestrictedGrowthString;
+	using quetzal::polymorphism::fuzzy_transfer_distance::FuzzyPartition;
+	using quetzal::polymorphism::fuzzy_transfer_distance::RestrictedGrowthString;
 
 	std::map<int, std::vector<double>> coeffs = { {0,{0.0, 0.1, 0.9, 0.0}},
 															{1,{0.4, 0.1, 0.2, 0.3}},

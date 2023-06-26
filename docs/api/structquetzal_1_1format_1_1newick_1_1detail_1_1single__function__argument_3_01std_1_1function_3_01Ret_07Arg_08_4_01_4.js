@@ -1,0 +1,4 @@
+var structquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument_3_01std_1_1function_3_01Ret_07Arg_08_4_01_4 =
+[
+    [ "type", "structquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument_3_01std_1_1function_3_01Ret_07Arg_08_4_01_4.html#ab4c7b71632ba6c6cdc58c1a903cd749b", null ]
+];
