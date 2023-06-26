@@ -380,7 +380,7 @@ namespace quetzal::coalescence
     /// @brief Add a vertex to the graph
     vertex_descriptor add_vertex()
     {
-      
+      // ADL intended to happen on that name, somewhere in that scope.
       using boost::add_vertex;
       return add_vertex(_graph);
     }
@@ -445,9 +445,8 @@ namespace quetzal::coalescence
     /// @brief Add a vertex and its properties to the graph
     vertex_descriptor add_vertex(const VertexProperty &p)
     {
-      // delete the member function
-      using detail::adl_resolution::add_vertex;
-      // ADL enabled
+      // ADL intended to happen on that name, somewhere in that scope.
+      using boost::add_vertex;
       vertex_descriptor v = add_vertex(this->_graph);
       _vertex_manager.add_vertex_to_manager(v, p);
       return v;
@@ -528,7 +527,8 @@ namespace quetzal::coalescence
     /// @brief Add a vertex to the graph.
     vertex_descriptor add_vertex()
     {
-      using detail::adl_resolution::add_vertex;
+      // ADL intended to happen on that name, somewhere in that scope.
+      using boost::add_vertex;
       return add_vertex(this->_graph);
     }
 
@@ -620,7 +620,8 @@ namespace quetzal::coalescence
     vertex_descriptor
     add_vertex(const VertexProperty &p)
     {
-      using detail::adl_resolution::add_vertex;
+      // ADL intended to happen on that name, somewhere in that scope.
+      using boost::add_vertex;
       vertex_descriptor v = add_vertex(this->_graph);
       _vertex_manager.add_vertex_to_manager(v, p);
       return v;
@@ -742,6 +743,6 @@ namespace quetzal::coalescence
       });
 
     vertex_descriptor root = detail::update_tree(tree, leaves, rng);
-    return std::tuple(std::move(tree), root);
+    return std::make_pair(std::move(tree), root);
   }
 }
