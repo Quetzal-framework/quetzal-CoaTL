@@ -11,16 +11,16 @@ Quetzal-CoalTL is a C++20 template scientific library for
 simulating the coalescence of gene genealogies in explicit landscapes or
 phylogenetic networks.
 
-Its aim is to standardize a library of reusable STL-compatible components to encourage
+Its aim is to standardize a library of reusable components to encourage
 code reuse.
-
-> :egg::egg::egg: If you are not a C++ programmer,
-> then you are unlikely to benefit directly from this library:
-> you may prefer instead the [Quetzal-EGGS simulators](https://github.com/Quetzal-framework/quetzal-EGGS).
 
 # Documentation
 
 The documentation lives [here](https://quetzal-framework.github.io/quetzal-CoaTL/).
+
+> :egg::egg::egg: If you are not a C++ programmer,
+> then you are unlikely to benefit directly from this library:
+> you may prefer instead the [Quetzal-EGGS simulators](https://github.com/Quetzal-framework/quetzal-EGGS).
 
 # Contact
 
