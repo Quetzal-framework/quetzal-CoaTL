@@ -15,7 +15,6 @@
 #include <range/v3/all.hpp>
 #include <boost/range/iterator_range.hpp>
 
-#include <boost/graph/depth_first_search.hpp>
 #include <boost/graph/graphviz.hpp>
 
 #include "detail/tree_traits.hpp"
@@ -139,7 +138,8 @@ namespace quetzal::coalescence
     class binary_tree_common
     {
     protected:
-      using base = boost::bidirectional_binary_tree<>;
+      /// @brief Equivalent to bidirectional_binary_tree
+      using base = boost::binary_tree<true, std::size_t>;
       base _graph;
 
     public:
