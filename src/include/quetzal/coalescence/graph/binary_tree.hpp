@@ -380,7 +380,8 @@ namespace quetzal::coalescence
     /// @brief Add a vertex to the graph
     vertex_descriptor add_vertex()
     {
-      using detail::adl_resolution::add_vertex;
+      
+      using boost::add_vertex;
       return add_vertex(_graph);
     }
 
