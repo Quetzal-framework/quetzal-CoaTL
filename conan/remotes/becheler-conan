@@ -1,0 +1,3 @@
+[remote]
+url = https://arnaudbecheler.jfrog.io/artifactory/api/conan/becheler-conan
+type = conan
