@@ -295,7 +295,7 @@ namespace quetzal::coalescence
       void depth_first_search(vertex_descriptor s, DFSTreeVisitor &vis)
       {
         // delete the member function void depth_first_search(vertex_descriptor s, DFSTreeVisitor &vis) const
-        using detail::adl_resolution::depth_first_search;
+       // using detail::adl_resolution::depth_first_search;
         // ADL is now enabled
         return boost::depth_first_search(_graph, s, vis);
       }
@@ -308,7 +308,7 @@ namespace quetzal::coalescence
       void depth_first_search(vertex_descriptor s, DFSTreeVisitor &vis) const
       {
         // delete the member function void depth_first_search(vertex_descriptor s, DFSTreeVisitor &vis)
-        using detail::adl_resolution::depth_first_search;
+        //using detail::adl_resolution::depth_first_search;
         // ADL is now enabled
         return boost::depth_first_search(_graph, s, vis);
       }
