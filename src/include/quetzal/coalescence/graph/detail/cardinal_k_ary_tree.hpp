@@ -27,6 +27,7 @@
 #include <boost/property_map/property_map.hpp>
 #include <boost/graph/detail/indexed_properties.hpp>
 #include <boost/graph/named_function_params.hpp>
+
 #include <boost/iterator/iterator_facade.hpp>
 #include <boost/iterator/transform_iterator.hpp>
 #include <boost/concept/assert.hpp>
