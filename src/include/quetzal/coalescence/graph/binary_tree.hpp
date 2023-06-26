@@ -294,8 +294,10 @@ namespace quetzal::coalescence
       template <typename DFSTreeVisitor>
       void depth_first_search(vertex_descriptor s, DFSTreeVisitor &vis)
       {
+        // delete the member function void depth_first_search(vertex_descriptor s, DFSTreeVisitor &vis) const
         using detail::adl_resolution::depth_first_search;
-        return depth_first_search(_graph, s, vis);
+        // ADL is now enabled
+        return boost::depth_first_search(_graph, s, vis);
       }
 
       /// @brief Performs a read-only depth-first traversal of the vertices starting at vertex \f$s\f$.
@@ -305,8 +307,10 @@ namespace quetzal::coalescence
       template <typename DFSTreeVisitor>
       void depth_first_search(vertex_descriptor s, DFSTreeVisitor &vis) const
       {
+        // delete the member function void depth_first_search(vertex_descriptor s, DFSTreeVisitor &vis)
         using detail::adl_resolution::depth_first_search;
-        return depth_first_search(_graph, s, vis);
+        // ADL is now enabled
+        return boost::depth_first_search(_graph, s, vis);
       }
 
       /// @}
