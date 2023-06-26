@@ -737,7 +737,7 @@ namespace quetzal::coalescence
       });
 
     vertex_descriptor root = detail::update_tree(tree, leaves, rng);
-    return std::tuple(std::move(tree), root);
+    return std::make_pair(std::move(tree), root);
   }
 	
 } // end namespace quetzal::coalescence
