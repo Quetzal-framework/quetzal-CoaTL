@@ -1,6 +1,6 @@
 #include "quetzal/quetzal.hpp"
 #include <random>
-#include <assert.h>
+#include <cassert>
 
 // Declare a global random number generator
 std::mt19937 rng{ std::random_device{}() };

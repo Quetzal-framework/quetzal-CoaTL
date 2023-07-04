@@ -25,6 +25,7 @@
 #include <cmath>
 #include <optional>
 #include <iostream>
+#include <iterator> // std::distance
 
 namespace quetzal::geography
 {
@@ -131,12 +132,12 @@ namespace quetzal::geography
     }
 
     /// @brief Export a spatio-temporal raster to a Geotiff file
-    /// @param f functor defining the variable: its signature should be equivalent to `double f(location_descriptor, time_descriptor)`
+    /// @param f functor defining the variable: its signature should be equivalent to `std::optional<double> f(location_descriptor, time_descriptor)`
     /// @param start the first time_descriptor value where f should be called.
     /// @param end the last time_descriptor value where f should be called.
     /// @param file the file name where to save
-    template <typename Callable>
-      requires std::invocable<Callable, location_descriptor, time_descriptor, std::optional<double>>
+    /// @remark If the returned optional is empty, the raster NA value will be used.
+    template <class Callable>
     void to_geotiff(Callable f, time_descriptor start, time_descriptor end, const std::filesystem::path &file) const
     {
       export_to_geotiff(f, start, end, file);
@@ -466,33 +467,30 @@ namespace quetzal::geography
 
     /// @brief Export a callable to a raster
     template <typename Callable>
-      requires std::invocable<Callable, location_descriptor, time_descriptor, std::optional<double>>
-    void export_to_geotiff(Callable f, time_descriptor start, time_descriptor end, const std::filesystem::path &file) const
+    void export_to_geotiff(Callable f, time_type start, time_type end, const std::filesystem::path &file) const
     {
       // Number of bands to create
       const auto times = ranges::views::iota(start, end);
       const int depth = times.size();
       assert(depth >= 1);
-
-      // Create a model dataset with default values
       GDALDataset *sink = _dataset.get().GetDriver()->Create(file.string().c_str(), width(), height(), depth, GDT_Float32, NULL);
 
-      // RasterBands begins at 1
-      GDALRasterBand *source_band = _dataset.get().GetRasterBand(1);
-
-      auto fun = [f, this](location_descriptor x, time_descriptor t)
-      {
-        const auto o = f(x, t);
-        return o.has_value() ? static_cast<float>(o) : this->NA();
-      };
-
+      // Bands begin at 1 in GDAL
+      int band = 1;
       for (time_descriptor t : times)
       {
+        auto fun = [f, t, this](location_descriptor x)
+        {
+          const auto o = f(x, t);
+          return o.has_value() ? static_cast<float>(o.value()) : this->NA();
+        };
+
         auto buffer = locations() | ranges::views::transform(fun) | ranges::to<std::vector>();
-        GDALRasterBand *sink_band = sink->GetRasterBand(t + 1);
+        GDALRasterBand *sink_band = sink->GetRasterBand(band);
         [[maybe_unused]] const auto err2 = sink_band->RasterIO(GF_Write, 0, 0, width(), height(), buffer.data(), width(), height(), GDT_Float32, 0, 0);
         sink_band->SetNoDataValue(NA());
         sink->FlushCache();
+        band++;
       }
 
       // write metadata
@@ -621,9 +619,9 @@ namespace quetzal::geography
 
   }; // end class raster
 
-template<typename Time>
-std::ostream &operator<<(std::ostream &os, const raster<Time> &r) { 
-   return r.write(os);
-}
-
+  template<typename Time>
+  std::ostream &operator<<(std::ostream &os, const raster<Time> &r)
+  { 
+    return r.write(os);
+  }
 } // namespace quetzal::geography

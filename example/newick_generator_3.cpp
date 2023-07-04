@@ -1,6 +1,6 @@
 #include "quetzal/quetzal.hpp"
 #include <random>
-#include <assert.h>
+#include <cassert>
 
 int main()
 {

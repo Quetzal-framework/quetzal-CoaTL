@@ -1,6 +1,6 @@
 #include "quetzal/quetzal.hpp"
 #include <filesystem>
-#include "assert.h"
+#include <cassert>
 
 using namespace quetzal;
 
