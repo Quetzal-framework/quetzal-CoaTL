@@ -58,63 +58,63 @@ var NAVTREE =
     [ "Include", "md_4_include.html", null ],
     [ "Tutorials", "tutorials.html", "tutorials" ],
     [ "Developer's notes", "md_99_developers_notes.html", [
-      [ "Conventions", "md_99_developers_notes.html#autotoc_md98", null ],
-      [ "Build process", "md_99_developers_notes.html#autotoc_md99", null ],
-      [ "Packaging", "md_99_developers_notes.html#autotoc_md100", null ],
-      [ "Documentation", "md_99_developers_notes.html#autotoc_md101", null ]
+      [ "Conventions", "md_99_developers_notes.html#autotoc_md100", null ],
+      [ "Build process", "md_99_developers_notes.html#autotoc_md101", null ],
+      [ "Packaging", "md_99_developers_notes.html#autotoc_md102", null ],
+      [ "Documentation", "md_99_developers_notes.html#autotoc_md103", null ]
     ] ],
     [ "Boost Graph Library Notes", "md_tbd_98_BGL.html", [
-      [ "Property Maps", "md_tbd_98_BGL.html#autotoc_md104", null ],
-      [ "Implementation perspective", "md_tbd_98_BGL.html#autotoc_md105", null ],
-      [ "Conceptual perspective", "md_tbd_98_BGL.html#autotoc_md106", null ],
-      [ "How to initialize a property", "md_tbd_98_BGL.html#autotoc_md107", null ],
-      [ "How to modify a property map", "md_tbd_98_BGL.html#autotoc_md108", null ],
-      [ "Auxillary Property Maps for Algortihms", "md_tbd_98_BGL.html#autotoc_md109", [
-        [ "Predecessor Maps", "md_tbd_98_BGL.html#autotoc_md110", null ],
-        [ "Color Maps", "md_tbd_98_BGL.html#autotoc_md111", [
-          [ "Objectives", "newick_generator.html#autotoc_md58", null ],
-          [ "From a Quetzal binary tree", "newick_generator.html#autotoc_md60", [
-            [ "No property", "newick_generator.html#autotoc_md62", null ],
-            [ "Custom properties", "newick_generator.html#autotoc_md64", null ]
+      [ "Property Maps", "md_tbd_98_BGL.html#autotoc_md106", null ],
+      [ "Implementation perspective", "md_tbd_98_BGL.html#autotoc_md107", null ],
+      [ "Conceptual perspective", "md_tbd_98_BGL.html#autotoc_md108", null ],
+      [ "How to initialize a property", "md_tbd_98_BGL.html#autotoc_md109", null ],
+      [ "How to modify a property map", "md_tbd_98_BGL.html#autotoc_md110", null ],
+      [ "Auxillary Property Maps for Algortihms", "md_tbd_98_BGL.html#autotoc_md111", [
+        [ "Predecessor Maps", "md_tbd_98_BGL.html#autotoc_md112", null ],
+        [ "Color Maps", "md_tbd_98_BGL.html#autotoc_md113", [
+          [ "Objectives", "newick_generator.html#autotoc_md59", null ],
+          [ "From a Quetzal binary tree", "newick_generator.html#autotoc_md61", [
+            [ "No property", "newick_generator.html#autotoc_md63", null ],
+            [ "Custom properties", "newick_generator.html#autotoc_md65", null ]
           ] ],
-          [ "From a Quetzal k-ary tree", "newick_generator.html#autotoc_md66", [
-            [ "No property", "newick_generator.html#autotoc_md68", null ],
-            [ "Custom properties", "newick_generator.html#autotoc_md70", null ]
+          [ "From a Quetzal k-ary tree", "newick_generator.html#autotoc_md67", [
+            [ "No property", "newick_generator.html#autotoc_md69", null ],
+            [ "Custom properties", "newick_generator.html#autotoc_md71", null ]
           ] ],
-          [ "Interfacing legacy code", "newick_generator.html#autotoc_md72", [
-            [ "No property", "newick_generator.html#autotoc_md74", null ],
-            [ "Custom properties", "newick_generator.html#autotoc_md76", null ]
+          [ "Interfacing legacy code", "newick_generator.html#autotoc_md73", [
+            [ "No property", "newick_generator.html#autotoc_md75", null ],
+            [ "Custom properties", "newick_generator.html#autotoc_md77", null ]
           ] ],
-          [ "Reading a single variable", "geotiff_parser.html#autotoc_md86", null ],
-          [ "Reading multiple variables", "geotiff_parser.html#autotoc_md88", null ],
-          [ "Next steps", "geotiff_parser.html#autotoc_md90", [
-            [ "Demes on a regular spatial grid", "geotiff_parser.html#autotoc_md92", null ],
-            [ "Demes on a variable spatial graph", "geotiff_parser.html#autotoc_md94", null ],
-            [ "Inform local processes", "geotiff_parser.html#autotoc_md96", null ]
+          [ "Reading a single variable", "geotiff_parser.html#autotoc_md87", null ],
+          [ "Reading multiple variables", "geotiff_parser.html#autotoc_md89", null ],
+          [ "Next steps", "geotiff_parser.html#autotoc_md91", [
+            [ "Demes on a regular spatial grid", "geotiff_parser.html#autotoc_md93", null ],
+            [ "Demes on a variable spatial graph", "geotiff_parser.html#autotoc_md95", null ],
+            [ "Inform local processes", "geotiff_parser.html#autotoc_md97", null ]
           ] ],
-          [ "Invariants Guarantee", "graphs_in_quetzal.html#autotoc_md77", null ],
-          [ "Edge and Vertices descriptors", "graphs_in_quetzal.html#autotoc_md78", null ],
-          [ "Edge and Vertices Information (Property Classes)", "graphs_in_quetzal.html#autotoc_md79", null ],
-          [ "Depth First Search (DFS)  Algorithms", "graphs_in_quetzal.html#autotoc_md80", null ],
-          [ "DFS on trees", "graphs_in_quetzal.html#autotoc_md81", null ],
-          [ "Create a color map", "md_tbd_98_BGL.html#autotoc_md112", null ],
-          [ "Call a BFS", "md_tbd_98_BGL.html#autotoc_md113", null ],
-          [ "Mapping colors to numbers", "md_tbd_98_BGL.html#autotoc_md114", null ]
+          [ "Invariants Guarantee", "graphs_in_quetzal.html#autotoc_md78", null ],
+          [ "Edge and Vertices descriptors", "graphs_in_quetzal.html#autotoc_md79", null ],
+          [ "Edge and Vertices Information (Property Classes)", "graphs_in_quetzal.html#autotoc_md80", null ],
+          [ "Depth First Search (DFS)  Algorithms", "graphs_in_quetzal.html#autotoc_md81", null ],
+          [ "DFS on trees", "graphs_in_quetzal.html#autotoc_md82", null ],
+          [ "Create a color map", "md_tbd_98_BGL.html#autotoc_md114", null ],
+          [ "Call a BFS", "md_tbd_98_BGL.html#autotoc_md115", null ],
+          [ "Mapping colors to numbers", "md_tbd_98_BGL.html#autotoc_md116", null ]
         ] ]
       ] ],
-      [ "Notes", "md_tbd_98_BGL.html#autotoc_md115", null ]
+      [ "Notes", "md_tbd_98_BGL.html#autotoc_md117", null ]
     ] ],
     [ "Polymorphism statistics", "md_tbd_accumulators.html", [
-      [ "Hello world!", "md_tbd_accumulators.html#autotoc_md117", null ],
-      [ "Motivations", "md_tbd_accumulators.html#autotoc_md118", null ],
-      [ "Implementation", "md_tbd_accumulators.html#autotoc_md119", null ],
-      [ " Terminology", "md_tbd_accumulators.html#autotoc_md120", null ],
-      [ "Overview", "md_tbd_accumulators.html#autotoc_md121", null ]
+      [ "Hello world!", "md_tbd_accumulators.html#autotoc_md119", null ],
+      [ "Motivations", "md_tbd_accumulators.html#autotoc_md120", null ],
+      [ "Implementation", "md_tbd_accumulators.html#autotoc_md121", null ],
+      [ " Terminology", "md_tbd_accumulators.html#autotoc_md122", null ],
+      [ "Overview", "md_tbd_accumulators.html#autotoc_md123", null ]
     ] ],
     [ "Frameworks basics", "md_tbd_framework_basics.html", [
-      [ "Basic Concepts", "md_tbd_framework_basics.html#autotoc_md123", [
-        [ "Genetics", "md_tbd_framework_basics.html#autotoc_md124", [
-          [ "Sequences Concepts", "md_tbd_framework_basics.html#autotoc_md125", null ]
+      [ "Basic Concepts", "md_tbd_framework_basics.html#autotoc_md125", [
+        [ "Genetics", "md_tbd_framework_basics.html#autotoc_md126", [
+          [ "Sequences Concepts", "md_tbd_framework_basics.html#autotoc_md127", null ]
         ] ]
       ] ]
     ] ],
@@ -154,8 +154,8 @@ var NAVTREEINDEX =
 "classquetzal_1_1geography_1_1gdalcpp_1_1detail_1_1Driver.html#a9006b5ea4117ad9f09212513739aeb3b",
 "classquetzal_1_1utils_1_1random_1_1TransitionKernel_3_01Distribution_01_4.html#ad9d2f423bb919ab5a3fc8fd02d6b7f74",
 "namespacequetzal_1_1coalescence.html#a313b46624ad48cebcb9671f9a20f01ac",
-"structquetzal_1_1coalescence_1_1detail_1_1EdgeManager.html#a73827ec54c199de81f337afd70d36be3",
-"structquetzal_1_1geography_1_1lonlat.html#ac89ed034286671da8d7a1e9e6fdaa335"
+"structquetzal_1_1coalescence_1_1detail_1_1EdgeManager.html#a6ad1dbf103db20fb4f5b4ad8bbf6f1db",
+"structquetzal_1_1geography_1_1lonlat.html#ac22deb8faa2585e24689570bca1cbcd6"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -118,13 +118,13 @@ $(document).ready(function(){initNavTree('md_tbd_accumulators.html',''); initRes
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>This section describes how to use Quetzal.Accumulators to perform incremental statistical computations on genetic data.</p>
-<h1><a class="anchor" id="autotoc_md117"></a>
+<h1><a class="anchor" id="autotoc_md119"></a>
 Hello world!</h1>
 <p>Below is a complete example of how to use the Accumulators Framework and the Statistical Accumulators to perform an incremental statistical calculation. It calculates the Tajima's D and its dependent statistics, add internal variables to the cache and also compute FST.</p>
 <p>include example/stats.cpp</p>
 <p>Expected output:</p>
 <p>include example/results/stats.txt</p>
-<h1><a class="anchor" id="autotoc_md118"></a>
+<h1><a class="anchor" id="autotoc_md120"></a>
 Motivations</h1>
 <p>To our knowledge, there is no existing resource that can compute summary statistics on genetic data in a satisfying way.</p>
 <p>By satisfying, we mean that:</p>
@@ -134,7 +134,7 @@ Motivations</h1>
 <li>it should be easy for a user with a new statistics to incorporate it in the framework</li>
 <li>statistical analysis should <em>digest</em> the data, not hold onto them.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md119"></a>
+<h1><a class="anchor" id="autotoc_md121"></a>
 Implementation</h1>
 <p>The Quetzal Accumulators extends the same Boost Accumulators framework to perform incremental calculations. Usage of the framework follows the following pattern:</p>
 <ol type="1">
@@ -143,7 +143,7 @@ Implementation</h1>
 <li>The <code>accumulator_set&lt;&gt;</code> computes the requested quantities in the most efficient method possible, resolving dependencies between requested calculations, possibly caching intermediate results.</li>
 <li>The Accumulators Framework defines the utilities needed for defining primitive computational elements, called accumulators. It also provides the <code>accumulator_set&lt;&gt;</code> type, described above.</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md120"></a>
+<h1><a class="anchor" id="autotoc_md122"></a>
  Terminology</h1>
 <p>For sake of consistency, we use the same terms as Boost Accumulators in the rest of the documentation.</p>
 <ul>
@@ -154,7 +154,7 @@ Implementation</h1>
 <li><b>Accumulator Set</b>: A collection of accumulators. An accumulator set is specified with a sample type and a list of features. The accumulator set uses this information to generate an ordered set of accumulators depending on the feature dependency graph. An accumulator set accepts samples one datum at a time, propagating them to each accumulator in order. At any point, results can be extracted from the accumulator set.</li>
 <li><b>Extractor</b>: A function or function object that can be used to extract a result from an <code>accumulator_set&lt;&gt;</code>.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md121"></a>
+<h1><a class="anchor" id="autotoc_md123"></a>
 Overview</h1>
 <p>Here is a list of the important types and functions in the Accumulator Framework and a brief description of each.</p>
 <table class="markdownTable">

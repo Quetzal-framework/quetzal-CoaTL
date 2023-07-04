@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['the_20quetzal_20coalescence_20library_938',['The Quetzal Coalescence Library',['../index.html',1,'']]],
-  ['tutorials_939',['Tutorials',['../tutorials.html',1,'']]]
+  ['reading_20spatial_20variables_20from_20rasters_939',['Reading spatial variables from rasters',['../geotiff_parser.html',1,'tutorials']]]
 ];

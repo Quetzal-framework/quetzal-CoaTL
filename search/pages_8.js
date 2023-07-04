@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['reading_20spatial_20variables_20from_20rasters_937',['Reading spatial variables from rasters',['../geotiff_parser.html',1,'tutorials']]]
+  ['parsing_20a_20newick_20string_937',['Parsing a Newick string',['../newick_parser.html',1,'tutorials']]],
+  ['polymorphism_20statistics_938',['Polymorphism statistics',['../md_tbd_accumulators.html',1,'']]]
 ];

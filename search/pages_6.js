@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['k_2dary_20trees_934',['K-ary Trees',['../coalescence_k_ary_tree.html',1,'tutorials']]]
+  ['k_2dary_20trees_935',['K-ary Trees',['../coalescence_k_ary_tree.html',1,'tutorials']]]
 ];

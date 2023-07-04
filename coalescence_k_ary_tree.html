@@ -118,11 +118,11 @@ $(document).ready(function(){initNavTree('coalescence_k_ary_tree.html',''); init
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md84">Introduction</a></li>
-<li class="level1"><a href="#autotoc_md85">Implementations</a></li>
+<ul><li class="level1"><a href="#autotoc_md85">Introduction</a></li>
+<li class="level1"><a href="#autotoc_md86">Implementations</a></li>
 </ul>
 </div>
-<div class="textblock"><h1><a class="anchor" id="autotoc_md84"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md85"></a>
 Introduction</h1>
 <p>Coalescence k-ary Trees classes are similar to Binary Trees, but provide an interface guaranteeing that each vertex \(v\) has exactly</p><ul>
 <li>\(0\) successor (the vertex is a leaf)</li>
@@ -130,7 +130,7 @@ Introduction</h1>
 </ul>
 <p>The graph structure is bidirectional and allows to model a forest of disconnected trees. That is, if a vertex has no predecessor, then it's either a root (if it has 2 or more successors) or an isolated vertex (if it has no successor).</p>
 <p>Users will encounter this type of tree when returning from coalescence multiple mergers, or if they simply want to build and manipulate graphs that do not make strong assumptions on the tree structure.</p>
-<h1><a class="anchor" id="autotoc_md85"></a>
+<h1><a class="anchor" id="autotoc_md86"></a>
 Implementations</h1>
 <p>Coalescence K-ary Trees can store an additional arbitrary type of information (called a <em>Property Class</em>) along their vertices or edges: if the user decides to do so, the tree class interface adapts to offer ways to manipulate this information.</p>
 <p>There are logically 4 different classes (equivalently interfaces) resulting from this:</p><ul>

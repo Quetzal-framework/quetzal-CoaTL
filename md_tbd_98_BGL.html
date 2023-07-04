@@ -122,10 +122,10 @@ $(document).ready(function(){initNavTree('md_tbd_98_BGL.html',''); initResizable
 <li>How to associate properties to vertices or edges (distances, weights etc)</li>
 <li>How get those properties in and out of algorithms (like DFS, BFS etc)</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md104"></a>
+<h1><a class="anchor" id="autotoc_md106"></a>
 Property Maps</h1>
 <p>A Property Map maps vertices/edges to additional data associated with the particular vertex/edge. E.g. the weightmap in the example associates a weight (travelling cost) with each edge.</p>
-<h1><a class="anchor" id="autotoc_md105"></a>
+<h1><a class="anchor" id="autotoc_md107"></a>
 Implementation perspective</h1>
 <p>The vertex and edge properties are not stored individually, but <em>within</em> the vertices and the edges of the graph. Consequently</p><ul>
 <li>There is no use of std::map or some other associative container.</li>
@@ -135,14 +135,14 @@ Implementation perspective</h1>
 <li>Looking up the vertex property from the vertex-descriptor is a constant-time operation (e.g., dereference a pointer, lookup by index, etc.).</li>
 <li>Fetching (for read or write) a specific property for a specific vertex is a constant-time operation.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md106"></a>
+<h1><a class="anchor" id="autotoc_md108"></a>
 Conceptual perspective</h1>
 <p>When we use <code>property_map</code> (via <code>get</code>/<code>put</code> functions), it is only doing a bit of template meta-programming magic to create a thin wrapper that will just read/write the correct individual property for a vertex or edge.</p>
 <p>Conceptually </p><div class="fragment"><div class="line">NodeInfo info = boost::get (NodeInfoPropertyTag(), G, v);</div>
 </div><!-- fragment --><p> is equivalent to: </p><div class="fragment"><div class="line">NodeInfo info = G[v].NodeInfoProperty;</div>
 </div><!-- fragment --><p> This is all the property-map really does, it looks up the vertex property (by the vertex-descriptor in the given graph object), and it fetches the data member (or sub-object) of the vertex property that corresponds to the given tag type.</p>
 <p>Figuring out how to obtain the correct data member (or sub-object) for the correct property tag is a piece of template meta-programming magic that figures it out at compile-time (no run-time overhead).</p>
-<h1><a class="anchor" id="autotoc_md107"></a>
+<h1><a class="anchor" id="autotoc_md109"></a>
 How to initialize a property</h1>
 <p>Here, <code>color_map</code> is essentially an unitialized reference:</p>
 <div class="fragment"><div class="line"><span class="keyword">using</span> color_map_t = <span class="keyword">typename</span> boost::property_map&lt;Graph, boost::vertex_color_t&gt;::type;</div>
@@ -170,17 +170,17 @@ How to initialize a property</h1>
 <div class="line"><span class="keyword">auto</span> predecessor_map = boost::make_safe_iterator_property_map(</div>
 <div class="line">    predecessors.begin(), predecessors.size(), vindex);</div>
 </div><!-- fragment --><p>To create a constant weight map </p><div class="fragment"><div class="line"><span class="keyword">auto</span> weight_map = boost::static_property_map(1.0);</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md108"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md110"></a>
 How to modify a property map</h1>
-<h1><a class="anchor" id="autotoc_md109"></a>
+<h1><a class="anchor" id="autotoc_md111"></a>
 Auxillary Property Maps for Algortihms</h1>
 <p>For performance reasons, most algorithm will require some type of property map: colors, weights, predecessors...</p>
 <dl class="section note"><dt>Note</dt><dd>Note most algorithms default the auxilliary property maps when none is provided</dd></dl>
-<h2><a class="anchor" id="autotoc_md110"></a>
+<h2><a class="anchor" id="autotoc_md112"></a>
 Predecessor Maps</h2>
 <p>The predecessor_map is used to record the paths for all vertices (for every vertex the predecessor on the path from the root is recorded).</p>
 <dl class="section note"><dt>Note</dt><dd>It is often user provided because that information is something one often hopes to get out of the algorithm for performance reasons.</dd></dl>
-<h2><a class="anchor" id="autotoc_md111"></a>
+<h2><a class="anchor" id="autotoc_md113"></a>
 Color Maps</h2>
 <p>The Type of the color map used in algorithms like BFS.</p>
 <ul>
@@ -192,15 +192,15 @@ Color Maps</h2>
 </li>
 <li>To enable enormous efficiency gains, color maps can be supplied, so the coloring/storage can be reused across algorithm invocations.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md112"></a>
+<h3><a class="anchor" id="autotoc_md114"></a>
 Create a color map</h3>
 <p>This maps <code>vertex_descriptor</code> to (in this case) <code>default_color_type</code>.</p>
 <div class="fragment"><div class="line"><span class="keyword">using</span> color_map_t boost::property_map&lt;GraphType, boost::vertex_color_t&gt;::type;</div>
 <div class="line">color_map_t colorMap;</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md113"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md115"></a>
 Call a BFS</h3>
 <div class="fragment"><div class="line">boost::breadth_first_visit(g, *boost::vertices(g).first, boost::color_map(colorMap));</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md114"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md116"></a>
 Mapping colors to numbers</h3>
 <blockquote class="doxtable">
 <p>Why would one want to do that? </p>
@@ -213,7 +213,7 @@ Mapping colors to numbers</h3>
 <div class="line">{</div>
 <div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Color of node &quot;</span> &lt;&lt; *it &lt;&lt; <span class="stringliteral">&quot; is &quot;</span> &lt;&lt; color_names[colorMap[*it]] &lt;&lt; std::endl;</div>
 <div class="line">}</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md115"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md117"></a>
 Notes</h1>
 <p>Edge descriptors are internal descriptors, sort of like stable iterators. E.g. </p><div class="fragment"><div class="line"><a class="code" href="namespacequetzal_1_1coalescence.html#a04aa739a0302081fc8401a3c5ff8fa82">edge_descriptor</a> e = *edges(g).begin();</div>
 <div class="ttc" id="anamespacequetzal_1_1coalescence_html_a04aa739a0302081fc8401a3c5ff8fa82"><div class="ttname"><a href="namespacequetzal_1_1coalescence.html#a04aa739a0302081fc8401a3c5ff8fa82">quetzal::coalescence::edge_descriptor</a></div><div class="ttdeci">typename base::edge_descriptor edge_descriptor</div><div class="ttdoc">Edge descriptor.</div><div class="ttdef"><b>Definition:</b> binary_tree.hpp:426</div></div>

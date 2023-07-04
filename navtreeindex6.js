@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"structquetzal_1_1coalescence_1_1detail_1_1EdgeManager.html#a6ad1dbf103db20fb4f5b4ad8bbf6f1db":[12,0,1,0,1,3,6],
 "structquetzal_1_1coalescence_1_1detail_1_1EdgeManager.html#a73827ec54c199de81f337afd70d36be3":[12,0,1,0,1,3,3],
 "structquetzal_1_1coalescence_1_1detail_1_1EdgeManager.html#a9eaf07ca34a7d7f881369fc387d96147":[12,0,1,0,1,3,0],
 "structquetzal_1_1coalescence_1_1detail_1_1EdgeManager.html#aa8e7334faccf084a75d3a62db20984a0":[12,0,1,0,1,3,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX6 =
 "structquetzal_1_1geography_1_1lonlat.html#a230cef127c5d729e3ee65fca0816fcb9":[12,0,1,5,4,1],
 "structquetzal_1_1geography_1_1lonlat.html#a515a35b17f1ec600aa46797b066c0ff9":[12,0,1,5,4,2],
 "structquetzal_1_1geography_1_1lonlat.html#a7188d74669e5648d771aaa92bfd0b0c2":[12,0,1,5,4,5],
-"structquetzal_1_1geography_1_1lonlat.html#a8f3e26a784d75fe45bdd88c62ceaece9":[12,0,1,5,4,4],
-"structquetzal_1_1geography_1_1lonlat.html#ac22deb8faa2585e24689570bca1cbcd6":[12,0,1,5,4,3]
+"structquetzal_1_1geography_1_1lonlat.html#a8f3e26a784d75fe45bdd88c62ceaece9":[12,0,1,5,4,4]
 };
