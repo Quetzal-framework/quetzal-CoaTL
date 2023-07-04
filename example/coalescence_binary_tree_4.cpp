@@ -1,5 +1,5 @@
 #include "quetzal/quetzal.hpp"
-#include "assert.h"
+#include <cassert>
 #include <vector>
 #include <string>
 #include <iterator> // for std::ostream_iterator

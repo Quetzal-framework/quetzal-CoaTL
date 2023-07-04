@@ -15,17 +15,29 @@
   - @subpage geotiff_generator
   - @subpage shapefile_generator
 
+## Linking landscapes to demography
+
+- @subpage niche_in_quetzal
+- Examples 
+  - @subpage expressive_suitability_raster
+  - @subpage expressive_suitability_DEM_landscape
+  - @subpage expressive_friction
+  - @subpage expressive_competition
+
 ## Graphs
 
-  - @subpage graphs_in_quetzal
-  - Coalescence 
-    - @subpage coalescence_binary_tree
-    - @subpage coalescence_k_ary_tree
-    - network
+- @subpage graphs_in_quetzal
+- Coalescence 
+  - @subpage coalescence_binary_tree
+  - @subpage coalescence_k_ary_tree
+  - network
+
+
 
 ## Demographic Histories
 
 ### Growth Expressions
+
 
 ### Dispersal Kernels
 
@@ -586,17 +598,69 @@ By utilizing the values within the raster, it becomes possible to derive demogra
 
 When encountering NA values, such as cells representing oceanic areas or those lying outside the spatial extent of the raster, the `std::optional` mechanism is employed. This means that these values may or may not have a defined value, leaving it to the user to decide how to handle such cases.
 
-**Input**
-
-@include{lineno} environmental_variable_1.cpp
-
-**Output**
-
-@include{lineno} environmental_variable_1.txt
-
 
 [//]: # (----------------------------------------------------------------------)
 @page geotiff_generator Writing spatial variables to rasters
 
+Once users have simulated various continuous geospatial values such as friction coefficients or population sizes across a landscape, they will often desire a visual confirmation of these values. One approach is to export these quantities as a multiband raster file and utilize different software, such as Quetzal-CRUMBS or the `raster` package in R, for visualization.
+
+To export a specific quantity, it is necessary to create a callable function that can be invoked at each location within the raster model during an arbitrary time interval. Each point of the time interval parameter will become a new band in the new raster file.
+
+**Input**
+
+@include{lineno} geography_write_quantity_1.cpp
+
+**Output**
+
+@include{lineno} geography_write_quantity_1.txt
+
 [//]: # (----------------------------------------------------------------------)
 @page shapefile_generator Writing spatial samples to shapefile
+
+Users sometimes simulate quantities that do not always correspond to continuous spatial values. Instead, these quantities can be discrete and result from a sampling process across the landscape. In such cases, users often want to visually verify the sampling scheme.
+
+One way to achieve this is by exporting the samples as a shapefile and employing various software tools like Quetzal-CRUMBS or the raster package in R to visualize them.
+
+**Input**
+
+@include{lineno} geography_write_sample_1.cpp
+
+**Output**
+
+@include{lineno} geography_write_sample_1.txt
+
+
+[//]: # (----------------------------------------------------------------------)
+@page niche_in_quetzal Niche models in Quetzal
+
+In the field of ecology, the **niche** refers to the compatibility between a species and a specific environmental condition. It explains how an organism or a population adapts to the availability of resources and competition. 
+
+For instance, when resources are plentiful and the presence of predators, parasites, and pathogens is low, the organism or population tends to grow. In locations and times of resources scarcity and high predation, the populations tend to shrink.
+
+The composition and significance of environmental variables that constitute the dimensions of a niche can vary among species, and the importance of specific environmental factors for a species may change depending on geographical and ecological contexts.
+
+@note
+In the broader context of this library, the niche model lacks a specific definition as it relies on the preferences and requirements of individual users. What we can understand is that it involves some combination of spatial and temporal factors that are closely intertwined with the demographic process.
+This justifies the need for a highly adaptable approach to representing the concept of niche, as it is bound to vary depending on the specific species, population, or geographic area under study.
+
+Given this understanding, the primary goal of this library is to provide users with a user-friendly means to effectively combine geospatial and temporal elements. This enables users to establish meaningful connections between a diverse and heterogeneous landscape and the underlying demographic processes, based on their own perspectives and preferences.
+
+Mathematical composition in C++ is not trivial as unlike languages, C++ does not understand mathematical expressions and their composition. In this strongly-typed language, you can not simply multiply the integer `42` and the function \f$ f(x,y) = x^y \f$ and expect it to work. Indeed, if you try to rescale a lambda function, e.g.:
+```cpp
+int a = 42;
+auto f = [](auto x, auto y){return std::pow(x,y); };
+my_expression = a * f; // error
+``` 
+it will not compile. As the compiler does not know natively what the rules are to multiply a number with whatever type `f` is, it will (verbosely) insult you saying the [`operator*()`](https://en.cppreference.com/w/cpp/language/operators) is not defined for the type `int` and an anonymous type (the lambda function). 
+
+You need a library to do tell the compiler what to do. This is where `quetzal::expressive` comes handy: it allows you add, substract, multiply, or compose mathematical expressions through a uniform interface.
+
+**Input**
+
+@include{lineno} expressive_1.cpp
+
+**Output**
+
+@include{lineno} expressive_1.txt
+
+---

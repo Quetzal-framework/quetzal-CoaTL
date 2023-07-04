@@ -1,5 +1,5 @@
 #include "quetzal/quetzal.hpp"
-#include "assert.h"
+#include <cassert>
 
 int main()
 {
