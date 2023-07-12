@@ -12,6 +12,7 @@
 #include "io/newick/generator.hpp"
 #include "io/newick/from_tree_graph.hpp"
 #include "io/newick/to_k_ary_tree.hpp"
+#include "io/newick/extended/to_network.hpp"
 
 #include "io/genetics/wrapper.hpp"
 
@@ -23,10 +24,15 @@ namespace quetzal
   namespace format
   {
     ///
-    /// @brief Generic components for generating Newick strings
+    /// @brief Generic components for parsing or generating Newick strings
     ///
     namespace newick
-    {}
+    {
+      ///
+      /// @brief Generic components for parsing or generating extended Newick strings
+      ///
+      namespace extended {}
+    }
 
     ///
     /// @brief Data-structures for genetic datasets

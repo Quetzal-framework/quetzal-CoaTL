@@ -315,11 +315,29 @@ You only need to modify three things:
 - the `label(v)` lambda looks into the vertex to return a `std::string` used as its label
 - the `branch_length_to_parent(v)`: can also look into the vertex to return a `std::string` to label the edge between \f$v\f$ and its parent.
 
+**Input**
+
 @include{lineno} newick_generator_6.cpp
 
 **Output**
 
 @include{lineno} newick_generator_6.txt
+
+[//]: # (----------------------------------------------------------------------)
+@page extended_newick_parser Parsing an Extended Newick string
+
+Extended Newick format expands beyond the traditional Newick notation by accommodating explicit phylogenetic networks. This extension enables the encoding of complex relationships that go beyond the simple hierarchical structure of phylogenetic trees. In phylogenetic networks, nodes can signify either divergence events (cladogenesis) or reticulation events, such as hybridization, introgression, horizontal gene transfer, or recombination. To represent reticulation events, the nodes are duplicated and annotated by appending the "#" symbol within the Newick format. These duplicated nodes are sequentially numbered, starting from 1, to maintain clarity and organization within the representation.
+
+**Input**
+
+@include{lineno} newick_extended_parser_1.cpp
+
+**Output**
+
+@include{lineno} newick_extended_parser_1.txt
+
+[//]: # (----------------------------------------------------------------------)
+@page extended_newick_generator Parsing an Extended Newick string
 
 [//]: # (----------------------------------------------------------------------)
 @page graphs_in_quetzal Graphs in Quetzal
@@ -664,3 +682,14 @@ You need a library to do tell the compiler what to do. This is where `quetzal::e
 @include{lineno} expressive_1.txt
 
 ---
+
+[//]: # (----------------------------------------------------------------------)
+@page expressive_suitability_raster Suitability landscape
+
+**Input**
+
+@include{lineno} expressive_1.cpp
+
+**Output**
+
+@include{lineno} expressive_1.txt
