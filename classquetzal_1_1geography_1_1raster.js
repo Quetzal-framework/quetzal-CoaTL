@@ -21,13 +21,13 @@ var classquetzal_1_1geography_1_1raster =
     [ "locations", "classquetzal_1_1geography_1_1raster.html#a60619ac297a381810d00e187bbc3d108", null ],
     [ "NA", "classquetzal_1_1geography_1_1raster.html#a636a15c4ea3bc32589cc3d7eb967bb86", null ],
     [ "origin", "classquetzal_1_1geography_1_1raster.html#a3ba5b1ac1da5f52452c05dacdf88ca2f", null ],
+    [ "requires", "classquetzal_1_1geography_1_1raster.html#af5a053394612e69488ab676985fa6c74", null ],
     [ "times", "classquetzal_1_1geography_1_1raster.html#a142e63d8fe1b4d01fce3e76ae4a4fc7c", null ],
     [ "to_centroid", "classquetzal_1_1geography_1_1raster.html#aac2bb734b3fd032885cbfcdff2d26236", null ],
     [ "to_colrow", "classquetzal_1_1geography_1_1raster.html#a951ff44d7de985f90b11c02a49253680", null ],
     [ "to_colrow", "classquetzal_1_1geography_1_1raster.html#a4e0bcd36bf955a12d8105f073796317d", null ],
     [ "to_descriptor", "classquetzal_1_1geography_1_1raster.html#a685eac58cd1db2c2f0d32955223672f2", null ],
     [ "to_descriptor", "classquetzal_1_1geography_1_1raster.html#aeda96bff5f48641a17414020fd9adc7a", null ],
-    [ "to_geotiff", "classquetzal_1_1geography_1_1raster.html#a3911a1cd9acdd37298f1c3654382974c", null ],
     [ "to_latlon", "classquetzal_1_1geography_1_1raster.html#a2f85f10a50c132390763122750fc1552", null ],
     [ "to_latlon", "classquetzal_1_1geography_1_1raster.html#af0a79579e3026bd4e51fa676d56ccc62", null ],
     [ "to_latlon", "classquetzal_1_1geography_1_1raster.html#aef403bad648e2cda98887b3b94c5e562", null ],
@@ -41,5 +41,8 @@ var classquetzal_1_1geography_1_1raster =
     [ "to_shapefile", "classquetzal_1_1geography_1_1raster.html#afae1abc4b2f9f36ec14dfad8e6a549ef", null ],
     [ "to_view", "classquetzal_1_1geography_1_1raster.html#a44ed851b988e38b99504d4de22369267", null ],
     [ "width", "classquetzal_1_1geography_1_1raster.html#af19d93de33e479b01e3f23bc036e7610", null ],
-    [ "write", "classquetzal_1_1geography_1_1raster.html#acf3aa35ea6d876a59d471938055fd9bb", null ]
+    [ "write", "classquetzal_1_1geography_1_1raster.html#acf3aa35ea6d876a59d471938055fd9bb", null ],
+    [ "const", "classquetzal_1_1geography_1_1raster.html#acef7302831c79cc4e4ac4908070a4d91", null ],
+    [ "end", "classquetzal_1_1geography_1_1raster.html#a2970b056004f1807b453b513a6901222", null ],
+    [ "start", "classquetzal_1_1geography_1_1raster.html#a8fb44bc56b64ee244c83df14d14d340c", null ]
 ];

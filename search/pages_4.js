@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['generating_20a_20newick_20string_930',['Generating a Newick string',['../newick_generator.html',1,'tutorials']]],
-  ['graphs_20in_20quetzal_931',['Graphs in Quetzal',['../graphs_in_quetzal.html',1,'tutorials']]]
+  ['include_951',['Include',['../md_4_include.html',1,'']]],
+  ['installation_20and_20usage_952',['Installation and Usage',['../md_3_installation.html',1,'']]],
+  ['introduction_953',['Introduction',['../md_1_introduction.html',1,'']]]
 ];

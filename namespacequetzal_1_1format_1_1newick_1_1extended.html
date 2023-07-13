@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Quetzal-CoaTL: Defining and using systems of units in Quetzal</title>
+<title>Quetzal-CoaTL: quetzal::format::newick::extended Namespace Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -94,7 +94,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('md_tbd_system_of_units.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('namespacequetzal_1_1format_1_1newick_1_1extended.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -112,50 +112,38 @@ $(document).ready(function(){initNavTree('md_tbd_system_of_units.html',''); init
 </iframe>
 </div>
 
-<div class="PageDoc"><div class="header">
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">Defining and using systems of units in Quetzal </div>  </div>
+<div class="title">quetzal::format::newick::extended Namespace Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>A recurrent problem in software development is a repeated discomfort and distrust when one is using a <code>double</code> variable and has to believe that the documentation is correct when it states <code>// !!! THIS IS IN km !!!</code>. Another problem is to actually perform dimensional analysis, deducing the dimension of a computed expression based on the units of its elements.</p>
-<p>An answer to this comes from the <a href="https://mpusz.github.io/units/">mp-units</a> library, that enables compile-time dimensional analysis and unit/quantity manipulation. This library is trying to make it to the next standard C++23/26, and we want Quetzal to be ready when this new feature will come.</p>
-<p>To this end, Quetzal implements kilometers, mutation rates, probabilities etc as <b>distinct types</b> so the compiler can check <b>before the program even runs</b> that the user is not trying to, for example, add a branch length in unit of coalescence with a branch length in units of generations.</p>
-<ul>
-<li>Lanscape quantities<ul>
-<li>Suitability \(s\)</li>
-<li>Growth rate \(r\)</li>
-<li>Carrying capacity \(K\)</li>
-</ul>
-</li>
-<li>Demographic quantities:<ul>
-<li>Population size \(N\)</li>
-<li>Population density \(d\)</li>
-<li>Migration rates \(m\)</li>
-</ul>
-</li>
-<li>Coalescence quantities:<ul>
-<li>Probability of coalescence</li>
-<li>Probability of recombination</li>
-<li>Probability of backward migration</li>
-</ul>
-</li>
-<li>Mutation process:<ul>
-<li>Probability of mutation</li>
-</ul>
-</li>
-<li>Branch length:<ul>
-<li>coalescence unit</li>
-<li>generation unit</li>
-</ul>
-</li>
-</ul>
-<p>The purpose of this feature is to secure your code by <em>actually</em> triggering compilation errors if you are not doing things right. If you don't feel like using it, it's fine, you don't have to. </p>
+
+<p>Generic components for parsing or generating extended Newick strings.  
+<a href="namespacequetzal_1_1format_1_1newick_1_1extended.html#details">More...</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a8d817e352a05114e724120c72dc2dfa5"><td class="memTemplParams" colspan="2"><a id="a8d817e352a05114e724120c72dc2dfa5"></a>
+template&lt;class VertexProperty  = quetzal::format::newick::ast::node::vertex_property, class EdgeProperty  = quetzal::format::newick::ast::node::edge_property&gt; </td></tr>
+<tr class="memitem:a8d817e352a05114e724120c72dc2dfa5"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; <a class="el" href="classquetzal_1_1coalescence_1_1network.html">quetzal::coalescence::network</a>&lt; VertexProperty, EdgeProperty &gt;, typename <a class="el" href="classquetzal_1_1coalescence_1_1network.html">quetzal::coalescence::network</a>&lt; VertexProperty, EdgeProperty &gt;::vertex_descriptor &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1format_1_1newick_1_1extended.html#a8d817e352a05114e724120c72dc2dfa5">to_network</a> (<a class="el" href="structquetzal_1_1format_1_1newick_1_1ast_1_1node.html">quetzal::format::newick::ast::node</a> ast_root)</td></tr>
+<tr class="memdesc:a8d817e352a05114e724120c72dc2dfa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an Extended Newick AST to a quetzal network graph. <br /></td></tr>
+<tr class="separator:a8d817e352a05114e724120c72dc2dfa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32ab27e78b03c5c50eee5c08c6b3dea3"><td class="memTemplParams" colspan="2"><a id="a32ab27e78b03c5c50eee5c08c6b3dea3"></a>
+template&lt;class VertexProperty  = quetzal::format::newick::ast::node::vertex_property, class EdgeProperty  = quetzal::format::newick::ast::node::edge_property&gt; </td></tr>
+<tr class="memitem:a32ab27e78b03c5c50eee5c08c6b3dea3"><td class="memTemplItemLeft" align="right" valign="top">std::tuple&lt; <a class="el" href="classquetzal_1_1coalescence_1_1network.html">quetzal::coalescence::network</a>&lt; VertexProperty, EdgeProperty &gt;, typename <a class="el" href="classquetzal_1_1coalescence_1_1network.html">quetzal::coalescence::network</a>&lt; VertexProperty, EdgeProperty &gt;::vertex_descriptor &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1format_1_1newick_1_1extended.html#a32ab27e78b03c5c50eee5c08c6b3dea3">to_network</a> (const std::string &amp;extended_newick)</td></tr>
+<tr class="memdesc:a32ab27e78b03c5c50eee5c08c6b3dea3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a standard Newick string to a quetzal network graph. <br /></td></tr>
+<tr class="separator:a32ab27e78b03c5c50eee5c08c6b3dea3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Generic components for parsing or generating extended Newick strings. </p>
 </div></div><!-- contents -->
-</div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><a class="el" href="namespacequetzal.html">quetzal</a></li><li class="navelem"><a class="el" href="namespacequetzal_1_1format.html">format</a></li><li class="navelem"><a class="el" href="namespacequetzal_1_1format_1_1newick.html">newick</a></li><li class="navelem"><a class="el" href="namespacequetzal_1_1format_1_1newick_1_1extended.html">extended</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['reading_20spatial_20variables_20from_20rasters_939',['Reading spatial variables from rasters',['../geotiff_parser.html',1,'tutorials']]]
+  ['suitability_20landscape_959',['Suitability landscape',['../expressive_suitability_raster.html',1,'tutorials']]]
 ];

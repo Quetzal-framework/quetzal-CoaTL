@@ -168,6 +168,11 @@ var hierarchy =
     [ "quetzal::demography::dispersal_kernel::NegativeExponential", "structquetzal_1_1demography_1_1dispersal__kernel_1_1NegativeExponential.html", null ],
     [ "quetzal::demography::demographic_policy::mass_based::neighboring_migration< Space, F1, F2 >", "classquetzal_1_1demography_1_1demographic__policy_1_1mass__based_1_1neighboring__migration.html", null ],
     [ "quetzal::coalescence::container::Network< CellT >", "classquetzal_1_1coalescence_1_1container_1_1Network.html", null ],
+    [ "quetzal::coalescence::network< VertexProperty, EdgeProperty >", "classquetzal_1_1coalescence_1_1network.html", null ],
+    [ "quetzal::coalescence::detail::network_common< VertexProperty, EdgeProperty, CRTP >", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html", null ],
+    [ "quetzal::coalescence::detail::network_common< no_property, no_property, network< no_property, no_property > >", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html", [
+      [ "quetzal::coalescence::network< no_property, no_property >", "classquetzal_1_1coalescence_1_1network_3_01no__property_00_01no__property_01_4.html", null ]
+    ] ],
     [ "quetzal::coalescence::newick_with_distance_to_parent< Space, Time >", "classquetzal_1_1coalescence_1_1newick__with__distance__to__parent.html", null ],
     [ "quetzal::coalescence::newick_with_distance_to_parent_and_leaf_name< Space, Time >", "classquetzal_1_1coalescence_1_1newick__with__distance__to__parent__and__leaf__name.html", null ],
     [ "Node", "structNode.html", null ],

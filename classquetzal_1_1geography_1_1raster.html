@@ -266,10 +266,18 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:aac2bb734b3fd032885cbfcdff2d26236"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">Input/Output</h2></td></tr>
-<tr class="memitem:a3911a1cd9acdd37298f1c3654382974c"><td class="memTemplParams" colspan="2">template&lt;class Callable &gt; </td></tr>
-<tr class="memitem:a3911a1cd9acdd37298f1c3654382974c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1raster.html#a3911a1cd9acdd37298f1c3654382974c">to_geotiff</a> (Callable f, time_descriptor start, time_descriptor end, const std::filesystem::path &amp;file) const</td></tr>
-<tr class="memdesc:a3911a1cd9acdd37298f1c3654382974c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export a spatio-temporal raster to a Geotiff file.  <a href="classquetzal_1_1geography_1_1raster.html#a3911a1cd9acdd37298f1c3654382974c">More...</a><br /></td></tr>
-<tr class="separator:a3911a1cd9acdd37298f1c3654382974c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fb44bc56b64ee244c83df14d14d340c"><td class="memItemLeft" align="right" valign="top"><a id="a8fb44bc56b64ee244c83df14d14d340c"></a>
+time_type&#160;</td><td class="memItemRight" valign="bottom"><b>start</b></td></tr>
+<tr class="separator:a8fb44bc56b64ee244c83df14d14d340c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2970b056004f1807b453b513a6901222"><td class="memItemLeft" align="right" valign="top"><a id="a2970b056004f1807b453b513a6901222"></a>
+time_type time_type&#160;</td><td class="memItemRight" valign="bottom"><b>end</b></td></tr>
+<tr class="separator:a2970b056004f1807b453b513a6901222"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acef7302831c79cc4e4ac4908070a4d91"><td class="memItemLeft" align="right" valign="top">time_type time_type const std::filesystem::path &amp;file&#160;</td><td class="memItemRight" valign="bottom"><b>const</b></td></tr>
+<tr class="separator:acef7302831c79cc4e4ac4908070a4d91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5a053394612e69488ab676985fa6c74"><td class="memTemplParams" colspan="2">template&lt;class Callable &gt; </td></tr>
+<tr class="memitem:af5a053394612e69488ab676985fa6c74"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1raster.html#af5a053394612e69488ab676985fa6c74">requires</a> (std::is_invocable_r_v&lt; std::optional&lt; value_type &gt;, Callable, location_descriptor, time_type &gt;) void to_geotiff(Callable f</td></tr>
+<tr class="memdesc:af5a053394612e69488ab676985fa6c74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export a spatio-temporal raster to a Geotiff file.  <a href="classquetzal_1_1geography_1_1raster.html#af5a053394612e69488ab676985fa6c74">More...</a><br /></td></tr>
+<tr class="separator:af5a053394612e69488ab676985fa6c74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afae1abc4b2f9f36ec14dfad8e6a549ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1raster.html#afae1abc4b2f9f36ec14dfad8e6a549ef">to_shapefile</a> (std::vector&lt; <a class="el" href="structquetzal_1_1geography_1_1latlon.html">latlon</a> &gt; points, const std::filesystem::path &amp;file) const</td></tr>
 <tr class="memdesc:afae1abc4b2f9f36ec14dfad8e6a549ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export spatial points to a shapefile.  <a href="classquetzal_1_1geography_1_1raster.html#afae1abc4b2f9f36ec14dfad8e6a549ef">More...</a><br /></td></tr>
 <tr class="separator:afae1abc4b2f9f36ec14dfad8e6a549ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -462,6 +470,40 @@ template&lt;typename Time  = int&gt; </div>
 
 </div>
 </div>
+<a id="af5a053394612e69488ab676985fa6c74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5a053394612e69488ab676985fa6c74">&#9670;&nbsp;</a></span>requires()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Time  = int&gt; </div>
+<div class="memtemplate">
+template&lt;class Callable &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classquetzal_1_1geography_1_1raster.html">quetzal::geography::raster</a>&lt; Time &gt;::requires </td>
+          <td>(</td>
+          <td class="paramtype">std::is_invocable_r_v&lt; std::optional&lt; value_type &gt;, Callable, location_descriptor, time_type &gt;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Export a spatio-temporal raster to a Geotiff file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">f</td><td>functor defining the variable: its signature should be equivalent to <code>std::optional&lt;double&gt; f(location_descriptor, time_descriptor)</code> </td></tr>
+    <tr><td class="paramname">start</td><td>the first time_descriptor value where f should be called. </td></tr>
+    <tr><td class="paramname">end</td><td>the last time_descriptor value where f should be called. </td></tr>
+    <tr><td class="paramname">file</td><td>the file name where to save </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section remark"><dt>Remarks</dt><dd>If the returned optional is empty, the raster NA value will be used. </dd></dl>
+
+</div>
+</div>
 <a id="aac2bb734b3fd032885cbfcdff2d26236"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aac2bb734b3fd032885cbfcdff2d26236">&#9670;&nbsp;</a></span>to_centroid()</h2>
 
@@ -644,70 +686,6 @@ template&lt;typename Time  = int&gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The descriptor value of x </dd></dl>
-
-</div>
-</div>
-<a id="a3911a1cd9acdd37298f1c3654382974c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3911a1cd9acdd37298f1c3654382974c">&#9670;&nbsp;</a></span>to_geotiff()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Time  = int&gt; </div>
-<div class="memtemplate">
-template&lt;class Callable &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classquetzal_1_1geography_1_1raster.html">quetzal::geography::raster</a>&lt; Time &gt;::to_geotiff </td>
-          <td>(</td>
-          <td class="paramtype">Callable&#160;</td>
-          <td class="paramname"><em>f</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">time_descriptor&#160;</td>
-          <td class="paramname"><em>start</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">time_descriptor&#160;</td>
-          <td class="paramname"><em>end</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::filesystem::path &amp;&#160;</td>
-          <td class="paramname"><em>file</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Export a spatio-temporal raster to a Geotiff file. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">f</td><td>functor defining the variable: its signature should be equivalent to <code>std::optional&lt;double&gt; f(location_descriptor, time_descriptor)</code> </td></tr>
-    <tr><td class="paramname">start</td><td>the first time_descriptor value where f should be called. </td></tr>
-    <tr><td class="paramname">end</td><td>the last time_descriptor value where f should be called. </td></tr>
-    <tr><td class="paramname">file</td><td>the file name where to save </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section remark"><dt>Remarks</dt><dd>If the returned optional is empty, the raster NA value will be used. </dd></dl>
 
 </div>
 </div>
@@ -1162,6 +1140,25 @@ template&lt;typename Time  = int&gt; </div>
  returning the value at location x and time t. </p>
 <dl class="section remark"><dt>Remarks</dt><dd>This callable is cheap to copy, does not have ownership of the data, and works well for mathematical composition using <code><a class="el" href="namespacequetzal_1_1expressive.html" title="Mathematical expressions of spatio-temporal quantities.">quetzal::expressive</a></code> </dd></dl>
 
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="acef7302831c79cc4e4ac4908070a4d91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acef7302831c79cc4e4ac4908070a4d91">&#9670;&nbsp;</a></span>const</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Time  = int&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">time_type time_type const std::filesystem::path&amp; file <a class="el" href="classquetzal_1_1geography_1_1raster.html">quetzal::geography::raster</a>&lt; Time &gt;::const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">{</div>
+<div class="line">      export_to_geotiff(f, start, end, file)</div>
+</div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>

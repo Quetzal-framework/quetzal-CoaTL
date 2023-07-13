@@ -140,23 +140,24 @@ $(document).ready(function(){initNavTree('shapefile_generator.html',''); initRes
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    std::iota(times.begin(), times.end(), 2001);</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keyword">auto</span> input_file = std::filesystem::current_path() / <span class="stringliteral">&quot;data/bio1.tif&quot;</span>;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="comment">// Read the raster</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">auto</span> bio1 = <a class="code" href="classquetzal_1_1geography_1_1raster.html#a0ff840b704392f9ef3e63d4b74a83385">raster_type::from_file</a>(input_file, times);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="comment">// Sampling points:</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keyword">auto</span> p1 = <a class="code" href="structquetzal_1_1geography_1_1latlon.html">latlon</a>(48., 0.);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">auto</span> p2 = <a class="code" href="structquetzal_1_1geography_1_1latlon.html">latlon</a>(51, 3.5);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">auto</span> p3 = <a class="code" href="structquetzal_1_1geography_1_1latlon.html">latlon</a>(38.0, 9.0);</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">auto</span> output = std::filesystem::current_path() / <span class="stringliteral">&quot;my_sample&quot;</span>;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    bio1.to_shapefile( {p1, p2, p3}, output);</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keyword">auto</span> output_dir = std::filesystem::current_path() / <span class="stringliteral">&quot;my_sample&quot;</span>;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="comment">// Read the raster</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">auto</span> bio1 = <a class="code" href="classquetzal_1_1geography_1_1raster.html#a0ff840b704392f9ef3e63d4b74a83385">raster_type::from_file</a>(input_file, times);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="comment">// Sampling points:</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">auto</span> p1 = <a class="code" href="structquetzal_1_1geography_1_1latlon.html">latlon</a>(48., 0.);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">auto</span> p2 = <a class="code" href="structquetzal_1_1geography_1_1latlon.html">latlon</a>(51, 3.5);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keyword">auto</span> p3 = <a class="code" href="structquetzal_1_1geography_1_1latlon.html">latlon</a>(38.0, 9.0);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    bio1.to_shapefile( {p1, p2, p3}, output_dir);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    std::cout &lt;&lt; (std::filesystem::is_directory(output_dir) ? <span class="stringliteral">&quot;success&quot;</span> : <span class="stringliteral">&quot;error&quot;</span>) &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    std::cout &lt;&lt; (std::filesystem::is_directory(<span class="stringliteral">&quot;my_sample&quot;</span>) ? <span class="stringliteral">&quot;success&quot;</span> : <span class="stringliteral">&quot;error&quot;</span>) &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}</div>
-<div class="ttc" id="aclassquetzal_1_1geography_1_1raster_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1raster.html">quetzal::geography::raster</a></div><div class="ttdoc">Discrete spatio-temporal variations of an environmental variable.</div><div class="ttdef"><b>Definition:</b> raster.hpp:40</div></div>
-<div class="ttc" id="aclassquetzal_1_1geography_1_1raster_html_a0ff840b704392f9ef3e63d4b74a83385"><div class="ttname"><a href="classquetzal_1_1geography_1_1raster.html#a0ff840b704392f9ef3e63d4b74a83385">quetzal::geography::raster::from_file</a></div><div class="ttdeci">static raster from_file(const std::filesystem::path &amp;file, const std::vector&lt; time_type &gt; &amp;times)</div><div class="ttdoc">Read the raster from an input file in the geotiff format.</div><div class="ttdef"><b>Definition:</b> raster.hpp:129</div></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="comment">// Clean up</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    std::filesystem::remove_all(output_dir);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;}</div>
+<div class="ttc" id="aclassquetzal_1_1geography_1_1raster_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1raster.html">quetzal::geography::raster</a></div><div class="ttdoc">Discrete spatio-temporal variations of an environmental variable.</div><div class="ttdef"><b>Definition:</b> raster.hpp:41</div></div>
+<div class="ttc" id="aclassquetzal_1_1geography_1_1raster_html_a0ff840b704392f9ef3e63d4b74a83385"><div class="ttname"><a href="classquetzal_1_1geography_1_1raster.html#a0ff840b704392f9ef3e63d4b74a83385">quetzal::geography::raster::from_file</a></div><div class="ttdeci">static raster from_file(const std::filesystem::path &amp;file, const std::vector&lt; time_type &gt; &amp;times)</div><div class="ttdoc">Read the raster from an input file in the geotiff format.</div><div class="ttdef"><b>Definition:</b> raster.hpp:130</div></div>
 <div class="ttc" id="anamespacequetzal_html"><div class="ttname"><a href="namespacequetzal.html">quetzal</a></div><div class="ttdoc">Simulation of coalescence-based models of molecular evolution.</div><div class="ttdef"><b>Definition:</b> merge.hpp:24</div></div>
 <div class="ttc" id="astructquetzal_1_1geography_1_1latlon_html"><div class="ttname"><a href="structquetzal_1_1geography_1_1latlon.html">quetzal::geography::latlon</a></div><div class="ttdoc">Geographic coordinates.</div><div class="ttdef"><b>Definition:</b> coordinates.hpp:178</div></div>
 </div><!-- fragment --><p><b>Output</b></p>

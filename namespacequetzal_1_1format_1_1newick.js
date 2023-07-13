@@ -19,6 +19,13 @@ var namespacequetzal_1_1format_1_1newick =
       [ "single_function_argument_t", "generator_8hpp.html#a29edb6f35cd4cd85c9715d80be1ce25e", null ],
       [ "check_if_balanced", "generator_8hpp.html#ad90f116980eaac86212f0cf9c04ef0bb", null ]
     ] ],
+    [ "extended", "namespacequetzal_1_1format_1_1newick_1_1extended.html", [
+      [ "detail", null, [
+        [ "regraft_cycles", "to__network_8hpp.html#a57208fa5b657eb2f009f1d5621e0a489", null ]
+      ] ],
+      [ "to_network", "namespacequetzal_1_1format_1_1newick_1_1extended.html#a32ab27e78b03c5c50eee5c08c6b3dea3", null ],
+      [ "to_network", "namespacequetzal_1_1format_1_1newick_1_1extended.html#a8d817e352a05114e724120c72dc2dfa5", null ]
+    ] ],
     [ "parser", null, [
       [ "BOOST_SPIRIT_DEFINE", "parser_8hpp.html#a9d0eb994ac8ccc82b7c787b64b1e8e03", null ],
       [ "checks", "parser_8hpp.html#aefa7449903d18ff72a1e7f70454c0032", null ],

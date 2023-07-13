@@ -24,6 +24,7 @@ var namespacequetzal_1_1coalescence_1_1detail =
     [ "binary_tree_common", "classquetzal_1_1coalescence_1_1detail_1_1binary__tree__common.html", "classquetzal_1_1coalescence_1_1detail_1_1binary__tree__common" ],
     [ "tree_traits", "structquetzal_1_1coalescence_1_1detail_1_1tree__traits.html", "structquetzal_1_1coalescence_1_1detail_1_1tree__traits" ],
     [ "k_ary_tree_common", "classquetzal_1_1coalescence_1_1detail_1_1k__ary__tree__common.html", "classquetzal_1_1coalescence_1_1detail_1_1k__ary__tree__common" ],
+    [ "network_common", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html", "classquetzal_1_1coalescence_1_1detail_1_1network__common" ],
     [ "initializer", "namespacequetzal_1_1coalescence_1_1detail.html#a69ec329557804854d8e02c1dc4ca7253", null ],
     [ "initpack", "namespacequetzal_1_1coalescence_1_1detail.html#aaa6122b973c0ad8293da7dc853d64867", null ],
     [ "unshift_tuple", "namespacequetzal_1_1coalescence_1_1detail.html#a26e3c6130d557aac65d16029f7af757c", null ],

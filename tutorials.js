@@ -21,10 +21,13 @@ var tutorials =
       ] ]
     ] ],
     [ "Generating a Newick string", "newick_generator.html", null ],
+    [ "Parsing an Extended Newick string", "extended_newick_parser.html", null ],
+    [ "Parsing an Extended Newick string", "extended_newick_generator.html", null ],
     [ "Reading spatial variables from rasters", "geotiff_parser.html", null ],
     [ "Writing spatial variables to rasters", "geotiff_generator.html", null ],
     [ "Writing spatial samples to shapefile", "shapefile_generator.html", null ],
     [ "Niche models in Quetzal", "niche_in_quetzal.html", null ],
+    [ "Suitability landscape", "expressive_suitability_raster.html", null ],
     [ "Graphs in Quetzal", "graphs_in_quetzal.html", null ],
     [ "Binary Trees", "coalescence_binary_tree.html", [
       [ "Introduction", "coalescence_binary_tree.html#autotoc_md83", null ],

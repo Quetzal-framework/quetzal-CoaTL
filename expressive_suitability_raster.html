@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Quetzal-CoaTL: Frameworks basics</title>
+<title>Quetzal-CoaTL: Suitability landscape</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -94,7 +94,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('md_tbd_framework_basics.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('expressive_suitability_raster.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -114,35 +114,47 @@ $(document).ready(function(){initNavTree('md_tbd_framework_basics.html',''); ini
 
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Frameworks basics </div>  </div>
+<div class="title">Suitability landscape </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md125"></a>
-Basic Concepts</h1>
-<p>Quetzal abstracts a number of concepts to make room for implementations that are external to the library: see the use of [external adaptation].</p>
-<h2><a class="anchor" id="autotoc_md126"></a>
-Genetics</h2>
-<p>Providing high-level abstractions for genetic polymorphism has multiple interests like opening the door for custom implementation: for sake of efficiency, or when the <em>natural</em> concept of genetic marker does not apply:</p>
-<ul>
-<li>Synthetic DNA and RNA (<a href="https://www.science.org/doi/10.1126/science.aat0971">Hachimoji</a>) with more than 4 four informational element has recently been produced, with consequences for exobiology and production/analysis of xenobots. These new genetic systems will need access to polymorphism analysis for which other implementations are not supporting but that Quetzal's abstractions enable.</li>
-<li>Video-games are leaning towards including models of genetic evolution in their game-play, and while being not bound to the constraints of real-life molecular biology still need to compute diversity statistics, with the potential to highlight universal principles of biological evolution (see for example the 2010 paper <a href="https://en.wikipedia.org/wiki/Foldit">Foldit</a>).</li>
-</ul>
-<h3><a class="anchor" id="autotoc_md127"></a>
-Sequences Concepts</h3>
-<ul>
-<li>sequence</li>
-<li>site</li>
-<li>allele</li>
-<li>individual</li>
-<li>sample</li>
-<li>aligned </li>
-</ul>
-</div></div><!-- contents -->
+<div class="textblock"><p><b>Input</b></p>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;quetzal/quetzal.hpp&quot;</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;cassert&gt;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span> <span class="comment">// std::pow</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keywordtype">int</span> main()</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;{</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;  <span class="keyword">using</span> <a class="code" href="structquetzal_1_1expressive_1_1literal__factory.html">quetzal::expressive::literal_factory</a>;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;  <span class="keyword">using</span> <a class="code" href="namespacequetzal_1_1expressive.html#acdec2cd4ec959709f7a1891702c4d5dd">quetzal::expressive::use</a>;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;  <span class="comment">// This creates little callables (double, double)</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;  literal_factory&lt;double,double&gt; lit;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  <span class="keyword">auto</span> a = lit(42.); <span class="comment">// a is no longer a simple double, it&#39;s an expression</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;  <span class="keyword">auto</span> f = <a class="code" href="namespacequetzal_1_1expressive.html#acdec2cd4ec959709f7a1891702c4d5dd">use</a>([](<span class="keywordtype">double</span> x, <span class="keywordtype">double</span> y){ <span class="keywordflow">return</span> std::pow(x, y);});</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;  <span class="comment">// Both a and f can now be invoked with the same interface (double, double) -&gt; double</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  assert( a(1.0, 3.14) == 42.0);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  assert( f(1.0, 3.14) == 1.0 );</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  <span class="comment">// We can now compose them easily ...</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;  <span class="keyword">auto</span> my_expression  = a * f ;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <span class="comment">// ... and call them (much) later eg in the library&#39;s internals</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  std::cout &lt;&lt; my_expression(1.0, 3.14) &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;}</div>
+<div class="ttc" id="anamespacequetzal_1_1expressive_html_acdec2cd4ec959709f7a1891702c4d5dd"><div class="ttname"><a href="namespacequetzal_1_1expressive.html#acdec2cd4ec959709f7a1891702c4d5dd">quetzal::expressive::use</a></div><div class="ttdeci">constexpr auto use(F f)</div><div class="ttdoc">Transforms functions into operator friendly classes.</div><div class="ttdef"><b>Definition:</b> expressive.hpp:190</div></div>
+<div class="ttc" id="astructquetzal_1_1expressive_1_1literal__factory_html"><div class="ttname"><a href="structquetzal_1_1expressive_1_1literal__factory.html">quetzal::expressive::literal_factory</a></div><div class="ttdoc">Transforms literals into operator friendly classes.</div><div class="ttdef"><b>Definition:</b> expressive.hpp:233</div></div>
+</div><!-- fragment --><p><b>Output</b></p>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;42</div>
+</div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><a class="el" href="tutorials.html">Tutorials</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

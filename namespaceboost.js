@@ -1,5 +1,30 @@
 var namespaceboost =
 [
+    [ "Objectives", "newick_generator.html#autotoc_md59", null ],
+    [ "From a Quetzal binary tree", "newick_generator.html#autotoc_md61", [
+      [ "No property", "newick_generator.html#autotoc_md63", null ],
+      [ "Custom properties", "newick_generator.html#autotoc_md65", null ]
+    ] ],
+    [ "From a Quetzal k-ary tree", "newick_generator.html#autotoc_md67", [
+      [ "No property", "newick_generator.html#autotoc_md69", null ],
+      [ "Custom properties", "newick_generator.html#autotoc_md71", null ]
+    ] ],
+    [ "Interfacing legacy code", "newick_generator.html#autotoc_md73", [
+      [ "No property", "newick_generator.html#autotoc_md75", null ],
+      [ "Custom properties", "newick_generator.html#autotoc_md77", null ]
+    ] ],
+    [ "Reading a single variable", "geotiff_parser.html#autotoc_md87", null ],
+    [ "Reading multiple variables", "geotiff_parser.html#autotoc_md89", null ],
+    [ "Next steps", "geotiff_parser.html#autotoc_md91", [
+      [ "Demes on a regular spatial grid", "geotiff_parser.html#autotoc_md93", null ],
+      [ "Demes on a variable spatial graph", "geotiff_parser.html#autotoc_md95", null ],
+      [ "Inform local processes", "geotiff_parser.html#autotoc_md97", null ]
+    ] ],
+    [ "Invariants Guarantee", "graphs_in_quetzal.html#autotoc_md78", null ],
+    [ "Edge and Vertices descriptors", "graphs_in_quetzal.html#autotoc_md79", null ],
+    [ "Edge and Vertices Information (Property Classes)", "graphs_in_quetzal.html#autotoc_md80", null ],
+    [ "Depth First Search (DFS)  Algorithms", "graphs_in_quetzal.html#autotoc_md81", null ],
+    [ "DFS on trees", "graphs_in_quetzal.html#autotoc_md82", null ],
     [ "accumulators", null, [
       [ "extract", null, [
         [ "tajima", "accumulator_8hpp.html#a546c9fcb7963ce0b708bb38573235d15", null ]

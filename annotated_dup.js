@@ -33,7 +33,8 @@ var annotated_dup =
           [ "EdgeManager", "structquetzal_1_1coalescence_1_1detail_1_1EdgeManager.html", "structquetzal_1_1coalescence_1_1detail_1_1EdgeManager" ],
           [ "binary_tree_common", "classquetzal_1_1coalescence_1_1detail_1_1binary__tree__common.html", "classquetzal_1_1coalescence_1_1detail_1_1binary__tree__common" ],
           [ "tree_traits", "structquetzal_1_1coalescence_1_1detail_1_1tree__traits.html", "structquetzal_1_1coalescence_1_1detail_1_1tree__traits" ],
-          [ "k_ary_tree_common", "classquetzal_1_1coalescence_1_1detail_1_1k__ary__tree__common.html", "classquetzal_1_1coalescence_1_1detail_1_1k__ary__tree__common" ]
+          [ "k_ary_tree_common", "classquetzal_1_1coalescence_1_1detail_1_1k__ary__tree__common.html", "classquetzal_1_1coalescence_1_1detail_1_1k__ary__tree__common" ],
+          [ "network_common", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html", "classquetzal_1_1coalescence_1_1detail_1_1network__common" ]
         ] ],
         [ "merger_policy", null, [
           [ "BinaryMerger", "structquetzal_1_1coalescence_1_1merger__policy_1_1BinaryMerger.html", null ],
@@ -62,6 +63,8 @@ var annotated_dup =
         [ "binary_tree< no_property, no_property >", "classquetzal_1_1coalescence_1_1binary__tree_3_01no__property_00_01no__property_01_4.html", "classquetzal_1_1coalescence_1_1binary__tree_3_01no__property_00_01no__property_01_4" ],
         [ "k_ary_tree", "classquetzal_1_1coalescence_1_1k__ary__tree.html", null ],
         [ "k_ary_tree< no_property, no_property >", "classquetzal_1_1coalescence_1_1k__ary__tree_3_01no__property_00_01no__property_01_4.html", "classquetzal_1_1coalescence_1_1k__ary__tree_3_01no__property_00_01no__property_01_4" ],
+        [ "network", "classquetzal_1_1coalescence_1_1network.html", null ],
+        [ "network< no_property, no_property >", "classquetzal_1_1coalescence_1_1network_3_01no__property_00_01no__property_01_4.html", "classquetzal_1_1coalescence_1_1network_3_01no__property_00_01no__property_01_4" ],
         [ "newick_with_distance_to_parent", "classquetzal_1_1coalescence_1_1newick__with__distance__to__parent.html", "classquetzal_1_1coalescence_1_1newick__with__distance__to__parent" ],
         [ "newick_with_distance_to_parent_and_leaf_name", "classquetzal_1_1coalescence_1_1newick__with__distance__to__parent__and__leaf__name.html", "classquetzal_1_1coalescence_1_1newick__with__distance__to__parent__and__leaf__name" ]
       ] ],
