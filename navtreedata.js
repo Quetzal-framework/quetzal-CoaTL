@@ -92,14 +92,14 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"",
-"classquetzal_1_1coalescence_1_1container_1_1Forest.html#a94302f7d2023df2ccf828c4696baba0c",
-"classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrum.html#a1fc94f60381a4f410a80f30430268629",
-"classquetzal_1_1format_1_1newick_1_1Formatter.html#a1676aa8ddf858ef5bf1c0595d594bad8",
-"classquetzal_1_1polymorphism_1_1statistics_1_1tajimasD.html#acce13215e7a258e8893c515b1d88d8da",
-"md_3_installation.html#autotoc_md23",
-"structFixtureCases.html#a9bdfdbee2a47c1845818e7051f9f2a40",
-"structquetzal_1_1format_1_1is__balanced.html"
+"Allele_8hpp_source.html",
+"classquetzal_1_1coalescence_1_1container_1_1Network.html#a9c21b8d2dc545c1a8c4ced777b0891d9",
+"classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1ProbabilityDistribution.html",
+"classquetzal_1_1format_1_1newick_1_1generator.html#aa6b8535659fa1c9edd8def32a9284a01",
+"classquetzal_1_1sampling_1_1param__base__class.html#ae05a3b1f6b239f26d67302961ef1826a",
+"merge_8hpp.html#a2e00d108aab1c295aafb79c92a5757ae",
+"structMyNode.html#a3bb04fee898f0e14708ec9dac0037787",
+"structquetzal_1_1format_1_1newick_1_1detail_1_1KaryTreeVisitorWrap.html#aacb5e2bb6ff0050708181615617f67a4"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
