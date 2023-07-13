@@ -81,8 +81,8 @@ namespace quetzal::format::newick::extended
             graph.add_edge(new_vertex, t);
           };
 
-          ranges::views::zip_with(regraft, new_sources, new_targets);
-
+          auto todo = ranges::views::zip(new_sources, new_targets);
+          ranges::for_each(todo, [regraft](auto&& z){ std::apply(regraft, z);});
         }
       }
     }
