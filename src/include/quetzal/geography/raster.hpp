@@ -139,7 +139,7 @@ namespace quetzal::geography
     /// @param file the file name where to save
     /// @remark If the returned optional is empty, the raster NA value will be used.
     template <class Callable>
-      requires( std::is_invocable_r< std::optional<value_type>, Callable, location_descriptor, time_type>() )
+      requires( std::is_invocable_r_v< std::optional<value_type>, Callable, location_descriptor, time_type> )
     void to_geotiff(Callable f, time_type start, time_type end, const std::filesystem::path &file) const
     {
       export_to_geotiff(f, start, end, file);
