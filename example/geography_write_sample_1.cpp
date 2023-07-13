@@ -18,6 +18,7 @@ int main()
     std::iota(times.begin(), times.end(), 2001);
 
 	auto input_file = std::filesystem::current_path() / "data/bio1.tif";
+	auto output_dir = std::filesystem::current_path() / "my_sample";
 
 	// Read the raster
 	auto bio1 = raster_type::from_file(input_file, times);
@@ -27,9 +28,9 @@ int main()
 	auto p2 = latlon(51, 3.5);
 	auto p3 = latlon(38.0, 9.0);
 
-	auto output = std::filesystem::current_path() / "my_sample";
+    bio1.to_shapefile( {p1, p2, p3}, output_dir);
+	std::cout << (std::filesystem::is_directory(output_dir) ? "success" : "error") << std::endl;
 
-    bio1.to_shapefile( {p1, p2, p3}, output);
-
-	std::cout << (std::filesystem::is_directory("my_sample") ? "success" : "error") << std::endl;
+	// Clean up
+	std::filesystem::remove_all(output_dir);
 }

@@ -42,11 +42,12 @@ namespace quetzal::coalescence
     
     // Base class and common implementation
 		template <class VertexProperty, class EdgeProperty, class CRTP>
-		class k_ary_tree_common
+		class network_common
 		{
 		protected:
 
-			/// @brief The type of graph hold by the tree class
+			/// @brief The type of graph hold by the network class
+      /// @note Not a tree but still valid for a graph
 			using base = tree_traits::model<
 				tree_traits::out_edge_list_type,
 				tree_traits::vertex_list_type,
@@ -58,10 +59,10 @@ namespace quetzal::coalescence
 
 		public:
 			/// @brief Default constructor
-			explicit k_ary_tree_common() : _graph() {}
+			explicit network_common() : _graph() {}
 
-			/// @brief Constructs a tree with \f$n\f$ vertices
-			explicit k_ary_tree_common(size_t n) : _graph(n) {}
+			/// @brief Constructs a network with \f$n\f$ vertices
+			explicit network_common(size_t n) : _graph(n) {}
 
 			/// @brief Vertex descriptor ("node ID" in other words).
 			using vertex_descriptor = typename base::vertex_descriptor;
@@ -74,7 +75,7 @@ namespace quetzal::coalescence
 
       /// @brief Edge information 
       using edge_property = EdgeProperty;
-      
+
 			/// @brief Degree size type.
 			using degree_size_type = typename base::degree_size_type;
 
@@ -96,17 +97,16 @@ namespace quetzal::coalescence
 			/// @{
 
 			/// @brief Detects if there is a 1-to-1 mapping of the vertices in one graph to the vertices of another graph such that adjacency is preserved.
-			/// @param other A k-ary tree graph.
+			/// @param other A network graph.
 			/// @return true if there exists an isomorphism between the two graphs and false otherwise
-			bool is_isomorphic(k_ary_tree_common const &other) const
+			bool is_isomorphic(network_common const &other) const
 			{
 				return boost::isomorphism(_graph, other._graph);
 			}
 
-			/// @brief Finds the root of the tree graph starting from a vertex \f$u\f$.
+			/// @brief Finds the root of the network graph starting from a vertex \f$u\f$.
 			/// @param u The vertex to start from.
-			/// @remark This function will be an infinite loop if called on a recurrent
-			///         tree (which is not a tree any more).
+			/// @remark This function will be an infinite loop if called on a recurrent network
 			vertex_descriptor find_root_from(vertex_descriptor u) const
 			{
         std::vector<vertex_descriptor> order;
@@ -202,17 +202,57 @@ namespace quetzal::coalescence
 
 			/// @}
 
+			/// @name Topology Modification
+			/// @{
+
+      //// @brief Inserts the edge \f$(u,v)\f$ into the graph, and returns an edge descriptor pointing to the new edge.
+      /// @param u The vertex
+      auto add_edge(vertex_descriptor u, vertex_descriptor v) 
+      {
+        return boost::add_edge(u, v, _graph);
+      }
+
+      //// @brief Remove all edges to and from vertex \f$u\f$ from the graph
+      /// @param u The vertex
+      void clear_vertex(vertex_descriptor u) 
+      {
+        return boost::clear_vertex(u, _graph);
+      }
+
+      //// @brief Remove vertex u from the graph
+      /// @param u The vertex
+      void remove_vertex(vertex_descriptor u) 
+      {
+        return boost::remove_vertex(u, _graph);
+      }
+
+      /// @}
+
 			/// @name Iterators
 			/// @{
 
-			/// @brief Provides iterators to iterate over the in-going edges of vertex \f$u\f$.
+			/// @brief Provides a range to iterate over the in-going edges of vertex \f$u\f$.
 			/// @param u The vertex \f$u\f$.
-			/// @return A pair of iterators.
-			std::pair<in_edge_iterator, in_edge_iterator> in_edges(vertex_descriptor u) const
+			/// @return A range
+			auto in_edges(vertex_descriptor u) const
 			{
-				using detail::adl_resolution::in_edges;
-				return in_edges(u, _graph);
+				return boost::make_iterator_range(boost::in_edges(u, _graph));
 			}
+
+			/// @brief Provides a range to iterate over the out-going edges of vertex \f$u\f$.
+			/// @param u The vertex \f$u\f$.
+			/// @return A range
+			auto out_edges(vertex_descriptor u) const
+			{
+				return boost::make_iterator_range(boost::out_edges(u, _graph));
+			}
+
+			/// @brief Provides a range to iterate over the vertices of the graph
+			/// @return A range
+      auto vertices() const
+      {
+        return boost::make_iterator_range(boost::vertices(_graph));
+      }
 
 			/// @}
 
@@ -220,47 +260,51 @@ namespace quetzal::coalescence
 			/// @{
 
 			/// @brief Performs a read-and-write depth-first traversal of the vertices starting at vertex \f$s\f$.
-			/// @tparam DFSTreeVisitor
+			/// @tparam DFSVisitor
 			/// @param start The vertex to start from.
 			/// @param vis The visitor to apply.
-			template <typename DFSTreeVisitor>
-			void depth_first_search(vertex_descriptor start, DFSTreeVisitor &vis)
+			template <typename DFSVisitor>
+			void depth_first_search(vertex_descriptor start, DFSVisitor &vis)
 			{
-        // convert tree visitor to graph visitor
-        struct VisWrap : boost::default_dfs_visitor
+        // Give a BGL interface to a Quetzal visitor
+        struct wrapper : boost::default_dfs_visitor
         {
-          k_ary_tree_common &_tree;
-          DFSTreeVisitor &_tree_visitor;
-          VisWrap(k_ary_tree_common &tree, DFSTreeVisitor &v) : _tree(tree), _tree_visitor(v) {}
-          void discover_vertex(vertex_descriptor v, const base& g) { _tree_visitor(boost::visit::pre, v); }
-          void tree_edge(const edge_descriptor & e, const base& g)  { _tree_visitor(boost::visit::in, _tree.target(e) ); }
-          void finish_vertex(vertex_descriptor v, const base& g)  { _tree_visitor(boost::visit::post, v); }
-        } graph_visitor(*this, vis);
+          network_common &_graph;
+          DFSVisitor &_visitor;
+
+          wrapper(network_common &graph, DFSVisitor &v) : _graph(graph), _visitor(v) {}
+          void discover_vertex(vertex_descriptor v, const base& g) { _visitor(boost::visit::pre, v); }
+          void tree_edge(const edge_descriptor & e, const base& g) { _visitor(boost::visit::in, _graph.target(e) ); }
+          void finish_vertex(vertex_descriptor v, const base& g)   { _visitor(boost::visit::post, v); }
+        } bgl_visitor(*this, vis);
+        
         std::vector<boost::default_color_type> colors(boost::num_vertices(_graph));
         boost::iterator_property_map color_map(colors.begin(), boost::get(boost::vertex_index, _graph));
-				return boost::depth_first_search(_graph, boost::visitor(graph_visitor).color_map(color_map).root_vertex(start));
+				return boost::depth_first_search(_graph, boost::visitor(bgl_visitor).color_map(color_map).root_vertex(start));
 			}
 
 			/// @brief Performs a read-only depth-first traversal of the vertices starting at vertex \f$s\f$.
-			/// @tparam DFSTreeVisitor
+			/// @tparam DFSVisitor
 			/// @param start The vertex to start from.
 			/// @param vis The visitor to apply.
-			template <typename DFSTreeVisitor>
-			void depth_first_search(vertex_descriptor start, DFSTreeVisitor &vis) const
+			template <typename DFSVisitor>
+			void depth_first_search(vertex_descriptor start, DFSVisitor &vis) const
 			{
-        // convert tree visitor to graph visitor
-        struct VisWrap : boost::default_dfs_visitor
+        // Give a BGL interface to a Quetzal visitor
+        struct wrapper : boost::default_dfs_visitor
         {
-          const k_ary_tree_common &_tree;
-          DFSTreeVisitor &_tree_visitor;
-          VisWrap(const k_ary_tree_common &tree, DFSTreeVisitor &v) : _tree(tree), _tree_visitor(v) {}
-          void discover_vertex(vertex_descriptor v, const base& g) { _tree_visitor(boost::visit::pre, v); }
-          void tree_edge(const edge_descriptor & e, const base& g)  { _tree_visitor(boost::visit::in, _tree.target(e) ); }
-          void finish_vertex(vertex_descriptor v, const base& g)  { _tree_visitor(boost::visit::post, v); }
-        } graph_visitor(*this, vis);
+          const network_common &_graph;
+          DFSVisitor &_visitor;
+
+          wrapper(const network_common &graph, DFSVisitor &v) : _graph(graph), _visitor(v) {}
+          void discover_vertex(vertex_descriptor v, const base& g) { _visitor(boost::visit::pre, v); }
+          void tree_edge(const edge_descriptor & e, const base& g) { _visitor(boost::visit::in, _graph.target(e) ); }
+          void finish_vertex(vertex_descriptor v, const base& g)   { _visitor(boost::visit::post, v); }
+        } bgl_visitor(*this, vis);
+
         std::vector<boost::default_color_type> colors(boost::num_vertices(_graph));
         boost::iterator_property_map color_map(colors.begin(), boost::get(boost::vertex_index, _graph));
-				return boost::depth_first_search(_graph, boost::visitor(graph_visitor).color_map(color_map).root_vertex(start));
+				return boost::depth_first_search(_graph, boost::visitor(bgl_visitor).color_map(color_map).root_vertex(start));
 			}
 
 			/// @}
@@ -268,7 +312,7 @@ namespace quetzal::coalescence
 			/// @name Input/Output
 			/// @{
 
-			/// @brief Print the tree to the graphviz format.
+			/// @brief Print the graph to the graphviz format.
 			void to_graphviz(std::ostream &out) const
 			{
 				using namespace boost;
@@ -287,82 +331,33 @@ namespace quetzal::coalescence
 				return base::null_vertex();
 			}
 
-      private:
-
-      template <typename Generator>
-      static auto update_tree(
-          CRTP &tree,
-          std::vector<vertex_descriptor> leaves,
-          Generator &rng)
-      {
-        using tree_type = CRTP;
-
-        if (leaves.size() == 1)
-        {
-          return leaves.front();
-        }
-        else
-        {
-          std::uniform_int_distribution<> distrib(1, leaves.size() - 1);
-          int split = distrib(rng);
-
-          std::vector<vertex_descriptor> left(leaves.begin(), leaves.begin() + split);
-          std::vector<vertex_descriptor> right(leaves.begin() + split, leaves.end());
-
-          auto parent = boost::add_vertex(tree._graph);
-          if constexpr (std::is_same_v<EdgeProperty, boost::no_property>)
-            tree.add_edges(parent, { update_tree(tree, left, rng), update_tree(tree, right, rng) });
-          else
-            tree.add_edges(parent,
-                          { std::make_tuple(update_tree(tree, left, rng), EdgeProperty()),
-                          std::make_tuple(update_tree(tree, right, rng), EdgeProperty()) } );
-          return parent;
-        }
-      }
-
-      public:
-
-      template<typename Generator>
-      static std::tuple<CRTP, vertex_descriptor> 
-      make_random_tree(int n_leaves, int k_max, Generator& rng)
-      {
-        CRTP tree;
-        std::vector<vertex_descriptor> leaves(n_leaves);
-        std::transform(leaves.cbegin(), leaves.cend(), leaves.begin(), 
-                       [&tree](auto){ return tree.add_vertex(); });
-        vertex_descriptor root = update_tree(tree, leaves, rng);
-        return std::tuple(std::move(tree), root);
-      }
-
-
-
-		}; // end class k_ary_tree_common
+		}; // end class network_common
 
 	} // end namespace detail
 
 
   template <class VertexProperty, class EdgeProperty>
-  class k_ary_tree
+  class network
   {
   };
 
-  /// @brief @anchor CoalescenceKaryTreeNoPropertyNoProperty A k-ary tree class with no information attached to either vertices nor edges.
+  /// @brief @anchor CoalescenceNetworkNoPropertyNoProperty A network class with no information attached to either vertices nor edges.
   /// @details This class can be used as a simple way to describe the kind of topology that emerges from evolutionary relationships 
   ///          between a sample of sequences for a non-recombining locus. 
   ///          Vertices and edges embed no additional information.
-  ///          This graph structure is bidirected and allows to model a forest of disconnected trees and isolated vertices.
+  ///          This graph structure is bidirected and allows to model a forest of disconnected graphs and isolated vertices.
   /// @invariant Guarantees that each vertex \f$v\f$ has exactly 0 or \f$ k \geq 2\f$ successors, never 1.
   /// @invariant Guarantees that each vertex \f$v\f$ has exactly 0 or 1 predecessor.
   /// @invariant Guarantees that if \f$(u,v)\f$ is an edge of the graph, then \f$(v,u)\f$ is also an edge.
   /// @remark As it would be too costly to enforce non-cyclicity, it is left to the user responsability not to introduce any cycle.
   /// @section ex1 Example
-  /// @include coalescence_k_ary_tree_1.cpp
+  /// @include coalescence_network_1.cpp
   /// @section ex2 Output
-  /// @include coalescence_k_ary_tree_1.txt
+  /// @include coalescence_network_1.txt
   template <>
-  class k_ary_tree<no_property, no_property> : public detail::k_ary_tree_common<no_property, no_property, k_ary_tree<no_property, no_property>>
+  class network<no_property, no_property> : public detail::network_common<no_property, no_property, network<no_property, no_property>>
   {
-    using base = detail::k_ary_tree_common<no_property, no_property, k_ary_tree<no_property, no_property>>;
+    using base = detail::network_common<no_property, no_property, network<no_property, no_property>>;
 
   public:
 
@@ -370,10 +365,10 @@ namespace quetzal::coalescence
     /// @{
 
     /// @brief Default constructor. Initializes a graph with 0 vertices.
-    explicit k_ary_tree() : base() {}
+    explicit network() : base() {}
 
     /// @brief Construct graph with \f$n\f$ vertices
-    explicit k_ary_tree(size_t n) : base(n) {}
+    explicit network(size_t n) : base(n) {}
     /// @}
 
     /// @name Topology Modifiers
@@ -402,28 +397,28 @@ namespace quetzal::coalescence
 
     /// @}
 
-  }; // end specialization k_ary_tree<boost::no::property, boost::no_property>
+  }; // end specialization network<boost::no::property, boost::no_property>
 
-  /// @brief @anchor CoalescenceKaryTreeVertexPropertyNoProperty A k-ary tree class with information attached to vertices.
+  /// @brief @anchor CoalescenceNetworkVertexPropertyNoProperty A network class with information attached to vertices.
   /// @tparam VertexProperty The type of information to store at each vertex.
   /// @details This class can be used as a simple way to describe the kind of topology and mutational process that emerge from evolutionary relationships 
   ///          between a sample of sequences for a non-recombining locus. 
   ///          Vertices embed a user-defined type of information. Edges embed no additional information.
-  ///          This graph structure is bidirected and allows to model a forest of disconnected trees and isolated vertices.
+  ///          This graph structure is bidirected and allows to model a forest of disconnected networks and isolated vertices.
   /// @invariant Guarantees that each vertex \f$v\f$ has exactly \f$0\f$ or \f$n \geq 2\f$ successors, never \f$1\f$.
   /// @invariant Guarantees that each vertex \f$v\f$ has exactly\f$0\f$ or\f$1\f$ predecessor.
   /// @invariant Guarantees that if \f$(u,v)\f$ is an edge of the graph, then \f$(v,u)\f$ is also an edge.
   /// @remark As it would be too costly to enforce non-cyclicity, it is left to the user responsability not to introduce any cycle.
   /// @section ex1 Example
-  /// @include coalescence_k_ary_tree_2.cpp
+  /// @include coalescence_network_2.cpp
   /// @section ex2 Output
-  /// @include coalescence_k_ary_tree_2.txt
+  /// @include coalescence_network_2.txt
   template <class VertexProperty>
     requires(!std::is_same_v<VertexProperty,no_property>)
-  class k_ary_tree<VertexProperty, no_property> : public detail::k_ary_tree_common<VertexProperty, no_property, k_ary_tree<VertexProperty, no_property>>
+  class network<VertexProperty, no_property> : public detail::network_common<VertexProperty, no_property, network<VertexProperty, no_property>>
   {
   private:
-    using base = detail::k_ary_tree_common<VertexProperty, no_property, k_ary_tree<VertexProperty, no_property>>;
+    using base = detail::network_common<VertexProperty, no_property, network<VertexProperty, no_property>>;
 
   public:
     /// @brief Edge descriptor
@@ -436,10 +431,10 @@ namespace quetzal::coalescence
     /// @{
 
     /// @brief Default constructor. Initializes a graph with 0 vertices.
-    explicit k_ary_tree() : base() {}
+    explicit network() : base() {}
 
     /// @brief Construct graph with \f$n\f$ vertices
-    explicit k_ary_tree(size_t n) : base(n) {}
+    explicit network(size_t n) : base(n) {}
 
     /// @}
 
@@ -487,29 +482,29 @@ namespace quetzal::coalescence
     /// @}
 
 
-  }; // end specialization k_ary_tree<Vertex, boost::no_property>
+  }; // end specialization network<Vertex, boost::no_property>
 
 
-  /// @brief @anchor CoalescenceKaryTreeNoPropertyEdgeProperty A k-ary tree class with information attached to edges.
+  /// @brief @anchor CoalescenceNetworkNoPropertyEdgeProperty A network class with information attached to edges.
   /// @tparam EdgeProperty The type of information to store at each edge.
   /// @details This class can be used as a simple way to describe the kind of topology and mutational process that emerge from evolutionary relationships 
   ///          between a sample of sequences for a non-recombining locus. 
   ///          Vertices embed no additional information. Edges embed an user-defined type of information.
-  ///          This graph structure is bidirected and allows to model a forest of disconnected trees and isolated vertices.
+  ///          This graph structure is bidirected and allows to model a forest of disconnected networks and isolated vertices.
   /// @invariant Guarantees that each vertex \f$v\f$ has exactly \f$0\f$ or \f$n \geq 2\f$ successors, never \f$1\f$.
   /// @invariant Guarantees that each vertex \f$v\f$ has exactly\f$0\f$ or\f$1\f$ predecessor.
   /// @invariant Guarantees that if \f$(u,v)\f$ is an edge of the graph, then \f$(v,u)\f$ is also an edge.
   /// @remark As it would be too costly to enforce non-cyclicity, it is left to the user responsability not to introduce any cycle.
     /// @section ex1 Example
-  /// @include coalescence_k_ary_tree_3.cpp
+  /// @include coalescence_network_3.cpp
   /// @section ex2 Output
-  /// @include coalescence_k_ary_tree_3.txt
+  /// @include coalescence_network_3.txt
   template <class EdgeProperty>
     requires(!std::is_same_v<EdgeProperty, no_property>)
-  class k_ary_tree<no_property, EdgeProperty> : public detail::k_ary_tree_common<no_property, EdgeProperty, k_ary_tree<no_property, EdgeProperty>>
+  class network<no_property, EdgeProperty> : public detail::network_common<no_property, EdgeProperty, network<no_property, EdgeProperty>>
   {
   private:
-    using base = detail::k_ary_tree_common<no_property, EdgeProperty, k_ary_tree<no_property, EdgeProperty>>;
+    using base = detail::network_common<no_property, EdgeProperty, network<no_property, EdgeProperty>>;
 
   public:
     /// @brief Edge descriptor
@@ -522,10 +517,10 @@ namespace quetzal::coalescence
     /// @{
 
     /// @brief Default constructor. Initializses a graph with 0 vertices.
-    explicit k_ary_tree() : base() {}
+    explicit network() : base() {}
 
     /// @brief Construct graph with \f$n\f$ vertices
-    explicit k_ary_tree(size_t n) : base(n) {}
+    explicit network(size_t n) : base(n) {}
 
     /// @}
 
@@ -574,30 +569,30 @@ namespace quetzal::coalescence
 
     /// @}
 
-  }; // end specialization k_ary_tree<boost::no_property, Edge>
+  }; // end specialization network<boost::no_property, Edge>
 
 
-  /// @brief @anchor CoalescenceKaryTreeVertexPropertyEdgeProperty A k-ary tree class with information attached to vertices.
+  /// @brief @anchor CoalescenceNetworkVertexPropertyEdgeProperty A network class with information attached to vertices.
   /// @tparam VertexProperty The type of information to store at each vertex.
   /// @tparam EdgeProperty The type of information to store at each edge.
   /// @details This class can be used as a simple way to describe the kind of topology and mutational process that emerge from evolutionary relationships 
   ///          between a sample of sequences for a non-recombining locus. 
   ///          Vertices and edges embed additional information as user-defined types.
-  ///          This graph structure is bidirected and allows to model a forest of disconnected trees and isolated vertices.
+  ///          This graph structure is bidirected and allows to model a forest of disconnected networks and isolated vertices.
   /// @invariant Guarantees that each vertex \f$v\f$ has exactly \f$0\f$ or \f$n \geq 2\f$ successors, never \f$1\f$.
   /// @invariant Guarantees that each vertex \f$v\f$ has exactly\f$0\f$ or\f$1\f$ predecessor.
   /// @invariant Guarantees that if \f$(u,v)\f$ is an edge of the graph, then \f$(v,u)\f$ is also an edge.
   /// @remark As it would be too costly to enforce non-cyclicity, it is left to the user responsability not to introduce any cycle.
   /// @section ex1 Example
-  /// @include coalescence_k_ary_tree_4.cpp
+  /// @include coalescence_network_4.cpp
   /// @section ex2 Output
-  /// @include coalescence_k_ary_tree_4.txt
+  /// @include coalescence_network_4.txt
   template <class VertexProperty, class EdgeProperty>
     requires(!std::is_same_v<VertexProperty, no_property> && !std::is_same_v<EdgeProperty, no_property>)
-  class k_ary_tree<VertexProperty, EdgeProperty> : public detail::k_ary_tree_common<VertexProperty, EdgeProperty, k_ary_tree<no_property, EdgeProperty>>
+  class network<VertexProperty, EdgeProperty> : public detail::network_common<VertexProperty, EdgeProperty, network<no_property, EdgeProperty>>
   {
   private:
-    using base = detail::k_ary_tree_common<VertexProperty, EdgeProperty, k_ary_tree<no_property, EdgeProperty>>;
+    using base = detail::network_common<VertexProperty, EdgeProperty, network<no_property, EdgeProperty>>;
  
   public:
     /// @brief Edge descriptor
@@ -611,10 +606,10 @@ namespace quetzal::coalescence
 
     /// @brief Default constructor. Initializes a graph with 0 vertices.
     
-    explicit k_ary_tree() : base() {}
+    explicit network() : base() {}
 
     /// @brief Construct graph with \f$n\f$ vertices
-    explicit k_ary_tree(size_t n) : base(n) {}
+    explicit network(size_t n) : base(n) {}
 
     ///@}
 
@@ -677,73 +672,5 @@ namespace quetzal::coalescence
 
     /// @}
   };
-
-  namespace detail
-  {
-    template <typename Vertex, typename Edge, typename Generator>
-    auto update_tree(
-        k_ary_tree<Vertex, Edge> &tree,
-        std::vector<typename k_ary_tree<Vertex, Edge>::vertex_descriptor> leaves,
-        Generator &rng)
-    {
-      using tree_type = k_ary_tree<Vertex, Edge>;
-      using vertex_descriptor = typename tree_type::vertex_descriptor;
-
-      if (leaves.size() == 1)
-      {
-        return leaves.front();
-      }
-      else
-      {
-        std::uniform_int_distribution<> distrib(1, leaves.size() - 1);
-        int split = distrib(rng);
-
-        std::vector<vertex_descriptor> left(leaves.begin(), leaves.begin() + split);
-        std::vector<vertex_descriptor> right(leaves.begin() + split, leaves.end());
-
-        vertex_descriptor parent;
-        
-        if constexpr (std::is_same_v<Vertex, boost::no_property>)
-          parent = tree.add_vertex();
-        else
-          parent = tree.add_vertex(Vertex());
-
-        if constexpr (std::is_same_v<Edge, boost::no_property>)
-          tree.add_edges(parent, { update_tree(tree, left, rng), update_tree(tree, right, rng) } );
-        else
-          tree.add_edges(parent, { { update_tree(tree, left, rng), Edge() }, { update_tree(tree, right, rng), Edge()} } );
-        return parent;
-      }
-    }
-  } // end namespace detail
-
-  /// @brief Generate a random k-ary tree.
-  /// @tparam Generator Random Number Generator
-  /// @param n_leaves Number of leaves in the k-ary tree
-  /// @param rng The random number generator
-  /// @return A k-ary tree with its root vertex descriptor
-  template <typename Vertex = boost::no_property, typename Edge = boost::no_property, typename Generator>
-  std::pair< quetzal::coalescence::k_ary_tree<Vertex, Edge>, typename quetzal::coalescence::k_ary_tree<Vertex, Edge>::vertex_descriptor>
-  get_random_k_ary_tree(int n_leaves, Generator &rng)
-  {
-    using tree_type = quetzal::coalescence::k_ary_tree<Vertex, Edge>;
-    using vertex_descriptor = typename tree_type::vertex_descriptor;
-
-    tree_type tree;
-
-    std::vector<vertex_descriptor> leaves(n_leaves);
-
-    std::transform(leaves.cbegin(), leaves.cend(), leaves.begin(),
-      [&tree](auto)
-      {
-        if constexpr (std::is_same_v<Vertex, boost::no_property>)
-          return tree.add_vertex();
-        else
-          return tree.add_vertex(Vertex());
-      });
-
-    vertex_descriptor root = detail::update_tree(tree, leaves, rng);
-    return std::make_pair(std::move(tree), root);
-  }
 	
 } // end namespace quetzal::coalescence

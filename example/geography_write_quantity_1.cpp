@@ -31,4 +31,8 @@ int main()
 	bio1.to_geotiff(transform, 2001, 2005, output_file);
 
 	std::cout << (std::filesystem::exists("my_quantity.tif") ? "success" : "error") << std::endl;
+
+	// Clean up
+    std::filesystem::remove_all(output_file);
+
 }
