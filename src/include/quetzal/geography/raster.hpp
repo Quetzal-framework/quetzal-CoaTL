@@ -275,7 +275,7 @@ namespace quetzal::geography
     }
 
     /// @brief Makes the raster a callable with signature 
-    ///        `std::optional<value_type> (location_descriptor x, time_descriptor t)  
+    ///        `std::optional<value_type> (location_descriptor x, time_descriptor t)`
     ///        returning the value at location x and time t
     /// @remark This callable is cheap to copy, does not have ownership of the data,
     ///         and works well for mathematical composition using `quetzal::expressive`

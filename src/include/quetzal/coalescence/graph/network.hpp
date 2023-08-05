@@ -205,25 +205,48 @@ namespace quetzal::coalescence
 			/// @name Topology Modification
 			/// @{
 
-      //// @brief Inserts the edge \f$(u,v)\f$ into the graph, and returns an edge descriptor pointing to the new edge.
-      /// @param u The vertex
-      auto add_edge(vertex_descriptor u, vertex_descriptor v) 
+      //// @brief Add a new vertex to the graph, returning the vertex_descriptor for the new vertex.
+      vertex_descriptor add_vertex() 
       {
-        return boost::add_edge(u, v, _graph);
+        return boost::add_vertex(_graph);
       }
 
-      //// @brief Remove all edges to and from vertex \f$u\f$ from the graph
+      //// @brief Remove all edges to and from vertex \f$u\f$ from the graph.
       /// @param u The vertex
       void clear_vertex(vertex_descriptor u) 
       {
         return boost::clear_vertex(u, _graph);
       }
 
-      //// @brief Remove vertex u from the graph
-      /// @param u The vertex
+      //// @brief Remove vertex u from the graph, also removing all edges to and from vertex \f$u\f$
+      /// @param u The vertex to remove.
       void remove_vertex(vertex_descriptor u) 
       {
+        clear_vertex(u);
         return boost::remove_vertex(u, _graph);
+      }
+
+      //// @brief Inserts the edge \f$(u,v)\f$ into the graph if it does not exist, and returns an edge descriptor pointing to the new edge.
+      /// @param u Source vertex
+      /// @param u Target vertex
+      edge_descriptor add_edge(vertex_descriptor u, vertex_descriptor v) 
+      {
+        return boost::add_edge(u, v, _graph).first;
+      }
+
+      //// @brief Remove the edge \f$(u,v)\f$ from the graph.
+      /// @param u Source vertex
+      /// @param u Target vertex
+      void remove_edge(vertex_descriptor u, vertex_descriptor v) 
+      {
+        return boost::remove_edge(u, v, _graph);
+      }
+
+      //// @brief Remove the edge \f$e\f$ from the graph.
+      /// @param e The edge to remove
+      void remove_edge(edge_descriptor e) 
+      {
+        return boost::remove_edge(e, _graph);
       }
 
       /// @}

@@ -326,7 +326,11 @@ You only need to modify three things:
 [//]: # (----------------------------------------------------------------------)
 @page extended_newick_parser Parsing an Extended Newick string
 
-Extended Newick format expands beyond the traditional Newick notation by accommodating explicit phylogenetic networks. This extension enables the encoding of complex relationships that go beyond the simple hierarchical structure of phylogenetic trees. In phylogenetic networks, nodes can signify either divergence events (cladogenesis) or reticulation events, such as hybridization, introgression, horizontal gene transfer, or recombination. To represent reticulation events, the nodes are duplicated and annotated by appending the "#" symbol within the Newick format. These duplicated nodes are sequentially numbered, starting from 1, to maintain clarity and organization within the representation.
+Extended Newick format expands beyond the traditional Newick notation by accommodating explicit phylogenetic networks. This extension enables the encoding of complex relationships that go beyond the simple hierarchical structure of phylogenetic trees. 
+
+In phylogenetic networks, nodes can signify either divergence events (cladogenesis) or reticulation events, such as hybridization, introgression, horizontal gene transfer, or recombination. 
+
+To represent reticulation events, the nodes are duplicated and annotated by appending the `#` symbol within the Newick format. These duplicated nodes are sequentially numbered, starting from 1, to maintain clarity and organization within the representation.
 
 **Input**
 
@@ -337,7 +341,7 @@ Extended Newick format expands beyond the traditional Newick notation by accommo
 @include{lineno} newick_extended_parser_1.txt
 
 [//]: # (----------------------------------------------------------------------)
-@page extended_newick_generator Parsing an Extended Newick string
+@page extended_newick_generator Generating an Extended Newick string
 
 [//]: # (----------------------------------------------------------------------)
 @page graphs_in_quetzal Graphs in Quetzal
@@ -650,6 +654,9 @@ One way to achieve this is by exporting the samples as a shapefile and employing
 
 [//]: # (----------------------------------------------------------------------)
 @page niche_in_quetzal Niche models in Quetzal
+@tableofcontents
+
+# Niche models as mathematical expressions
 
 In the field of ecology, the **niche** refers to the compatibility between a species and a specific environmental condition. It explains how an organism or a population adapts to the availability of resources and competition. 
 
@@ -659,9 +666,11 @@ The composition and significance of environmental variables that constitute the 
 
 @note
 In the broader context of this library, the niche model lacks a specific definition as it relies on the preferences and requirements of individual users. What we can understand is that it involves some combination of spatial and temporal factors that are closely intertwined with the demographic process.
-This justifies the need for a highly adaptable approach to representing the concept of niche, as it is bound to vary depending on the specific species, population, or geographic area under study.
+This justifies the need for a highly adaptable approach to representing the concept of niche, as it is bound to vary depending on the specific species, population, or geographic area under study. 
 
-Given this understanding, the primary goal of this library is to provide users with a user-friendly means to effectively combine geospatial and temporal elements. This enables users to establish meaningful connections between a diverse and heterogeneous landscape and the underlying demographic processes, based on their own perspectives and preferences.
+Given this understanding, the primary goal of this library is to provide users with a user-friendly means to effectively combine geospatial and temporal elements. This enables users to establish meaningful mathematical connections between a diverse and heterogeneous landscape and the underlying demographic processes, based on their own perspectives and preferences.
+
+# Mathematical composition in C++ 
 
 Mathematical composition in C++ is not trivial as unlike languages, C++ does not understand mathematical expressions and their composition. In this strongly-typed language, you can not simply multiply the integer `42` and the function \f$ f(x,y) = x^y \f$ and expect it to work. Indeed, if you try to rescale a lambda function, e.g.:
 ```cpp
@@ -671,7 +680,11 @@ my_expression = a * f; // error
 ``` 
 it will not compile. As the compiler does not know natively what the rules are to multiply a number with whatever type `f` is, it will (verbosely) insult you saying the [`operator*()`](https://en.cppreference.com/w/cpp/language/operators) is not defined for the type `int` and an anonymous type (the lambda function). 
 
-You need a library to do tell the compiler what to do. This is where `quetzal::expressive` comes handy: it allows you add, substract, multiply, or compose mathematical expressions through a uniform interface.
+# Mathematical composition with quetzal::expressive
+
+You need a library to tell the compiler what to do. This is where `quetzal::expressive` comes handy: it allows you to add, substract, multiply, or compose mathematical expressions by giving them a uniform interface.
+
+In the context of demographic models, `my_expression` in the example below could represent *e.g.* `r(x,t)` the growth rate at location `x` at time `t`. Being able to compose several smaller expressions into bigger expressions allows users to define `r` in one part on the program and compose it at a later time with *e.g.* `k(x,t)` the carrying capacity defined independently in a totally unrelated part of the program.
 
 **Input**
 
@@ -686,10 +699,19 @@ You need a library to do tell the compiler what to do. This is where `quetzal::e
 [//]: # (----------------------------------------------------------------------)
 @page expressive_suitability_raster Suitability landscape
 
+In the context of ecological niche modeling (ENM), suitability refers to the degree of appropriateness or favorability of a particular environmental condition for a species to thrive and persist. ENM is a technique used in ecology to predict the distribution of species across landscapes based on their known occurrences and environmental variables.
+
+Suitability can be thought of as a spectrum, ranging from conditions that are highly suitable for a species' survival and reproduction to conditions that are unsuitable or even detrimental. ENM attempts to map this spectrum across geographical space by analyzing the relationships between species occurrences and various environmental factors, such as temperature, precipitation, elevation, soil type, and vegetation cover.
+
+It's important to note that suitability does not solely depend on a single environmental variable. Instead, it's a complex interplay of multiple factors that determine whether a species can survive, reproduce, and establish a viable population in a given area.
+Suitability GIS maps derived from previous analysis steps (see e.g. the niche models in **Quetzal-crumbs** python package) can then be integrated into the coalescence simulation framework.
+
+Here we demonstrate how to load a suitability map `quetzal::geography::raster` and integrate it into the simulation framework using `quetzal::expressive`.
+
 **Input**
 
-@include{lineno} expressive_1.cpp
+@include{lineno} expressive_2.cpp
 
 **Output**
 
-@include{lineno} expressive_1.txt
+@include{lineno} expressive_2.txt
