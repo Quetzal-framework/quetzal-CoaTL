@@ -724,8 +724,10 @@ The following example code
 
 @include{lineno} expressive_2.txt
 
+---
+
 [//]: # (----------------------------------------------------------------------)
-@page expressive_suitability_DEM_landscape Modulating a suitability landscape with a Digital Elevation Model
+@page expressive_suitability_DEM_landscape Adjusting a suitability map using a Digital Elevation Model
 
 @note 
 The objective of this section is to load both a suitability map and a Digital Elevation Model (DEM) with `quetzal::geography::landscape` and prepare their integration into the simulation framework with `quetzal::expressive`
@@ -733,18 +735,18 @@ by dynamically modulating the suitability value as a function of the elevation.
 
 ## Why separating Elevation from Suitability ?
 
-In previous times, it was a common approach to pack a wealth of information into a sole raster file. For instance, this involved using a single friction file and designating ocean cells with NA values, and obstacles for dispersal with values of 1. Another 
+It is a common approach to pack a wealth of information into a sole raster file. For instance, this cam involve using a single friction file and designating ocean cells with NA values, and obstacles for dispersal with values of 1. Another 
 way is to try to inject elevational data in the suitability map during the Ecological Niche Modeling step.
 
 While these approaches are feasible and occasionally advantageous, they do not consistently represent the optimal or most adaptable solution.
 
-In a broader sense, it's advisable to consider each Geographic Information System (GIS) input file as a means of representing a distinct attribute of the landscape such as suitability, friction, or elevation, utilizing `quetzal::geography::landscape` to read these input files then utilizing `quetzal::expressive` to adjust or combine these quantities in a manner that aligns with your modeling intentions.
+In a broader sense, it's advisable to consider each Geographic Information System (GIS) input file as a means of representing a distinct attribute of the landscape such as suitability, friction, or elevation, utilizing `quetzal::geography::landscape` to read and align these input files then utilizing `quetzal::expressive` to adjust or combine these quantities according to the user's modeling intentions.
 
 As an illustration we will show in this example how to adjust the stochasticity of a suitability-driven process as a function of the 
-elevation model. This case and its variations can be applicable in several contexts:
-- Representing exceptionally rare trans-oceanic dispersal occurrences, such as drafting.
-- Depicting the likelihood of a propagule discovering scarce, small-scale suitable shelters within high-altitude snow cover.
-- Conveniently enforcing a threshold value beyond which the suitability (or another process) undergoes significant change (e.g., becoming 0). This approach is valuable for examining sky-island systems or for easily approximating an isoline by dynamically adjusting the cutoff parameter value during runtime, as opposed to altering input files for every simulation run.
+elevation model. This case and its variations can be applicable in various contexts:
+
+- Conveniently enforcing a threshold value beyond which the suitability undergoes a significant change (*e.g.*, becoming 0). This approach is valuable for examining sky-island systems or for easily estimating an isoline by dynamically adjusting the cutoff parameter value at runtime, as opposed to altering input files for every simulation run.
+- Depicting the likelihood of a propagule reaching a nunatak, that is a small-scale suitable shelter protruding from the snow sheet (or ice cap). Typically nunataks are the only places where plants can survive in these environments.
 
 **Input**
 
@@ -755,3 +757,18 @@ elevation model. This case and its variations can be applicable in several conte
 @include{lineno} expressive_3.txt
 
 ---
+
+[//]: # (----------------------------------------------------------------------)
+@page expressive_friction Defining a friction model for trans-oceanic dispersal events
+
+@note 
+The objective of this section is to load both a suitability map and a Digital Elevation Model (DEM) with `quetzal::geography::landscape` and prepare their integration into the simulation framework with `quetzal::expressive`
+by dynamically defining the friction and the carrying capacity of a cell as functions of the suitability and elevation value.
+
+**Input**
+
+@include{lineno} expressive_4.cpp
+
+**Output**
+
+@include{lineno} expressive_4.txt
