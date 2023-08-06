@@ -20,6 +20,7 @@ var namespaceboost =
       [ "Demes on a variable spatial graph", "geotiff_parser.html#autotoc_md95", null ],
       [ "Inform local processes", "geotiff_parser.html#autotoc_md97", null ]
     ] ],
+    [ "Why separating Elevation from Suitability ?", "expressive_suitability_DEM_landscape.html#autotoc_md103", null ],
     [ "Invariants Guarantee", "graphs_in_quetzal.html#autotoc_md78", null ],
     [ "Edge and Vertices descriptors", "graphs_in_quetzal.html#autotoc_md79", null ],
     [ "Edge and Vertices Information (Property Classes)", "graphs_in_quetzal.html#autotoc_md80", null ],

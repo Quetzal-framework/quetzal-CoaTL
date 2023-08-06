@@ -117,16 +117,29 @@ $(document).ready(function(){initNavTree('niche_in_quetzal.html',''); initResiza
 <div class="title">Niche models in Quetzal </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>In the field of ecology, the <b>niche</b> refers to the compatibility between a species and a specific environmental condition. It explains how an organism or a population adapts to the availability of resources and competition.</p>
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#autotoc_md98">Niche models as mathematical expressions</a></li>
+<li class="level1"><a href="#autotoc_md99">Mathematical composition in C++</a></li>
+<li class="level1"><a href="#autotoc_md100">Mathematical composition with quetzal::expressive</a></li>
+</ul>
+</div>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md98"></a>
+Niche models as mathematical expressions</h1>
+<p>In the field of ecology, the <b>niche</b> refers to the compatibility between a species and a specific environmental condition. It explains how an organism or a population adapts to the availability of resources and competition.</p>
 <p>For instance, when resources are plentiful and the presence of predators, parasites, and pathogens is low, the organism or population tends to grow. In locations and times of resources scarcity and high predation, the populations tend to shrink.</p>
 <p>The composition and significance of environmental variables that constitute the dimensions of a niche can vary among species, and the importance of specific environmental factors for a species may change depending on geographical and ecological contexts.</p>
 <dl class="section note"><dt>Note</dt><dd>In the broader context of this library, the niche model lacks a specific definition as it relies on the preferences and requirements of individual users. What we can understand is that it involves some combination of spatial and temporal factors that are closely intertwined with the demographic process. This justifies the need for a highly adaptable approach to representing the concept of niche, as it is bound to vary depending on the specific species, population, or geographic area under study.</dd></dl>
-<p>Given this understanding, the primary goal of this library is to provide users with a user-friendly means to effectively combine geospatial and temporal elements. This enables users to establish meaningful connections between a diverse and heterogeneous landscape and the underlying demographic processes, based on their own perspectives and preferences.</p>
+<p>Given this understanding, the primary goal of this library is to provide users with a user-friendly means to effectively combine geospatial and temporal elements. This enables users to establish meaningful mathematical connections between a diverse and heterogeneous landscape and the underlying demographic processes, based on their own perspectives and preferences.</p>
+<h1><a class="anchor" id="autotoc_md99"></a>
+Mathematical composition in C++</h1>
 <p>Mathematical composition in C++ is not trivial as unlike languages, C++ does not understand mathematical expressions and their composition. In this strongly-typed language, you can not simply multiply the integer <code>42</code> and the function \( f(x,y) = x^y \) and expect it to work. Indeed, if you try to rescale a lambda function, e.g.: </p><div class="fragment"><div class="line"><span class="keywordtype">int</span> a = 42;</div>
 <div class="line"><span class="keyword">auto</span> f = [](<span class="keyword">auto</span> x, <span class="keyword">auto</span> y){<span class="keywordflow">return</span> std::pow(x,y); };</div>
 <div class="line">my_expression = a * f; <span class="comment">// error</span></div>
 </div><!-- fragment --><p> it will not compile. As the compiler does not know natively what the rules are to multiply a number with whatever type <code>f</code> is, it will (verbosely) insult you saying the <a href="https://en.cppreference.com/w/cpp/language/operators"><code>operator*()</code></a> is not defined for the type <code>int</code> and an anonymous type (the lambda function).</p>
-<p>You need a library to do tell the compiler what to do. This is where <code><a class="el" href="namespacequetzal_1_1expressive.html" title="Mathematical expressions of spatio-temporal quantities.">quetzal::expressive</a></code> comes handy: it allows you add, substract, multiply, or compose mathematical expressions through a uniform interface.</p>
+<h1><a class="anchor" id="autotoc_md100"></a>
+Mathematical composition with quetzal::expressive</h1>
+<p>You need a library to tell the compiler what to do. This is where <code><a class="el" href="namespacequetzal_1_1expressive.html" title="Mathematical expressions of spatio-temporal quantities.">quetzal::expressive</a></code> comes handy: it allows you to add, substract, multiply, or compose mathematical expressions by giving them a uniform interface.</p>
+<p>In the context of demographic models, <code>my_expression</code> in the example below could represent <em>e.g.</em> <code>r(x,t)</code> the growth rate at location <code>x</code> at time <code>t</code>. Being able to compose several smaller expressions into bigger expressions allows users to define <code>r</code> in one part on the program and compose it at a later time with <em>e.g.</em> <code>k(x,t)</code> the carrying capacity defined independently in a totally unrelated part of the program.</p>
 <p><b>Input</b></p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;quetzal/quetzal.hpp&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;cassert&gt;</span></div>
@@ -135,25 +148,32 @@ $(document).ready(function(){initNavTree('niche_in_quetzal.html',''); initResiza
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keywordtype">int</span> main()</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;{</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;  <span class="keyword">using</span> <a class="code" href="structquetzal_1_1expressive_1_1literal__factory.html">quetzal::expressive::literal_factory</a>;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;  <span class="keyword">using</span> <a class="code" href="namespacequetzal_1_1expressive.html#acdec2cd4ec959709f7a1891702c4d5dd">quetzal::expressive::use</a>;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;  <span class="comment">// This creates little callables (double, double)</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;  literal_factory&lt;double,double&gt; lit;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  <span class="keyword">auto</span> a = lit(42.); <span class="comment">// a is no longer a simple double, it&#39;s an expression</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;  <span class="keyword">auto</span> f = <a class="code" href="namespacequetzal_1_1expressive.html#acdec2cd4ec959709f7a1891702c4d5dd">use</a>([](<span class="keywordtype">double</span> x, <span class="keywordtype">double</span> y){ <span class="keywordflow">return</span> std::pow(x, y);});</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;  <span class="comment">// Both a and f can now be invoked with the same interface (double, double) -&gt; double</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  assert( a(1.0, 3.14) == 42.0);</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  assert( f(1.0, 3.14) == 1.0 );</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;  <span class="comment">// This is used to transform literals into callables</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;  <span class="keyword">using</span> <a class="code" href="structquetzal_1_1expressive_1_1literal__factory.html">quetzal::expressive::literal_factory</a>;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;  <span class="comment">// This is used to make lambdas usable by expressive</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;  <span class="keyword">using</span> <a class="code" href="namespacequetzal_1_1expressive.html#acdec2cd4ec959709f7a1891702c4d5dd">quetzal::expressive::use</a>;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;  <span class="comment">// This object will create little functions that can be called with (double, double) parameters</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  literal_factory&lt;double,double&gt; lit;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  <span class="comment">// a is no longer a literal: it&#39;s a callable always returning 42</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;  <span class="keyword">auto</span> a = lit(42.); </div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  <span class="comment">// check a is indeeed callable with (double, double) parameters</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  assert( a(1.0, 3.14) == 42.0);</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  <span class="comment">// We can now compose them easily ...</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;  <span class="keyword">auto</span> my_expression  = a * f ;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <span class="comment">// ... and call them (much) later eg in the library&#39;s internals</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  std::cout &lt;&lt; my_expression(1.0, 3.14) &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;}</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  <span class="comment">// This enriches the lambda interface by giving it access to mathematical operators</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;  <span class="keyword">auto</span> f = <a class="code" href="namespacequetzal_1_1expressive.html#acdec2cd4ec959709f7a1891702c4d5dd">use</a>([](<span class="keywordtype">double</span> x, <span class="keywordtype">double</span> y){ <span class="keywordflow">return</span> std::pow(x, y);});</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;  <span class="comment">// check a is indeeed callable with (double, double) parameters</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  assert( f(1.0, 3.14) == 1.0 );</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  <span class="comment">// Both a and f can now be invoked with the same interface (double, double) -&gt; double</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  <span class="comment">// We can now compose them easily ...</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  <span class="keyword">auto</span> my_expression  = a * f ;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="comment">// ... and call them possibly (much) later eg in the library&#39;s internals</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  std::cout &lt;&lt; my_expression(1.0, 3.14) &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;}</div>
 <div class="ttc" id="anamespacequetzal_1_1expressive_html_acdec2cd4ec959709f7a1891702c4d5dd"><div class="ttname"><a href="namespacequetzal_1_1expressive.html#acdec2cd4ec959709f7a1891702c4d5dd">quetzal::expressive::use</a></div><div class="ttdeci">constexpr auto use(F f)</div><div class="ttdoc">Transforms functions into operator friendly classes.</div><div class="ttdef"><b>Definition:</b> expressive.hpp:190</div></div>
 <div class="ttc" id="astructquetzal_1_1expressive_1_1literal__factory_html"><div class="ttname"><a href="structquetzal_1_1expressive_1_1literal__factory.html">quetzal::expressive::literal_factory</a></div><div class="ttdoc">Transforms literals into operator friendly classes.</div><div class="ttdef"><b>Definition:</b> expressive.hpp:233</div></div>
 </div><!-- fragment --><p><b>Output</b></p>

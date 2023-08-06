@@ -218,8 +218,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a2b82a40699a9b00cdb14b53e5d1db796"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the value at location x and time t.  <a href="classquetzal_1_1geography_1_1raster.html#a2b82a40699a9b00cdb14b53e5d1db796">More...</a><br /></td></tr>
 <tr class="separator:a2b82a40699a9b00cdb14b53e5d1db796"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44ed851b988e38b99504d4de22369267"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1raster.html#a44ed851b988e38b99504d4de22369267">to_view</a> () const noexcept</td></tr>
-<tr class="memdesc:a44ed851b988e38b99504d4de22369267"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes the raster a callable with signature `std::optional&lt;value_type&gt; (location_descriptor x, time_descriptor t) <br  />
- returning the value at location x and time t.  <a href="classquetzal_1_1geography_1_1raster.html#a44ed851b988e38b99504d4de22369267">More...</a><br /></td></tr>
+<tr class="memdesc:a44ed851b988e38b99504d4de22369267"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes the raster a callable with signature <code>std::optional&lt;value_type&gt; (location_descriptor x, time_descriptor t)</code> returning the value at location x and time t.  <a href="classquetzal_1_1geography_1_1raster.html#a44ed851b988e38b99504d4de22369267">More...</a><br /></td></tr>
 <tr class="separator:a44ed851b988e38b99504d4de22369267"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Coordinate systems</div></td></tr>
 <tr class="memitem:a685eac58cd1db2c2f0d32955223672f2"><td class="memItemLeft" align="right" valign="top">location_descriptor&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1raster.html#a685eac58cd1db2c2f0d32955223672f2">to_descriptor</a> (const <a class="el" href="structquetzal_1_1geography_1_1colrow.html">colrow</a> &amp;x) const</td></tr>
@@ -1136,8 +1135,7 @@ template&lt;typename Time  = int&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Makes the raster a callable with signature `std::optional&lt;value_type&gt; (location_descriptor x, time_descriptor t) <br  />
- returning the value at location x and time t. </p>
+<p>Makes the raster a callable with signature <code>std::optional&lt;value_type&gt; (location_descriptor x, time_descriptor t)</code> returning the value at location x and time t. </p>
 <dl class="section remark"><dt>Remarks</dt><dd>This callable is cheap to copy, does not have ownership of the data, and works well for mathematical composition using <code><a class="el" href="namespacequetzal_1_1expressive.html" title="Mathematical expressions of spatio-temporal quantities.">quetzal::expressive</a></code> </dd></dl>
 
 </div>

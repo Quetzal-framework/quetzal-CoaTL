@@ -216,15 +216,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ab54bdf4ec7379dff6138c029898406c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the target vertex of a directed edge.  <a href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#ab54bdf4ec7379dff6138c029898406c7">More...</a><br /></td></tr>
 <tr class="separator:ab54bdf4ec7379dff6138c029898406c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Topology Modification</div></td></tr>
-<tr class="memitem:a77d5a71417f918a451aab6b213a9aebb"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a77d5a71417f918a451aab6b213a9aebb">add_edge</a> (<a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#ae9962ab8ce20081a87ae08051c422538">vertex_descriptor</a> u, <a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#ae9962ab8ce20081a87ae08051c422538">vertex_descriptor</a> v)</td></tr>
-<tr class="memdesc:a77d5a71417f918a451aab6b213a9aebb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inserts the edge \((u,v)\) into the graph, and returns an edge descriptor pointing to the new edge.  <a href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a77d5a71417f918a451aab6b213a9aebb">More...</a><br /></td></tr>
-<tr class="separator:a77d5a71417f918a451aab6b213a9aebb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a077d274810d8a19dbc5598e5abe94d"><td class="memItemLeft" align="right" valign="top"><a id="a4a077d274810d8a19dbc5598e5abe94d"></a>
+<a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#ae9962ab8ce20081a87ae08051c422538">vertex_descriptor</a>&#160;</td><td class="memItemRight" valign="bottom"><b>add_vertex</b> ()</td></tr>
+<tr class="separator:a4a077d274810d8a19dbc5598e5abe94d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae707be543a101910007a00668ed1c8f3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#ae707be543a101910007a00668ed1c8f3">clear_vertex</a> (<a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#ae9962ab8ce20081a87ae08051c422538">vertex_descriptor</a> u)</td></tr>
 <tr class="memdesc:ae707be543a101910007a00668ed1c8f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove all edges to and from vertex \(u\) from the graph.  <a href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#ae707be543a101910007a00668ed1c8f3">More...</a><br /></td></tr>
 <tr class="separator:ae707be543a101910007a00668ed1c8f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a08f0de6cdce8a68e206f2dec7079492d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a08f0de6cdce8a68e206f2dec7079492d">remove_vertex</a> (<a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#ae9962ab8ce20081a87ae08051c422538">vertex_descriptor</a> u)</td></tr>
-<tr class="memdesc:a08f0de6cdce8a68e206f2dec7079492d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove vertex u from the graph.  <a href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a08f0de6cdce8a68e206f2dec7079492d">More...</a><br /></td></tr>
+<tr class="memdesc:a08f0de6cdce8a68e206f2dec7079492d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove vertex u from the graph, also removing all edges to and from vertex \(u\).  <a href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a08f0de6cdce8a68e206f2dec7079492d">More...</a><br /></td></tr>
 <tr class="separator:a08f0de6cdce8a68e206f2dec7079492d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67ca1a4f7a304861956f0e8d58466518"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#aa917a2b35a91e6468c7b33c493d1bfcf">edge_descriptor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a67ca1a4f7a304861956f0e8d58466518">add_edge</a> (<a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#ae9962ab8ce20081a87ae08051c422538">vertex_descriptor</a> u, <a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#ae9962ab8ce20081a87ae08051c422538">vertex_descriptor</a> v)</td></tr>
+<tr class="memdesc:a67ca1a4f7a304861956f0e8d58466518"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inserts the edge \((u,v)\) into the graph if it does not exist, and returns an edge descriptor pointing to the new edge.  <a href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a67ca1a4f7a304861956f0e8d58466518">More...</a><br /></td></tr>
+<tr class="separator:a67ca1a4f7a304861956f0e8d58466518"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fd2fee3144d406239cef00ea47a2932"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a5fd2fee3144d406239cef00ea47a2932">remove_edge</a> (<a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#ae9962ab8ce20081a87ae08051c422538">vertex_descriptor</a> u, <a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#ae9962ab8ce20081a87ae08051c422538">vertex_descriptor</a> v)</td></tr>
+<tr class="memdesc:a5fd2fee3144d406239cef00ea47a2932"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove the edge \((u,v)\) from the graph.  <a href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a5fd2fee3144d406239cef00ea47a2932">More...</a><br /></td></tr>
+<tr class="separator:a5fd2fee3144d406239cef00ea47a2932"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a175e6d6144a53fc801365ccbc2537db3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a175e6d6144a53fc801365ccbc2537db3">remove_edge</a> (<a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#aa917a2b35a91e6468c7b33c493d1bfcf">edge_descriptor</a> e)</td></tr>
+<tr class="memdesc:a175e6d6144a53fc801365ccbc2537db3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove the edge \(e\) from the graph.  <a href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a175e6d6144a53fc801365ccbc2537db3">More...</a><br /></td></tr>
+<tr class="separator:a175e6d6144a53fc801365ccbc2537db3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Iterators</div></td></tr>
 <tr class="memitem:a7f79cb76ec35f30d8c1f16a7faafbed8"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a7f79cb76ec35f30d8c1f16a7faafbed8">in_edges</a> (<a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#ae9962ab8ce20081a87ae08051c422538">vertex_descriptor</a> u) const</td></tr>
 <tr class="memdesc:a7f79cb76ec35f30d8c1f16a7faafbed8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides a range to iterate over the in-going edges of vertex \(u\).  <a href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a7f79cb76ec35f30d8c1f16a7faafbed8">More...</a><br /></td></tr>
@@ -297,8 +306,8 @@ template&lt;class VertexProperty , class EdgeProperty , class CRTP &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a77d5a71417f918a451aab6b213a9aebb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a77d5a71417f918a451aab6b213a9aebb">&#9670;&nbsp;</a></span>add_edge()</h2>
+<a id="a67ca1a4f7a304861956f0e8d58466518"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67ca1a4f7a304861956f0e8d58466518">&#9670;&nbsp;</a></span>add_edge()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -309,7 +318,7 @@ template&lt;class VertexProperty , class EdgeProperty , class CRTP &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto <a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html">quetzal::coalescence::detail::network_common</a>&lt; VertexProperty, EdgeProperty, CRTP &gt;::add_edge </td>
+          <td class="memname"><a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#aa917a2b35a91e6468c7b33c493d1bfcf">edge_descriptor</a> <a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html">quetzal::coalescence::detail::network_common</a>&lt; VertexProperty, EdgeProperty, CRTP &gt;::add_edge </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#ae9962ab8ce20081a87ae08051c422538">vertex_descriptor</a>&#160;</td>
           <td class="paramname"><em>u</em>, </td>
@@ -333,10 +342,11 @@ template&lt;class VertexProperty , class EdgeProperty , class CRTP &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Inserts the edge \((u,v)\) into the graph, and returns an edge descriptor pointing to the new edge. </p>
+<p>Inserts the edge \((u,v)\) into the graph if it does not exist, and returns an edge descriptor pointing to the new edge. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">u</td><td>The vertex </td></tr>
+    <tr><td class="paramname">u</td><td>Source vertex </td></tr>
+    <tr><td class="paramname">u</td><td>Target vertex </td></tr>
   </table>
   </dd>
 </dl>
@@ -900,6 +910,89 @@ template&lt;class VertexProperty , class EdgeProperty , class CRTP &gt; </div>
 
 </div>
 </div>
+<a id="a175e6d6144a53fc801365ccbc2537db3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a175e6d6144a53fc801365ccbc2537db3">&#9670;&nbsp;</a></span>remove_edge() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class VertexProperty , class EdgeProperty , class CRTP &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html">quetzal::coalescence::detail::network_common</a>&lt; VertexProperty, EdgeProperty, CRTP &gt;::remove_edge </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#aa917a2b35a91e6468c7b33c493d1bfcf">edge_descriptor</a>&#160;</td>
+          <td class="paramname"><em>e</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Remove the edge \(e\) from the graph. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">e</td><td>The edge to remove </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a5fd2fee3144d406239cef00ea47a2932"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fd2fee3144d406239cef00ea47a2932">&#9670;&nbsp;</a></span>remove_edge() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class VertexProperty , class EdgeProperty , class CRTP &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html">quetzal::coalescence::detail::network_common</a>&lt; VertexProperty, EdgeProperty, CRTP &gt;::remove_edge </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#ae9962ab8ce20081a87ae08051c422538">vertex_descriptor</a>&#160;</td>
+          <td class="paramname"><em>u</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classquetzal_1_1coalescence_1_1detail_1_1network__common.html#ae9962ab8ce20081a87ae08051c422538">vertex_descriptor</a>&#160;</td>
+          <td class="paramname"><em>v</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Remove the edge \((u,v)\) from the graph. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">u</td><td>Source vertex </td></tr>
+    <tr><td class="paramname">u</td><td>Target vertex </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a08f0de6cdce8a68e206f2dec7079492d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a08f0de6cdce8a68e206f2dec7079492d">&#9670;&nbsp;</a></span>remove_vertex()</h2>
 
@@ -926,10 +1019,10 @@ template&lt;class VertexProperty , class EdgeProperty , class CRTP &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Remove vertex u from the graph. </p>
+<p>Remove vertex u from the graph, also removing all edges to and from vertex \(u\). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">u</td><td>The vertex </td></tr>
+    <tr><td class="paramname">u</td><td>The vertex to remove. </td></tr>
   </table>
   </dd>
 </dl>

@@ -117,7 +117,9 @@ $(document).ready(function(){initNavTree('extended_newick_parser.html',''); init
 <div class="title">Parsing an Extended Newick string </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>Extended Newick format expands beyond the traditional Newick notation by accommodating explicit phylogenetic networks. This extension enables the encoding of complex relationships that go beyond the simple hierarchical structure of phylogenetic trees. In phylogenetic networks, nodes can signify either divergence events (cladogenesis) or reticulation events, such as hybridization, introgression, horizontal gene transfer, or recombination. To represent reticulation events, the nodes are duplicated and annotated by appending the "#" symbol within the Newick format. These duplicated nodes are sequentially numbered, starting from 1, to maintain clarity and organization within the representation.</p>
+<div class="textblock"><p>Extended Newick format expands beyond the traditional Newick notation by accommodating explicit phylogenetic networks. This extension enables the encoding of complex relationships that go beyond the simple hierarchical structure of phylogenetic trees.</p>
+<p>In phylogenetic networks, nodes can signify either divergence events (cladogenesis) or reticulation events, such as hybridization, introgression, horizontal gene transfer, or recombination.</p>
+<p>To represent reticulation events, the nodes are duplicated and annotated by appending the <code>#</code> symbol within the Newick format. These duplicated nodes are sequentially numbered, starting from 1, to maintain clarity and organization within the representation.</p>
 <p><b>Input</b></p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;quetzal/quetzal.hpp&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;cassert&gt;</span></div>

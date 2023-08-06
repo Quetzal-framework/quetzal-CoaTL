@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Quetzal-CoaTL: Suitability landscape</title>
+<title>Quetzal-CoaTL: Preparing a suitability landscape for the simulation</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -114,41 +114,65 @@ $(document).ready(function(){initNavTree('expressive_suitability_raster.html',''
 
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Suitability landscape </div>  </div>
+<div class="title">Preparing a suitability landscape for the simulation </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><b>Input</b></p>
+<div class="textblock"><dl class="section note"><dt>Note</dt><dd>The objective of this section is to load a suitability map with <code><a class="el" href="classquetzal_1_1geography_1_1raster.html" title="Discrete spatio-temporal variations of an environmental variable.">quetzal::geography::raster</a></code> and prepare its integration into the simulation framework with <code><a class="el" href="namespacequetzal_1_1expressive.html" title="Mathematical expressions of spatio-temporal quantities.">quetzal::expressive</a></code>.</dd></dl>
+<p>In the context of ecological niche modeling (ENM), suitability refers to the degree of appropriateness or favorability of a particular environmental condition for a species to thrive and persist. ENM is a technique used in ecology to predict the distribution of species across landscapes based on their known occurrences and environmental variables.</p>
+<p>Suitability can be thought of as a spectrum, ranging from conditions that are highly suitable for a species' survival and reproduction to conditions that are unsuitable or even detrimental. ENM attempts to map this spectrum across geographical space by analyzing the relationships between species occurrences and various environmental factors, such as temperature, precipitation, elevation, soil type, and vegetation cover.</p>
+<p>It's important to note that suitability does not solely depend on a single environmental variable. Instead, it's a complex interplay of multiple factors that determine whether a species can survive, reproduce, and establish a viable population in a given area. Suitability GIS maps derived from previous analysis steps (see e.g. the niche models in <b>Quetzal-crumbs</b> python package) can then be integrated into the coalescence simulation framework.</p>
+<p>The following example code</p><ul>
+<li>loads a suitability map using <code><a class="el" href="classquetzal_1_1geography_1_1raster.html" title="Discrete spatio-temporal variations of an environmental variable.">quetzal::geography::raster</a></code></li>
+<li>prepares its integration into the simulation framework using <code><a class="el" href="namespacequetzal_1_1expressive.html" title="Mathematical expressions of spatio-temporal quantities.">quetzal::expressive</a></code></li>
+<li>it gives to the suitability the semantic of a function of space and time <code>f(x,t)</code></li>
+<li>it gives it access to mathematical operators</li>
+<li>then it builds upon it to define an (arbitrary) expression of e.g. the growth rate (but it could be friction, or carrying capacity...)</li>
+</ul>
+<p><b>Input</b></p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;quetzal/quetzal.hpp&quot;</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;cassert&gt;</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span> <span class="comment">// std::pow</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">using namespace </span><a class="code" href="namespacequetzal.html">quetzal</a>;</div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keywordtype">int</span> main()</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;{</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;  <span class="keyword">using</span> <a class="code" href="structquetzal_1_1expressive_1_1literal__factory.html">quetzal::expressive::literal_factory</a>;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;  <span class="keyword">using</span> <a class="code" href="namespacequetzal_1_1expressive.html#acdec2cd4ec959709f7a1891702c4d5dd">quetzal::expressive::use</a>;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;  <span class="comment">// This creates little callables (double, double)</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;  literal_factory&lt;double,double&gt; lit;</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;  <span class="comment">// defining some useful type aliases</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;  <span class="keyword">using</span> time_type = int;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;  <span class="keyword">using</span> <a class="code" href="classquetzal_1_1geography_1_1raster.html">raster_type</a> = <a class="code" href="classquetzal_1_1geography_1_1raster.html">geography::raster&lt;time_type&gt;</a>;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;  <span class="keyword">using</span> location_type = raster_type::location_descriptor;</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  <span class="keyword">auto</span> a = lit(42.); <span class="comment">// a is no longer a simple double, it&#39;s an expression</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;  <span class="keyword">auto</span> f = <a class="code" href="namespacequetzal_1_1expressive.html#acdec2cd4ec959709f7a1891702c4d5dd">use</a>([](<span class="keywordtype">double</span> x, <span class="keywordtype">double</span> y){ <span class="keywordflow">return</span> std::pow(x, y);});</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  <span class="comment">// Transforms simple numbers into functions of space and time</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;  <a class="code" href="structquetzal_1_1expressive_1_1literal__factory.html">expressive::literal_factory&lt;location_type,time_type&gt;</a> lit;</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;  <span class="comment">// Both a and f can now be invoked with the same interface (double, double) -&gt; double</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  assert( a(1.0, 3.14) == 42.0);</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  assert( f(1.0, 3.14) == 1.0 );</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;  <span class="comment">// The raster has 10 bands that we will assign to 2001 ... 2011.</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  std::vector&lt;time_type&gt; times(10);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  std::iota(times.begin(), times.end(), 2001);</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  <span class="comment">// We can now compose them easily ...</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;  <span class="keyword">auto</span> my_expression  = a * f ;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <span class="comment">// ... and call them (much) later eg in the library&#39;s internals</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  std::cout &lt;&lt; my_expression(1.0, 3.14) &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;}</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  <span class="comment">// Load the suitability map</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;  <span class="keyword">auto</span> file = std::filesystem::current_path() / <span class="stringliteral">&quot;data/suitability.tif&quot;</span>;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;  <span class="keyword">auto</span> raster = <a class="code" href="classquetzal_1_1geography_1_1raster.html#a0ff840b704392f9ef3e63d4b74a83385">raster_type::from_file</a>(file, times);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  <span class="comment">// We need to make choices here concerning how NA are handled</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  <span class="keyword">auto</span> f1 = raster.to_view();                                       <span class="comment">// lightweight functor returning empty optionals for NA</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  <span class="keyword">auto</span> f2 = [f1](location_type x, time_type t){ <span class="keywordflow">return</span> f1(x,t).value_or(0.0); };  <span class="comment">// remap empty optionals (NA) to 0.0 suitability value</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  <span class="keyword">auto</span> f3 = <a class="code" href="namespacequetzal_1_1expressive.html#acdec2cd4ec959709f7a1891702c4d5dd">expressive::use</a>(f2);                                    <span class="comment">// f3 has now access to math operators</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  <span class="keyword">auto</span> r = lit(2) * f3 + lit(1);                                    <span class="comment">// the growth rate r is a linear function of the suitability</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="comment">// r can be later invoked with a location_type and a time_type argument</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">auto</span> x = *raster.locations().begin();</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">auto</span> t = *raster.times().begin();</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;r( x = &quot;</span> &lt;&lt; x &lt;&lt; <span class="stringliteral">&quot;, t = &quot;</span> &lt;&lt; t &lt;&lt; <span class="stringliteral">&quot; ) = &quot;</span> &lt;&lt; r(x,t) &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}</div>
+<div class="ttc" id="aclassquetzal_1_1geography_1_1raster_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1raster.html">quetzal::geography::raster</a></div><div class="ttdoc">Discrete spatio-temporal variations of an environmental variable.</div><div class="ttdef"><b>Definition:</b> raster.hpp:41</div></div>
+<div class="ttc" id="aclassquetzal_1_1geography_1_1raster_html_a0ff840b704392f9ef3e63d4b74a83385"><div class="ttname"><a href="classquetzal_1_1geography_1_1raster.html#a0ff840b704392f9ef3e63d4b74a83385">quetzal::geography::raster::from_file</a></div><div class="ttdeci">static raster from_file(const std::filesystem::path &amp;file, const std::vector&lt; time_type &gt; &amp;times)</div><div class="ttdoc">Read the raster from an input file in the geotiff format.</div><div class="ttdef"><b>Definition:</b> raster.hpp:130</div></div>
 <div class="ttc" id="anamespacequetzal_1_1expressive_html_acdec2cd4ec959709f7a1891702c4d5dd"><div class="ttname"><a href="namespacequetzal_1_1expressive.html#acdec2cd4ec959709f7a1891702c4d5dd">quetzal::expressive::use</a></div><div class="ttdeci">constexpr auto use(F f)</div><div class="ttdoc">Transforms functions into operator friendly classes.</div><div class="ttdef"><b>Definition:</b> expressive.hpp:190</div></div>
+<div class="ttc" id="anamespacequetzal_html"><div class="ttname"><a href="namespacequetzal.html">quetzal</a></div><div class="ttdoc">Simulation of coalescence-based models of molecular evolution.</div><div class="ttdef"><b>Definition:</b> merge.hpp:24</div></div>
 <div class="ttc" id="astructquetzal_1_1expressive_1_1literal__factory_html"><div class="ttname"><a href="structquetzal_1_1expressive_1_1literal__factory.html">quetzal::expressive::literal_factory</a></div><div class="ttdoc">Transforms literals into operator friendly classes.</div><div class="ttdef"><b>Definition:</b> expressive.hpp:233</div></div>
 </div><!-- fragment --><p><b>Output</b></p>
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;42</div>
-</div><!-- fragment --> </div></div><!-- contents -->
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;r( x = 0, t = 0 ) = 1.67259</div>
+</div><!-- fragment --><hr  />
+ </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
