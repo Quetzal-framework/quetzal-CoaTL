@@ -697,7 +697,10 @@ In the context of demographic models, `my_expression` in the example below could
 ---
 
 [//]: # (----------------------------------------------------------------------)
-@page expressive_suitability_raster Suitability landscape
+@page expressive_suitability_raster Preparing a suitability landscape for the simulation
+
+@note 
+The objective of this section is to load a suitability map with `quetzal::geography::raster` and prepare its integration into the simulation framework with `quetzal::expressive`.
 
 In the context of ecological niche modeling (ENM), suitability refers to the degree of appropriateness or favorability of a particular environmental condition for a species to thrive and persist. ENM is a technique used in ecology to predict the distribution of species across landscapes based on their known occurrences and environmental variables.
 
@@ -706,7 +709,12 @@ Suitability can be thought of as a spectrum, ranging from conditions that are hi
 It's important to note that suitability does not solely depend on a single environmental variable. Instead, it's a complex interplay of multiple factors that determine whether a species can survive, reproduce, and establish a viable population in a given area.
 Suitability GIS maps derived from previous analysis steps (see e.g. the niche models in **Quetzal-crumbs** python package) can then be integrated into the coalescence simulation framework.
 
-Here we demonstrate how to load a suitability map `quetzal::geography::raster` and integrate it into the simulation framework using `quetzal::expressive`.
+The following example code 
+- loads a suitability map using `quetzal::geography::raster` 
+- prepares its integration into the simulation framework using `quetzal::expressive` 
+- it gives to the suitability the semantic of a function of space and time `f(x,t)`
+- it gives it access to mathematical operators
+- then it builds upon it to define an (arbitrary) expression of e.g. the growth rate (but it could be friction, or carrying capacity...)
 
 **Input**
 
@@ -715,3 +723,35 @@ Here we demonstrate how to load a suitability map `quetzal::geography::raster` a
 **Output**
 
 @include{lineno} expressive_2.txt
+
+[//]: # (----------------------------------------------------------------------)
+@page expressive_suitability_DEM_landscape Modulating a suitability landscape with a Digital Elevation Model
+
+@note 
+The objective of this section is to load both a suitability map and a Digital Elevation Model (DEM) with `quetzal::geography::landscape` and prepare their integration into the simulation framework with `quetzal::expressive`
+by dynamically modulating the suitability value as a function of the elevation.
+
+## Why separating Elevation from Suitability ?
+
+In previous times, it was a common approach to pack a wealth of information into a sole raster file. For instance, this involved using a single friction file and designating ocean cells with NA values, and obstacles for dispersal with values of 1. Another 
+way is to try to inject elevational data in the suitability map during the Ecological Niche Modeling step.
+
+While these approaches are feasible and occasionally advantageous, they do not consistently represent the optimal or most adaptable solution.
+
+In a broader sense, it's advisable to consider each Geographic Information System (GIS) input file as a means of representing a distinct attribute of the landscape such as suitability, friction, or elevation, utilizing `quetzal::geography::landscape` to read these input files then utilizing `quetzal::expressive` to adjust or combine these quantities in a manner that aligns with your modeling intentions.
+
+As an illustration we will show in this example how to adjust the stochasticity of a suitability-driven process as a function of the 
+elevation model. This case and its variations can be applicable in several contexts:
+- Representing exceptionally rare trans-oceanic dispersal occurrences, such as drafting.
+- Depicting the likelihood of a propagule discovering scarce, small-scale suitable shelters within high-altitude snow cover.
+- Conveniently enforcing a threshold value beyond which the suitability (or another process) undergoes significant change (e.g., becoming 0). This approach is valuable for examining sky-island systems or for easily approximating an isoline by dynamically adjusting the cutoff parameter value during runtime, as opposed to altering input files for every simulation run.
+
+**Input**
+
+@include{lineno} expressive_3.cpp
+
+**Output**
+
+@include{lineno} expressive_3.txt
+
+---
