@@ -58,10 +58,10 @@ var NAVTREE =
     [ "Include", "md_4_include.html", null ],
     [ "Tutorials", "tutorials.html", "tutorials" ],
     [ "Developer's notes", "md_99_developers_notes.html", [
-      [ "Conventions", "md_99_developers_notes.html#autotoc_md106", null ],
-      [ "Build process", "md_99_developers_notes.html#autotoc_md107", null ],
-      [ "Packaging", "md_99_developers_notes.html#autotoc_md108", null ],
-      [ "Documentation", "md_99_developers_notes.html#autotoc_md109", null ]
+      [ "Conventions", "md_99_developers_notes.html#autotoc_md107", null ],
+      [ "Build process", "md_99_developers_notes.html#autotoc_md108", null ],
+      [ "Packaging", "md_99_developers_notes.html#autotoc_md109", null ],
+      [ "Documentation", "md_99_developers_notes.html#autotoc_md110", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],

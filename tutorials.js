@@ -2,12 +2,13 @@ var tutorials =
 [
     [ "Parsing a Newick string", "newick_parser.html", [
       [ "Input/Output", "tutorials.html#autotoc_md37", null ],
-      [ "Linking landscapes to demography", "tutorials.html#autotoc_md38", null ],
-      [ "Graphs", "tutorials.html#autotoc_md39", null ],
-      [ "Demographic Histories", "tutorials.html#autotoc_md40", [
-        [ "Growth Expressions", "tutorials.html#autotoc_md41", null ],
-        [ "Dispersal Kernels", "tutorials.html#autotoc_md42", null ],
-        [ "Memory Management", "tutorials.html#autotoc_md43", null ],
+      [ "Linking landscapes to local demographic parameters", "tutorials.html#autotoc_md38", null ],
+      [ "Demographic Histories", "tutorials.html#autotoc_md39", [
+        [ "Growth Expressions", "tutorials.html#autotoc_md40", null ],
+        [ "Dispersal Kernels", "tutorials.html#autotoc_md41", null ],
+        [ "Memory Management", "tutorials.html#autotoc_md42", null ]
+      ] ],
+      [ "Graphs", "tutorials.html#autotoc_md43", [
         [ "Introduction", "newick_parser.html#autotoc_md44", [
           [ "Background", "newick_parser.html#autotoc_md46", null ],
           [ "Grammar", "newick_parser.html#autotoc_md48", null ],
