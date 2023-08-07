@@ -15,14 +15,23 @@
   - @subpage geotiff_generator
   - @subpage shapefile_generator
 
-## Linking landscapes to demography
+## Linking landscapes to local demographic parameters
 
 - @subpage niche_in_quetzal
 - Examples 
   - @subpage expressive_suitability_raster
   - @subpage expressive_suitability_DEM_landscape
   - @subpage expressive_friction
-  - @subpage expressive_competition
+
+## Demographic Histories
+
+- @subpage demographic_histories_in_quetzal
+
+### Growth Expressions
+
+### Dispersal Kernels
+
+### Memory Management
 
 ## Graphs
 
@@ -34,14 +43,7 @@
 
 
 
-## Demographic Histories
 
-### Growth Expressions
-
-
-### Dispersal Kernels
-
-### Memory Management
 
 
 [//]: # (----------------------------------------------------------------------)
@@ -666,9 +668,9 @@ The composition and significance of environmental variables that constitute the 
 
 @note
 In the broader context of this library, the niche model lacks a specific definition as it relies on the preferences and requirements of individual users. What we can understand is that it involves some combination of spatial and temporal factors that are closely intertwined with the demographic process.
-This justifies the need for a highly adaptable approach to representing the concept of niche, as it is bound to vary depending on the specific species, population, or geographic area under study. 
+This justifies the need for a highly adaptable approach for representing the concept of niche, as it is bound to vary depending on the specific species, population, or geographic area under study. 
 
-Given this understanding, the primary goal of this library is to provide users with a user-friendly means to effectively combine geospatial and temporal elements. This enables users to establish meaningful mathematical connections between a diverse and heterogeneous landscape and the underlying demographic processes, based on their own perspectives and preferences.
+Given this understanding, the primary goal of **Quetzal** is to provide users with `quetzal::expressive`, a user-friendly means to effectively combine geospatial and temporal elements. This enables users to establish meaningful mathematical connections between a diverse and heterogeneous landscape and the underlying demographic processes, based on their own perspectives and preferences. Generally speaking, users will want to use `quetzal::expressive` to mathematically compose spatio-temporal expressions with a signature `double (location_type, time_type)` until they reach a satisfying definition of the local demographic parameter of interest.
 
 # Mathematical composition in C++ 
 
@@ -684,7 +686,7 @@ it will not compile. As the compiler does not know natively what the rules are t
 
 You need a library to tell the compiler what to do. This is where `quetzal::expressive` comes handy: it allows you to add, substract, multiply, or compose mathematical expressions by giving them a uniform interface.
 
-In the context of demographic models, `my_expression` in the example below could represent *e.g.* `r(x,t)` the growth rate at location `x` at time `t`. Being able to compose several smaller expressions into bigger expressions allows users to define `r` in one part on the program and compose it at a later time with *e.g.* `k(x,t)` the carrying capacity defined independently in a totally unrelated part of the program.
+In the context of demographic models, `my_expression` in the example below could represent for example `r(x,t)` the growth rate at location `x` at time `t`. Being able to compose several smaller expressions into bigger expressions gives much freedom to users who can for example define `r` in one part on the program and compose it at a later time with a different expression *e.g.* `k(x,t)` the carrying capacity at location `x` at time `t`. By treating these local demographic parameters as independent expressions that can be mixed and matched, `quetzal::expressive` allows great freedom in the implementation details of a spatio-temporal process.
 
 **Input**
 
@@ -713,7 +715,7 @@ The following example code
 - loads a suitability map using `quetzal::geography::raster` 
 - prepares its integration into the simulation framework using `quetzal::expressive` 
 - it gives to the suitability the semantic of a function of space and time `f(x,t)`
-- it gives it access to mathematical operators
+- it gives it access to mathematical operators with `quetzal::expressive::use`
 - then it builds upon it to define an (arbitrary) expression of e.g. the growth rate (but it could be friction, or carrying capacity...)
 
 **Input**
@@ -731,12 +733,12 @@ The following example code
 
 @note 
 The objective of this section is to load both a suitability map and a Digital Elevation Model (DEM) with `quetzal::geography::landscape` and prepare their integration into the simulation framework with `quetzal::expressive`
-by dynamically modulating the suitability value as a function of the elevation.
+by dynamically modulating the suitability value as a function of the local elevation.
 
 ## Why separating Elevation from Suitability ?
 
-It is a common approach to pack a wealth of information into a sole raster file. For instance, this cam involve using a single friction file and designating ocean cells with NA values, and obstacles for dispersal with values of 1. Another 
-way is to try to inject elevational data in the suitability map during the Ecological Niche Modeling step.
+It is a common approach to pack a wealth of information into a sole raster file. For instance, this can involve using a single friction file and designating ocean cells with NA values, and obstacles for dispersal with values of 1. Another 
+way is to try to inject elevational data into the suitability map during the Ecological Niche Modeling step.
 
 While these approaches are feasible and occasionally advantageous, they do not consistently represent the optimal or most adaptable solution.
 
@@ -763,7 +765,15 @@ elevation model. This case and its variations can be applicable in various conte
 
 @note 
 The objective of this section is to load both a suitability map and a Digital Elevation Model (DEM) with `quetzal::geography::landscape` and prepare their integration into the simulation framework with `quetzal::expressive`
-by dynamically defining the friction and the carrying capacity of a cell as functions of the suitability and elevation value.
+and account for trans-oceanic dispersal events by dynamically defining the friction and the carrying capacity of a cell as functions of the suitability and elevation value.
+
+Drafting events, in the context of biological dispersal, refer to a phenomenon where organisms are carried across large distances by clinging to or being transported by other organisms, objects, or air currents. This can be thought of as a form of passive dispersal where an organism takes advantage of external forces to move beyond its usual range.
+
+The term "drafting" is borrowed from concepts in physics. In biology, this concept is applied to scenarios where organisms, often small and lightweight, catch a ride on other organisms (like birds, insects, or larger animals), objects (like debris), or wind currents. Drafting events can play a significant role in the dispersal of organisms, especially those with limited mobility. 
+
+These drafting events provide an opportunity for organisms to reach new areas that they might not be able to access through their own locomotion. It's an interesting ecological phenomenon that highlights the intricate ways in which different species interact and influence each other's distribution and survival.
+
+The general idea is to define lambda expressions that embed stochastic aspects of the model, while preserving the callable interface `(space, time) -> double`.
 
 **Input**
 
@@ -772,3 +782,5 @@ by dynamically defining the friction and the carrying capacity of a cell as func
 **Output**
 
 @include{lineno} expressive_4.txt
+
+---
