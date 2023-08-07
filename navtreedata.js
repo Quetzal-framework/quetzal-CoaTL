@@ -92,14 +92,14 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"",
-"classquetzal_1_1coalescence_1_1container_1_1Forest.html#a94302f7d2023df2ccf828c4696baba0c",
-"classquetzal_1_1coalescence_1_1newick__with__distance__to__parent__and__leaf__name_1_1cell__type.html#ab5249f817a51ab70333f56e3497bf6f2",
-"classquetzal_1_1format_1_1genetics_1_1SpatialGeneticSample.html#acb838f975059c6f4d965e404fa8eaa2f",
-"classquetzal_1_1polymorphism_1_1statistics_1_1tajimasD.html#a6d0c7b508002a3bfbacdae665a33b118",
-"md_2_abstract.html#autotoc_md12",
-"sampling__scheme_8hpp_source.html",
-"structquetzal_1_1expressive_1_1unop__t.html#a12b724bff79b0058e64b87485a6ad61c"
+"Allele_8hpp_source.html",
+"classquetzal_1_1coalescence_1_1container_1_1Network.html#a9c21b8d2dc545c1a8c4ced777b0891d9",
+"classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrum.html#ac96e90cbc35224c33580fab6c295d868",
+"classquetzal_1_1format_1_1newick_1_1generator.html#a5ec0b24fa842d4d57b1251ffb85dd956",
+"classquetzal_1_1sampling_1_1constrained__sampling_1_1param__type.html#a9b57b16a3490ec2ba482e95be7a0db9e",
+"md_99_developers_notes.html",
+"structFixtureCases.html#af80e9740a9b664198cefb8c3ed795123",
+"structquetzal_1_1format_1_1newick_1_1ast_1_1node.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
