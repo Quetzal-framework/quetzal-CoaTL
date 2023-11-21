@@ -491,5 +491,3 @@ namespace quetzal
     } // end namespace demographic_policy
   } // end namespace demography
 } // end namespace quetzal
-
-#endif

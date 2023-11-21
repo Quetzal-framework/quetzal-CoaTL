@@ -1,0 +1,4 @@
+// Workspace settings are stored in the workspace .vscode folder and only apply when the workspace is opened.
+{
+    "cmake.configureOnOpen": false
+}
