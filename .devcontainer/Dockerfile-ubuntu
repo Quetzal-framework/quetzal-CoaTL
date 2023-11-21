@@ -1,0 +1,21 @@
+FROM ubuntu:22.04
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update -y
+RUN apt-get install -y --no-install-recommends\
+                    vim \
+                    git \
+                    gcc-12 \
+                    g++-12 \
+                    build-essential \
+                    libboost-all-dev \
+                    cmake \
+                    unzip \
+                    tar \
+                    ca-certificates \
+                    doxygen \
+                    graphviz \ 
+                    python3-pip
+                    
+RUN pip install conan==2.0.13

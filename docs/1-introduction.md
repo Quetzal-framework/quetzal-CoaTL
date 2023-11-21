@@ -41,6 +41,8 @@ The god’s name is a combination of two Nahuatl words:
 
 But let's be honest, the full name is quite a mouthful, so let's just focus on the dazzling aspects and call it Quetzal for short (because who doesn't love a little sparkle in their code?).
 
+---
+
 ## Why C++?
 
 When the limitations of a project revolve around the number of simulations that can be executed within a limited timeframe and with a restricted budget, it becomes natural to choose a language renowned for its performance. While Rust could have been an option, C++ is commonly taught in Computer Science courses and extensively utilized in Ecology and Evolution software, such as msprime, SLiM, and Splatche, making it a logical choice.

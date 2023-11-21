@@ -8,8 +8,7 @@
 *                                                                      *
 ***************************************************************************/
 
-#ifndef __DEMOGRAPHIC_POLICY_H_INCLUDED__
-#define __DEMOGRAPHIC_POLICY_H_INCLUDED__
+#pragma once
 
 #include "../utils/PointWithId.hpp"
 #include "../utils/matrix_operation.hpp"

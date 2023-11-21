@@ -26,12 +26,10 @@
 ## Demographic Histories
 
 - @subpage demographic_histories_in_quetzal
-
-### Growth Expressions
-
-### Dispersal Kernels
-
-### Memory Management
+- Examples
+  - @subpage Growth Expressions
+  - @subpage Dispersal Kernels
+  - @subpage Memory Management
 
 ## Graphs
 
@@ -782,5 +780,34 @@ The general idea is to define lambda expressions that embed stochastic aspects o
 **Output**
 
 @include{lineno} expressive_4.txt
+
+---
+
+[//]: # (----------------------------------------------------------------------)
+@page demographic_histories_in_quetzal Demographic Histories in Quetzal
+
+## Background 
+
+In population genetics, demographic history refers to the historical changes in population size, structure, and distribution of individuals within a species over time. It encompasses various events and processes that have shaped the genetic diversity and characteristics of a population. Some key aspects of demographic history include:
+
+- **Population Size Changes:** Demographic history includes fluctuations in population size, such as population expansions (increases) and bottlenecks (sharp decreases). These events can leave distinct signatures in the genetic makeup of a population.
+
+- **Migration and Gene Flow:** Movement of individuals between different populations can lead to gene flow, which can impact the genetic diversity and structure of populations. Understanding migration patterns is crucial for studying demographic history.
+
+- **Founder Effects:** When a small group of individuals establishes a new population, their genetic makeup might not accurately represent the genetic diversity of the original population. This phenomenon is known as a founder effect.
+
+- **Admixture:** Admixture occurs when genetically distinct populations interbreed, leading to the mixing of their genetic material. Admixture can result from migration or colonization events and has a significant influence on genetic diversity.
+
+- **Population Isolation:** Isolated populations may experience unique evolutionary trajectories due to reduced gene flow and increased genetic drift. This can lead to the development of distinct genetic traits and adaptations.
+
+## Graphs structure
+
+There a different modeling approaches to look at these demographic histories, primarily based on the level of intricacy one intends to incorporate into the framework:
+
+- **Phylogenetic Trees:** typically represent a bifurcating pattern of evolution, where each node (or branching point) represents a speciation event. This gives population histories the semantic of a tree graph (called a population tree or species tree), where ancestral populations split into sub-populations, sometimes loosely connected by migration. Gene trees coalesce into these species tree. Genetic inference under this kind of model aims at estimating the tree topology and/or the timing and parameters of events, such as ancestral population size changes and migration rates. It is important to note that in this framework geography is implicit and events such as population size changes and admixture events are explicitely modeled and estimated.
+
+- **Phylogenetic Networks:** while a phylogenetic tree typically represents a bifurcating pattern of evolution, real-world evolutionary processes can be more intricate. Phylogenetic networks are employed when evolutionary events like horizontal gene transfer, hybridization, recombination, and other reticulate processes are involved. These events can lead to interconnected patterns that cannot be accurately illustrated by a simple tree. Networks with Hybridization are specifically designed to capture the evolutionary relationships of organisms that have undergone hybridization events, where two distinct species interbreed to produce hybrid offspring.
+
+- **Spatial graph structure:** Another category of models puts an emphasis on the geographic structure of these populations and embed GIS information into the model. Here the demographic history receives the semantic of a dense spatial graph where geolocalized nodes represent demes and local processes whereas edges represent distances and dispersal processes. In this kind of models estimating the individual properties of so many demes is not judicious and genetic inference rather aims at estimating species-wide parameters that link local deme conditions (such as rainfall) to populational processes (like growth rate). It's crucial to understand that within this geospatial framework, events like population changes and admixture events are emergent properties of the model: they are generally not explicitly outlined in the model nor subjected to direct estimation.
 
 ---

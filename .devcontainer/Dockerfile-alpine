@@ -1,0 +1,20 @@
+FROM alpine:3.18 AS build
+
+LABEL maintainer="Arnaud Becheler" \
+      description="Development Environment for Quetzal-CoaTL"
+
+WORKDIR /app
+
+# Installs build tools, see https://pkgs.alpinelinux.org/packages
+RUN apk update && \
+    apk add --no-cache \
+        bash \
+        perl \
+        linux-headers \
+        build-base=0.5-r3 \
+        cmake=3.26.5-r0 \ 
+        python3=3.11.6-r0 \
+        py3-pip=23.1.2-r0 \
+        git
+
+RUN pip install conan==2.0.13
