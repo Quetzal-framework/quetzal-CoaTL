@@ -3,10 +3,11 @@
 {
     "version": "2.0.0",
     "tasks": [
+        // Release mode
         {
-            "label": "Configure CMake",
+            "label": "Configure Conan Release",
             "type": "shell",
-            "command": "cmake -B ${workspaceFolder}/build -S . -DCMAKE_BUILD_TYPE=Release --toolchain ${workspaceFolder}/build/conan_toolchain.cmake",
+            "command": "conan install conanfile.py --profile:build=conan/profiles/linux-armv8-gcc12-release --profile:host=conan/profiles/linux-armv8-gcc12-release --build=missing --output-folder=build",
             "group": "test",
             "presentation": {
                 "reveal": "always",
@@ -15,7 +16,18 @@
             "dependsOn": [],
         },
         {
-            "label": "Unit Tests Build",
+            "label": "Configure CMake Release",
+            "type": "shell",
+            "command": "cmake -B ${workspaceFolder}/build -S . -DCMAKE_BUILD_TYPE=Release --toolchain ${workspaceFolder}/build/conan_toolchain.cmake",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "dependsOn": ["Configure Conan Release"],
+        },
+        {
+            "label": "Unit Tests Build Release",
             "type": "shell",
             "command": "cmake --build ${workspaceFolder}/build --config Release",
             "group": "test",
@@ -23,10 +35,10 @@
                 "reveal": "always",
                 "panel": "new"
             },
-            "dependsOn": ["Configure CMake"],
+            "dependsOn": ["Configure CMake Release"],
         },
         {
-            "label": "Unit Tests Run",
+            "label": "Unit Tests Run Release",
             "type": "shell",
             "command": "cd ${workspaceFolder}/build && ctest -C Release",
             "group": "test",
@@ -34,7 +46,52 @@
                 "reveal": "always",
                 "panel": "new"
             },
-            "dependsOn": ["Unit Tests Build"],
+            "dependsOn": ["Unit Tests Build Release"],
+        },
+        // Debug mode
+        {
+            "label": "Configure Conan Debug",
+            "type": "shell",
+            "command": "conan install conanfile.py --profile:build=conan/profiles/linux-armv8-gcc12-debug --profile:host=conan/profiles/linux-armv8-gcc12-debug --build=missing --output-folder=build",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "dependsOn": [],
+        },
+        {
+            "label": "Configure CMake Debug",
+            "type": "shell",
+            "command": "cmake -B ${workspaceFolder}/build -S . -DCMAKE_BUILD_TYPE=Debug --toolchain ${workspaceFolder}/build/conan_toolchain.cmake",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "dependsOn": ["Configure Conan Debug"],
+        },
+        {
+            "label": "Unit Tests Build Debug",
+            "type": "shell",
+            "command": "cmake --build ${workspaceFolder}/build --config Debug",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "dependsOn": ["Configure CMake Debug"],
+        },
+        {
+            "label": "Unit Tests Run Debug",
+            "type": "shell",
+            "command": "cd ${workspaceFolder}/build && ctest -C Debug",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "dependsOn": ["Unit Tests Build Debug"],
         },
         {
             "label": "Build Main",

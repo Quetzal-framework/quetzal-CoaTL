@@ -25,6 +25,8 @@ foreach(testSrc ${TEST_SRCS})
   add_executable(${testName} ${testSrc})
   # Require the standard
   target_compile_features(${testName} PRIVATE cxx_std_20)
+  # Ignore warnings about subtle ABI change
+  target_compile_options(${testName} PUBLIC "-Wno-psabi")
   # Link to targets and dependencies
   target_link_libraries(${testName} quetzal::quetzal boost::boost GDAL::GDAL range-v3::range-v3)
   # Specifies include directories to use when compiling the target

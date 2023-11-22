@@ -9,7 +9,7 @@
 		"context": "..",
 		"dockerfile": "Dockerfile-ubuntu"
 	},
-	"onCreateCommand": "conan install conanfile.py --profile:build=conan/profiles/linux-armv8-gcc12 --profile:host=conan/profiles/linux-armv8-gcc12 --build=missing --output-folder=build",
+	"onCreateCommand": "chmod +x .devcontainer/onCreateCommand.sh && ./.devcontainer/onCreateCommand.sh",
 	// Features to add to the dev container, see https://containers.dev/feature
 	"features": {},
 
