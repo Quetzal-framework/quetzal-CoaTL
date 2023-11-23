@@ -40,7 +40,7 @@
         {
             "label": "Unit Tests Run Release",
             "type": "shell",
-            "command": "cd ${workspaceFolder}/build && ctest -C Release",
+            "command": "cd ${workspaceFolder}/build && ctest -C Release --rerun-failed --output-on-failure",
             "group": "test",
             "presentation": {
                 "reveal": "always",
@@ -85,7 +85,7 @@
         {
             "label": "Unit Tests Run Debug",
             "type": "shell",
-            "command": "cd ${workspaceFolder}/build && ctest -C Debug",
+            "command": "cd ${workspaceFolder}/build && ctest -C Debug --rerun-failed --output-on-failure",
             "group": "test",
             "presentation": {
                 "reveal": "always",

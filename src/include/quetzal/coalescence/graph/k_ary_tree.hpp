@@ -109,9 +109,7 @@ namespace quetzal::coalescence
 			///         tree (which is not a tree any more).
 			vertex_descriptor find_root_from(vertex_descriptor u) const
 			{
-        std::vector<vertex_descriptor> order;
-        topological_sort(this->_graph, back_inserter(order));
-        return order.back();
+        return has_predecessor(u) ? find_root_from(predecessor(u)) : u;
 			}
 
 			/// @brief Returns the number of in-edges plus out-edges.
@@ -389,6 +387,7 @@ namespace quetzal::coalescence
     std::vector<edge_descriptor>
     add_edges(vertex_descriptor parent, std::vector<vertex_descriptor> children)
     {
+      std::cout << children.size() << std::endl;
       assert( children.size() > 1);
       for(auto const& c : children){ assert(parent != c); }
 
