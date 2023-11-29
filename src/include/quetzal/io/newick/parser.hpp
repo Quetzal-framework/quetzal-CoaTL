@@ -1,5 +1,4 @@
-#ifndef __NEWICK_TREE_H_INCLUDED__
-#define __NEWICK_TREE_H_INCLUDED__
+#pragma once
 
 #include <boost/spirit/home/x3.hpp>
 #include "ast.hpp"
@@ -45,4 +44,4 @@ namespace quetzal
 
 
 } // end namespace newick
-#endif
+

@@ -387,10 +387,12 @@ namespace quetzal::coalescence
     std::vector<edge_descriptor>
     add_edges(vertex_descriptor parent, std::vector<vertex_descriptor> children)
     {
-      std::cout << children.size() << std::endl;
+      //std::cout << children.size() << std::endl;
+      assert( children.size() != 0);
+      //for(auto const& c : children){ std::cout << parent << " -> " << c << std::endl; }
+
       assert( children.size() > 1);
       for(auto const& c : children){ assert(parent != c); }
-
       std::vector<edge_descriptor> edges (children.size());
       std::transform(children.cbegin(), 
                      children.cend(), 
@@ -632,6 +634,7 @@ namespace quetzal::coalescence
     add_edges(vertex_descriptor parent,
               std::vector<std::tuple<vertex_descriptor, EdgeProperty>> children)
     {
+      std::cout << children.size() << std::endl;
       assert( children.size() > 1);
       for(auto const& [c,p] : children){ assert(parent != c); }
 

@@ -236,13 +236,13 @@ namespace quetzal::geography
     /// @brief Location descriptors (unique identifiers) of the grid cells
     auto locations() const noexcept
     {
-      return ranges::views::iota(0, width() * height() - 1);
+      return ranges::views::iota(0, width() * height());
     }
 
     /// @brief Time descriptors (unique identifiers) of the dataset bands
     auto times() const noexcept
     {
-      return ranges::views::iota(0, depth() - 1);
+      return ranges::views::iota(0, depth());
     }
 
     ///@brief checks if the raster contains a layer with specific time

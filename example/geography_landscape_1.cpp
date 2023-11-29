@@ -34,8 +34,6 @@ int main()
 
 	assert(env.contains(Bordeaux));
 	assert(env.contains( env.to_centroid(Bordeaux) ) );
-	assert(env.times().size() == 10);
-	assert(env.locations().size() == 9);
 
 	// These little function-objects will soon be very handy to embed the GIS variables 
 	// into the simulation with quetzal::expressive
