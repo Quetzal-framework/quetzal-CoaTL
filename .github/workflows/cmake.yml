@@ -47,24 +47,20 @@ jobs:
     - name: Conan version
       run: echo "${{ steps.conan.outputs.version }}"
 
-    - name: Conan profile configuration
-      run: |
-           conan profile detect --name profile
-           conan profile update settings.compiler="gcc" profile
-           conan profile update settings.build_type="Release" profile
-           conan profile update settings.compiler.version=12 profile
-           conan profile update settings.compiler.cppstd=20 profile
-           conan profile update settings.compiler.libcxx="libstdc++11" profile
-           conan profile update env.CC=[/usr/bin/gcc-12] profile
-           conan profile update env.CXX=[/usr/bin/g++-12] profile
+    # - name: Conan profile configuration
+    #   run: |
+    #        conan profile detect --name profile
+    #        conan profile update settings.compiler="gcc" profile
+    #        conan profile update settings.build_type="Release" profile
+    #        conan profile update settings.compiler.version=12 profile
+    #        conan profile update settings.compiler.cppstd=20 profile
+    #        conan profile update settings.compiler.libcxx="libstdc++11" profile
+    #        conan profile update env.CC=[/usr/bin/gcc-12] profile
+    #        conan profile update env.CXX=[/usr/bin/g++-12] profile
 
     - name: Conan install dependencies
       run: >
-        conan install conanfile.py
-        --build=missing
-        --install-folder=build
-        -pr:b=quetzal-profile
-        -pr:h=quetzal-profile
+        conan install conanfile.py --profile:build=conan/profiles/linux-armv8-gcc12-debug --profile:host=conan/profiles/linux-armv8-gcc12-debug --build=missing --output-folder=build
 
     - name: CMake configuration
       run:  >
