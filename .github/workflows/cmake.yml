@@ -23,19 +23,26 @@ jobs:
         fetch-depth: 0
         submodules: recursive
 
-    - name: Get GCC-12
-      run:   |
-             sudo apt update && sudo apt upgrade -y
-             sudo apt install -y gcc-12 g++-12
-             sudo apt install -y python3-pip
-             sudo apt install -y cmake
-             sudo apt install -y doxygen
+    - name: Get Apt packages
+      run: >
+        apt-get update -y && \
+        apt-get install -y --no-install-recommends \
+        vim \
+        git \
+        gcc-12 \
+        g++-12 \
+        build-essential \
+        libboost-all-dev \
+        cmake \
+        unzip \
+        tar \
+        ca-certificates \
+        doxygen \
+        graphviz \ 
+        python3-pip
 
     - name: Conan installation
-      id: conan
-      uses: turtlebrowser/get-conan@main
-      with:
-        version: 1.60.1
+      run: pip install conan==2.0.13
 
     - name: Conan version
       run: echo "${{ steps.conan.outputs.version }}"

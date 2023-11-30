@@ -51,7 +51,7 @@ To swiftly open an integrated development environment (IDE), begin coding to exp
 3. Open Docker and leave it active in the background
 4. Click [here](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/Quetzal-framework/quetzal-CoaTL) to get started.
 
-This will download the project, builds a Docker Image, manage the dependencies and automatically buil and run the tests. If it's the first time you build the image, it may take some time, so you're free to go get a coffee!
+This will download the project, builds a Docker Image, manage the dependencies and automatically build and run the tests. If it's the first time you build the image, it may take some time, so you're free to go get a coffee!
 
 ---
 
