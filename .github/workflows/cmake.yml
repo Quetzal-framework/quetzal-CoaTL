@@ -26,7 +26,7 @@ jobs:
     - name: Get Apt packages
       run: >
         sudo apt-get update -y &&
-        apt-get install -y --no-install-recommends
+        sudo apt-get install -y --no-install-recommends
         vim
         git
         gcc-12
