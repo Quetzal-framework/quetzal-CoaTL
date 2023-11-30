@@ -25,7 +25,7 @@ jobs:
 
     - name: Get Apt packages
       run: >
-        apt-get update -y &&
+        sudo apt-get update -y &&
         apt-get install -y --no-install-recommends
         vim
         git
