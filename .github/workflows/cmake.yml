@@ -49,13 +49,14 @@ jobs:
 
     - name: Conan profile configuration
       run: |
-           conan profile new quetzal-profile --detect --force
-           conan profile update settings.compiler="gcc" quetzal-profile
-           conan profile update settings.compiler.version=12 quetzal-profile
-           conan profile update settings.compiler.cppstd=20 quetzal-profile
-           conan profile update settings.compiler.libcxx="libstdc++11" quetzal-profile
-           conan profile update env.CC=[/usr/bin/gcc-12] quetzal-profile
-           conan profile update env.CXX=[/usr/bin/g++-12] quetzal-profile
+           conan profile detect --name profile
+           conan profile update settings.compiler="gcc" profile
+           conan profile update settings.build_type="Release" profile
+           conan profile update settings.compiler.version=12 profile
+           conan profile update settings.compiler.cppstd=20 profile
+           conan profile update settings.compiler.libcxx="libstdc++11" profile
+           conan profile update env.CC=[/usr/bin/gcc-12] profile
+           conan profile update env.CXX=[/usr/bin/g++-12] profile
 
     - name: Conan install dependencies
       run: >
