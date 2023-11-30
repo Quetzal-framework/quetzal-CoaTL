@@ -73,8 +73,10 @@ jobs:
     - name: CMake build
       run:  >
         cmake 
-        --build ${{github.workspace}}/build 
-        --config ${{env.BUILD_TYPE}}
+        -B ${{github.workspace}}/build 
+        -S .
+        -DCMAKE_BUILD_TYPE=Release
+        --toolchain ${workspaceFolder}/build/conan_toolchain.cmake
 
     - name: CMake test
       working-directory: ${{github.workspace}}/build
