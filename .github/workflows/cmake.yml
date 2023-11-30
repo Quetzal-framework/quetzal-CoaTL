@@ -25,20 +25,20 @@ jobs:
 
     - name: Get Apt packages
       run: >
-        apt-get update -y && \
-        apt-get install -y --no-install-recommends \
-        vim \
-        git \
-        gcc-12 \
-        g++-12 \
-        build-essential \
-        libboost-all-dev \
-        cmake \
-        unzip \
-        tar \
-        ca-certificates \
-        doxygen \
-        graphviz \ 
+        apt-get update -y &&
+        apt-get install -y --no-install-recommends
+        vim
+        git
+        gcc-12
+        g++-12
+        build-essential
+        libboost-all-dev
+        cmake
+        unzip
+        tar
+        ca-certificates
+        doxygen
+        graphviz
         python3-pip
 
     - name: Conan installation
