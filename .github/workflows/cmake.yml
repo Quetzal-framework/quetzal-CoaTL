@@ -60,7 +60,7 @@ jobs:
 
     - name: Conan install dependencies
       run: >
-        conan install conanfile.py --profile:build=conan/profiles/linux-armv8-gcc12-debug --profile:host=conan/profiles/linux-armv8-gcc12-debug --build=missing --output-folder=build
+        conan install conanfile.py --profile:build=conan/profiles/linux-x86-gcc12-debug --profile:host=conan/profiles/linux-x86-gcc12-debug --build=missing --output-folder=build
 
     - name: CMake configuration
       run:  >
