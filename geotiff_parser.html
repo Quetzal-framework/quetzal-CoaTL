@@ -118,17 +118,17 @@ $(document).ready(function(){initNavTree('geotiff_parser.html',''); initResizabl
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><ul><li class="level2"><a href="#autotoc_md87">Reading a single variable</a></li>
-<li class="level2"><a href="#autotoc_md89">Reading multiple variables</a></li>
-<li class="level2"><a href="#autotoc_md91">Next steps</a><ul><li class="level3"><a href="#autotoc_md93">Demes on a regular spatial grid</a></li>
-<li class="level3"><a href="#autotoc_md95">Demes on a variable spatial graph</a></li>
-<li class="level3"><a href="#autotoc_md97">Inform local processes</a></li>
+<ul><ul><li class="level2"><a href="#autotoc_md81">Reading a single variable</a></li>
+<li class="level2"><a href="#autotoc_md83">Reading multiple variables</a></li>
+<li class="level2"><a href="#autotoc_md85">Next steps</a><ul><li class="level3"><a href="#autotoc_md87">Demes on a regular spatial grid</a></li>
+<li class="level3"><a href="#autotoc_md89">Demes on a variable spatial graph</a></li>
+<li class="level3"><a href="#autotoc_md91">Inform local processes</a></li>
 </ul>
 </li>
 </ul>
 </ul>
 </div>
-<div class="textblock"><h2><a class="anchor" id="autotoc_md87"></a>
+<div class="textblock"><h2><a class="anchor" id="autotoc_md81"></a>
 Reading a single variable</h2>
 <p>Landscapes, along with their spatial and temporal heterogeneity, play a significant role in shaping the dynamics of populations and lineages. In computational models, these landscapes are often represented as geospatial grids or rasters.</p>
 <p>In most analyses, it is common for users to establish connections between local growth processes and a habitability raster obtained from Ecological Niche Models. Additionally, they may associate dispersal or connectivity with a Digital Elevation Model.</p>
@@ -208,10 +208,10 @@ Reading a single variable</h2>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    std::cout &lt;&lt; bio1 &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="comment">// Check there are 10 bands/layers/time periods</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    assert( bio1.times().size() == 10 );</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    assert( std::ranges::distance(bio1.times()) == 10 );</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="comment">// There are 9 cells/spatial coordinates</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    assert( bio1.locations().size() == 9 );</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    assert( std::ranges::distance(bio1.locations()) == 9 );</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="comment">// You will typically have georeferenced sampling points</span></div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">using</span> <a class="code" href="structquetzal_1_1geography_1_1latlon.html">latlon</a> =  <span class="keyword">typename</span> <a class="code" href="structquetzal_1_1geography_1_1latlon.html">raster_type::latlon</a>;</div>
@@ -292,9 +292,9 @@ Reading a single variable</h2>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    (Lat: 49.5 , Lon: -2.5)</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    (Lat: 49.5 , Lon: -2.5)</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;bio1(0,0) is defined.</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;106.694</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;104.602</div>
 </div><!-- fragment --><hr  />
-<h2><a class="anchor" id="autotoc_md89"></a>
+<h2><a class="anchor" id="autotoc_md83"></a>
 Reading multiple variables</h2>
 <p>Aligning rasters refers to a spatial data representation technique used in Geographic Information Systems (GIS). In this context, raster data layers are aligned and registered to a common coordinate system and grid structure. This ensures that the cells or pixels in the raster layers are spatially aligned and correspond to the same geographic locations.</p>
 <p>Alignment is achieved in <code><a class="el" href="classquetzal_1_1geography_1_1raster.html" title="Discrete spatio-temporal variations of an environmental variable.">quetzal::geography::raster</a></code> objects by defining a consistent grid structure, such as a uniform cell size and orientation, for all raster layers.</p>
@@ -336,24 +336,22 @@ Reading multiple variables</h2>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    assert(env.contains(Bordeaux));</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    assert(env.contains( env.to_centroid(Bordeaux) ) );</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    assert(env.times().size() == 10);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    assert(env.locations().size() == 9);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="comment">// These little function-objects will soon be very handy to embed the GIS variables </span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="comment">// into the simulation with quetzal::expressive</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; f = env[<span class="stringliteral">&quot;bio1&quot;</span>].to_view();</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; g = env[<span class="stringliteral">&quot;bio12&quot;</span>].to_view();</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="comment">// But for now just print their raw data if defined or any other value if undefined</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">auto</span> t : env.times())</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span> x : env.locations())</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        {</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            f(x,t).value_or(0.0);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            g(x,t).value_or(env[<span class="stringliteral">&quot;bio12&quot;</span>].NA());</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        }</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;}</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="comment">// These little function-objects will soon be very handy to embed the GIS variables </span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="comment">// into the simulation with quetzal::expressive</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; f = env[<span class="stringliteral">&quot;bio1&quot;</span>].to_view();</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; g = env[<span class="stringliteral">&quot;bio12&quot;</span>].to_view();</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="comment">// But for now just print their raw data if defined or any other value if undefined</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">auto</span> t : env.times())</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span> x : env.locations())</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            f(x,t).value_or(0.0);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            g(x,t).value_or(env[<span class="stringliteral">&quot;bio12&quot;</span>].NA());</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        }</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    }</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div>
 <div class="ttc" id="aclassquetzal_1_1geography_1_1landscape_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a></div><div class="ttdoc">Discrete spatio-temporal variations of a set of environmental variables.</div><div class="ttdef"><b>Definition:</b> landscape.hpp:40</div></div>
 <div class="ttc" id="aclassquetzal_1_1geography_1_1landscape_html_a0fa9fa6c1e027352919bb35d2b40c61b"><div class="ttname"><a href="classquetzal_1_1geography_1_1landscape.html#a0fa9fa6c1e027352919bb35d2b40c61b">quetzal::geography::landscape::from_files</a></div><div class="ttdeci">static landscape from_files(const std::map&lt; key_type, std::filesystem::path &gt; &amp;files, const std::vector&lt; time_type &gt; &amp;times)</div><div class="ttdoc">Read the rasters from a set of input geotiff files.</div><div class="ttdef"><b>Definition:</b> landscape.hpp:127</div></div>
 </div><!-- fragment --><p><b>Output</b></p>
@@ -372,11 +370,11 @@ Reading multiple variables</h2>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    Lon min: -5</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    Lon max: 10</div>
 </div><!-- fragment --><hr  />
-<h2><a class="anchor" id="autotoc_md91"></a>
+<h2><a class="anchor" id="autotoc_md85"></a>
 Next steps</h2>
 <p>Geospatial datasets play a crucial role in coalescence by providing valuable information about the demographic process. Once a raster is successfully parsed, users typically have three primary objectives they may want to pursue:</p>
 <hr  />
-<h3><a class="anchor" id="autotoc_md93"></a>
+<h3><a class="anchor" id="autotoc_md87"></a>
 Demes on a regular spatial grid</h3>
 <p>The rasters grid structure can be employed to construct a spatial graph of demes that is fully connected and utilized for simulating the demographic process. This is pertinent when looking at very larged continuous land masses. In this context:</p>
 <ul>
@@ -384,12 +382,12 @@ Demes on a regular spatial grid</h3>
 <li>Edges represent the distances between demes, and their connectivity can be modified using dispersal kernels.</li>
 </ul>
 <hr  />
-<h3><a class="anchor" id="autotoc_md95"></a>
+<h3><a class="anchor" id="autotoc_md89"></a>
 Demes on a variable spatial graph</h3>
 <p>In archipelagos or clusters of loosely connected islands, the fluctuations in sea levels have a notable impact on the dynamics of species. These variations cause the intermittent connection and separation of land masses and their corresponding populations. Similarly, climatic shifts in sky-island complexes can have similar effects. As a result, the assumption of a completely interconnected graph representing population units (demes) is no longer applicable in these situations.</p>
 <p>To address this, Digital Elevation Models (DEMs) can be utilized to establish a relationship between the dynamics of sea levels and species. In these cases, the connectivity of the graph at any given time is determined by the current elevation, and changes in elevation directly impact the level of connectivity between different areas.</p>
 <hr  />
-<h3><a class="anchor" id="autotoc_md97"></a>
+<h3><a class="anchor" id="autotoc_md91"></a>
 Inform local processes</h3>
 <p>Ecological Niche Models (ENMs) play a crucial role in predicting how populations might respond to changes in climate, both in the past and the future.</p>
 <p>Typically, these models produce raster outputs that represent estimates of suitability. These suitability values are then utilized to determine growth rates and carrying capacity.</p>

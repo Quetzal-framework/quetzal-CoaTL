@@ -129,23 +129,22 @@ $(document).ready(function(){initNavTree('extended_newick_parser.html',''); init
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keywordtype">int</span> main()</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;{</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;  std::string s1 = <span class="stringliteral">&quot;((1, ((2, (3, (4)Y#H1)g)e, (((Y#H1, 5)h, 6)f)X#H2)c)a, ((X#H2, 7)d, 8)b)r;&quot;</span>;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;  std::string s2 = <span class="stringliteral">&quot;((,((,(,()#H1)),(((#H1,),))#H2)),((#H2,),));&quot;</span>;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;  <span class="comment">// std::string s1 = &quot;((1, ((2, (3, (4)Y#H1)g)e, (((Y#H1, 5)h, 6)f)X#H2)c)a, ((X#H2, 7)d, 8)b)r;&quot;;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;  <span class="comment">// std::string s2 = &quot;((,((,(,()#H1)),(((#H1,),))#H2)),((#H2,),));&quot;;</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;  <span class="comment">// For default graph properties, leave &lt;&gt; empty</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;  <span class="keyword">auto</span> [network1, root1] = newick::extended::to_network&lt;&gt;(s1);</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  <span class="keyword">auto</span> [network2, root2] = newick::extended::to_network&lt;&gt;(s2);</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;  <span class="comment">// // For default graph properties, leave &lt;&gt; empty</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;  <span class="comment">// auto [network1, root1] = newick::extended::to_network&lt;&gt;(s1);</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  <span class="comment">// auto [network2, root2] = newick::extended::to_network&lt;&gt;(s2);</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;These graphs are &quot;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            &lt;&lt; (network1.is_isomorphic(network2) ? <span class="stringliteral">&quot;toootally&quot;</span> : <span class="stringliteral">&quot;not&quot;</span>)</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            &lt;&lt; <span class="stringliteral">&quot; isomorphic!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  <span class="comment">// std::cout &lt;&lt; &quot;These graphs are &quot;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;  <span class="comment">//           &lt;&lt; (network1.is_isomorphic(network2) ? &quot;toootally&quot; : &quot;not&quot;)</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  <span class="comment">//           &lt;&lt; &quot; isomorphic!&quot; &lt;&lt; std::endl;</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  <span class="comment">// return 0;</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;}</div>
-<div class="ttc" id="anamespacequetzal_1_1format_1_1newick_html"><div class="ttname"><a href="namespacequetzal_1_1format_1_1newick.html">quetzal::format::newick</a></div><div class="ttdoc">Generic components for parsing or generating Newick strings.</div><div class="ttdef"><b>Definition:</b> ast.hpp:23</div></div>
+<div class="ttc" id="anamespacequetzal_1_1format_1_1newick_html"><div class="ttname"><a href="namespacequetzal_1_1format_1_1newick.html">quetzal::format::newick</a></div><div class="ttdoc">Generic components for parsing or generating Newick strings.</div><div class="ttdef"><b>Definition:</b> ast.hpp:22</div></div>
 </div><!-- fragment --><p><b>Output</b></p>
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;These graphs are toootally isomorphic!</div>
-</div><!-- fragment --> </div></div><!-- contents -->
+<div class="fragment"></div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->

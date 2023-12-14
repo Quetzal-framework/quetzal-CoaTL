@@ -593,41 +593,39 @@ Example</h1>
 <div class="line">  <span class="keyword">auto</span> f = tree.add_vertex();</div>
 <div class="line"> </div>
 <div class="line">  <span class="keyword">auto</span> first_edges  = tree.add_edges( a, { {b, <a class="code" href="structedge__info.html">edge_info</a>{1,2,3} }, {c, <a class="code" href="structedge__info.html">edge_info</a>{4,5,6} } } );</div>
-<div class="line">  <span class="keyword">auto</span> other_edges  = tree.add_edges( c, { {d, <a class="code" href="structedge__info.html">edge_info</a>{}}, {e, <a class="code" href="structedge__info.html">edge_info</a>{}} } );</div>
+<div class="line">  <span class="keyword">auto</span> other_edges  = tree.add_edges( c, { {d, <a class="code" href="structedge__info.html">edge_info</a>()}, {e, <a class="code" href="structedge__info.html">edge_info</a>()}, {f, <a class="code" href="structedge__info.html">edge_info</a>()} } );</div>
+<div class="line"> </div>
+<div class="line">  assert(tree.in_degree(c) == 1);</div>
+<div class="line">  assert(tree.out_degree(c) == 3);</div>
+<div class="line">  assert(tree.degree(c) == 4);</div>
+<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Degree of inner vertex c is &quot;</span> &lt;&lt; tree.degree(c) &lt;&lt; std::endl;</div>
 <div class="line"> </div>
 <div class="line">  <span class="keyword">auto</span> root = tree.find_root_from(e);</div>
 <div class="line"> </div>
 <div class="line">  assert(root == a &amp;&amp; !tree.has_predecessor(root));</div>
-<div class="line">  assert(root == a &amp;&amp; !tree.has_predecessor(root));</div>
-<div class="line">  assert(tree.degree(c) == 4);</div>
-<div class="line">  assert(tree.in_degree(c) == 1);</div>
-<div class="line">  assert(tree.out_degree(c) == 3);</div>
-<div class="line">  assert(tree.has_predecessor(root) == <span class="keyword">false</span>);</div>
 <div class="line">  assert(tree.predecessor(c) == root);</div>
 <div class="line">  assert(tree.has_successors(root) == <span class="keyword">true</span>);</div>
-<div class="line">  assert( ! std::ranges::none_of( tree.successors(c), [&amp;t = std::as_const(tree)](<span class="keyword">auto</span> v){ t.has_successors(v);} ));</div>
+<div class="line">  assert( std::ranges::none_of( tree.successors(c), [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; v){ return tree.has_successors(v);}  ));</div>
 <div class="line">  </div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Degree of inner vertex c is &quot;</span> &lt;&lt; tree.degree(c) &lt;&lt; std::endl;</div>
-<div class="line"> </div>
 <div class="line">  <span class="comment">// Edges from the root were assigned at construction</span></div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Edge (a-b) values are:\t&quot;</span>;</div>
+<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Edge (a-&gt;b) values are:\t&quot;</span>;</div>
 <div class="line">  std::copy(tree[first_edges[0]].cbegin(), tree[first_edges[0]].cend(), std::ostream_iterator&lt;int&gt;(std::cout, <span class="stringliteral">&quot; &quot;</span>));</div>
 <div class="line"> </div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;\nEdge (a-c) values are:\t&quot;</span>;</div>
+<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;\nEdge (a-&gt;c) values are:\t&quot;</span>;</div>
 <div class="line">  std::copy(tree[first_edges[1]].cbegin(),tree[first_edges[1]].cend(), std::ostream_iterator&lt;int&gt;(std::cout, <span class="stringliteral">&quot; &quot;</span>));</div>
 <div class="line">  std::cout &lt;&lt; std::endl;</div>
 <div class="line">  </div>
 <div class="line">  <span class="comment">// Other edges values were left default initialized</span></div>
 <div class="line">  assert(tree[other_edges[0]].size() == 0);</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassquetzal_1_1coalescence_1_1k__ary__tree_html"><div class="ttname"><a href="classquetzal_1_1coalescence_1_1k__ary__tree.html">quetzal::coalescence::k_ary_tree</a></div><div class="ttdef"><b>Definition:</b> k_ary_tree.hpp:346</div></div>
+<div class="ttc" id="aclassquetzal_1_1coalescence_1_1k__ary__tree_html"><div class="ttname"><a href="classquetzal_1_1coalescence_1_1k__ary__tree.html">quetzal::coalescence::k_ary_tree</a></div><div class="ttdef"><b>Definition:</b> k_ary_tree.hpp:344</div></div>
 <div class="ttc" id="astructedge__info_html"><div class="ttname"><a href="structedge__info.html">edge_info</a></div><div class="ttdef"><b>Definition:</b> newick_parser_2.cpp:8</div></div>
 <div class="ttc" id="astructvertex__info_html"><div class="ttname"><a href="structvertex__info.html">vertex_info</a></div><div class="ttdef"><b>Definition:</b> coalescence_binary_tree_2.cpp:5</div></div>
 </div><!-- fragment --> <h1><a class="anchor" id="ex2"></a>
 Output</h1>
-<div class="fragment"><div class="line">Degree of inner vertex c is 3</div>
-<div class="line">Edge (a-b) values are:  1 2 3 </div>
-<div class="line">Edge (a-c) values are:  4 5 6 </div>
+<div class="fragment"><div class="line">Degree of inner vertex c is 4</div>
+<div class="line">Edge (a-&gt;b) values are: 1 2 3 </div>
+<div class="line">Edge (a-&gt;c) values are: 4 5 6 </div>
 </div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">EdgeProperty</td><td>The type of information to store at each edge.</td></tr>
@@ -733,7 +731,7 @@ Example</h1>
 <div class="line">  assert(tree.has_predecessor(root) == <span class="keyword">false</span>);</div>
 <div class="line">  assert(tree.predecessor(c) == root);</div>
 <div class="line">  assert(tree.has_successors(root) == <span class="keyword">true</span>);</div>
-<div class="line">  assert( ! std::ranges::none_of( tree.successors(c), [&amp;t = std::as_const(tree)](<span class="keyword">auto</span> v){ t.has_successors(v);} ));</div>
+<div class="line">  assert( std::ranges::none_of( tree.successors(c), [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; v){ return tree.has_successors(v);} ));</div>
 <div class="line">  </div>
 <div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Degree of inner vertex c is &quot;</span> &lt;&lt; tree.degree(c) &lt;&lt; std::endl;</div>
 <div class="line"> </div>
@@ -816,30 +814,30 @@ Example</h1>
 <div class="line">  <span class="keyword">auto</span> first_edges  = tree.add_edges( a, { {b, <a class="code" href="structedge__info.html">edge_info</a>{1,2,3} }, {c, <a class="code" href="structedge__info.html">edge_info</a>{4,5,6} } } );</div>
 <div class="line"> </div>
 <div class="line">  <span class="comment">// Other edges have default values</span></div>
-<div class="line">  <span class="keyword">auto</span> other_edges  = tree.add_edges( c, { {d, <a class="code" href="structedge__info.html">edge_info</a>{}}, {e, <a class="code" href="structedge__info.html">edge_info</a>{}} } );</div>
+<div class="line">  <span class="keyword">auto</span> other_edges  = tree.add_edges( c, { {d, <a class="code" href="structedge__info.html">edge_info</a>{}}, {e, <a class="code" href="structedge__info.html">edge_info</a>{}}, {f, <a class="code" href="structedge__info.html">edge_info</a>{}} } );</div>
+<div class="line"> </div>
+<div class="line">  assert(tree.degree(c) == 4);</div>
+<div class="line">  assert(tree.in_degree(c) == 1);</div>
+<div class="line">  assert(tree.out_degree(c) == 3);</div>
+<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Degree of inner vertex c is &quot;</span> &lt;&lt; tree.degree(c) &lt;&lt; std::endl;</div>
 <div class="line"> </div>
 <div class="line">  <span class="keyword">auto</span> root = tree.find_root_from(e);</div>
 <div class="line"> </div>
 <div class="line">  assert(root == a &amp;&amp; !tree.has_predecessor(root));</div>
-<div class="line">  assert(tree.degree(c) == 4);</div>
-<div class="line">  assert(tree.in_degree(c) == 1);</div>
-<div class="line">  assert(tree.out_degree(c) == 3);</div>
 <div class="line">  assert(tree.has_predecessor(root) == <span class="keyword">false</span>);</div>
 <div class="line">  assert(tree.predecessor(c) == root);</div>
 <div class="line">  assert(tree.has_successors(root) == <span class="keyword">true</span>);</div>
-<div class="line">  assert( ! std::ranges::none_of( tree.successors(c), [&amp;t = std::as_const(tree)](<span class="keyword">auto</span> v){ t.has_successors(v);} ));</div>
+<div class="line">  assert( std::ranges::none_of( tree.successors(c), [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; v){ return tree.has_successors(v);}  ));</div>
 <div class="line">  </div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Degree of inner vertex c is &quot;</span> &lt;&lt; tree.degree(c) &lt;&lt; std::endl;</div>
-<div class="line"> </div>
 <div class="line">  <span class="comment">// Retrieve root vertex information</span></div>
 <div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Root first field is:\t&quot;</span> &lt;&lt; tree[a].field1 &lt;&lt; std::endl;</div>
 <div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Root other field is:\t&quot;</span> &lt;&lt; tree[a].field2 &lt;&lt; std::endl;</div>
 <div class="line"> </div>
 <div class="line">  <span class="comment">// Retrieve edges information</span></div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Edge (a-b) values are:\t&quot;</span>;</div>
+<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Edge (a-&gt;b) values are:\t&quot;</span>;</div>
 <div class="line">  std::copy(tree[first_edges[0]].cbegin(), tree[first_edges[0]].cend(), std::ostream_iterator&lt;int&gt;(std::cout, <span class="stringliteral">&quot; &quot;</span>));</div>
 <div class="line">  </div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;\nEdge (a-c) values are:\t&quot;</span>;</div>
+<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;\nEdge (a-&gt;c) values are:\t&quot;</span>;</div>
 <div class="line">  std::copy(tree[first_edges[1]].cbegin(),tree[first_edges[1]].cend(), std::ostream_iterator&lt;int&gt;(std::cout, <span class="stringliteral">&quot; &quot;</span>));</div>
 <div class="line">  std::cout &lt;&lt; std::endl;</div>
 <div class="line">  </div>
@@ -849,11 +847,13 @@ Example</h1>
 <div class="line">}</div>
 </div><!-- fragment --> <h1><a class="anchor" id="ex2"></a>
 Output</h1>
-<div class="fragment"><div class="line">Degree of inner vertex c is 3</div>
+<div class="fragment"><div class="line">2</div>
+<div class="line">3</div>
+<div class="line">Degree of inner vertex c is 4</div>
 <div class="line">Root first field is:    Im Root</div>
 <div class="line">Root other field is:    47</div>
-<div class="line">Edge (a-b) values are:  1 2 3 </div>
-<div class="line">Edge (a-c) values are:  4 5 6 </div>
+<div class="line">Edge (a-&gt;b) values are: 1 2 3 </div>
+<div class="line">Edge (a-&gt;c) values are: 4 5 6 </div>
 </div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">VertexProperty</td><td>The type of information to store at each vertex. </td></tr>
@@ -955,7 +955,7 @@ Example</h1>
 <div class="line">  assert(tree.has_predecessor(root) == <span class="keyword">false</span>);</div>
 <div class="line">  assert(tree.predecessor(c) == root);</div>
 <div class="line">  assert(tree.has_successors(root) == <span class="keyword">true</span>);</div>
-<div class="line">  assert( ! std::ranges::none_of( tree.successors(c), [&amp;t = std::as_const(tree)](<span class="keyword">auto</span> v){ t.has_successors(v);} ));</div>
+<div class="line">  assert( std::ranges::none_of( tree.successors(c), [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; v){ return tree.has_successors(v);} ));</div>
 <div class="line"> </div>
 <div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Degree of inner vertex c is &quot;</span> &lt;&lt; tree.degree(c) &lt;&lt; std::endl;</div>
 <div class="line"> </div>
@@ -1033,7 +1033,7 @@ Example</h1>
 <div class="line">  assert(tree.has_predecessor(root) == <span class="keyword">false</span>);</div>
 <div class="line">  assert(tree.predecessor(c) == root);</div>
 <div class="line">  assert(tree.has_successors(root) == <span class="keyword">true</span>);</div>
-<div class="line">  assert( ! std::ranges::none_of( tree.successors(c), [&amp;t = std::as_const(tree)](<span class="keyword">auto</span> v){ t.has_successors(v);} ));</div>
+<div class="line">  assert( std::ranges::none_of( tree.successors(c), [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; v){ return tree.has_successors(v);}  ));</div>
 <div class="line">  </div>
 <div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Degree of inner vertex c is &quot;</span> &lt;&lt; tree.degree(c) &lt;&lt; std::endl;</div>
 <div class="line"> </div>

@@ -1,7 +1,11 @@
 var NAVTREEINDEX6 =
 {
-"structFixtureCases.html#af80e9740a9b664198cefb8c3ed795123":[8,0,7,0],
+"structFixtureCases.html#aa28541aa13bdc95fcb51a701954bd9e9":[8,0,7,3],
+"structFixtureCases.html#ab40f62142f902e8dece4bb3227348b16":[8,0,7,6],
+"structFixtureCases.html#ac490c1b4241de43023a47fa9fbf51035":[8,0,7,12],
+"structFixtureCases.html#ae141f0df82cd70649799a28062f19a19":[8,0,7,4],
 "structFixtureCases.html#af80e9740a9b664198cefb8c3ed795123":[8,0,7,2],
+"structFixtureCases.html#af80e9740a9b664198cefb8c3ed795123":[8,0,7,0],
 "structFixture__simple__tree.html":[8,0,6],
 "structFixture__simple__tree.html#a013237a998c66d7256202782fb627573":[8,0,6,4],
 "structFixture__simple__tree.html#a12722d90d268d0970a8c15350424e0a1":[8,0,6,0],
@@ -22,9 +26,9 @@ var NAVTREEINDEX6 =
 "structNode.html":[8,0,11],
 "structNode.html#a3ca572db95a35de41c87e70c3e8fb5a7":[8,0,11,4],
 "structNode.html#a94c9686e27f05bedd604d347d5bad449":[8,0,11,3],
-"structNode.html#ac3af29feaf848cfb4d1ba8889c1ce598":[8,0,11,0],
-"structNode.html#ac3af29feaf848cfb4d1ba8889c1ce598":[8,0,11,2],
 "structNode.html#ac3af29feaf848cfb4d1ba8889c1ce598":[8,0,11,1],
+"structNode.html#ac3af29feaf848cfb4d1ba8889c1ce598":[8,0,11,2],
+"structNode.html#ac3af29feaf848cfb4d1ba8889c1ce598":[8,0,11,0],
 "structNode.html#acb37d05df604a52126aaed3783e35fb2":[8,0,11,5],
 "structNode.html#afe5916d969cd32f7de1e4ba15580c989":[8,0,11,6],
 "structboost_1_1accumulators_1_1impl_1_1mean__accumulator.html":[8,0,0,0,0,1],
@@ -32,8 +36,8 @@ var NAVTREEINDEX6 =
 "structboost_1_1accumulators_1_1impl_1_1mean__accumulator.html#a5e8973e9df09b0b508ca73178881b1c3":[8,0,0,0,0,1,2],
 "structboost_1_1accumulators_1_1impl_1_1mean__accumulator.html#abaaf8cfb4439a7cca029ce80935a5924":[8,0,0,0,0,1,1],
 "structboost_1_1accumulators_1_1tag_1_1tajima.html":[8,0,0,0,1,0],
-"structboost_1_1accumulators_1_1tag_1_1tajima.html#a1dc7e4a736545df4d61347b2acb4cc9a":[8,0,0,0,1,0,0],
 "structboost_1_1accumulators_1_1tag_1_1tajima.html#a1dc7e4a736545df4d61347b2acb4cc9a":[8,0,0,0,1,0,1],
+"structboost_1_1accumulators_1_1tag_1_1tajima.html#a1dc7e4a736545df4d61347b2acb4cc9a":[8,0,0,0,1,0,0],
 "structboost_1_1detail_1_1binary__tree__base_1_1vertex__iterator.html":[8,0,0,1,2,1],
 "structboost_1_1detail_1_1binary__tree__base_1_1vertex__iterator.html#a072e2d2fa96377c5adfc7cd9f6bde6ac":[8,0,0,1,2,1,7],
 "structboost_1_1detail_1_1binary__tree__base_1_1vertex__iterator.html#a1fe1f8a9e833dbc80de00fb910a1e58c":[8,0,0,1,2,1,3],
@@ -245,9 +249,5 @@ var NAVTREEINDEX6 =
 "structquetzal_1_1format_1_1genetics_1_1Marker__Descriptor.html#ab32e251f1cd7c2addf13f61e6396071e":[8,0,1,4,0,2,0],
 "structquetzal_1_1format_1_1identity.html":[8,0,1,4,4],
 "structquetzal_1_1format_1_1is__balanced.html":[8,0,1,4,5],
-"structquetzal_1_1format_1_1is__balanced_3_01parenthesis_01_4.html":[8,0,1,4,6],
-"structquetzal_1_1format_1_1is__balanced_3_01square__bracket_01_4.html":[8,0,1,4,7],
-"structquetzal_1_1format_1_1newick_1_1PAUP.html":[8,0,1,4,1,6],
-"structquetzal_1_1format_1_1newick_1_1PHYLIP.html":[8,0,1,4,1,8],
-"structquetzal_1_1format_1_1newick_1_1TreeAlign.html":[8,0,1,4,1,7]
+"structquetzal_1_1format_1_1is__balanced_3_01parenthesis_01_4.html":[8,0,1,4,6]
 };

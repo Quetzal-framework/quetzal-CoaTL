@@ -558,7 +558,7 @@ $(document).ready(function(){initNavTree('network_8hpp_source.html',''); initRes
 <div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;              std::vector&lt;std::tuple&lt;vertex_descriptor, EdgeProperty&gt;&gt; children)</div>
 <div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;    {</div>
 <div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;      assert( children.size() &gt; 1);</div>
-<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;      <span class="keywordflow">for</span>(<span class="keyword">auto</span> <span class="keyword">const</span>&amp; c : children){ assert(parent != c); }</div>
+<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;      <span class="keywordflow">for</span>(<span class="keyword">auto</span> <span class="keyword">const</span>&amp; [c,p] : children){ assert(parent != c); }</div>
 <div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160; </div>
 <div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;      std::vector&lt;edge_descriptor&gt; edges (children.size());</div>
 <div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;      std::transform(children.cbegin(), </div>

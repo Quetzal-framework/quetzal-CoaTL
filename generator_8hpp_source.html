@@ -127,305 +127,302 @@ $(document).ready(function(){initNavTree('generator_8hpp_source.html',''); initR
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">*                                                                      *</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">***************************************************************************/</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#ifndef __NEWICK_GENERATOR_H_INCLUDED__</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#define __NEWICK_GENERATOR_H_INCLUDED__</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include&lt;concepts&gt;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include&lt;regex&gt;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include&lt;string&gt;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include&lt;stdexcept&gt;</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include&lt;algorithm&gt;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include&lt;string_view&gt;</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;boost/graph/depth_first_search.hpp&gt;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &quot;quetzal/coalescence/graph/k_ary_tree.hpp&quot;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacequetzal_1_1format_1_1newick.html">quetzal::format::newick</a></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;{</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  <span class="keyword">namespace </span>detail</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="comment">// Replacement for `std::function&lt;T(U)&gt;::argument_type`</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="structquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument.html">   31</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument.html">single_function_argument</a>;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Ret, <span class="keyword">typename</span> Arg&gt;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="structquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument_3_01std_1_1function_3_01Ret_07Arg_08_4_01_4.html">   34</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument.html">single_function_argument</a>&lt;std::function&lt;Ret(Arg)&gt;&gt; { <span class="keyword">using</span> type = Arg; };</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> P1&gt;</div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="structquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument__impl.html">   37</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument__impl.html">single_function_argument_impl</a>{</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;      <span class="keyword">using</span> type = <span class="keyword">typename</span> <a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument.html">single_function_argument</a>&lt;decltype(std::function{ std::declval&lt;P1&gt;() }) &gt;::type;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    };</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> P1&gt;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">using</span> single_function_argument_t = <span class="keyword">typename</span> single_function_argument_impl&lt;P1&gt;::type;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="structquetzal_1_1format_1_1newick_1_1detail_1_1parenthesis.html">   45</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1parenthesis.html">parenthesis</a> {};</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="structquetzal_1_1format_1_1newick_1_1detail_1_1square__bracket.html">   48</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1square__bracket.html">square_bracket</a> {};</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="namespacequetzal_1_1format.html#abea38c99cef993a7e8cf7883dc4ef8e1">check_if_balanced</a>(std::string_view input, <span class="keyword">const</span> <span class="keywordtype">char</span> &amp; open=<span class="charliteral">&#39;(&#39;</span>, <span class="keyword">const</span> <span class="keywordtype">char</span> &amp; close=<span class="charliteral">&#39;)&#39;</span>)</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      <span class="keywordtype">int</span> count = 0;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span> &amp; ch : input)</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      {</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordflow">if</span> (ch == open ) count++;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordflow">if</span> (ch == close ) count--;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="comment">// if a parenthesis is closed without being opened return false</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keywordflow">if</span>(count &lt; 0)</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      }</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      <span class="comment">// in the end the test is passed only if count is zero</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      <span class="keywordflow">return</span> count == 0;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    }</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="structquetzal_1_1format_1_1newick_1_1detail_1_1identity.html">   75</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1identity.html">identity</a></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;      <span class="keyword">static</span> std::string edit(<span class="keyword">const</span> std::string  s)</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;      {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordflow">return</span> s;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      }</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    };</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> tag&gt;</div>
-<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="structquetzal_1_1format_1_1newick_1_1detail_1_1is__balanced.html">   87</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1is__balanced.html">is_balanced</a></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    {};</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="structquetzal_1_1format_1_1newick_1_1detail_1_1is__balanced_3_01detail_1_1parenthesis_01_4.html">   93</a></span>&#160;    <span class="keyword">template</span>&lt;&gt; <span class="keyword">struct </span><a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1is__balanced.html">is_balanced</a>&lt;detail::<a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1parenthesis.html">parenthesis</a>&gt;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    {</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;      <span class="keyword">static</span> <span class="keywordtype">bool</span> check(std::string_view s)</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;      {</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespacequetzal_1_1format.html#abea38c99cef993a7e8cf7883dc4ef8e1">check_if_balanced</a>(s, <span class="charliteral">&#39;(&#39;</span>, <span class="charliteral">&#39;)&#39;</span> );</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      }</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    };</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="structquetzal_1_1format_1_1newick_1_1detail_1_1is__balanced_3_01detail_1_1square__bracket_01_4.html">  104</a></span>&#160;    <span class="keyword">template</span>&lt;&gt; <span class="keyword">struct </span><a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1is__balanced.html">is_balanced</a>&lt;detail::<a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1square__bracket.html">square_bracket</a>&gt;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    {</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;      <span class="keyword">static</span> <span class="keywordtype">bool</span> check(std::string_view s)</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;      {</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespacequetzal_1_1format.html#abea38c99cef993a7e8cf7883dc4ef8e1">check_if_balanced</a>(s, <span class="charliteral">&#39;[&#39;</span>, <span class="charliteral">&#39;]&#39;</span>);</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;      }</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    };</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  }</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="keyword">using namespace </span>std::string_literals;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="keyword">static</span> <span class="keyword">inline</span> std::vector&lt;std::string&gt; forbidden_labels = {<span class="stringliteral">&quot; &quot;</span>s, <span class="stringliteral">&quot;,&quot;</span>s, <span class="stringliteral">&quot;;&quot;</span>s, <span class="stringliteral">&quot;(&quot;</span>s, <span class="stringliteral">&quot;)&quot;</span>s, <span class="stringliteral">&quot;[&quot;</span>s, <span class="stringliteral">&quot;]&quot;</span>s};</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  <span class="keyword">static</span> <span class="keyword">inline</span> constexpr <span class="keywordtype">char</span> blank = <span class="charliteral">&#39;_&#39;</span>;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  <span class="keyword">template</span>&lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> N&gt;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  <span class="keyword">struct </span>remove_comments_of_depth</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  {};</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  <span class="keyword">template</span>&lt;&gt; <span class="keyword">struct </span>remove_comments_of_depth&lt;0&gt; : detail::identity</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  {};</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160; </div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;  <span class="keyword">template</span>&lt;&gt; <span class="keyword">struct </span>remove_comments_of_depth&lt;1&gt;</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  {</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="keyword">static</span> std::string edit(<span class="keyword">const</span> std::string  s)</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    {</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;      <span class="keywordflow">if</span> (s.empty())</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;      <span class="keywordflow">return</span> s;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;      <span class="keywordflow">return</span> std::regex_replace(s, std::regex(R<span class="stringliteral">&quot;(\[[^()]*\])&quot;), </span><span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    }</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  };</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  <span class="keyword">template</span>&lt;&gt; <span class="keyword">struct </span>remove_comments_of_depth&lt;2&gt;</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;  {</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="keyword">static</span> std::string edit(<span class="keyword">const</span> std::string  s)</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    {</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;      std::string buffer;</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;      <span class="keywordtype">int</span> counter = 0;</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; ch : s)</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;      {</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        <span class="keywordflow">if</span> (ch == <span class="charliteral">&#39;[&#39;</span> ) counter++;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        <span class="keywordflow">if</span> (ch == <span class="charliteral">&#39;]&#39;</span> ) counter--;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        <span class="keywordflow">if</span> ( ch == <span class="charliteral">&#39;[&#39;</span> &amp;&amp; counter == 2) <span class="keywordflow">continue</span>;  <span class="comment">// do nothing, that was the opening</span></div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        <span class="keywordflow">if</span> ( ch == <span class="charliteral">&#39;]&#39;</span> &amp;&amp; counter == 1) <span class="keywordflow">continue</span>; <span class="comment">// do nothing, that was the closing</span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        <span class="keywordflow">if</span> ( !( counter &gt;=2 || (counter == 1 &amp;&amp; ch == <span class="charliteral">&#39;]&#39;</span>) ) ) buffer.append(std::string(1, ch));</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;      }</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;      <span class="keywordflow">return</span> buffer;</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    }</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  };</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  <span class="keyword">struct </span>PAUP</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  {</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="comment">// return empty string</span></div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span> std::string root_branch_length() { <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;}</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <span class="comment">// do nothing</span></div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span> std::string treat_comments(std::string &amp; s) { <span class="keywordflow">return</span> s; }</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  };</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; </div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;  <span class="keyword">struct </span>TreeAlign</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;  {</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="comment">// Set explicit null branch length for root node</span></div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span> std::string root_branch_length() { <span class="keywordflow">return</span> <span class="stringliteral">&quot;:0.0&quot;</span>;}</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="comment">// Remove comments that are nested, keep comments of depth 1</span></div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span> std::string treat_comments(<span class="keyword">const</span> std::string  s)</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    {</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;      <span class="keywordflow">return</span> remove_comments_of_depth&lt;2&gt;::edit(s);</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    }</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;  };</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160; </div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;  <span class="keyword">struct </span>PHYLIP</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;  {</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <span class="comment">// Branch length for root node is not explicit.</span></div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span> std::string root_branch_length(){<span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;}</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    <span class="comment">// Remove comments that are nested, keep comments of depth 1</span></div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span> std::string treat_comments(std::string &amp; s)</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    {</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;      <span class="comment">// Allow comments of depth 1, but does not allow nested comments.</span></div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;      <span class="keywordflow">return</span> remove_comments_of_depth&lt;2&gt;::edit(s);</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    }</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;  };</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160; </div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">class </span>F, <span class="keyword">class</span>... Args&gt;</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;  concept <a class="code" href="namespacequetzal_1_1format_1_1newick.html#ad541166fae72d249f209dbf086039e6d">Formattable</a> = std::invocable&lt;F, Args...&gt; &amp;&amp;</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;  std::convertible_to&lt;std::invoke_result_t&lt;F, Args...&gt;, std::string&gt;;</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160; </div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">class</span> T, std::predicate&lt;T&gt; P1 , std::predicate&lt;T&gt; P2, Formattable&lt;T&gt; F1, Formattable&lt;T&gt; F2, <span class="keyword">class</span> Policy=PAUP&gt;</div>
-<div class="line"><a name="l00239"></a><span class="lineno"><a class="line" href="classquetzal_1_1format_1_1newick_1_1generator.html">  239</a></span>&#160;  <span class="keyword">class </span><a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html">generator</a> : <span class="keyword">public</span> Policy</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;  {</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00245"></a><span class="lineno"><a class="line" href="classquetzal_1_1format_1_1newick_1_1generator.html#a61ced85026e0a425892c56e9177295f1">  245</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#a61ced85026e0a425892c56e9177295f1">node_type</a> = T;</div>
-<div class="line"><a name="l00249"></a><span class="lineno"><a class="line" href="classquetzal_1_1format_1_1newick_1_1generator.html#a5ec0b24fa842d4d57b1251ffb85dd956">  249</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#a5ec0b24fa842d4d57b1251ffb85dd956">formula_type</a> = std::string;</div>
-<div class="line"><a name="l00253"></a><span class="lineno"><a class="line" href="classquetzal_1_1format_1_1newick_1_1generator.html#ab54be1584a0e3422d253a963daa7b4bb">  253</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#ab54be1584a0e3422d253a963daa7b4bb">policy_type</a> = Policy;</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160; </div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span> constexpr <span class="keywordtype">char</span> _end = <span class="charliteral">&#39;;&#39;</span>;</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160; </div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    <span class="keyword">mutable</span> <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#a5ec0b24fa842d4d57b1251ffb85dd956">formula_type</a> _formula;</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160; </div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    <span class="keyword">mutable</span> <span class="keywordtype">int</span> _depth=0;</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160; </div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    P1 _has_parent;</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160; </div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    P2 _has_children;</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160; </div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    F1 _label;</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160; </div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    F2 _branch_length;</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160; </div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <span class="keywordtype">void</span> _pre_order(<span class="keyword">const</span> <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#a61ced85026e0a425892c56e9177295f1">node_type</a> &amp; node)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;      <span class="keywordflow">if</span>(std::invoke(_has_children, node))</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;      {</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        _formula += <span class="stringliteral">&quot;(&quot;</span>;</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        _depth += 1;</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;      }</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    }</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160; </div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    <span class="keywordtype">void</span> _in_order()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;      _formula += <span class="stringliteral">&quot;,&quot;</span>;</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    }</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160; </div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    <span class="keywordtype">void</span> _post_order(node_type <span class="keyword">const</span>&amp; node)</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    {</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;      <span class="comment">// Not leaf</span></div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;      <span class="keywordflow">if</span>(std::invoke(_has_children, node)) _formula += <span class="stringliteral">&quot;)&quot;</span>;</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160; </div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;      <span class="comment">// Not root</span></div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;      <span class="keywordflow">if</span> ( std::invoke(_has_parent, node) )</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;      { </div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        <span class="keyword">auto</span> <span class="keyword">const</span> label = std::invoke(_label, node);</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        _formula += label;</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        std::string <span class="keyword">const</span> branch( std::invoke(_branch_length, node) );</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;        <span class="keywordflow">if</span> ( !branch.empty() ) _formula.append(<span class="stringliteral">&quot;:&quot;</span>).append(branch);</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;      } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;        <span class="comment">// Is root</span></div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;        _formula += std::invoke(_label, node);</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        _formula += policy_type::root_branch_length();</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;      }</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160; </div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;      _depth -= 1; </div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    }</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160; </div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00341"></a><span class="lineno"><a class="line" href="classquetzal_1_1format_1_1newick_1_1generator.html#a08142ecf56b68ce8d184a38ef3d9296d">  341</a></span>&#160;    <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#a08142ecf56b68ce8d184a38ef3d9296d">generator</a>(P1 has_parent, P2 has_children, F1 label, F2 branch_length, Policy pol = {})</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;        : policy_type(std::move(pol))</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        , _has_parent(std::move(has_parent))</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;        , _has_children(std::move(has_children))</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        , _label(std::move(label))</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;        , _branch_length(std::move(branch_length)) {}</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160; </div>
-<div class="line"><a name="l00353"></a><span class="lineno"><a class="line" href="classquetzal_1_1format_1_1newick_1_1generator.html#ac4dde399b08592d560e3c02709ea63db">  353</a></span>&#160;    <span class="keyword">auto</span> <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#ac4dde399b08592d560e3c02709ea63db">pre_order</a>()</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    {</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;      <span class="keywordflow">return</span> [<span class="keyword">this</span>](<span class="keyword">const</span> <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#a61ced85026e0a425892c56e9177295f1">node_type</a> &amp; node){this-&gt;_pre_order(node);};</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    }</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160; </div>
-<div class="line"><a name="l00361"></a><span class="lineno"><a class="line" href="classquetzal_1_1format_1_1newick_1_1generator.html#a39eec7c2cebe179c092ecebd2d854f3a">  361</a></span>&#160;    <span class="keyword">auto</span> <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#a39eec7c2cebe179c092ecebd2d854f3a">in_order</a>()</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;    {</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;      <span class="keywordflow">return</span> [<span class="keyword">this</span>](){this-&gt;_in_order();};</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;    }</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160; </div>
-<div class="line"><a name="l00371"></a><span class="lineno"><a class="line" href="classquetzal_1_1format_1_1newick_1_1generator.html#aa6b8535659fa1c9edd8def32a9284a01">  371</a></span>&#160;    <span class="keyword">auto</span> <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#aa6b8535659fa1c9edd8def32a9284a01">post_order</a>()</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    {</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;      <span class="keywordflow">return</span> [<span class="keyword">this</span>](<span class="keyword">const</span> <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#a61ced85026e0a425892c56e9177295f1">node_type</a> &amp; node){this-&gt;_post_order(node);};</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    }</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160; </div>
-<div class="line"><a name="l00379"></a><span class="lineno"><a class="line" href="classquetzal_1_1format_1_1newick_1_1generator.html#a994f28a37843d9834acb3ade1951ce4d">  379</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#a994f28a37843d9834acb3ade1951ce4d">has_forbidden_characters</a>(<span class="keyword">const</span> std::string &amp; s)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;      <span class="keywordflow">if</span> (s.empty()) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;      std::string forbidden = <span class="stringliteral">&quot; ,;()[\\]&quot;</span>;</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;      <span class="keywordtype">bool</span> is_forbidden = std::regex_search(s, std::regex(<span class="stringliteral">&quot;[&quot;</span> + forbidden + <span class="stringliteral">&quot;]&quot;</span>));</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;      <span class="keywordflow">return</span> is_forbidden;</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    }</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160; </div>
-<div class="line"><a name="l00390"></a><span class="lineno"><a class="line" href="classquetzal_1_1format_1_1newick_1_1generator.html#a8c7d1b68bb80153fc11b4e689a91eb97">  390</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#a8c7d1b68bb80153fc11b4e689a91eb97">clear</a>()</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    {</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;      _formula.clear();</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    }</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160; </div>
-<div class="line"><a name="l00398"></a><span class="lineno"><a class="line" href="classquetzal_1_1format_1_1newick_1_1generator.html#a629c33b281a9fb9b0e091817c910b7bf">  398</a></span>&#160;    std::string&amp;&amp; <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#a629c33b281a9fb9b0e091817c910b7bf">take_result</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;      _formula.push_back(this-&gt;_end);</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160; </div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;      _formula = policy_type::treat_comments(_formula);</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160; </div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;      <span class="keywordflow">if</span>(<a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1is__balanced.html">detail::is_balanced&lt;detail::parenthesis&gt;::check</a>(_formula) == <span class="keyword">false</span>)</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;      {</div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(std::string(<span class="stringliteral">&quot;Failed: formula parenthesis are not balanced:&quot;</span>) + _formula);</div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;      }</div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160; </div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;      <span class="keywordflow">if</span>(<a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1is__balanced.html">detail::is_balanced&lt;detail::square_bracket&gt;::check</a>(_formula) == <span class="keyword">false</span>)</div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;      {</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(std::string(<span class="stringliteral">&quot;Failed: formula square brackets are not balanced:&quot;</span>) + _formula);</div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;      }</div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160; </div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;      <span class="keywordflow">return</span> std::move(_formula);</div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    }</div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;  }; <span class="comment">// end structure generator</span></div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160; </div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">class</span> P1, <span class="keyword">class</span> P2, <span class="keyword">class</span> F1, <span class="keyword">class</span> F2, <span class="keyword">class</span> Policy = PAUP&gt;</div>
-<div class="line"><a name="l00424"></a><span class="lineno"><a class="line" href="namespacequetzal_1_1format_1_1newick.html#ac04dce58a77b28f9485ddecc444fdf4c">  424</a></span>&#160;  <a class="code" href="namespacequetzal_1_1format_1_1newick.html#ac04dce58a77b28f9485ddecc444fdf4c">generator</a>(P1, P2, F1, F2, Policy pol = {})</div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;      -&gt; <a class="code" href="namespacequetzal_1_1format_1_1newick.html#ac04dce58a77b28f9485ddecc444fdf4c">generator</a>&lt;detail::single_function_argument_t&lt;P1&gt;, P1, P2, F1, F2, Policy&gt;;</div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160; </div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;} <span class="comment">// end namespace quetzal::format::newick</span></div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160; </div>
-<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassquetzal_1_1format_1_1newick_1_1generator_html"><div class="ttname"><a href="classquetzal_1_1format_1_1newick_1_1generator.html">quetzal::format::newick::generator</a></div><div class="ttdoc">Generate the Newick formula from an external (custom) tree class.</div><div class="ttdef"><b>Definition:</b> generator.hpp:240</div></div>
-<div class="ttc" id="aclassquetzal_1_1format_1_1newick_1_1generator_html_a08142ecf56b68ce8d184a38ef3d9296d"><div class="ttname"><a href="classquetzal_1_1format_1_1newick_1_1generator.html#a08142ecf56b68ce8d184a38ef3d9296d">quetzal::format::newick::generator::generator</a></div><div class="ttdeci">generator(P1 has_parent, P2 has_children, F1 label, F2 branch_length, Policy pol={})</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition:</b> generator.hpp:341</div></div>
-<div class="ttc" id="aclassquetzal_1_1format_1_1newick_1_1generator_html_a39eec7c2cebe179c092ecebd2d854f3a"><div class="ttname"><a href="classquetzal_1_1format_1_1newick_1_1generator.html#a39eec7c2cebe179c092ecebd2d854f3a">quetzal::format::newick::generator::in_order</a></div><div class="ttdeci">auto in_order()</div><div class="ttdoc">Operation called in the general DFS algorithm to add a comma between visited nodes.</div><div class="ttdef"><b>Definition:</b> generator.hpp:361</div></div>
-<div class="ttc" id="aclassquetzal_1_1format_1_1newick_1_1generator_html_a5ec0b24fa842d4d57b1251ffb85dd956"><div class="ttname"><a href="classquetzal_1_1format_1_1newick_1_1generator.html#a5ec0b24fa842d4d57b1251ffb85dd956">quetzal::format::newick::generator::formula_type</a></div><div class="ttdeci">std::string formula_type</div><div class="ttdoc">Type of formula being generated.</div><div class="ttdef"><b>Definition:</b> generator.hpp:249</div></div>
-<div class="ttc" id="aclassquetzal_1_1format_1_1newick_1_1generator_html_a61ced85026e0a425892c56e9177295f1"><div class="ttname"><a href="classquetzal_1_1format_1_1newick_1_1generator.html#a61ced85026e0a425892c56e9177295f1">quetzal::format::newick::generator::node_type</a></div><div class="ttdeci">T node_type</div><div class="ttdoc">Type of node being formatted.</div><div class="ttdef"><b>Definition:</b> generator.hpp:245</div></div>
-<div class="ttc" id="aclassquetzal_1_1format_1_1newick_1_1generator_html_a629c33b281a9fb9b0e091817c910b7bf"><div class="ttname"><a href="classquetzal_1_1format_1_1newick_1_1generator.html#a629c33b281a9fb9b0e091817c910b7bf">quetzal::format::newick::generator::take_result</a></div><div class="ttdeci">std::string &amp;&amp; take_result() const</div><div class="ttdoc">Retrieve the formatted string of the given node in the specified format.</div><div class="ttdef"><b>Definition:</b> generator.hpp:398</div></div>
-<div class="ttc" id="aclassquetzal_1_1format_1_1newick_1_1generator_html_a8c7d1b68bb80153fc11b4e689a91eb97"><div class="ttname"><a href="classquetzal_1_1format_1_1newick_1_1generator.html#a8c7d1b68bb80153fc11b4e689a91eb97">quetzal::format::newick::generator::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdoc">Clear the formula buffer to refresh the generator.</div><div class="ttdef"><b>Definition:</b> generator.hpp:390</div></div>
-<div class="ttc" id="aclassquetzal_1_1format_1_1newick_1_1generator_html_a994f28a37843d9834acb3ade1951ce4d"><div class="ttname"><a href="classquetzal_1_1format_1_1newick_1_1generator.html#a994f28a37843d9834acb3ade1951ce4d">quetzal::format::newick::generator::has_forbidden_characters</a></div><div class="ttdeci">bool has_forbidden_characters(const std::string &amp;s) const</div><div class="ttdoc">Check if a string contains characters forbidden by the standard.</div><div class="ttdef"><b>Definition:</b> generator.hpp:379</div></div>
-<div class="ttc" id="aclassquetzal_1_1format_1_1newick_1_1generator_html_aa6b8535659fa1c9edd8def32a9284a01"><div class="ttname"><a href="classquetzal_1_1format_1_1newick_1_1generator.html#aa6b8535659fa1c9edd8def32a9284a01">quetzal::format::newick::generator::post_order</a></div><div class="ttdeci">auto post_order()</div><div class="ttdoc">Operation to be passed to a generic DFS algorithm to open a parenthesis if node has children to be vi...</div><div class="ttdef"><b>Definition:</b> generator.hpp:371</div></div>
-<div class="ttc" id="aclassquetzal_1_1format_1_1newick_1_1generator_html_ab54be1584a0e3422d253a963daa7b4bb"><div class="ttname"><a href="classquetzal_1_1format_1_1newick_1_1generator.html#ab54be1584a0e3422d253a963daa7b4bb">quetzal::format::newick::generator::policy_type</a></div><div class="ttdeci">Policy policy_type</div><div class="ttdoc">Type of formula being generated.</div><div class="ttdef"><b>Definition:</b> generator.hpp:253</div></div>
-<div class="ttc" id="aclassquetzal_1_1format_1_1newick_1_1generator_html_ac4dde399b08592d560e3c02709ea63db"><div class="ttname"><a href="classquetzal_1_1format_1_1newick_1_1generator.html#ac4dde399b08592d560e3c02709ea63db">quetzal::format::newick::generator::pre_order</a></div><div class="ttdeci">auto pre_order()</div><div class="ttdoc">Operation called in the general DFS algorithm to open a parenthesis if node has children to be visite...</div><div class="ttdef"><b>Definition:</b> generator.hpp:353</div></div>
-<div class="ttc" id="anamespacequetzal_1_1format_1_1newick_html"><div class="ttname"><a href="namespacequetzal_1_1format_1_1newick.html">quetzal::format::newick</a></div><div class="ttdoc">Generic components for parsing or generating Newick strings.</div><div class="ttdef"><b>Definition:</b> ast.hpp:23</div></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include&lt;concepts&gt;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include&lt;regex&gt;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include&lt;string&gt;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include&lt;stdexcept&gt;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include&lt;algorithm&gt;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include&lt;string_view&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;boost/graph/depth_first_search.hpp&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &quot;quetzal/coalescence/graph/k_ary_tree.hpp&quot;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacequetzal_1_1format_1_1newick.html">quetzal::format::newick</a></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;{</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  <span class="keyword">namespace </span>detail</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="comment">// Replacement for `std::function&lt;T(U)&gt;::argument_type`</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="structquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument.html">   30</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument.html">single_function_argument</a>;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> Ret, <span class="keyword">typename</span> Arg&gt;</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="structquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument_3_01std_1_1function_3_01Ret_07Arg_08_4_01_4.html">   33</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument.html">single_function_argument</a>&lt;std::function&lt;Ret(Arg)&gt;&gt; { <span class="keyword">using</span> type = Arg; };</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> P1&gt;</div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="structquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument__impl.html">   36</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument__impl.html">single_function_argument_impl</a>{</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;      <span class="keyword">using</span> type = <span class="keyword">typename</span> <a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument.html">single_function_argument</a>&lt;decltype(std::function{ std::declval&lt;P1&gt;() }) &gt;::type;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    };</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> P1&gt;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">using</span> single_function_argument_t = <span class="keyword">typename</span> single_function_argument_impl&lt;P1&gt;::type;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="structquetzal_1_1format_1_1newick_1_1detail_1_1parenthesis.html">   44</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1parenthesis.html">parenthesis</a> {};</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="structquetzal_1_1format_1_1newick_1_1detail_1_1square__bracket.html">   47</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1square__bracket.html">square_bracket</a> {};</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="namespacequetzal_1_1format.html#abea38c99cef993a7e8cf7883dc4ef8e1">check_if_balanced</a>(std::string_view input, <span class="keyword">const</span> <span class="keywordtype">char</span> &amp; open=<span class="charliteral">&#39;(&#39;</span>, <span class="keyword">const</span> <span class="keywordtype">char</span> &amp; close=<span class="charliteral">&#39;)&#39;</span>)</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      <span class="keywordtype">int</span> count = 0;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span> &amp; ch : input)</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordflow">if</span> (ch == open ) count++;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordflow">if</span> (ch == close ) count--;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="comment">// if a parenthesis is closed without being opened return false</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordflow">if</span>(count &lt; 0)</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      }</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      <span class="comment">// in the end the test is passed only if count is zero</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      <span class="keywordflow">return</span> count == 0;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="structquetzal_1_1format_1_1newick_1_1detail_1_1identity.html">   74</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1identity.html">identity</a></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;      <span class="keyword">static</span> std::string edit(<span class="keyword">const</span> std::string  s)</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;      {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keywordflow">return</span> s;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    };</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span> tag&gt;</div>
+<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="structquetzal_1_1format_1_1newick_1_1detail_1_1is__balanced.html">   86</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1is__balanced.html">is_balanced</a></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    {};</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="structquetzal_1_1format_1_1newick_1_1detail_1_1is__balanced_3_01detail_1_1parenthesis_01_4.html">   92</a></span>&#160;    <span class="keyword">template</span>&lt;&gt; <span class="keyword">struct </span><a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1is__balanced.html">is_balanced</a>&lt;detail::<a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1parenthesis.html">parenthesis</a>&gt;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    {</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;      <span class="keyword">static</span> <span class="keywordtype">bool</span> check(std::string_view s)</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;      {</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespacequetzal_1_1format.html#abea38c99cef993a7e8cf7883dc4ef8e1">check_if_balanced</a>(s, <span class="charliteral">&#39;(&#39;</span>, <span class="charliteral">&#39;)&#39;</span> );</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;      }</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    };</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="structquetzal_1_1format_1_1newick_1_1detail_1_1is__balanced_3_01detail_1_1square__bracket_01_4.html">  103</a></span>&#160;    <span class="keyword">template</span>&lt;&gt; <span class="keyword">struct </span><a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1is__balanced.html">is_balanced</a>&lt;detail::<a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1square__bracket.html">square_bracket</a>&gt;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    {</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;      <span class="keyword">static</span> <span class="keywordtype">bool</span> check(std::string_view s)</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;      {</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespacequetzal_1_1format.html#abea38c99cef993a7e8cf7883dc4ef8e1">check_if_balanced</a>(s, <span class="charliteral">&#39;[&#39;</span>, <span class="charliteral">&#39;]&#39;</span>);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;      }</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    };</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  }</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <span class="keyword">using namespace </span>std::string_literals;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <span class="keyword">static</span> <span class="keyword">inline</span> std::vector&lt;std::string&gt; forbidden_labels = {<span class="stringliteral">&quot; &quot;</span>s, <span class="stringliteral">&quot;,&quot;</span>s, <span class="stringliteral">&quot;;&quot;</span>s, <span class="stringliteral">&quot;(&quot;</span>s, <span class="stringliteral">&quot;)&quot;</span>s, <span class="stringliteral">&quot;[&quot;</span>s, <span class="stringliteral">&quot;]&quot;</span>s};</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  <span class="keyword">static</span> <span class="keyword">inline</span> constexpr <span class="keywordtype">char</span> blank = <span class="charliteral">&#39;_&#39;</span>;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  <span class="keyword">template</span>&lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> N&gt;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  <span class="keyword">struct </span>remove_comments_of_depth</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  {};</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;  <span class="keyword">template</span>&lt;&gt; <span class="keyword">struct </span>remove_comments_of_depth&lt;0&gt; : detail::identity</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  {};</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; </div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  <span class="keyword">template</span>&lt;&gt; <span class="keyword">struct </span>remove_comments_of_depth&lt;1&gt;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;  {</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="keyword">static</span> std::string edit(<span class="keyword">const</span> std::string  s)</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    {</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;      <span class="keywordflow">if</span> (s.empty())</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;      <span class="keywordflow">return</span> s;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;      <span class="keywordflow">return</span> std::regex_replace(s, std::regex(R<span class="stringliteral">&quot;(\[[^()]*\])&quot;), </span><span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    }</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  };</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160; </div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;  <span class="keyword">template</span>&lt;&gt; <span class="keyword">struct </span>remove_comments_of_depth&lt;2&gt;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  {</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keyword">static</span> std::string edit(<span class="keyword">const</span> std::string  s)</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    {</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;      std::string buffer;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;      <span class="keywordtype">int</span> counter = 0;</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; ch : s)</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;      {</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        <span class="keywordflow">if</span> (ch == <span class="charliteral">&#39;[&#39;</span> ) counter++;</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        <span class="keywordflow">if</span> (ch == <span class="charliteral">&#39;]&#39;</span> ) counter--;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        <span class="keywordflow">if</span> ( ch == <span class="charliteral">&#39;[&#39;</span> &amp;&amp; counter == 2) <span class="keywordflow">continue</span>;  <span class="comment">// do nothing, that was the opening</span></div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        <span class="keywordflow">if</span> ( ch == <span class="charliteral">&#39;]&#39;</span> &amp;&amp; counter == 1) <span class="keywordflow">continue</span>; <span class="comment">// do nothing, that was the closing</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        <span class="keywordflow">if</span> ( !( counter &gt;=2 || (counter == 1 &amp;&amp; ch == <span class="charliteral">&#39;]&#39;</span>) ) ) buffer.append(std::string(1, ch));</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;      }</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;      <span class="keywordflow">return</span> buffer;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    }</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;  };</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  <span class="keyword">struct </span>PAUP</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  {</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="comment">// return empty string</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span> std::string root_branch_length() { <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;}</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="comment">// do nothing</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span> std::string treat_comments(std::string &amp; s) { <span class="keywordflow">return</span> s; }</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  };</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;  <span class="keyword">struct </span>TreeAlign</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;  {</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <span class="comment">// Set explicit null branch length for root node</span></div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span> std::string root_branch_length() { <span class="keywordflow">return</span> <span class="stringliteral">&quot;:0.0&quot;</span>;}</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <span class="comment">// Remove comments that are nested, keep comments of depth 1</span></div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span> std::string treat_comments(<span class="keyword">const</span> std::string  s)</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    {</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;      <span class="keywordflow">return</span> remove_comments_of_depth&lt;2&gt;::edit(s);</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    }</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;  };</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160; </div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;  <span class="keyword">struct </span>PHYLIP</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;  {</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <span class="comment">// Branch length for root node is not explicit.</span></div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span> std::string root_branch_length(){<span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;}</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    <span class="comment">// Remove comments that are nested, keep comments of depth 1</span></div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span> std::string treat_comments(std::string &amp; s)</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    {</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;      <span class="comment">// Allow comments of depth 1, but does not allow nested comments.</span></div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;      <span class="keywordflow">return</span> remove_comments_of_depth&lt;2&gt;::edit(s);</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    }</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;  };</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; </div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">class </span>F, <span class="keyword">class</span>... Args&gt;</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;  concept <a class="code" href="namespacequetzal_1_1format_1_1newick.html#ad541166fae72d249f209dbf086039e6d">Formattable</a> = std::invocable&lt;F, Args...&gt; &amp;&amp;</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;  std::convertible_to&lt;std::invoke_result_t&lt;F, Args...&gt;, std::string&gt;;</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160; </div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">class</span> T, std::predicate&lt;T&gt; P1 , std::predicate&lt;T&gt; P2, Formattable&lt;T&gt; F1, Formattable&lt;T&gt; F2, <span class="keyword">class</span> Policy=PAUP&gt;</div>
+<div class="line"><a name="l00238"></a><span class="lineno"><a class="line" href="classquetzal_1_1format_1_1newick_1_1generator.html">  238</a></span>&#160;  <span class="keyword">class </span><a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html">generator</a> : <span class="keyword">public</span> Policy</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;  {</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00244"></a><span class="lineno"><a class="line" href="classquetzal_1_1format_1_1newick_1_1generator.html#a61ced85026e0a425892c56e9177295f1">  244</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#a61ced85026e0a425892c56e9177295f1">node_type</a> = T;</div>
+<div class="line"><a name="l00248"></a><span class="lineno"><a class="line" href="classquetzal_1_1format_1_1newick_1_1generator.html#a5ec0b24fa842d4d57b1251ffb85dd956">  248</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#a5ec0b24fa842d4d57b1251ffb85dd956">formula_type</a> = std::string;</div>
+<div class="line"><a name="l00252"></a><span class="lineno"><a class="line" href="classquetzal_1_1format_1_1newick_1_1generator.html#ab54be1584a0e3422d253a963daa7b4bb">  252</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#ab54be1584a0e3422d253a963daa7b4bb">policy_type</a> = Policy;</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span> constexpr <span class="keywordtype">char</span> _end = <span class="charliteral">&#39;;&#39;</span>;</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160; </div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <span class="keyword">mutable</span> <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#a5ec0b24fa842d4d57b1251ffb85dd956">formula_type</a> _formula;</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160; </div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    <span class="keyword">mutable</span> <span class="keywordtype">int</span> _depth=0;</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160; </div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    P1 _has_parent;</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160; </div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    P2 _has_children;</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    F1 _label;</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160; </div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    F2 _branch_length;</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160; </div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    <span class="keywordtype">void</span> _pre_order(<span class="keyword">const</span> <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#a61ced85026e0a425892c56e9177295f1">node_type</a> &amp; node)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;      <span class="keywordflow">if</span>(std::invoke(_has_children, node))</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;      {</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        _formula += <span class="stringliteral">&quot;(&quot;</span>;</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        _depth += 1;</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;      }</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    }</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160; </div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    <span class="keywordtype">void</span> _in_order()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;      _formula += <span class="stringliteral">&quot;,&quot;</span>;</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    }</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160; </div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    <span class="keywordtype">void</span> _post_order(node_type <span class="keyword">const</span>&amp; node)</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    {</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;      <span class="comment">// Not leaf</span></div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;      <span class="keywordflow">if</span>(std::invoke(_has_children, node)) _formula += <span class="stringliteral">&quot;)&quot;</span>;</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160; </div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;      <span class="comment">// Not root</span></div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;      <span class="keywordflow">if</span> ( std::invoke(_has_parent, node) )</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;      { </div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;        <span class="keyword">auto</span> <span class="keyword">const</span> label = std::invoke(_label, node);</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        _formula += label;</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        std::string <span class="keyword">const</span> branch( std::invoke(_branch_length, node) );</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        <span class="keywordflow">if</span> ( !branch.empty() ) _formula.append(<span class="stringliteral">&quot;:&quot;</span>).append(branch);</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;      } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        <span class="comment">// Is root</span></div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;        _formula += std::invoke(_label, node);</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;        _formula += policy_type::root_branch_length();</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;      }</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160; </div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;      _depth -= 1; </div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    }</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160; </div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00340"></a><span class="lineno"><a class="line" href="classquetzal_1_1format_1_1newick_1_1generator.html#a08142ecf56b68ce8d184a38ef3d9296d">  340</a></span>&#160;    <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#a08142ecf56b68ce8d184a38ef3d9296d">generator</a>(P1 has_parent, P2 has_children, F1 label, F2 branch_length, Policy pol = {})</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;        : policy_type(std::move(pol))</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;        , _has_parent(std::move(has_parent))</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        , _has_children(std::move(has_children))</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;        , _label(std::move(label))</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        , _branch_length(std::move(branch_length)) {}</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160; </div>
+<div class="line"><a name="l00352"></a><span class="lineno"><a class="line" href="classquetzal_1_1format_1_1newick_1_1generator.html#ac4dde399b08592d560e3c02709ea63db">  352</a></span>&#160;    <span class="keyword">auto</span> <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#ac4dde399b08592d560e3c02709ea63db">pre_order</a>()</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    {</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;      <span class="keywordflow">return</span> [<span class="keyword">this</span>](<span class="keyword">const</span> <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#a61ced85026e0a425892c56e9177295f1">node_type</a> &amp; node){this-&gt;_pre_order(node);};</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    }</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160; </div>
+<div class="line"><a name="l00360"></a><span class="lineno"><a class="line" href="classquetzal_1_1format_1_1newick_1_1generator.html#a39eec7c2cebe179c092ecebd2d854f3a">  360</a></span>&#160;    <span class="keyword">auto</span> <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#a39eec7c2cebe179c092ecebd2d854f3a">in_order</a>()</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    {</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;      <span class="keywordflow">return</span> [<span class="keyword">this</span>](){this-&gt;_in_order();};</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;    }</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160; </div>
+<div class="line"><a name="l00370"></a><span class="lineno"><a class="line" href="classquetzal_1_1format_1_1newick_1_1generator.html#aa6b8535659fa1c9edd8def32a9284a01">  370</a></span>&#160;    <span class="keyword">auto</span> <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#aa6b8535659fa1c9edd8def32a9284a01">post_order</a>()</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;    {</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;      <span class="keywordflow">return</span> [<span class="keyword">this</span>](<span class="keyword">const</span> <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#a61ced85026e0a425892c56e9177295f1">node_type</a> &amp; node){this-&gt;_post_order(node);};</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    }</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160; </div>
+<div class="line"><a name="l00378"></a><span class="lineno"><a class="line" href="classquetzal_1_1format_1_1newick_1_1generator.html#a994f28a37843d9834acb3ade1951ce4d">  378</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#a994f28a37843d9834acb3ade1951ce4d">has_forbidden_characters</a>(<span class="keyword">const</span> std::string &amp; s)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;      <span class="keywordflow">if</span> (s.empty()) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;      std::string forbidden = <span class="stringliteral">&quot; ,;()[\\]&quot;</span>;</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;      <span class="keywordtype">bool</span> is_forbidden = std::regex_search(s, std::regex(<span class="stringliteral">&quot;[&quot;</span> + forbidden + <span class="stringliteral">&quot;]&quot;</span>));</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;      <span class="keywordflow">return</span> is_forbidden;</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    }</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160; </div>
+<div class="line"><a name="l00389"></a><span class="lineno"><a class="line" href="classquetzal_1_1format_1_1newick_1_1generator.html#a8c7d1b68bb80153fc11b4e689a91eb97">  389</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#a8c7d1b68bb80153fc11b4e689a91eb97">clear</a>()</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    {</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;      _formula.clear();</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    }</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160; </div>
+<div class="line"><a name="l00397"></a><span class="lineno"><a class="line" href="classquetzal_1_1format_1_1newick_1_1generator.html#a629c33b281a9fb9b0e091817c910b7bf">  397</a></span>&#160;    std::string&amp;&amp; <a class="code" href="classquetzal_1_1format_1_1newick_1_1generator.html#a629c33b281a9fb9b0e091817c910b7bf">take_result</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;      _formula.push_back(this-&gt;_end);</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160; </div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;      _formula = policy_type::treat_comments(_formula);</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160; </div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;      <span class="keywordflow">if</span>(<a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1is__balanced.html">detail::is_balanced&lt;detail::parenthesis&gt;::check</a>(_formula) == <span class="keyword">false</span>)</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;      {</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(std::string(<span class="stringliteral">&quot;Failed: formula parenthesis are not balanced:&quot;</span>) + _formula);</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;      }</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160; </div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;      <span class="keywordflow">if</span>(<a class="code" href="structquetzal_1_1format_1_1newick_1_1detail_1_1is__balanced.html">detail::is_balanced&lt;detail::square_bracket&gt;::check</a>(_formula) == <span class="keyword">false</span>)</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;      {</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;        <span class="keywordflow">throw</span> std::runtime_error(std::string(<span class="stringliteral">&quot;Failed: formula square brackets are not balanced:&quot;</span>) + _formula);</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;      }</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160; </div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;      <span class="keywordflow">return</span> std::move(_formula);</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;    }</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;  }; <span class="comment">// end structure generator</span></div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160; </div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">class</span> P1, <span class="keyword">class</span> P2, <span class="keyword">class</span> F1, <span class="keyword">class</span> F2, <span class="keyword">class</span> Policy = PAUP&gt;</div>
+<div class="line"><a name="l00423"></a><span class="lineno"><a class="line" href="namespacequetzal_1_1format_1_1newick.html#ac04dce58a77b28f9485ddecc444fdf4c">  423</a></span>&#160;  <a class="code" href="namespacequetzal_1_1format_1_1newick.html#ac04dce58a77b28f9485ddecc444fdf4c">generator</a>(P1, P2, F1, F2, Policy pol = {})</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;      -&gt; <a class="code" href="namespacequetzal_1_1format_1_1newick.html#ac04dce58a77b28f9485ddecc444fdf4c">generator</a>&lt;detail::single_function_argument_t&lt;P1&gt;, P1, P2, F1, F2, Policy&gt;;</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160; </div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;} <span class="comment">// end namespace quetzal::format::newick</span></div>
+<div class="ttc" id="aclassquetzal_1_1format_1_1newick_1_1generator_html"><div class="ttname"><a href="classquetzal_1_1format_1_1newick_1_1generator.html">quetzal::format::newick::generator</a></div><div class="ttdoc">Generate the Newick formula from an external (custom) tree class.</div><div class="ttdef"><b>Definition:</b> generator.hpp:239</div></div>
+<div class="ttc" id="aclassquetzal_1_1format_1_1newick_1_1generator_html_a08142ecf56b68ce8d184a38ef3d9296d"><div class="ttname"><a href="classquetzal_1_1format_1_1newick_1_1generator.html#a08142ecf56b68ce8d184a38ef3d9296d">quetzal::format::newick::generator::generator</a></div><div class="ttdeci">generator(P1 has_parent, P2 has_children, F1 label, F2 branch_length, Policy pol={})</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition:</b> generator.hpp:340</div></div>
+<div class="ttc" id="aclassquetzal_1_1format_1_1newick_1_1generator_html_a39eec7c2cebe179c092ecebd2d854f3a"><div class="ttname"><a href="classquetzal_1_1format_1_1newick_1_1generator.html#a39eec7c2cebe179c092ecebd2d854f3a">quetzal::format::newick::generator::in_order</a></div><div class="ttdeci">auto in_order()</div><div class="ttdoc">Operation called in the general DFS algorithm to add a comma between visited nodes.</div><div class="ttdef"><b>Definition:</b> generator.hpp:360</div></div>
+<div class="ttc" id="aclassquetzal_1_1format_1_1newick_1_1generator_html_a5ec0b24fa842d4d57b1251ffb85dd956"><div class="ttname"><a href="classquetzal_1_1format_1_1newick_1_1generator.html#a5ec0b24fa842d4d57b1251ffb85dd956">quetzal::format::newick::generator::formula_type</a></div><div class="ttdeci">std::string formula_type</div><div class="ttdoc">Type of formula being generated.</div><div class="ttdef"><b>Definition:</b> generator.hpp:248</div></div>
+<div class="ttc" id="aclassquetzal_1_1format_1_1newick_1_1generator_html_a61ced85026e0a425892c56e9177295f1"><div class="ttname"><a href="classquetzal_1_1format_1_1newick_1_1generator.html#a61ced85026e0a425892c56e9177295f1">quetzal::format::newick::generator::node_type</a></div><div class="ttdeci">T node_type</div><div class="ttdoc">Type of node being formatted.</div><div class="ttdef"><b>Definition:</b> generator.hpp:244</div></div>
+<div class="ttc" id="aclassquetzal_1_1format_1_1newick_1_1generator_html_a629c33b281a9fb9b0e091817c910b7bf"><div class="ttname"><a href="classquetzal_1_1format_1_1newick_1_1generator.html#a629c33b281a9fb9b0e091817c910b7bf">quetzal::format::newick::generator::take_result</a></div><div class="ttdeci">std::string &amp;&amp; take_result() const</div><div class="ttdoc">Retrieve the formatted string of the given node in the specified format.</div><div class="ttdef"><b>Definition:</b> generator.hpp:397</div></div>
+<div class="ttc" id="aclassquetzal_1_1format_1_1newick_1_1generator_html_a8c7d1b68bb80153fc11b4e689a91eb97"><div class="ttname"><a href="classquetzal_1_1format_1_1newick_1_1generator.html#a8c7d1b68bb80153fc11b4e689a91eb97">quetzal::format::newick::generator::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdoc">Clear the formula buffer to refresh the generator.</div><div class="ttdef"><b>Definition:</b> generator.hpp:389</div></div>
+<div class="ttc" id="aclassquetzal_1_1format_1_1newick_1_1generator_html_a994f28a37843d9834acb3ade1951ce4d"><div class="ttname"><a href="classquetzal_1_1format_1_1newick_1_1generator.html#a994f28a37843d9834acb3ade1951ce4d">quetzal::format::newick::generator::has_forbidden_characters</a></div><div class="ttdeci">bool has_forbidden_characters(const std::string &amp;s) const</div><div class="ttdoc">Check if a string contains characters forbidden by the standard.</div><div class="ttdef"><b>Definition:</b> generator.hpp:378</div></div>
+<div class="ttc" id="aclassquetzal_1_1format_1_1newick_1_1generator_html_aa6b8535659fa1c9edd8def32a9284a01"><div class="ttname"><a href="classquetzal_1_1format_1_1newick_1_1generator.html#aa6b8535659fa1c9edd8def32a9284a01">quetzal::format::newick::generator::post_order</a></div><div class="ttdeci">auto post_order()</div><div class="ttdoc">Operation to be passed to a generic DFS algorithm to open a parenthesis if node has children to be vi...</div><div class="ttdef"><b>Definition:</b> generator.hpp:370</div></div>
+<div class="ttc" id="aclassquetzal_1_1format_1_1newick_1_1generator_html_ab54be1584a0e3422d253a963daa7b4bb"><div class="ttname"><a href="classquetzal_1_1format_1_1newick_1_1generator.html#ab54be1584a0e3422d253a963daa7b4bb">quetzal::format::newick::generator::policy_type</a></div><div class="ttdeci">Policy policy_type</div><div class="ttdoc">Type of formula being generated.</div><div class="ttdef"><b>Definition:</b> generator.hpp:252</div></div>
+<div class="ttc" id="aclassquetzal_1_1format_1_1newick_1_1generator_html_ac4dde399b08592d560e3c02709ea63db"><div class="ttname"><a href="classquetzal_1_1format_1_1newick_1_1generator.html#ac4dde399b08592d560e3c02709ea63db">quetzal::format::newick::generator::pre_order</a></div><div class="ttdeci">auto pre_order()</div><div class="ttdoc">Operation called in the general DFS algorithm to open a parenthesis if node has children to be visite...</div><div class="ttdef"><b>Definition:</b> generator.hpp:352</div></div>
+<div class="ttc" id="anamespacequetzal_1_1format_1_1newick_html"><div class="ttname"><a href="namespacequetzal_1_1format_1_1newick.html">quetzal::format::newick</a></div><div class="ttdoc">Generic components for parsing or generating Newick strings.</div><div class="ttdef"><b>Definition:</b> ast.hpp:22</div></div>
 <div class="ttc" id="anamespacequetzal_1_1format_1_1newick_html_ac04dce58a77b28f9485ddecc444fdf4c"><div class="ttname"><a href="namespacequetzal_1_1format_1_1newick.html#ac04dce58a77b28f9485ddecc444fdf4c">quetzal::format::newick::generator</a></div><div class="ttdeci">generator(P1, P2, F1, F2, Policy pol={}) -&gt; generator&lt; detail::single_function_argument_t&lt; P1 &gt;, P1, P2, F1, F2, Policy &gt;</div><div class="ttdoc">User-defined deduction guide where the node/graph type T is deduced from P1.</div></div>
 <div class="ttc" id="anamespacequetzal_1_1format_1_1newick_html_ad541166fae72d249f209dbf086039e6d"><div class="ttname"><a href="namespacequetzal_1_1format_1_1newick.html#ad541166fae72d249f209dbf086039e6d">quetzal::format::newick::Formattable</a></div><div class="ttdeci">concept Formattable</div><div class="ttdoc">Concept for label name.</div><div class="ttdef"><b>Definition:</b> from_network.hpp:194</div></div>
 <div class="ttc" id="anamespacequetzal_1_1format_html_abea38c99cef993a7e8cf7883dc4ef8e1"><div class="ttname"><a href="namespacequetzal_1_1format.html#abea38c99cef993a7e8cf7883dc4ef8e1">quetzal::format::check_if_balanced</a></div><div class="ttdeci">bool check_if_balanced(const std::string &amp;input, const char &amp;open='(', const char &amp;close=')')</div><div class="ttdoc">Check if the string is balanced for open/close symbols (parenthesis,brackets)</div><div class="ttdef"><b>Definition:</b> from_network.hpp:39</div></div>
-<div class="ttc" id="astructquetzal_1_1format_1_1newick_1_1detail_1_1identity_html"><div class="ttname"><a href="structquetzal_1_1format_1_1newick_1_1detail_1_1identity.html">quetzal::format::newick::detail::identity</a></div><div class="ttdoc">Default comment removal policy: do not change anything.</div><div class="ttdef"><b>Definition:</b> generator.hpp:76</div></div>
-<div class="ttc" id="astructquetzal_1_1format_1_1newick_1_1detail_1_1is__balanced_html"><div class="ttname"><a href="structquetzal_1_1format_1_1newick_1_1detail_1_1is__balanced.html">quetzal::format::newick::detail::is_balanced</a></div><div class="ttdoc">Class template, base for further specialization.</div><div class="ttdef"><b>Definition:</b> generator.hpp:88</div></div>
-<div class="ttc" id="astructquetzal_1_1format_1_1newick_1_1detail_1_1parenthesis_html"><div class="ttname"><a href="structquetzal_1_1format_1_1newick_1_1detail_1_1parenthesis.html">quetzal::format::newick::detail::parenthesis</a></div><div class="ttdoc">Tag.</div><div class="ttdef"><b>Definition:</b> generator.hpp:45</div></div>
-<div class="ttc" id="astructquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument__impl_html"><div class="ttname"><a href="structquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument__impl.html">quetzal::format::newick::detail::single_function_argument_impl</a></div><div class="ttdef"><b>Definition:</b> generator.hpp:37</div></div>
-<div class="ttc" id="astructquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument_html"><div class="ttname"><a href="structquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument.html">quetzal::format::newick::detail::single_function_argument</a></div><div class="ttdef"><b>Definition:</b> generator.hpp:31</div></div>
-<div class="ttc" id="astructquetzal_1_1format_1_1newick_1_1detail_1_1square__bracket_html"><div class="ttname"><a href="structquetzal_1_1format_1_1newick_1_1detail_1_1square__bracket.html">quetzal::format::newick::detail::square_bracket</a></div><div class="ttdoc">Tag.</div><div class="ttdef"><b>Definition:</b> generator.hpp:48</div></div>
+<div class="ttc" id="astructquetzal_1_1format_1_1newick_1_1detail_1_1identity_html"><div class="ttname"><a href="structquetzal_1_1format_1_1newick_1_1detail_1_1identity.html">quetzal::format::newick::detail::identity</a></div><div class="ttdoc">Default comment removal policy: do not change anything.</div><div class="ttdef"><b>Definition:</b> generator.hpp:75</div></div>
+<div class="ttc" id="astructquetzal_1_1format_1_1newick_1_1detail_1_1is__balanced_html"><div class="ttname"><a href="structquetzal_1_1format_1_1newick_1_1detail_1_1is__balanced.html">quetzal::format::newick::detail::is_balanced</a></div><div class="ttdoc">Class template, base for further specialization.</div><div class="ttdef"><b>Definition:</b> generator.hpp:87</div></div>
+<div class="ttc" id="astructquetzal_1_1format_1_1newick_1_1detail_1_1parenthesis_html"><div class="ttname"><a href="structquetzal_1_1format_1_1newick_1_1detail_1_1parenthesis.html">quetzal::format::newick::detail::parenthesis</a></div><div class="ttdoc">Tag.</div><div class="ttdef"><b>Definition:</b> generator.hpp:44</div></div>
+<div class="ttc" id="astructquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument__impl_html"><div class="ttname"><a href="structquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument__impl.html">quetzal::format::newick::detail::single_function_argument_impl</a></div><div class="ttdef"><b>Definition:</b> generator.hpp:36</div></div>
+<div class="ttc" id="astructquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument_html"><div class="ttname"><a href="structquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument.html">quetzal::format::newick::detail::single_function_argument</a></div><div class="ttdef"><b>Definition:</b> generator.hpp:30</div></div>
+<div class="ttc" id="astructquetzal_1_1format_1_1newick_1_1detail_1_1square__bracket_html"><div class="ttname"><a href="structquetzal_1_1format_1_1newick_1_1detail_1_1square__bracket.html">quetzal::format::newick::detail::square_bracket</a></div><div class="ttdoc">Tag.</div><div class="ttdef"><b>Definition:</b> generator.hpp:47</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

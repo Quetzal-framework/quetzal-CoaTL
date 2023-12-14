@@ -120,9 +120,9 @@ $(document).ready(function(){initNavTree('md_1_introduction.html',''); initResiz
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#autotoc_md1">Why Quetzal?</a></li>
 <li class="level1"><a href="#autotoc_md3">Why -CoaTL ?</a></li>
-<li class="level1"><a href="#autotoc_md4">Why C++?</a></li>
-<li class="level1"><a href="#autotoc_md6">Why templates?</a></li>
-<li class="level1"><a href="#autotoc_md8">Why decoupling algorithms from data structures?</a></li>
+<li class="level1"><a href="#autotoc_md5">Why C++?</a></li>
+<li class="level1"><a href="#autotoc_md7">Why templates?</a></li>
+<li class="level1"><a href="#autotoc_md9">Why decoupling algorithms from data structures?</a></li>
 </ul>
 </div>
 <div class="textblock"><h1><a class="anchor" id="autotoc_md1"></a>
@@ -152,7 +152,8 @@ Why -CoaTL ?</h1>
 <li><code>coatl</code> basically means snake (remember, all that glitters is not gold…) and conveniently aligns with Coalescence Template Library.</li>
 </ul>
 <p>But let's be honest, the full name is quite a mouthful, so let's just focus on the dazzling aspects and call it Quetzal for short (because who doesn't love a little sparkle in their code?).</p>
-<h1><a class="anchor" id="autotoc_md4"></a>
+<hr  />
+<h1><a class="anchor" id="autotoc_md5"></a>
 Why C++?</h1>
 <p>When the limitations of a project revolve around the number of simulations that can be executed within a limited timeframe and with a restricted budget, it becomes natural to choose a language renowned for its performance. While Rust could have been an option, C++ is commonly taught in Computer Science courses and extensively utilized in Ecology and Evolution software, such as msprime, SLiM, and Splatche, making it a logical choice.</p>
 <p>Despite C++ being known for its complexity, the language has undergone significant changes over the past two decades. Now, even beginners can comfortably utilize generic components with a syntax that closely resembles Python. There are no barriers to writing code like the following:</p>
@@ -162,13 +163,13 @@ Why C++?</h1>
 <div class="line">std::cout &lt;&lt; s &lt;&lt; std::endl;</div>
 <div class="ttc" id="astructquetzal_1_1format_1_1newick_1_1TreeAlign_html"><div class="ttname"><a href="structquetzal_1_1format_1_1newick_1_1TreeAlign.html">quetzal::format::newick::TreeAlign</a></div><div class="ttdoc">Set a root node branch length to zero. Remove all nested comments.</div><div class="ttdef"><b>Definition:</b> from_network.hpp:167</div></div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md6"></a>
+<h1><a class="anchor" id="autotoc_md7"></a>
 Why templates?</h1>
 <p>The interfaces and components of Quetzal-CoaTL are designed to be generic, similar to the concept of the Standard Template Library (STL) [2].</p>
 <p>Genericity is what contributes to Python's user-friendly nature, where library users don't need to overly concern themselves with specific types being manipulated.</p>
 <p>In C++, templates offer library users a similar experience (though, for the actual developers of the library, it may be a different story altogether).</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md8"></a>
+<h1><a class="anchor" id="autotoc_md9"></a>
 Why decoupling algorithms from data structures?</h1>
 <p><b>Quetzal</b> algorithms are written to be <b>data-structure agnostic</b>.</p>
 <p>In contrast to other programs, the <b>Quetzal</b> algorithms have a more abstract nature. This distinction enables a single function to handle a diverse range of data structures. Essentially, you can integrate a <b>Quetzal</b> algorithm into your code without being inundated with a vast array of unfamiliar data structures.</p>

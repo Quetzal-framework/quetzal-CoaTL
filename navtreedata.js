@@ -29,39 +29,40 @@ var NAVTREE =
     [ "Introduction", "md_1_introduction.html", [
       [ "Why Quetzal?", "md_1_introduction.html#autotoc_md1", null ],
       [ "Why -CoaTL ?", "md_1_introduction.html#autotoc_md3", null ],
-      [ "Why C++?", "md_1_introduction.html#autotoc_md4", null ],
-      [ "Why templates?", "md_1_introduction.html#autotoc_md6", null ],
-      [ "Why decoupling algorithms from data structures?", "md_1_introduction.html#autotoc_md8", null ]
+      [ "Why C++?", "md_1_introduction.html#autotoc_md5", null ],
+      [ "Why templates?", "md_1_introduction.html#autotoc_md7", null ],
+      [ "Why decoupling algorithms from data structures?", "md_1_introduction.html#autotoc_md9", null ]
     ] ],
-    [ "Abstract", "md_2_abstract.html", [
-      [ "Input/Output", "md_2_abstract.html#autotoc_md11", null ],
-      [ "Algorithms", "md_2_abstract.html#autotoc_md12", null ],
-      [ "Graphs", "md_2_abstract.html#autotoc_md13", null ],
-      [ "Compile-time units system", "md_2_abstract.html#autotoc_md14", null ],
-      [ "Data Structures", "md_2_abstract.html#autotoc_md15", null ]
-    ] ],
-    [ "Installation and Usage", "md_3_installation.html", [
-      [ "Structure and Dependencies", "md_3_installation.html#autotoc_md17", null ],
-      [ "Installation and Reuse", "md_3_installation.html#autotoc_md19", [
-        [ "Copy", "md_3_installation.html#autotoc_md21", null ],
-        [ "Copy + CMake", "md_3_installation.html#autotoc_md23", null ],
-        [ "Conan + CMake", "md_3_installation.html#autotoc_md25", null ],
-        [ "Docker", "md_3_installation.html#autotoc_md26", null ],
-        [ "Starter template + VSC", "md_3_installation.html#autotoc_md27", null ]
+    [ "Installation and Usage", "md_2_installation.html", [
+      [ "Structure and Dependencies", "md_2_installation.html#autotoc_md12", null ],
+      [ "Installation and Reuse", "md_2_installation.html#autotoc_md14", [
+        [ "Easiest: DevContainer on Visual Studio Code", "md_2_installation.html#autotoc_md16", null ],
+        [ "Copy", "md_2_installation.html#autotoc_md18", null ],
+        [ "Copy + CMake", "md_2_installation.html#autotoc_md20", null ],
+        [ "Conan + CMake", "md_2_installation.html#autotoc_md22", null ],
+        [ "Docker", "md_2_installation.html#autotoc_md23", null ],
+        [ "Starter template + VSC", "md_2_installation.html#autotoc_md24", null ]
       ] ],
-      [ "Tooling Overview", "md_3_installation.html#autotoc_md29", [
-        [ "CMake", "md_3_installation.html#autotoc_md31", null ],
-        [ "Conan", "md_3_installation.html#autotoc_md33", null ],
-        [ "Docker", "md_3_installation.html#autotoc_md35", null ]
+      [ "Tooling Overview", "md_2_installation.html#autotoc_md26", [
+        [ "CMake", "md_2_installation.html#autotoc_md28", null ],
+        [ "Conan", "md_2_installation.html#autotoc_md30", null ],
+        [ "Docker", "md_2_installation.html#autotoc_md32", null ]
       ] ]
     ] ],
-    [ "Include", "md_4_include.html", null ],
+    [ "Include", "md_3_include.html", null ],
     [ "Tutorials", "tutorials.html", "tutorials" ],
     [ "Developer's notes", "md_99_developers_notes.html", [
-      [ "Conventions", "md_99_developers_notes.html#autotoc_md107", null ],
-      [ "Build process", "md_99_developers_notes.html#autotoc_md108", null ],
-      [ "Packaging", "md_99_developers_notes.html#autotoc_md109", null ],
-      [ "Documentation", "md_99_developers_notes.html#autotoc_md110", null ]
+      [ "Conventions", "md_99_developers_notes.html#autotoc_md104", null ],
+      [ "Build process", "md_99_developers_notes.html#autotoc_md105", null ],
+      [ "Packaging", "md_99_developers_notes.html#autotoc_md106", null ],
+      [ "Documentation", "md_99_developers_notes.html#autotoc_md107", null ]
+    ] ],
+    [ "Abstract", "md_drafts_2_abstract.html", [
+      [ "Input/Output", "md_drafts_2_abstract.html#autotoc_md109", null ],
+      [ "Algorithms", "md_drafts_2_abstract.html#autotoc_md110", null ],
+      [ "Graphs", "md_drafts_2_abstract.html#autotoc_md111", null ],
+      [ "Compile-time units system", "md_drafts_2_abstract.html#autotoc_md112", null ],
+      [ "Data Structures", "md_drafts_2_abstract.html#autotoc_md113", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -97,9 +98,9 @@ var NAVTREEINDEX =
 "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrum.html#ac96e90cbc35224c33580fab6c295d868",
 "classquetzal_1_1format_1_1newick_1_1generator.html#a5ec0b24fa842d4d57b1251ffb85dd956",
 "classquetzal_1_1sampling_1_1constrained__sampling_1_1param__type.html#a9b57b16a3490ec2ba482e95be7a0db9e",
-"md_99_developers_notes.html",
-"structFixtureCases.html#af80e9740a9b664198cefb8c3ed795123",
-"structquetzal_1_1format_1_1newick_1_1ast_1_1node.html"
+"md_99_developers_notes.html#autotoc_md105",
+"structFixtureCases.html#aa28541aa13bdc95fcb51a701954bd9e9",
+"structquetzal_1_1format_1_1is__balanced_3_01square__bracket_01_4.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -118,35 +118,35 @@ $(document).ready(function(){initNavTree('graphs_in_quetzal.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><ul><li class="level2"><a href="#autotoc_md78">Invariants Guarantee</a></li>
-<li class="level2"><a href="#autotoc_md79">Edge and Vertices descriptors</a></li>
-<li class="level2"><a href="#autotoc_md80">Edge and Vertices Information (Property Classes)</a></li>
-<li class="level2"><a href="#autotoc_md81">Depth First Search (DFS)  Algorithms</a></li>
-<li class="level2"><a href="#autotoc_md82">DFS on trees</a></li>
+<ul><ul><li class="level2"><a href="#autotoc_md72">Invariants Guarantee</a></li>
+<li class="level2"><a href="#autotoc_md73">Edge and Vertices descriptors</a></li>
+<li class="level2"><a href="#autotoc_md74">Edge and Vertices Information (Property Classes)</a></li>
+<li class="level2"><a href="#autotoc_md75">Depth First Search (DFS)  Algorithms</a></li>
+<li class="level2"><a href="#autotoc_md76">DFS on trees</a></li>
 </ul>
 </ul>
 </div>
 <div class="textblock"><p>Although graphs are ubiquitous in phylogeography and coalescence frameworks, they can represent quite different objects depending on the exact context. Consequently Quetzal had to make a number of design choices in their implementation.</p>
-<h2><a class="anchor" id="autotoc_md78"></a>
+<h2><a class="anchor" id="autotoc_md72"></a>
 Invariants Guarantee</h2>
 <p>As geneticists, we expect from a simple Kingman coalescent tree to exhibit certain characteristics (for example the guarantee of having either 0 or 2 children but never only 1) that we don't expect from a phylogenetic network (that would in contrast exhibit cycles and hybrid nodes).</p>
 <p>In programming jargon, these expectations are called <em>class invariants</em>.</p>
 <p>Rather than exposing a 1-fit-all type of graph and be prone to programming mistakes, Quetzal comes with more specialized classes that maintain their invariants.</p>
-<h2><a class="anchor" id="autotoc_md79"></a>
+<h2><a class="anchor" id="autotoc_md73"></a>
 Edge and Vertices descriptors</h2>
 <p>A point common to all class of graphs is that vertices and edges have unique identifiers.</p>
 <p>This identifier is implementation-dependent and not always of type <code>int</code>. It is instead referred by a type nested in each graph class: <code>vertex_descriptor</code> and <code>edge_descriptor</code>.</p>
 <p>Methods of a class that receive or return specific edges/vertices will manipulate objects of this type.</p>
-<h2><a class="anchor" id="autotoc_md80"></a>
+<h2><a class="anchor" id="autotoc_md74"></a>
 Edge and Vertices Information (Property Classes)</h2>
 <p>The quality of information attached to the vertices and edges of a graph also varies depending on the user problem.</p>
 <p>For example, a spatial coalescent tree may need a way to store the geographic location of the visited locations, whereas a Kingman coalescent tree does not need to allocated storage for this. Similarly, Phylogenetic Networks will surely embed completely different types of information, like \(\gamma\), the inheritance probability.</p>
 <p>To reflect this variability in the type of information, graphs can embed arbitrary information along edges and vertices through small user-defined classes called <em>property classes</em>.</p>
 <p>The type of information a graph class embeds is referred by a nested type: <code>vertex_property</code> and <code>edge_property</code>.</p>
-<h2><a class="anchor" id="autotoc_md81"></a>
+<h2><a class="anchor" id="autotoc_md75"></a>
 Depth First Search (DFS)  Algorithms</h2>
 <p>DFS is a form of graph traversal referering to the process of visiting (e.g. retrieving, updating, or deleting) each node in a tree data structure, exactly once.</p>
-<h2><a class="anchor" id="autotoc_md82"></a>
+<h2><a class="anchor" id="autotoc_md76"></a>
 DFS on trees</h2>
 <p>When the graph has the structure of a tree, there are only three operations that are worth worrying about:</p><ul>
 <li><code>pre-order</code>,</li>

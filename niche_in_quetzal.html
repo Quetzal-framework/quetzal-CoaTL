@@ -118,25 +118,25 @@ $(document).ready(function(){initNavTree('niche_in_quetzal.html',''); initResiza
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md98">Niche models as mathematical expressions</a></li>
-<li class="level1"><a href="#autotoc_md99">Mathematical composition in C++</a></li>
-<li class="level1"><a href="#autotoc_md100">Mathematical composition with quetzal::expressive</a></li>
+<ul><li class="level1"><a href="#autotoc_md92">Niche models as mathematical expressions</a></li>
+<li class="level1"><a href="#autotoc_md93">Mathematical composition in C++</a></li>
+<li class="level1"><a href="#autotoc_md94">Mathematical composition with quetzal::expressive</a></li>
 </ul>
 </div>
-<div class="textblock"><h1><a class="anchor" id="autotoc_md98"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md92"></a>
 Niche models as mathematical expressions</h1>
 <p>In the field of ecology, the <b>niche</b> refers to the compatibility between a species and a specific environmental condition. It explains how an organism or a population adapts to the availability of resources and competition.</p>
 <p>For instance, when resources are plentiful and the presence of predators, parasites, and pathogens is low, the organism or population tends to grow. In locations and times of resources scarcity and high predation, the populations tend to shrink.</p>
 <p>The composition and significance of environmental variables that constitute the dimensions of a niche can vary among species, and the importance of specific environmental factors for a species may change depending on geographical and ecological contexts.</p>
 <dl class="section note"><dt>Note</dt><dd>In the broader context of this library, the niche model lacks a specific definition as it relies on the preferences and requirements of individual users. What we can understand is that it involves some combination of spatial and temporal factors that are closely intertwined with the demographic process. This justifies the need for a highly adaptable approach for representing the concept of niche, as it is bound to vary depending on the specific species, population, or geographic area under study.</dd></dl>
 <p>Given this understanding, the primary goal of <b>Quetzal</b> is to provide users with <code><a class="el" href="namespacequetzal_1_1expressive.html" title="Mathematical expressions of spatio-temporal quantities.">quetzal::expressive</a></code>, a user-friendly means to effectively combine geospatial and temporal elements. This enables users to establish meaningful mathematical connections between a diverse and heterogeneous landscape and the underlying demographic processes, based on their own perspectives and preferences. Generally speaking, users will want to use <code><a class="el" href="namespacequetzal_1_1expressive.html" title="Mathematical expressions of spatio-temporal quantities.">quetzal::expressive</a></code> to mathematically compose spatio-temporal expressions with a signature <code>double (location_type, time_type)</code> until they reach a satisfying definition of the local demographic parameter of interest.</p>
-<h1><a class="anchor" id="autotoc_md99"></a>
+<h1><a class="anchor" id="autotoc_md93"></a>
 Mathematical composition in C++</h1>
 <p>Mathematical composition in C++ is not trivial as unlike languages, C++ does not understand mathematical expressions and their composition. In this strongly-typed language, you can not simply multiply the integer <code>42</code> and the function \( f(x,y) = x^y \) and expect it to work. Indeed, if you try to rescale a lambda function, e.g.: </p><div class="fragment"><div class="line"><span class="keywordtype">int</span> a = 42;</div>
 <div class="line"><span class="keyword">auto</span> f = [](<span class="keyword">auto</span> x, <span class="keyword">auto</span> y){<span class="keywordflow">return</span> std::pow(x,y); };</div>
 <div class="line">my_expression = a * f; <span class="comment">// error</span></div>
 </div><!-- fragment --><p> it will not compile. As the compiler does not know natively what the rules are to multiply a number with whatever type <code>f</code> is, it will (verbosely) insult you saying the <a href="https://en.cppreference.com/w/cpp/language/operators"><code>operator*()</code></a> is not defined for the type <code>int</code> and an anonymous type (the lambda function).</p>
-<h1><a class="anchor" id="autotoc_md100"></a>
+<h1><a class="anchor" id="autotoc_md94"></a>
 Mathematical composition with quetzal::expressive</h1>
 <p>You need a library to tell the compiler what to do. This is where <code><a class="el" href="namespacequetzal_1_1expressive.html" title="Mathematical expressions of spatio-temporal quantities.">quetzal::expressive</a></code> comes handy: it allows you to add, substract, multiply, or compose mathematical expressions by giving them a uniform interface.</p>
 <p>In the context of demographic models, <code>my_expression</code> in the example below could represent for example <code>r(x,t)</code> the growth rate at location <code>x</code> at time <code>t</code>. Being able to compose several smaller expressions into bigger expressions gives much freedom to users who can for example define <code>r</code> in one part on the program and compose it at a later time with a different expression <em>e.g.</em> <code>k(x,t)</code> the carrying capacity at location <code>x</code> at time <code>t</code>. By treating these local demographic parameters as independent expressions that can be mixed and matched, <code><a class="el" href="namespacequetzal_1_1expressive.html" title="Mathematical expressions of spatio-temporal quantities.">quetzal::expressive</a></code> allows great freedom in the implementation details of a spatio-temporal process.</p>

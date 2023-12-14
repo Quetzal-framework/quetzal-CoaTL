@@ -118,29 +118,29 @@ $(document).ready(function(){initNavTree('newick_parser.html',''); initResizable
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><ul><li class="level2"><a href="#autotoc_md44">Introduction</a><ul><li class="level3"><a href="#autotoc_md46">Background</a></li>
-<li class="level3"><a href="#autotoc_md48">Grammar</a></li>
-<li class="level3"><a href="#autotoc_md50">Objectives</a></li>
+<ul><ul><li class="level2"><a href="#autotoc_md38">Introduction</a><ul><li class="level3"><a href="#autotoc_md40">Background</a></li>
+<li class="level3"><a href="#autotoc_md42">Grammar</a></li>
+<li class="level3"><a href="#autotoc_md44">Objectives</a></li>
 </ul>
 </li>
-<li class="level2"><a href="#autotoc_md52">To a Quetzal k-ary tree</a><ul><li class="level3"><a href="#autotoc_md54">Default properties</a></li>
-<li class="level3"><a href="#autotoc_md56">Custom properties</a></li>
+<li class="level2"><a href="#autotoc_md46">To a Quetzal k-ary tree</a><ul><li class="level3"><a href="#autotoc_md48">Default properties</a></li>
+<li class="level3"><a href="#autotoc_md50">Custom properties</a></li>
 </ul>
 </li>
-<li class="level2"><a href="#autotoc_md58">Interfacing legacy code</a></li>
+<li class="level2"><a href="#autotoc_md52">Interfacing legacy code</a></li>
 </ul>
 </ul>
 </div>
-<div class="textblock"><h2><a class="anchor" id="autotoc_md44"></a>
+<div class="textblock"><h2><a class="anchor" id="autotoc_md38"></a>
 Introduction</h2>
 <hr  />
-<h3><a class="anchor" id="autotoc_md46"></a>
+<h3><a class="anchor" id="autotoc_md40"></a>
 Background</h3>
 <p>Newick tree format is a way of representing graph-theoretical trees with edge lengths using parentheses and commas.</p>
 <p>Yet not very efficient, Newick is a simple and popular format for representing trees, and provides a rather useful abstraction in coalescence theory for representing the shared history of populations (species trees, population trees) or gene genealogies that coalesce into these trees.</p>
 <p><b>Quetzal</b> provides some utilities to parse, generate and manipulate such format.</p>
 <hr  />
-<h3><a class="anchor" id="autotoc_md48"></a>
+<h3><a class="anchor" id="autotoc_md42"></a>
 Grammar</h3>
 <p>Whitespace here refer to any of the following: spaces, tabs, carriage returns, and linefeeds.</p>
 <ul>
@@ -150,7 +150,7 @@ Grammar</h3>
 <li>Comments are enclosed in square brackets.</li>
 </ul>
 <hr  />
-<h3><a class="anchor" id="autotoc_md50"></a>
+<h3><a class="anchor" id="autotoc_md44"></a>
 Objectives</h3>
 <p>In this tutorial section you will learn how to:</p><ul>
 <li>Parse a Newick string to a <b>Quetzal</b> k-ary tree class,</li>
@@ -158,10 +158,10 @@ Objectives</h3>
 <li>Parse a Newick string to your own legacy tree class</li>
 </ul>
 <hr  />
-<h2><a class="anchor" id="autotoc_md52"></a>
+<h2><a class="anchor" id="autotoc_md46"></a>
 To a Quetzal k-ary tree</h2>
 <hr  />
-<h3><a class="anchor" id="autotoc_md54"></a>
+<h3><a class="anchor" id="autotoc_md48"></a>
 Default properties</h3>
 <p>In this example we will use the default (and simplistic) properties of the graph synthetized by the parsing. By <em>properties</em> we mean the type the data structures used to store arbitrary information along the vertices and edges of a graph.</p>
 <p>For general graphs it could be anything, but since we are parsing Newick formats, we can reasonably expect <em>ad minima</em>:</p><ul>
@@ -192,11 +192,15 @@ Default properties</h3>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;}</div>
-<div class="ttc" id="anamespacequetzal_1_1format_1_1newick_html"><div class="ttname"><a href="namespacequetzal_1_1format_1_1newick.html">quetzal::format::newick</a></div><div class="ttdoc">Generic components for parsing or generating Newick strings.</div><div class="ttdef"><b>Definition:</b> ast.hpp:23</div></div>
+<div class="ttc" id="anamespacequetzal_1_1format_1_1newick_html"><div class="ttname"><a href="namespacequetzal_1_1format_1_1newick.html">quetzal::format::newick</a></div><div class="ttdoc">Generic components for parsing or generating Newick strings.</div><div class="ttdef"><b>Definition:</b> ast.hpp:22</div></div>
 </div><!-- fragment --><p><b>Output</b></p>
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;These graphs are toootally isomorphic!</div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;3</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;2</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;3</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;2</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;These graphs are toootally isomorphic!</div>
 </div><!-- fragment --><hr  />
-<h3><a class="anchor" id="autotoc_md56"></a>
+<h3><a class="anchor" id="autotoc_md50"></a>
 Custom properties</h3>
 <p>In the previous example we used default types to represent the properties of a vertex and an edge. These defaults are useful, but not always sufficient. For example, you may want to visit your tree graph and trigger specific events when specific nodes or edges are visited.</p>
 <p>In this case, you would need to define your own small structures to represent the graph properties you want:</p><ul>
@@ -269,14 +273,16 @@ Custom properties</h3>
 <div class="ttc" id="astructedge__info_html"><div class="ttname"><a href="structedge__info.html">edge_info</a></div><div class="ttdef"><b>Definition:</b> newick_parser_2.cpp:8</div></div>
 <div class="ttc" id="astructvertex__info_html"><div class="ttname"><a href="structvertex__info.html">vertex_info</a></div><div class="ttdef"><b>Definition:</b> coalescence_binary_tree_2.cpp:5</div></div>
 </div><!-- fragment --><p><b>Output</b></p>
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;Discover vertex 0 (<span class="stringliteral">&quot;F&quot;</span>)</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;Discover vertex 1 (<span class="stringliteral">&quot;A&quot;</span>)</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;Discover vertex 2 (&quot;B&quot;)</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;Discover vertex 3 (&quot;E&quot;)</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;Discover vertex 4 (&quot;C&quot;)</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;Discover vertex 5 (&quot;D&quot;)</div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;3</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;2</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;Discover vertex 0 (<span class="stringliteral">&quot;F&quot;</span>)</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;Discover vertex 1 (<span class="stringliteral">&quot;A&quot;</span>)</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;Discover vertex 2 (&quot;B&quot;)</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;Discover vertex 3 (&quot;E&quot;)</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;Discover vertex 4 (&quot;C&quot;)</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;Discover vertex 5 (&quot;D&quot;)</div>
 </div><!-- fragment --><hr  />
-<h2><a class="anchor" id="autotoc_md58"></a>
+<h2><a class="anchor" id="autotoc_md52"></a>
 Interfacing legacy code</h2>
 <p>If you have been coding for a while, you may already depend heavily on your own class to describe a tree graph, and not feel very excited about refactoring your whole project to switch to <b>Quetzal</b> trees. Fair enough.</p>
 <p>This section shows how to use <b>Quetzal</b> parser to populate your own legacy class and then forget about <b>Quetzal</b>.</p>
