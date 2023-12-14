@@ -102,6 +102,16 @@
                 "isDefault": true
             },
             //"dependsOn": ["Configure CMake"],
+        },
+        {
+            "label": "Clean Build Folder",
+            "type": "shell",
+            "command": "rm -r ${workspaceFolder}/build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            //"dependsOn": ["Configure CMake"],
         }
     ]
 }
