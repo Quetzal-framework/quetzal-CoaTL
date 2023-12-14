@@ -242,6 +242,7 @@ namespace quetzal::geography
     /// @brief Time descriptors (unique identifiers) of the dataset bands
     auto times() const noexcept
     {
+      // [0 ... depth [
       return ranges::views::iota(0, depth());
     }
 
