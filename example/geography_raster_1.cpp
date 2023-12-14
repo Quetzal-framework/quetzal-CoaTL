@@ -55,10 +55,10 @@ int main()
 	std::cout << bio1 << std::endl;
 
 	// Check there are 10 bands/layers/time periods
-	assert( bio1.times().size() == 10 );
+	assert( std::ranges::distance(bio1.times()) == 10 );
 
 	// There are 9 cells/spatial coordinates
-	assert( bio1.locations().size() == 9 );
+	assert( std::ranges::distance(bio1.locations()) == 9 );
 
 	// You will typically have georeferenced sampling points
 	using latlon =  typename raster_type::latlon;

@@ -8,8 +8,7 @@
 ///                                                                     ///
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef NEWICK_FROM_KARY_TREE_H_INCLUDED
-#define NEWICK_FROM_KARY_TREE_H_INCLUDED
+#pragma once
 
 #include "quetzal/io/newick/ast.hpp"
 #include "quetzal/io/newick/parser.hpp"
@@ -303,5 +302,3 @@ namespace quetzal::format::newick
     }
 
 } // end namespace quetzal::format::newick
-
-#endif

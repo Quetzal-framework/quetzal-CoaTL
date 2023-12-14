@@ -8,8 +8,6 @@ The following compilers (or newer) are supported:
 
 The library provides many options for reuse, and the most suitable approach depends on your specific requirements. 
 
-If you want to swiftly open an integrated development environment (IDE), begin coding to explore the library, and ensure seamless execution and compilation, the most efficient solution for you would be to open the [Quetzal Starter template for Visual Studio Code](#starter-template-vsc).
-
 @tableofcontents
 
 ## Structure and Dependencies
@@ -39,6 +37,21 @@ There are two entry points:
 ---
 
 ## Installation and Reuse
+
+---
+
+### Easiest: DevContainer on Visual Studio Code
+
+The easiest option to try out the project.
+
+To swiftly open an integrated development environment (IDE), begin coding to explore the library, and ensure seamless execution and compilation, the most efficient solution is the following:
+
+1. [Install Visual Studio Code](https://code.visualstudio.com/download)
+2. [Install Docker Desktop](https://docs.docker.com/desktop/)
+3. Open Docker and leave it active in the background
+4. Click [here](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/Quetzal-framework/quetzal-CoaTL) to get started.
+
+This will download the project, builds a Docker Image, manage the dependencies and automatically build and run the tests. If it's the first time you build the image, it may take some time, so you're free to go get a coffee!
 
 ---
 

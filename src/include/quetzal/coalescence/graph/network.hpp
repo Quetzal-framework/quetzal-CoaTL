@@ -652,7 +652,7 @@ namespace quetzal::coalescence
               std::vector<std::tuple<vertex_descriptor, EdgeProperty>> children)
     {
       assert( children.size() > 1);
-      for(auto const& c : children){ assert(parent != c); }
+      for(auto const& [c,p] : children){ assert(parent != c); }
 
       std::vector<edge_descriptor> edges (children.size());
       std::transform(children.cbegin(), 

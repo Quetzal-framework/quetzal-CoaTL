@@ -8,8 +8,7 @@
 ///                                                                     ///
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef NEWICK_TO_KARY_TREE_H_INCLUDED
-#define NEWICK_TO_KARY_TREE_H_INCLUDED
+#pragma once
 
 #include "quetzal/io/newick/ast.hpp"
 #include "quetzal/io/newick/parser.hpp"
@@ -50,19 +49,25 @@ namespace quetzal::format::newick
     {
       static auto recursive = [](tree_type& graph, vertex_descriptor parent, const auto& ast, auto& self) mutable -> void 
       {
-        std::vector<std::tuple< vertex_descriptor, EdgeProperty>> children;
+        if(ast.children.size() > 0)
+        {
+          assert(ast.children.size() != 0);
+          assert(ast.children.size() > 1);
 
-        children.reserve(ast.children.size());
+          std::vector<std::tuple< vertex_descriptor, EdgeProperty>> children;
+          children.reserve(ast.children.size());
 
-        for(const auto& ast_child : ast.children){
-          children.push_back(std::make_tuple( graph.add_vertex( VertexProperty {ast_child.name} ), EdgeProperty{ast_child.distance_to_parent} ));
+          for(const auto& ast_child : ast.children){
+            children.push_back(std::make_tuple( graph.add_vertex( VertexProperty {ast_child.name} ), EdgeProperty{ast_child.distance_to_parent} ));
+          }
+
+          graph.add_edges(parent, children);
+
+          for ( int i = 0; i < children.size(); i++){
+            self(graph, std::get<0>(children[i]), ast.children[i], self);
+          }
         }
 
-        graph.add_edges(parent, children);
-
-        for ( int i = 0; i < children.size(); i++){
-          self(graph, std::get<0>(children[i]), ast.children[i], self);
-        }
         
       }; // end recursive
       recursive(graph, parent, ast, recursive);
@@ -98,5 +103,3 @@ namespace quetzal::format::newick
   }
 
 } // end namespace quetzal::format::newick
-
-#endif

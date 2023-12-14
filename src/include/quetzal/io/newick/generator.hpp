@@ -8,8 +8,7 @@
 *                                                                      *
 ***************************************************************************/
 
-#ifndef __NEWICK_GENERATOR_H_INCLUDED__
-#define __NEWICK_GENERATOR_H_INCLUDED__
+#pragma once
 
 #include<concepts>
 #include<regex>
@@ -425,5 +424,3 @@ namespace quetzal::format::newick
       -> generator<detail::single_function_argument_t<P1>, P1, P2, F1, F2, Policy>;
 
 } // end namespace quetzal::format::newick
-
-#endif

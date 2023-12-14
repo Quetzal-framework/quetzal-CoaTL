@@ -8,7 +8,7 @@ on:
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE: Release
+  BUILD_TYPE: Debug
 
 jobs:
   build:
@@ -23,40 +23,44 @@ jobs:
         fetch-depth: 0
         submodules: recursive
 
-    - name: Get GCC-12
-      run:   |
-             sudo apt update && sudo apt upgrade -y
-             sudo apt install -y gcc-12 g++-12
-             sudo apt install -y python3-pip
-             sudo apt install -y cmake
-             sudo apt install -y doxygen
+    - name: Get Apt packages
+      run: >
+        sudo apt-get update -y &&
+        sudo apt-get install -y --no-install-recommends
+        vim
+        git
+        gcc-12
+        g++-12
+        build-essential
+        libboost-all-dev
+        cmake
+        unzip
+        tar
+        ca-certificates
+        doxygen
+        graphviz
+        python3-pip
 
     - name: Conan installation
-      id: conan
-      uses: turtlebrowser/get-conan@main
-      with:
-        version: 1.60.1
+      run: pip install conan==2.0.13
 
     - name: Conan version
       run: echo "${{ steps.conan.outputs.version }}"
 
-    - name: Conan profile configuration
-      run: |
-           conan profile new quetzal-profile --detect --force
-           conan profile update settings.compiler="gcc" quetzal-profile
-           conan profile update settings.compiler.version=12 quetzal-profile
-           conan profile update settings.compiler.cppstd=20 quetzal-profile
-           conan profile update settings.compiler.libcxx="libstdc++11" quetzal-profile
-           conan profile update env.CC=[/usr/bin/gcc-12] quetzal-profile
-           conan profile update env.CXX=[/usr/bin/g++-12] quetzal-profile
+    # - name: Conan profile configuration
+    #   run: |
+    #        conan profile detect --name profile
+    #        conan profile update settings.compiler="gcc" profile
+    #        conan profile update settings.build_type="Release" profile
+    #        conan profile update settings.compiler.version=12 profile
+    #        conan profile update settings.compiler.cppstd=20 profile
+    #        conan profile update settings.compiler.libcxx="libstdc++11" profile
+    #        conan profile update env.CC=[/usr/bin/gcc-12] profile
+    #        conan profile update env.CXX=[/usr/bin/g++-12] profile
 
     - name: Conan install dependencies
       run: >
-        conan install conanfile.py
-        --build=missing
-        --install-folder=build
-        -pr:b=quetzal-profile
-        -pr:h=quetzal-profile
+        conan install conanfile.py --profile:build=conan/profiles/linux-x86-gcc12-debug --profile:host=conan/profiles/linux-x86-gcc12-debug --build=missing --output-folder=build
 
     - name: CMake configuration
       run:  >
@@ -74,7 +78,7 @@ jobs:
 
     - name: CMake test
       working-directory: ${{github.workspace}}/build
-      run: ctest -C ${{env.BUILD_TYPE}}
+      run: ctest -C ${{env.BUILD_TYPE}} --rerun-failed --output-on-failure
 
     - name: Doxygen documentation generation
       working-directory: ${{github.workspace}}/build

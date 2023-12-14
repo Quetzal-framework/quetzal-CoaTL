@@ -8,8 +8,7 @@
 *                                                                      *
 ***************************************************************************/
 
-#ifndef __NEWICK_AST_H_INCLUDED__
-#define __NEWICK_AST_H_INCLUDED__
+#pragma once
 
 #include <boost/spirit/home/x3.hpp>
 #include <boost/spirit/home/x3/support/ast/variant.hpp>
@@ -112,5 +111,3 @@ namespace quetzal::format::newick::ast
 } // namespace ast
 
 BOOST_FUSION_ADAPT_STRUCT(quetzal::format::newick::ast::node, children, name, distance_to_parent)
-
-#endif

@@ -236,13 +236,14 @@ namespace quetzal::geography
     /// @brief Location descriptors (unique identifiers) of the grid cells
     auto locations() const noexcept
     {
-      return ranges::views::iota(0, width() * height() - 1);
+      return ranges::views::iota(0, width() * height());
     }
 
     /// @brief Time descriptors (unique identifiers) of the dataset bands
     auto times() const noexcept
     {
-      return ranges::views::iota(0, depth() - 1);
+      // [0 ... depth -1 [
+      return ranges::views::iota(0, depth());
     }
 
     ///@brief checks if the raster contains a layer with specific time
@@ -269,7 +270,8 @@ namespace quetzal::geography
     /// @return An optional that is empty if the value read is equal to NA.
     std::optional<value_type> at(location_descriptor x, time_descriptor t) const noexcept
     {
-      assert(x >= 0 && x < locations().size());
+      assert(x >= 0 and x < locations().size());
+      assert(t >= 0 and t < times().size());
       const auto colrow = to_colrow(x);
       return read(colrow.col, colrow.row, t);
     }

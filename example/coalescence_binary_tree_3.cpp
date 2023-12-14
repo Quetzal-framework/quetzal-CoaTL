@@ -38,7 +38,7 @@ int main()
   assert(tree.has_predecessor(root) == false);
   assert(tree.predecessor(c) == root);
   assert(tree.has_successors(root) == true);
-  assert( ! std::ranges::none_of( tree.successors(c), [&t = std::as_const(tree)](auto v){ t.has_successors(v);} ));
+  assert( std::ranges::none_of( tree.successors(c), [&](const auto& v){ return tree.has_successors(v);} ));
 
   std::cout << "Degree of inner vertex c is " << tree.degree(c) << std::endl;
 
@@ -51,5 +51,5 @@ int main()
   std::cout << std::endl;
   
   // Other edges values were left default initialized
-  assert(tree[cd_edge].values.size() == 0);
+  assert(tree[cd_edge].size() == 0);
 }

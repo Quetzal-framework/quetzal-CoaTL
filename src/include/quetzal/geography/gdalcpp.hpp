@@ -323,8 +323,8 @@ namespace quetzal::geography::gdalcpp
         //! Fetch a band object for a dataset, zeroth-based numbering.
         auto &band(unsigned int i) const
         {
-            assert(i < depth());
-            return *(m_dataset->GetRasterBand(i + 1));
+            assert(i >= 1 and i <= depth());
+            return *(m_dataset->GetRasterBand(i));
         }
 
         //! Fetch the affine transformation coefficients.
