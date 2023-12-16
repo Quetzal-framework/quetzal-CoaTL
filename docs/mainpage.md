@@ -21,3 +21,5 @@ A standardized generic interface for manipulating concepts like genes genealogie
 encourage reuse of algorithms and data structures. 
 
 This library intends to do this for the C++ language.
+
+\image html pictures/quetzal_scheme.png
