@@ -30,7 +30,7 @@ int main()
 
   // We need to make choices here concerning how NA are handled
   auto suit = expressive::use([s_view](location_type x, time_type t){ return s_view(x,t).value_or(0.0); });
-  auto elev = expressive::use([s_view](location_type x, time_type t){ return s_view(x,t).value_or(0.0); });
+  auto elev = expressive::use([e_view](location_type x, time_type t){ return e_view(x,t).value_or(0.0); });
 
   std::random_device rd;  // a seed source for the random number engine
   std::mt19937 gen(rd()); // mersenne_twister_engine seeded with rd()

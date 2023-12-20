@@ -6,24 +6,16 @@ using namespace quetzal;
 
 int main()
 {
-	// What type you want to use to identify the variable: could also be e.g. an integer
-	using key_type = std::string;
-
-	// What type you want to use to identify the variable: could also be e.g. a time period
-	using time_type = int;
-
-	// Let's define a shorter alias
-	using landscape_type = quetzal::geography::landscape<key_type, time_type>;
-
 	auto file1 = std::filesystem::current_path() / "data/bio1.tif";
 	auto file2 = std::filesystem::current_path() / "data/bio12.tif";
 
-	// The raster have 10 bands that we will assign to 2001 ... 2011.
-	std::vector<time_type> times(10);
+	// The raster have 10 bands that we will assign to 2001 ... 2010.
+	std::vector<int> times(10);
     std::iota(times.begin(), times.end(), 2001);
 
 	// Initialize the landscape: for each var a key and a file, for all a time series.
-	auto env = landscape_type::from_files( { {"bio1", file1}, {"bio12", file2} }, times );
+	using landscape_type = quetzal::geography::landscape<>;
+	auto env = quetzal::geography::landscape<>::from_files( { {"bio1", file1}, {"bio12", file2} }, times );
 	std::cout << env << std::endl;
 
 	// We indeed recorded 2 variables: bio1 and bio12

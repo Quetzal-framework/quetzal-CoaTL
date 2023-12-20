@@ -21,6 +21,7 @@
 #include <functional> // std::cref
 #include <optional>
 #include <iostream>
+#include <string>
 
 namespace quetzal::geography
 {
@@ -35,7 +36,7 @@ namespace quetzal::geography
 	/// @tparam Key A key used to uniquely identifie a variable, e.g. std::string.
 	/// @tparam Time Type used as time period for every band, e.g. std::string with `4.2-0.3 ka`
 	/// @ingroup geography
-	template <typename Key, typename Time>
+	template <typename Key=std::string, typename Time=int>
 	class landscape
 	{
 

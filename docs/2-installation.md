@@ -53,6 +53,13 @@ To swiftly open an integrated development environment (IDE), begin coding to exp
 
 This will download the project, builds a Docker Image, manage the dependencies and automatically build and run the tests. If it's the first time you build the image, it may take some time, so you're free to go get a coffee!
 
+Then, 
+1. navigate to the `template/main.cpp` file
+2. Open the VSC Command Palette with `Shift + Command + P` (Mac) or `Ctrl + Shift + P` (Windows/Linux)
+3. Click on `Run Task > Run Template Project (Debug)`
+4. Read the output in the integrated terminal
+5. Edit `template/main.cpp` to your liking and re-run the task, observe the difference in the terminal.
+
 ---
 
 ### Copy
