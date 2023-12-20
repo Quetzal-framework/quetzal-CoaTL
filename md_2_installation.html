@@ -142,11 +142,15 @@ $(document).ready(function(){initNavTree('md_2_installation.html',''); initResiz
 <p>The library provides many options for reuse, and the most suitable approach depends on your specific requirements.</p>
 <h1><a class="anchor" id="autotoc_md12"></a>
 Structure and Dependencies</h1>
-<p>This repository contains three independent CMake-based projects:</p>
+<p>This repository contains several independent CMake-based projects:</p>
 <ul>
+<li><code>./template</code><ul>
+<li>entry point for user development and onboarding, <a href="#easiest-devcontainer-on-visual-studio-code">integrated with Visual Studio Code</a></li>
+<li>the <code>template/main.cpp</code> file includes the library and can be easily edited and recompiled without breaking the library.</li>
+</ul>
+</li>
 <li><code>./src</code><ul>
 <li>header-only project containing the Quetzal-CoaTL library</li>
-<li><code>./src/CMakeList.txt</code> file is intended as an entry point for library users</li>
 <li>it depends on the following external dependencies:<ul>
 <li><a href="https://gdal.org/">GDAL</a> for geographic data manipulation</li>
 <li><a href="https://www.boost.org/doc/libs/master/index.html">Boost</a> for general purpose C++ utilities</li>
@@ -155,10 +159,18 @@ Structure and Dependencies</h1>
 </li>
 </ul>
 </li>
+<li><code>./test</code><ul>
+<li>the unit and integration tests suite</li>
+</ul>
+</li>
+<li><code>./example</code><ul>
+<li>the example tests suite that are used in the Tutorial documentation section</li>
+</ul>
+</li>
 <li><code>.</code><ul>
 <li>entry point for library development and continuous deployment (CI/CD) processes.</li>
 <li>it wraps <code>./src</code> project with a cmake project, examples, tests and docs.</li>
-<li>if you want to build the documentation without Conan, <a href="https://www.doxygen.nl/">Doxygen</a> is required to generate the documentation from the annotated C++ sources.</li>
+<li>if you want to build the documentation, <a href="https://www.doxygen.nl/">Doxygen</a> is required to generate the documentation from the annotated C++ sources.</li>
 </ul>
 </li>
 <li><code>./test_package</code><ul>
@@ -166,7 +178,8 @@ Structure and Dependencies</h1>
 </ul>
 </li>
 </ul>
-<dl class="section remark"><dt>Remarks</dt><dd>There are two entry points:<ul>
+<dl class="section remark"><dt>Remarks</dt><dd>There are three entry points:<ul>
+<li>The <code>./template/CMakeLists.txt</code> is not meant to be modified directly (unless the user decides), but it makes the template demonstration project <a href="#easiest-devcontainer-on-visual-studio-code">easier to use in Visual Studio Code</a></li>
 <li>The top-level <code>./CMakeLists.txt</code> file is intended solely for Quetzal developers and contributors to build the entire project code (example and tests) with highly restrictive compilation flags.</li>
 <li>The <code>./src/CMakeLists.txt</code> file, which contains a pure library definition and is intended for customers who prefer using CMake's <code>add_subdirectory()</code> to manage dependencies.</li>
 </ul>
