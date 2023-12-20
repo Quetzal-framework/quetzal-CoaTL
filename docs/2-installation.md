@@ -12,25 +12,32 @@ The library provides many options for reuse, and the most suitable approach depe
 
 ## Structure and Dependencies
 
-This repository contains three independent CMake-based projects:
+This repository contains several independent CMake-based projects:
 
+* `./template`
+  - entry point for user development and onboarding, [integrated with Visual Studio Code](#easiest-devcontainer-on-visual-studio-code)
+  - the `template/main.cpp` file includes the library and can be easily edited and recompiled without breaking the library.
 * `./src`
   - header-only project containing the Quetzal-CoaTL library
-  - `./src/CMakeList.txt` file is intended as an entry point for library users
   - it depends on the following external dependencies:
     - [GDAL](https://gdal.org/) for geographic data manipulation
     - [Boost](https://www.boost.org/doc/libs/master/index.html) for general purpose C++ utilities
     - [range-v3](https://github.com/ericniebler/range-v3), a range library for C++14/17/20. 
+* `./test`
+    - the unit and integration tests suite
+* `./example`
+    - the example tests suite that are used in the Tutorial documentation section
 * `.`
   - entry point for library development and continuous deployment (CI/CD) processes.
   - it wraps `./src` project with a cmake project, examples, tests and docs.
-  - if you want to build the documentation without Conan, [Doxygen](https://www.doxygen.nl/)
+  - if you want to build the documentation, [Doxygen](https://www.doxygen.nl/)
     is required to generate the documentation from the annotated C++ sources.
 * `./test_package`
   - library installation and Conan packaging verification
 
 @remark
-There are two entry points:
+There are three entry points:
+- The `./template/CMakeLists.txt` is not meant to be modified directly (unless the user decides), but it makes the template demonstration project [easier to use in Visual Studio Code](#easiest-devcontainer-on-visual-studio-code)
 - The top-level `./CMakeLists.txt` file is intended solely for Quetzal developers and contributors to build the entire project code (example and tests) with highly restrictive compilation flags.
 - The `./src/CMakeLists.txt` file, which contains a pure library definition and is intended for customers who prefer using CMake's `add_subdirectory()` to manage dependencies.
 
@@ -52,6 +59,13 @@ To swiftly open an integrated development environment (IDE), begin coding to exp
 4. Click [here](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/Quetzal-framework/quetzal-CoaTL) to get started.
 
 This will download the project, builds a Docker Image, manage the dependencies and automatically build and run the tests. If it's the first time you build the image, it may take some time, so you're free to go get a coffee!
+
+Then, 
+1. navigate to the `template/main.cpp` file
+2. Open the VSC Command Palette with `Shift + Command + P` (Mac) or `Ctrl + Shift + P` (Windows/Linux)
+3. Click on `Run Task > Run Template Project (Debug)`
+4. Read the output in the integrated terminal
+5. Edit `template/main.cpp` to your liking and re-run the task, observe the difference in the terminal.
 
 ---
 
