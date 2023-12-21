@@ -10,6 +10,7 @@
 		"dockerfile": "Dockerfile-ubuntu"
 	},
 	"onCreateCommand": "chmod +x .devcontainer/onCreateCommand.sh && ./.devcontainer/onCreateCommand.sh",
+	"remoteUser": "root",
 	// Features to add to the dev container, see https://containers.dev/feature
 	"features": {},
 
