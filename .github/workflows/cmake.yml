@@ -68,6 +68,7 @@ jobs:
         -B ${{github.workspace}}/build 
         -S .
         -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        -DBUILD_TESTS=ON
         --toolchain ${{github.workspace}}/build/conan_toolchain.cmake
 
     - name: CMake build
