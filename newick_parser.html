@@ -194,7 +194,12 @@ Default properties</h3>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;}</div>
 <div class="ttc" id="anamespacequetzal_1_1format_1_1newick_html"><div class="ttname"><a href="namespacequetzal_1_1format_1_1newick.html">quetzal::format::newick</a></div><div class="ttdoc">Generic components for parsing or generating Newick strings.</div><div class="ttdef"><b>Definition:</b> ast.hpp:22</div></div>
 </div><!-- fragment --><p><b>Output</b></p>
-<div class="fragment"></div><!-- fragment --><hr  />
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;3</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;2</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;3</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;2</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;These graphs are toootally isomorphic!</div>
+</div><!-- fragment --><hr  />
 <h3><a class="anchor" id="autotoc_md50"></a>
 Custom properties</h3>
 <p>In the previous example we used default types to represent the properties of a vertex and an edge. These defaults are useful, but not always sufficient. For example, you may want to visit your tree graph and trigger specific events when specific nodes or edges are visited.</p>
@@ -268,7 +273,15 @@ Custom properties</h3>
 <div class="ttc" id="astructedge__info_html"><div class="ttname"><a href="structedge__info.html">edge_info</a></div><div class="ttdef"><b>Definition:</b> newick_parser_2.cpp:8</div></div>
 <div class="ttc" id="astructvertex__info_html"><div class="ttname"><a href="structvertex__info.html">vertex_info</a></div><div class="ttdef"><b>Definition:</b> coalescence_binary_tree_2.cpp:5</div></div>
 </div><!-- fragment --><p><b>Output</b></p>
-<div class="fragment"></div><!-- fragment --><hr  />
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;3</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;2</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;Discover vertex 0 (<span class="stringliteral">&quot;F&quot;</span>)</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;Discover vertex 1 (<span class="stringliteral">&quot;A&quot;</span>)</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;Discover vertex 2 (&quot;B&quot;)</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;Discover vertex 3 (&quot;E&quot;)</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;Discover vertex 4 (&quot;C&quot;)</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;Discover vertex 5 (&quot;D&quot;)</div>
+</div><!-- fragment --><hr  />
 <h2><a class="anchor" id="autotoc_md52"></a>
 Interfacing legacy code</h2>
 <p>If you have been coding for a while, you may already depend heavily on your own class to describe a tree graph, and not feel very excited about refactoring your whole project to switch to <b>Quetzal</b> trees. Fair enough.</p>
@@ -348,7 +361,19 @@ Interfacing legacy code</h2>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;}</div>
 <div class="ttc" id="astructMyNode_html"><div class="ttname"><a href="structMyNode.html">MyNode</a></div><div class="ttdef"><b>Definition:</b> newick_parser_3.cpp:7</div></div>
 </div><!-- fragment --><p><b>Output</b></p>
-<div class="fragment"></div><!-- fragment --> </div></div><!-- contents -->
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="stringliteral">&quot;(A:0.1,(C:0.3,D:0.4)B:0.5)E;&quot;</span>   Parsed</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;Abstract Tree Syntax:</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="stringliteral">&quot;E&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;├──0.1──<span class="stringliteral">&quot;A&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;└──0.5──<span class="stringliteral">&quot;B&quot;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    ├──0.3──<span class="stringliteral">&quot;C&quot;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    └──0.4──<span class="stringliteral">&quot;D&quot;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;Populated</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;Populated</div>
+</div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
