@@ -16,6 +16,9 @@ find_package(GDAL REQUIRED)
 # range-v3
 find_package(range-v3)
 
+# mp-units
+find_package(mp-units CONFIG REQUIRED)
+
 ### UNIT TEST
 file(GLOB TEST_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} unit_test/*.cpp)
 foreach(testSrc ${TEST_SRCS})
@@ -28,7 +31,7 @@ foreach(testSrc ${TEST_SRCS})
   # Ignore warnings about subtle ABI change
   target_compile_options(${testName} PUBLIC "-Wno-psabi")
   # Link to targets and dependencies
-  target_link_libraries(${testName} quetzal::quetzal boost::boost GDAL::GDAL range-v3::range-v3)
+  target_link_libraries(${testName} quetzal::quetzal boost::boost GDAL::GDAL range-v3::range-v3 mp-units::mp-units)
   # Specifies include directories to use when compiling the target
   target_include_directories(
     ${testName} PRIVATE

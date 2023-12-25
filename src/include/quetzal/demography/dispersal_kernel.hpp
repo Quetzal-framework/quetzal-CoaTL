@@ -8,11 +8,12 @@
 *                                                                      *
 ***************************************************************************/
 
-#ifndef __DISPERSAL_KERNELS_HPP_INCLUDED__
-#define __DISPERSAL_KERNELS_HPP_INCLUDED__
+#pragma once
 
-#include <cmath> // M_PI std::gamma std::pow
+#include <cmath> // M_PI std::tgamma std::pow
 #include <cassert>
+
+#include <mp-units/systems/isq/isq.h> // QuantityOf<isq::length>
 
 namespace quetzal
 {
@@ -20,248 +21,338 @@ namespace quetzal
   {
     namespace dispersal_kernel
     {
-      /// @brief Gaussian dispersal kernel
-      ///
+      using namespace mp_units;
+
+      /// @brief Gaussian dispersal location kernel (thin-tailed)
       /// @ingroup demography
-      ///
+      /// @details To be used as a reference against leptokurtic kernels.
+      ///          Suitable for diffusion-based dispersal or complete random-walk during a constant time.
+      template<QuantityOf<isq::length> Distance>
       struct Gaussian
       {
-        /// @brief Gaussian dispersal kernel parameter
-        class param_type
+
+        /// @brief Dispersal location kernel parameter
+        struct param_type
         {
-          double _a;
-        public:
-
-          /// @brief Gaussian dispersal kernel parameter constructor
-          param_type (double a): _a(a) {};
-
-          /// @brief Get Gaussian dispersal kernel parameter
-          double a() const {return _a;}
-          void a(double value) { _a = value ;}
+          /// @brief Scale parameter homogeneous to a distance
+          Distance a;
         };
 
-        /// @brief Gaussian dispersal kernel parameter pdf
-        static double pdf(double r, param_type const& p)
+        /// @brief Probability density function
+        /// @param r The distance radius from the source to the target
+        /// @param p Parameters of the distribution
+        /// @return The value of the expression \f$ \frac{1}{\pi a^2}.exp(-\frac{r^2}{a^2}) \f$
+        static constexpr auto pdf(Distance r, param_type const& p)
         {
-          double a = p.a();
+          Distance a = p.a;
           assert(a > 0 && r >= 0);
-          return 1/(M_PI*a*a) * std::exp(-(r*r)/(a*a)) ;
+          return (1/(M_PI*a*a)) * std::exp(-(r*r)/(a*a)) ;
+        }
+
+        /// @brief Mean dispersal distance
+        /// @param p Parameters of the distribution
+        /// @return The value of the expression \f$ \frac{a\sqrt{\pi}}{2} \f$
+        static constexpr Distance mean_dispersal_distance(param_type const& p)
+        {
+          Distance a = p.a;
+          assert(a > 0);
+          return (a * std::pow(M_PI, 0.5))/2;
         }
       };
 
-      /// @brief Logistic dispersal kernel
-      ///
+      /// @brief Logistic dispersal location kernel (fat-tailed, power-law tail)
       /// @ingroup demography
-      ///
-      struct Logistic
+      /// @details Suitable for frequent long-distance dispersal events and weak effect of distance close to the source.
+      template<QuantityOf<isq::length> Distance>
+      struct logistic
       {
-        class param_type
+        
+        /// @brief Dispersal location kernel parameter
+        struct param_type
         {
-          double _a;
-          double _b;
-        public:
-          double a() const {return _a;}
-          double b() const {return _b;}
-          void a(double value) { _a = value;}
-          void b(double value) { _b = value;}
+          /// @brief Scale parameter homogeneous to a distance
+          Distance a;
+
+          /// @brief Shape parameter determining the shape of the curve (weight of long-distance events).
+          double b;
         };
 
-        static double pdf(double r, param_type const& p)
+        /// @brief Probability density function
+        /// @param r The distance radius from the source to the target
+        /// @param p Parameters of the distribution
+        /// @return The value of the expression \f$ \frac{b}{(2\pi a^2 \Gamma(\frac{2}{b}) \Gamma(1-\frac{2}{b}))} (1 + \frac{r^b}{a^b} )^{-1} \f$
+        static constexpr auto pdf(double r, param_type const& p)
         {
-          double a = p.a();
-          double b = p.b();
+          Distance a = p.a;
+          double b = p.b;
           assert(a > 0 && b >2 && r >= 0);
           return (b/(2*M_PI*(a*a)*std::tgamma(2/b)*std::tgamma(1-2/b)))*(1/(1+(std::pow(r,b)/(std::pow(a,b)))));
         }
 
+        /// @brief Mean dispersal distance
+        /// @param p Parameters of the distribution
+        /// @return The value of the expression \f$ a~\frac{\Gamma(\frac{3}{b})~\Gamma(1-\frac{3}{b})}{\Gamma(\frac{2}{b})~\Gamma(1-\frac{2}{b})} \f$
+        static constexpr Distance mean_dispersal_distance(param_type const& p)
+        {
+          Distance a = p.a;
+          double b = p.b;
+          assert(a > 0 && b >2);
+          return ( a*std::tgamma(3/b)*std::tgamma(1-3/b) )/( std::tgamma(2/b)*std::tgamma(1-2/b));
+        }
       };
 
-      /// @brief NegativeExponential dispersal kernel
-      ///
+      /// @brief Negative Exponential dispersal location kernel (exponential tail fatness)
       /// @ingroup demography
-      ///
-      struct NegativeExponential
+      /// @details To be used as reference against more fat-tailed kernels. 
+      ///          Suitable for representing a travel at constant speed in a random direction with a constant
+      ///          stopping rate, or a correlated random walk with settlement.
+      template<QuantityOf<isq::length> Distance>
+      struct negative_exponential
       {
-        class param_type
+        /// @brief Dispersal location kernel parameter
+        struct param_type
         {
-          double _a;
-        public:
-          double a() const {return _a;}
-          void a(double value) { _a = value;}
+          /// @brief Scale parameter homogeneous to a distance
+          Distance a;
         };
 
-        static double pdf(double r, param_type const& p)
+        /// @brief Probability density function
+        /// @param r The distance radius from the source to the target
+        /// @param p Parameters of the distribution
+        /// @return The value of the expression \f$ \frac{1}{2 \pi a^2} exp(-\frac{r}{a}) \f$
+        static constexpr auto pdf(double r, param_type const& p)
         {
-          double a = p.a();
+          Distance a = p.a;
           assert(a > 0 && r>= 0);
           return 1/(2*M_PI*a*a) * std::exp(-r/a) ;
         }
 
+        /// @brief Mean dispersal distance
+        /// @param p Parameters of the distribution
+        /// @return The value of the expression \f$ 2a \f$
+        static constexpr Distance mean_dispersal_distance(param_type const& p)
+        {
+          Distance a = p.a;
+          assert(a > 0);
+          return 2*a;
+        }
       };
 
-      /// @brief ExponentialPower dispersal kernel
-      ///
+      /// @brief Exponential Power dispersal location kernel (\f$b > 1\f$ : thin-tailed, \f$b < 1\f$ : fat-tailed. Always thinner than power laws.)
       /// @ingroup demography
-      ///
-      struct ExponentialPower
+      /// @details Suitable for pollen dispersal. Gaussian and Exponential are special cases, making it suitable for shape comparisons.
+      template<QuantityOf<isq::length> Distance>
+      struct exponential_power
       {
-        class param_type
+        /// @brief Dispersal location kernel parameter
+        struct param_type
         {
-          double _a;
-          double _b;
-        public:
-          double a() const {return _a;}
-          double b() const {return _b;}
-          void a(double value) { _a = value;}
-          void b(double value) { _b = value;}
+          /// @brief Scale parameter homogeneous to a distance
+          Distance a;
+
+          /// @brief Shape parameter determining the shape of the curve (weight of long-distance events).
+          double b;
         };
 
-        static double pdf(double r, param_type const& p)
+        /// @brief Probability density function
+        /// @param r The distance radius from the source to the target
+        /// @param p Parameters of the distribution
+        /// @return The value of the expression \f$ \frac{b}{2 \pi a^2 \Gamma(\frac{2}{b})} exp(-\frac{r^b}{a^b}) \f$
+        static constexpr auto pdf(double r, param_type const& p)
         {
-          double a = p.a();
-          double b = p.b();
+          Distance a = p.a;
+          double b = p.b;
           assert(a > 0 && b > 0 && r >= 0);
           return b/(2*M_PI*a*a*std::tgamma(2/b)) * std::exp(-std::pow(r,b)/std::pow(a,b));
         }
 
+        /// @brief Mean dispersal distance
+        /// @param p Parameters of the distribution
+        /// @return The value of the expression \f$ a ~ \frac{\Gamma(\frac{3}{b})}{\Gamma(\frac{2}{b})} \f$
+        static constexpr Distance mean_dispersal_distance(param_type const& p)
+        {
+          Distance a = p.a;
+          double b = p.b;
+          assert(a > 0 && b > 0);
+          return a * std::tgamma(3/b) / std::tgamma(2/b);
+        }
       };
 
 
-      /// @brief TwoDt dispersal kernel
-      ///
+      /// @brief TwoDt dispersal location kernel (fat-tailed, power-law tail)
       /// @ingroup demography
-      ///
-      struct TwoDt
+      /// @details Suitable for seed dispersal. Obtained as a continuous mixture of Gaussian kernels with variance
+      ///          parameters distributed as the inverse of a Gamma distribution.
+      template<QuantityOf<isq::length> Distance>
+      struct two_dt
       {
-        class param_type
+        /// @brief Dispersal location kernel parameter
+        struct param_type
         {
-          double _a;
-          double _b;
-        public:
-          double a() const {return _a;}
-          double b() const {return _b;}
-          void a(double value) { _a = value;}
-          void b(double value) { _b = value;}
+          /// @brief Scale parameter homogeneous to a distance
+          Distance a;
+
+          /// @brief Shape parameter determining the shape of the curve (weight of long-distance events).
+          double b;
         };
 
-        static double pdf(double r, param_type const& p)
+        /// @brief Probability density function
+        /// @param r The distance radius from the source to the target
+        /// @param p Parameters of the distribution
+        /// @return The value of the expression \f$ \frac{b-1}{\pi a^2} (1+\frac{r^2}{a^2})^{-b} \f$
+        static constexpr auto pdf(double r, param_type const& p)
         {
-          double a = p.a();
-          double b = p.b();
+          Distance a = p.a;
+          double b = p.b;
           assert(a > 0 && b > 1 && r >= 0);
           return (b-1)/(M_PI*a*a) * std::pow( (1 + (r*r)/(a*a)) , -b);
         }
-      };
 
-      /// @brief InversePowerLaw dispersal kernel
-      ///
-      /// @ingroup demography
-      ///
-      struct InversePowerLaw
-      {
-        class param_type
+        /// @brief Mean dispersal distance
+        /// @param p Parameters of the distribution
+        /// @return The value of the expression \f$ a ~ \frac{\sqrt{\pi_PI}}{2}\frac{\Gamma(b-\frac{3}{2})}{\Gamma(b-1)} \f$
+        /// @warning Return \f$ \infty \f$ if \f$ b < 3/2 \f$
+        static constexpr Distance mean_dispersal_distance(param_type const& p)
         {
-          double _a;
-          double _b;
-        public:
-          double a() const {return _a;}
-          double b() const {return _b;}
-          void a(double value) { _a = value;}
-          void b(double value) { _b = value;}
-        };
-
-        static double pdf(double r, param_type const& p)
-        {
-          double a = p.a();
-          double b = p.b();
-          assert(a > 0 && b > 2 && r >= 0);
-          return (b-2)*(b-1)/(2*M_PI*a*a) * std::pow( (1 + r/a) , -b);
+          Distance a = p.a;
+          double b = p.b;
+          assert(a > 0 && b > 1);
+          if(b < 3/2)
+          {
+            return std::numeric_limits<double>::infinity();
+          }
+          return ( a * std::pow(M_PI,0.5) * std::tgamma(b - 3/2)) / ( 2 * std::tgamma(b-1));
         }
       };
 
-      /// @brief UndefinedInversePowerLaw dispersal kernel
-      ///
+      /// @brief Inverse Power Law dispersal location kernel (fat-tailed, power-law tail)
       /// @ingroup demography
-      ///
-      struct UndefinedInversePowerLaw
+      /// @details Suitable for very fat tails.
+      template<QuantityOf<isq::length> Distance>
+      struct inverse_power_law
       {
-        class param_type
+        /// @brief Dispersal location kernel parameter
+        struct param_type
         {
-          double _a;
-          double _b;
-        public:
-          double a() const {return _a;}
-          double b() const {return _b;}
-          void a(double value) { _a = value;}
-          void b(double value) { _b = value;}
+          /// @brief Scale parameter homogeneous to a distance
+          Distance a;
+
+          /// @brief Shape parameter determining the shape of the curve (weight of long-distance events).
+          double b;
         };
 
-        static double pdf(double r, param_type const& p)
+        /// @brief Probability density function
+        /// @param r The distance radius from the source to the target
+        /// @param p Parameters of the distribution
+        /// @return The value of the expression \f$ \frac{(b-2)(b-1)}{2 \pi a^2} (1+\frac{r}{a})^{-b} \f$
+        static constexpr auto pdf(double r, param_type const& p)
         {
-          double a = p.a();
-          double b = p.b();
+          Distance a = p.a;
+          double b = p.b;
           assert(a > 0 && b > 2 && r >= 0);
-          return std::pow( r/a , -b);
+          return std::pow( 1+r/a, -b) * (b-2) * (b-1) / (2*M_PI*a*a);
+        }
+
+        /// @brief Mean dispersal distance
+        /// @param p Parameters of the distribution
+        /// @return The value of the expression \f$ \frac{2a}{b-3} \f$
+        /// @warning Return \f$ \infty \f$ if \f$ b < 3 \f$
+        static constexpr Distance mean_dispersal_distance(param_type const& p)
+        {
+          Distance a = p.a;
+          double b = p.b;
+          assert(a > 0 && b > 2);
+          if(b < 3)
+          {
+            return std::numeric_limits<double>::infinity();
+          }
+          return 2*a/(b-3);
         }
       };
 
-      /// @brief Lognormal dispersal kernel
-      ///
+      /// @brief Lognormal dispersal location kernel (fat-tailed)
       /// @ingroup demography
-      ///
-      struct Lognormal
+      /// @details Suitable for seed dispersal, particularly when the peak of the distribution is not at zero distance from the source.
+      template<QuantityOf<isq::length> Distance>
+      struct lognormal
       {
-        class param_type
+        /// @brief Dispersal location kernel parameter
+        struct param_type
         {
-          double _a;
-          double _b;
-        public:
-          double a() const {return _a;}
-          double b() const {return _b;}
-          void a(double value) { _a = value;}
-          void b(double value) { _b = value;}
+          /// @brief Scale parameter homogeneous to a distance
+          Distance a;
+
+          /// @brief Shape parameter determining the shape of the curve (weight of long-distance events).
+          double b;
         };
 
-        static double pdf(double r, param_type const& p)
+        /// @brief Probability density function
+        /// @param r The distance radius from the source to the target
+        /// @param p Parameters of the distribution
+        /// @return The value of the expression \f$ \frac{1}{ (2\pi)^{3/2}br^2} exp( - \frac{log(r/a)^2}{2b^2} ) \f$
+        static constexpr auto pdf(double r, param_type const& p)
         {
-          double a = p.a();
-          double b = p.b();
+          Distance a = p.a;
+          double b = p.b;
           assert(a > 0 && b > 0 && r >= 0);
           return (1/(std::pow(2*M_PI, 3/2)*b*r*r)) * std::exp(- (std::log(r/a)*std::log(r/a) / (2*b*b) ) );
         }
+
+        /// @brief Mean dispersal distance
+        /// @param p Parameters of the distribution
+        /// @return The value of the expression \f$ a ~ exp(\frac{b^2}{2}) \f$
+        static constexpr Distance mean_dispersal_distance(param_type const& p)
+        {
+          Distance a = p.a;
+          double b = p.b;
+          assert(a > 0 && b > 0);
+          return a*std::exp(b*b/2);
+        }
       };
 
-      /// @brief GaussianMixture dispersal kernel
-      ///
+      /// @brief Gaussian Mixture dispersal location kernel (leptokurtic, never fat-tailed)
       /// @ingroup demography
-      ///
-      struct GaussianMixture
+      /// @details Used in theoretical studies.
+      template<QuantityOf<isq::length> Distance>
+      struct gaussian_mixture
       {
-        class param_type
+        /// @brief Dispersal location kernel parameter
+        struct param_type
         {
-          double _a1;
-          double _a2;
-          double _p;
+          /// @brief First scale parameter homogeneous to a distance
+          Distance a1;
+          /// @brief Second scale parameter homogeneous to a distance
+          Distance a2;
+          /// @brief Shape parameter 
+          double p;
         public:
-          double a1() const {return _a1;}
-          double a2() const {return _a2;}
-          double p() const {return _p;}
-          void a1(double value) { _a1 = value;}
-          void a2(double value) { _a2 = value;}
-          void p(double value) { _p = value;}
         };
 
-        static double pdf(double r, param_type const& param)
+        /// @brief Probability density function
+        /// @param r The distance radius from the source to the target
+        /// @param p Parameters of the distribution
+        /// @return The value of the expression \f$ \frac{p}{\pi a_1^2} exp(- \frac{r^2}{a_1^2}) + \frac{1-p}{\pi a_2^2} exp(\frac{r^2}{a_2^2}) \f$
+        static constexpr auto pdf(double r, param_type const& param)
         {
-          double a1 = param.a1();
-          double a2 = param.a2();
-          double p = param.p();
+          Distance a1 = param.a1;
+          Distance a2 = param.a2;
+          double p = param.p;
           assert(a1 > 0 && a2 > 0 && p > 0 && p < 1 && r >= 0);
           return p/(M_PI*a1*a1) * std::exp(-(r*r)/(a1*a1)) + (1-p)/(M_PI*a2*a2) * std::exp(-(r*r)/(a2*a2)) ;
+        }
+
+        /// @brief Mean dispersal distance
+        /// @param p Parameters of the distribution
+        /// @return The value of the expression \f$ \frac{\sqrt{\pi}}{2}~ (pa_1+(1-p)a_2) \f$
+        static constexpr Distance mean_dispersal_distance(param_type const& param)
+        {
+          Distance a1 = param.a1;
+          Distance a2 = param.a2;
+          double p = param.p;
+          assert(a1 > 0 && a2 > 0 && p > 0 && p < 1 );
+          return std::pow(M_PI,0.5) * (p*a1 + (1-p)*a2 ) / 2 ;
         }
       };
     } // namespace dispersal_kernel
   } // namespace demography
 } // namespace quetzal
-
-#endif

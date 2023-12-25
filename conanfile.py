@@ -42,10 +42,12 @@ class QuetzalCoaTLConan(ConanFile):
                 self.requires("boost/[>1.75 <1.80]")
                 self.requires("gdal/[>=3.4.0]")
                 self.requires("range-v3/0.12.0")
+                self.requires("mp-units/2.0.0")
        if self.settings.os == "Linux":
             if self.settings.compiler == "gcc":
                 self.requires("boost/[>1.75 <1.80]")
                 self.requires("gdal/[>=3.4.0 <3.5.1]")
+                self.requires("mp-units/2.0.0")
                 self.requires("range-v3/0.12.0")
                 self.requires("libtiff/4.5.1", override=True) # Version conflict: libgeotiff/1.7.1->libtiff/4.6.0, gdal/3.4.3->libtiff/4.5.1.
                 self.requires("libdeflate/1.18", override=True) # Version conflict: libtiff/4.6.0->libdeflate/1.19, gdal/3.4.3->libdeflate/1.18.

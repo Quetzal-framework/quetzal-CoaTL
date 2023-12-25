@@ -10,6 +10,9 @@ find_package(GDAL REQUIRED)
 # range-v3
 find_package(range-v3)
 
+# mp-units
+find_package(mp-units CONFIG REQUIRED)
+
 # Include Boost as an imported target: 1.73 important for compilation with gcc 10 and C++20
 find_package(Boost 1.79 REQUIRED COMPONENTS unit_test_framework filesystem serialization)
 if(Boost_FOUND)
@@ -29,7 +32,7 @@ target_compile_features(main PUBLIC cxx_std_20)
 # Ignore warnings about subtle ABI change
 target_compile_options(main PUBLIC "-Wno-psabi")
 # Link to Boost libraries AND other targets and dependencies
-target_link_libraries(main quetzal::quetzal boost::boost GDAL::GDAL range-v3::range-v3)
+target_link_libraries(main quetzal::quetzal boost::boost GDAL::GDAL range-v3::range-v3 mp-units::mp-units)
 # Specifies include directories to use when compiling a given target
 target_include_directories(
   main PRIVATE
