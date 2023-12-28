@@ -17,7 +17,7 @@ else ()
   # doxygen settings can be set here, prefixed with "DOXYGEN_"
   set(DOXYGEN_PROJECT_NAME "Quetzal-CoaTL")
   set(DOXYGEN_PROJECT_BRIEF "The Coalescence Template Library")
-  set(DOXYGEN_PROJECT_LOGO "quetzal-coaltl-fa.png")
+  set(DOXYGEN_PROJECT_LOGO "assets/images/quetzal-coaltl-fa.png")
   set(DOXYGEN_USE_MDFILE_AS_MAINPAGE "mainpage.md")
   set(DOXYGEN_EXCLUDE_PATTERNS "README.md" "doxygen-awesome-css" "*env*" "conanfile.*")
   set(DOXYGEN_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/docs")

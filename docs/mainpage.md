@@ -22,4 +22,4 @@ encourage reuse of algorithms and data structures.
 
 This library intends to do this for the C++ language.
 
-\image html pictures/quetzal_scheme.png
+\image html assets/images/quetzal-scheme.png
