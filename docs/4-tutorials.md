@@ -27,8 +27,8 @@
 
 - @subpage demographic_histories_in_quetzal
 - Examples
+  - @subpage dispersal-kernels
   - @subpage Growth Expressions
-  - @subpage Dispersal Kernels
   - @subpage Memory Management
 
 ## Graphs
@@ -816,7 +816,7 @@ There a different modeling approaches to look at these demographic histories, pr
 @page dispersal_kernels Dispersal Kernels
 
 @note 
-The objective of this section is to parametrize a Dispersal Location Kernel (in the sense of <a href="pdf/nathan-et-al-2012.pdf" target="_blank"><b> Nathan et al. 2012</b></a>)
+The objective of this section is to parametrize a Dispersal Location Kernel (in the sense of <a href="nathan-et-al-2012.pdf" target="_blank"><b> Nathan et al. 2012</b></a>)
 and to compute useful quantities, such as the distance between two locations, the probability to disperse from one to the other, and the mean dispersal distance expected under the distribution.
 
 ## Background 
