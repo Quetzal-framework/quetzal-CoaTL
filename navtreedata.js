@@ -94,14 +94,14 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"Allele_8hpp_source.html",
-"classquetzal_1_1coalescence_1_1container_1_1Network.html#a9c21b8d2dc545c1a8c4ced777b0891d9",
-"classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrum.html#ac96e90cbc35224c33580fab6c295d868",
-"classquetzal_1_1geography_1_1gdalcpp_1_1Feature.html#a99e2f3b7c470ecaa1e66201484a92135",
-"classquetzal_1_1utils_1_1null__output__iterator.html#aa4d88e7e48660d7b6614e18d1ce02bb9",
-"namespacequetzal.html#a20c15bf1480e708a6637207e0c821b3b",
-"structboost_1_1detail_1_1binary__tree__base_1_1vertex__iterator.html#a684ea388c277bd4ab26b1d3470758f42",
-"structquetzal_1_1format_1_1newick_1_1detail_1_1TreeVisitorWrapper.html#a89bfb05214a9d5ec859d66cd6b4b9ead"
+"",
+"classquetzal_1_1coalescence_1_1container_1_1Forest.html#a94302f7d2023df2ccf828c4696baba0c",
+"classquetzal_1_1coalescence_1_1newick__with__distance__to__parent__and__leaf__name_1_1cell__type.html#ab5249f817a51ab70333f56e3497bf6f2",
+"classquetzal_1_1geography_1_1gdalcpp_1_1Dataset.html#a510c490be46e3680909e05f11568d678",
+"classquetzal_1_1utils_1_1PointWithId.html#a1b6c6b12694d1c26f6fa6a587750e384",
+"namespaceboost.html#a34cc2981f05382b6e0e4e201a9fcabc9",
+"structNode.html#a94c9686e27f05bedd604d347d5bad449",
+"structquetzal_1_1format_1_1newick_1_1TreeAlign.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
