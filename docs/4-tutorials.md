@@ -811,3 +811,31 @@ There a different modeling approaches to look at these demographic histories, pr
 - **Spatial graph structure:** Another category of models puts an emphasis on the geographic structure of these populations and embed GIS information into the model. Here the demographic history receives the semantic of a dense spatial graph where geolocalized nodes represent demes and local processes whereas edges represent distances and dispersal processes. In this kind of models estimating the individual properties of so many demes is not judicious and genetic inference rather aims at estimating species-wide parameters that link local deme conditions (such as rainfall) to populational processes (like growth rate). It's crucial to understand that within this geospatial framework, events like population changes and admixture events are emergent properties of the model: they are generally not explicitly outlined in the model nor subjected to direct estimation.
 
 ---
+
+[//]: # (----------------------------------------------------------------------)
+@page dispersal_kernels Dispersal Kernels
+
+@note 
+The objective of this section is to parametrize a Dispersal Location Kernel (in the sense of Nathan et al. 2015) 
+and to compute useful quantities, such as the distance between two locations, the probability to disperse from one to the other, and the mean dispersal distance expected under the distribution.
+
+## Background 
+
+The dispersal location kernel represents the statistical pattern of dispersal distances within a population. In this context, it essentially serves as the probability density function (pdf) that outlines the distribution of locations after dispersal in relation to the original location. The expressions have been adjusted to incorporate a scale parameter, 
+\f$a\f$, which is consistent with a distance unit, and a shape parameter, 
+\f$b\f$, that dictates the curvature of the distribution curve, emphasizing the influence of long-distance events.
+
+For a source \f$(x_0,y_0)\f$, the dispersal location kernel denoted as \f$k_L(r)\f$ provides the density of the probability of the dispersal end point in the 2D space. In this case, \f$k_L(r)dA\f$ is the probability of a dispersal end point to be within a small 2D area \f$dA\f$ around the location \f$(x,y)\f$. Since a probability is unitless and \f$dA\f$ is an area, \f$k_L(r)\f$ is expressed in per unit area in a 2D space.
+
+Quetzal automate dimensional analysis and conversion thanks to the `mp-units` library.
+
+**Input**
+
+@include{lineno} dispersal_kernel.cpp
+
+**Output**
+
+@include{lineno} dispersal_kernel.txt
+
+---
+## Background 

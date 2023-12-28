@@ -22,12 +22,6 @@ namespace quetzal
   {
     ///
     /// @brief Dispersal location kernels as defined in Nathan et al 2012, table 15.1
-    /// @details Dispersal kernel refer to the statistical distribution of dispersal distances 
-    ///          in a population. In this implementation it is essentially the probability density function (pdf) 
-    ///          describing the distribution of the post-dispersal locations relatively to
-    ///          the source location. Expressions have been re-parametrized to include a scale parameter \f$ a \f$ 
-    ///          homogeneous to a distance, and a shape parameter \f$ b \f$ determining the shape of the curve 
-    ///          (weight of long-distance events).
     ///
     namespace dispersal_kernel{}
     ///
