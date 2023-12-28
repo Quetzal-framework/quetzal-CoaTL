@@ -17,7 +17,7 @@ else ()
   # doxygen settings can be set here, prefixed with "DOXYGEN_"
   set(DOXYGEN_PROJECT_NAME "Quetzal-CoaTL")
   set(DOXYGEN_PROJECT_BRIEF "The Coalescence Template Library")
-  set(DOXYGEN_PROJECT_LOGO "quetzal-coaltl-fa.png")
+  set(DOXYGEN_PROJECT_LOGO "assets/images/quetzal-coaltl-fa.png")
   set(DOXYGEN_USE_MDFILE_AS_MAINPAGE "mainpage.md")
   set(DOXYGEN_EXCLUDE_PATTERNS "README.md" "doxygen-awesome-css" "*env*" "conanfile.*")
   set(DOXYGEN_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/docs")
@@ -28,7 +28,8 @@ else ()
                                     "doxygen-awesome-css/doxygen-awesome-fragment-copy-button.js")
   # Documentation for tutorials requires ctest call to populate build folder
   set(DOXYGEN_EXAMPLE_PATH "../example" "../build/example/output")
-  set(DOXYGEN_IMAGE_PATH "assets")
+  set(DOXYGEN_IMAGE_PATH "assets/images")
+  set(DOXYGEN_HTML_EXTRA_FILES = "assets/pdf")
 
   # Required by doxygen awesome
   set(DOXYGEN_GENERATE_TREEVIEW YES)

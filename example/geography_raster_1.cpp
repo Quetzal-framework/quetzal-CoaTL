@@ -30,7 +30,7 @@ using namespace quetzal;
 	//
 	//          90
 	//          |         (+)
-	// 	    0 --------------> 180    X size positive in decimal degre (east direction positive)
+	// 	    0 --------------> 180    X size positive in decimal degree (east direction positive)
 	//          |                    Y size negative in decimal degree (south direction negative)
 	//          |
 	// 			|
