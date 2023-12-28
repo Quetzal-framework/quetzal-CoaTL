@@ -134,5 +134,17 @@
             "dependsOn": ["Build Template Project (Debug)"],
             "problemMatcher": [],
         },
+        // DOCUMENTATION
+        {
+            "label": "Make Docs",
+            "type": "shell",
+            "command": "cd ${workspaceFolder}/build && make docs ",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "dependsOn": ["Run Unit Tests (Debug)"],
+        },
     ]
 }

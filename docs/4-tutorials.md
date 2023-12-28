@@ -816,7 +816,7 @@ There a different modeling approaches to look at these demographic histories, pr
 @page dispersal_kernels Dispersal Kernels
 
 @note 
-The objective of this section is to parametrize a Dispersal Location Kernel (in the sense of Nathan et al. 2015) 
+The objective of this section is to parametrize a Dispersal Location Kernel (in the sense of <a href="pdf/nathan-et-al-2012.pdf" target="_blank"><b> Nathan et al. 2012</b></a>)
 and to compute useful quantities, such as the distance between two locations, the probability to disperse from one to the other, and the mean dispersal distance expected under the distribution.
 
 ## Background 
@@ -838,4 +838,3 @@ Quetzal automate dimensional analysis and conversion thanks to the `mp-units` li
 @include{lineno} dispersal_kernel.txt
 
 ---
-## Background 
