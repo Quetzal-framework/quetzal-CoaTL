@@ -1,5 +1,6 @@
 var namespaces_dup =
 [
+    [ "Background", "dispersal_kernels.html#autotoc_md103", null ],
     [ "boost", "namespaceboost.html", "namespaceboost" ],
     [ "meta", null, [
       [ "all", "expressive_2expressive_8hpp.html#a486156f206bf5db3fcd7e96873361c6a", null ],

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Quetzal-CoaTL: quetzal::demography::dispersal_kernel::Gaussian Struct Reference</title>
+<title>Quetzal-CoaTL: quetzal::demography::dispersal_kernel::Gaussian&lt; Distance &gt; Struct Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -118,27 +118,119 @@ $(document).ready(function(){initNavTree('structquetzal_1_1demography_1_1dispers
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">quetzal::demography::dispersal_kernel::Gaussian Struct Reference</div>  </div>
+<div class="title">quetzal::demography::dispersal_kernel::Gaussian&lt; Distance &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="dispersal__kernel_8hpp_source.html">quetzal/demography/dispersal_kernel.hpp</a>&gt;</code></p>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian.html" title="Gaussian dispersal kernel.">Gaussian</a> dispersal kernel. </p>
+<div class="textblock"><h3>template&lt;QuantityOf&lt; isq::length &gt; Distance = mp_units::quantity&lt;mp_units::si::metre&gt;&gt;<br />
+struct quetzal::demography::dispersal_kernel::Gaussian&lt; Distance &gt;</h3>
+
+<p><a class="el" href="structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian.html" title="Gaussian dispersal location kernel (thin-tailed)">Gaussian</a> dispersal location kernel (thin-tailed) </p>
+<p>To be used as a reference against leptokurtic kernels. Suitable for diffusion-based dispersal or complete random-walk during a constant time. </p>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian_1_1param__type.html">param_type</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian.html" title="Gaussian dispersal kernel.">Gaussian</a> dispersal kernel parameter.  <a href="classquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian_1_1param__type.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian_1_1param__type.html">param_type</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispersal location kernel parameter.  <a href="structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian_1_1param__type.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:adfc665fd8f762656044db0343cabc0fb"><td class="memItemLeft" align="right" valign="top"><a id="adfc665fd8f762656044db0343cabc0fb"></a>
-static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian.html#adfc665fd8f762656044db0343cabc0fb">pdf</a> (double r, <a class="el" href="classquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian_1_1param__type.html">param_type</a> const &amp;p)</td></tr>
-<tr class="memdesc:adfc665fd8f762656044db0343cabc0fb"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian.html" title="Gaussian dispersal kernel.">Gaussian</a> dispersal kernel parameter pdf. <br /></td></tr>
-<tr class="separator:adfc665fd8f762656044db0343cabc0fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41db68f53df661033c74960732485c49"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian.html#a41db68f53df661033c74960732485c49">pdf</a> (Distance r, <a class="el" href="structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian_1_1param__type.html">param_type</a> const &amp;p)</td></tr>
+<tr class="memdesc:a41db68f53df661033c74960732485c49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Probability density function.  <a href="structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian.html#a41db68f53df661033c74960732485c49">More...</a><br /></td></tr>
+<tr class="separator:a41db68f53df661033c74960732485c49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb8a554930793d9ab203cd737980e165"><td class="memItemLeft" align="right" valign="top">static constexpr Distance&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian.html#afb8a554930793d9ab203cd737980e165">mean_dispersal_distance</a> (<a class="el" href="structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian_1_1param__type.html">param_type</a> const &amp;p)</td></tr>
+<tr class="memdesc:afb8a554930793d9ab203cd737980e165"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mean dispersal distance.  <a href="structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian.html#afb8a554930793d9ab203cd737980e165">More...</a><br /></td></tr>
+<tr class="separator:afb8a554930793d9ab203cd737980e165"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="afb8a554930793d9ab203cd737980e165"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb8a554930793d9ab203cd737980e165">&#9670;&nbsp;</a></span>mean_dispersal_distance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;QuantityOf&lt; isq::length &gt; Distance = mp_units::quantity&lt;mp_units::si::metre&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static constexpr Distance <a class="el" href="structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian.html">quetzal::demography::dispersal_kernel::Gaussian</a>&lt; Distance &gt;::mean_dispersal_distance </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian_1_1param__type.html">param_type</a> const &amp;&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mean dispersal distance. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">p</td><td>Parameters of the distribution </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The value of the expression \( \frac{a\sqrt{\pi}}{2} \) </dd></dl>
+
+</div>
+</div>
+<a id="a41db68f53df661033c74960732485c49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41db68f53df661033c74960732485c49">&#9670;&nbsp;</a></span>pdf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;QuantityOf&lt; isq::length &gt; Distance = mp_units::quantity&lt;mp_units::si::metre&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static constexpr auto <a class="el" href="structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian.html">quetzal::demography::dispersal_kernel::Gaussian</a>&lt; Distance &gt;::pdf </td>
+          <td>(</td>
+          <td class="paramtype">Distance&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian_1_1param__type.html">param_type</a> const &amp;&#160;</td>
+          <td class="paramname"><em>p</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Probability density function. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">r</td><td>The distance radius from the source to the target </td></tr>
+    <tr><td class="paramname">p</td><td>Parameters of the distribution </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The value of the expression \( \frac{1}{\pi a^2}.exp(-\frac{r^2}{a^2}) \) </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/runner/work/quetzal-CoaTL/quetzal-CoaTL/src/include/quetzal/demography/<a class="el" href="dispersal__kernel_8hpp_source.html">dispersal_kernel.hpp</a></li>
 </ul>

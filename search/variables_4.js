@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['lat_903',['lat',['../structquetzal_1_1geography_1_1latlon.html#a0b3841e61f0298aca9adbe8ba3b7a4d4',1,'quetzal::geography::latlon::lat()'],['../structquetzal_1_1geography_1_1lonlat.html#a8f3e26a784d75fe45bdd88c62ceaece9',1,'quetzal::geography::lonlat::lat()']]],
-  ['lon_904',['lon',['../structquetzal_1_1geography_1_1latlon.html#aded1f471fa5c7fa30cbdc7b394fe0a95',1,'quetzal::geography::latlon::lon()'],['../structquetzal_1_1geography_1_1lonlat.html#a7188d74669e5648d771aaa92bfd0b0c2',1,'quetzal::geography::lonlat::lon()']]]
+  ['formattable_904',['Formattable',['../namespacequetzal_1_1format_1_1newick.html#ad541166fae72d249f209dbf086039e6d',1,'quetzal::format::newick']]],
+  ['from_905',['from',['../structquetzal_1_1demography_1_1FlowHashMapImplementation_1_1key__type.html#a486c29379fcb0d5318729c0d79d13022',1,'quetzal::demography::FlowHashMapImplementation::key_type::from()'],['../structquetzal_1_1demography_1_1FlowOnDiskImplementation_1_1key__type.html#ad2d8ebdd238a75d6a5ea91c77613a17b',1,'quetzal::demography::FlowOnDiskImplementation::key_type::from()']]]
 ];

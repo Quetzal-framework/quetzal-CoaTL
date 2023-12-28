@@ -1,12 +1,11 @@
 var namespacequetzal_1_1demography_1_1dispersal__kernel =
 [
     [ "Gaussian", "structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian.html", "structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian" ],
-    [ "Logistic", "structquetzal_1_1demography_1_1dispersal__kernel_1_1Logistic.html", "structquetzal_1_1demography_1_1dispersal__kernel_1_1Logistic" ],
-    [ "NegativeExponential", "structquetzal_1_1demography_1_1dispersal__kernel_1_1NegativeExponential.html", "structquetzal_1_1demography_1_1dispersal__kernel_1_1NegativeExponential" ],
-    [ "ExponentialPower", "structquetzal_1_1demography_1_1dispersal__kernel_1_1ExponentialPower.html", "structquetzal_1_1demography_1_1dispersal__kernel_1_1ExponentialPower" ],
-    [ "TwoDt", "structquetzal_1_1demography_1_1dispersal__kernel_1_1TwoDt.html", "structquetzal_1_1demography_1_1dispersal__kernel_1_1TwoDt" ],
-    [ "InversePowerLaw", "structquetzal_1_1demography_1_1dispersal__kernel_1_1InversePowerLaw.html", "structquetzal_1_1demography_1_1dispersal__kernel_1_1InversePowerLaw" ],
-    [ "UndefinedInversePowerLaw", "structquetzal_1_1demography_1_1dispersal__kernel_1_1UndefinedInversePowerLaw.html", "structquetzal_1_1demography_1_1dispersal__kernel_1_1UndefinedInversePowerLaw" ],
-    [ "Lognormal", "structquetzal_1_1demography_1_1dispersal__kernel_1_1Lognormal.html", "structquetzal_1_1demography_1_1dispersal__kernel_1_1Lognormal" ],
-    [ "GaussianMixture", "structquetzal_1_1demography_1_1dispersal__kernel_1_1GaussianMixture.html", "structquetzal_1_1demography_1_1dispersal__kernel_1_1GaussianMixture" ]
+    [ "logistic", "structquetzal_1_1demography_1_1dispersal__kernel_1_1logistic.html", "structquetzal_1_1demography_1_1dispersal__kernel_1_1logistic" ],
+    [ "negative_exponential", "structquetzal_1_1demography_1_1dispersal__kernel_1_1negative__exponential.html", "structquetzal_1_1demography_1_1dispersal__kernel_1_1negative__exponential" ],
+    [ "exponential_power", "structquetzal_1_1demography_1_1dispersal__kernel_1_1exponential__power.html", "structquetzal_1_1demography_1_1dispersal__kernel_1_1exponential__power" ],
+    [ "two_dt", "structquetzal_1_1demography_1_1dispersal__kernel_1_1two__dt.html", "structquetzal_1_1demography_1_1dispersal__kernel_1_1two__dt" ],
+    [ "inverse_power_law", "structquetzal_1_1demography_1_1dispersal__kernel_1_1inverse__power__law.html", "structquetzal_1_1demography_1_1dispersal__kernel_1_1inverse__power__law" ],
+    [ "lognormal", "structquetzal_1_1demography_1_1dispersal__kernel_1_1lognormal.html", "structquetzal_1_1demography_1_1dispersal__kernel_1_1lognormal" ],
+    [ "gaussian_mixture", "structquetzal_1_1demography_1_1dispersal__kernel_1_1gaussian__mixture.html", "structquetzal_1_1demography_1_1dispersal__kernel_1_1gaussian__mixture" ]
 ];
