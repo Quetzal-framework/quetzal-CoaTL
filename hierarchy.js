@@ -88,7 +88,7 @@ var hierarchy =
     [ "quetzal::demography::FlowOnDiskImplementation< Space, Time, Value >", "classquetzal_1_1demography_1_1FlowOnDiskImplementation.html", null ],
     [ "quetzal::coalescence::container::Forest< Position, Tree >", "classquetzal_1_1coalescence_1_1container_1_1Forest.html", null ],
     [ "quetzal::polymorphism::fuzzy_transfer_distance::FuzzyPartition< Element >", "classquetzal_1_1polymorphism_1_1fuzzy__transfer__distance_1_1FuzzyPartition.html", null ],
-    [ "quetzal::demography::dispersal_kernel::Gaussian< Distance >", "structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian.html", null ],
+    [ "quetzal::demography::dispersal_kernel::gaussian< Distance >", "structquetzal_1_1demography_1_1dispersal__kernel_1_1gaussian.html", null ],
     [ "quetzal::demography::dispersal_kernel::gaussian_mixture< Distance >", "structquetzal_1_1demography_1_1dispersal__kernel_1_1gaussian__mixture.html", null ],
     [ "quetzal::coalescence::occupancy_spectrum::memoize::hash_parameters", "structquetzal_1_1coalescence_1_1occupancy__spectrum_1_1memoize_1_1hash__parameters.html", null ],
     [ "quetzal::demography::HistoryBase< Space, DemographicPolicy, MemoryPolicy >", "classquetzal_1_1demography_1_1HistoryBase.html", [
@@ -190,7 +190,7 @@ var hierarchy =
       [ "quetzal::sampling::constrained_sampling< X, N >::param_type", "classquetzal_1_1sampling_1_1constrained__sampling_1_1param__type.html", null ]
     ] ],
     [ "quetzal::demography::dispersal_kernel::exponential_power< Distance >::param_type", "structquetzal_1_1demography_1_1dispersal__kernel_1_1exponential__power_1_1param__type.html", null ],
-    [ "quetzal::demography::dispersal_kernel::Gaussian< Distance >::param_type", "structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian_1_1param__type.html", null ],
+    [ "quetzal::demography::dispersal_kernel::gaussian< Distance >::param_type", "structquetzal_1_1demography_1_1dispersal__kernel_1_1gaussian_1_1param__type.html", null ],
     [ "quetzal::demography::dispersal_kernel::gaussian_mixture< Distance >::param_type", "structquetzal_1_1demography_1_1dispersal__kernel_1_1gaussian__mixture_1_1param__type.html", null ],
     [ "quetzal::demography::dispersal_kernel::inverse_power_law< Distance >::param_type", "structquetzal_1_1demography_1_1dispersal__kernel_1_1inverse__power__law_1_1param__type.html", null ],
     [ "quetzal::demography::dispersal_kernel::logistic< Distance >::param_type", "structquetzal_1_1demography_1_1dispersal__kernel_1_1logistic_1_1param__type.html", null ],

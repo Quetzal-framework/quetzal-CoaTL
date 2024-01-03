@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['gaussian_140',['Gaussian',['../structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian.html',1,'quetzal::demography::dispersal_kernel']]],
+  ['gaussian_140',['gaussian',['../structquetzal_1_1demography_1_1dispersal__kernel_1_1gaussian.html',1,'quetzal::demography::dispersal_kernel']]],
   ['gaussian_5fmixture_141',['gaussian_mixture',['../structquetzal_1_1demography_1_1dispersal__kernel_1_1gaussian__mixture.html',1,'quetzal::demography::dispersal_kernel']]],
   ['gdal_5ferror_142',['gdal_error',['../classquetzal_1_1geography_1_1gdalcpp_1_1gdal__error.html',1,'quetzal::geography::gdalcpp']]],
   ['generate_143',['generate',['../classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1Support.html#ab811b346dd71001830eeb0b769cb9722',1,'quetzal::coalescence::occupancy_spectrum::Support']]],

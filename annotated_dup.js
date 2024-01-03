@@ -74,7 +74,7 @@ var annotated_dup =
           [ "mass_based", "classquetzal_1_1demography_1_1demographic__policy_1_1mass__based.html", "classquetzal_1_1demography_1_1demographic__policy_1_1mass__based" ]
         ] ],
         [ "dispersal_kernel", "namespacequetzal_1_1demography_1_1dispersal__kernel.html", [
-          [ "Gaussian", "structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian.html", "structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian" ],
+          [ "gaussian", "structquetzal_1_1demography_1_1dispersal__kernel_1_1gaussian.html", "structquetzal_1_1demography_1_1dispersal__kernel_1_1gaussian" ],
           [ "logistic", "structquetzal_1_1demography_1_1dispersal__kernel_1_1logistic.html", "structquetzal_1_1demography_1_1dispersal__kernel_1_1logistic" ],
           [ "negative_exponential", "structquetzal_1_1demography_1_1dispersal__kernel_1_1negative__exponential.html", "structquetzal_1_1demography_1_1dispersal__kernel_1_1negative__exponential" ],
           [ "exponential_power", "structquetzal_1_1demography_1_1dispersal__kernel_1_1exponential__power.html", "structquetzal_1_1demography_1_1dispersal__kernel_1_1exponential__power" ],

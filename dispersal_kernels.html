@@ -117,12 +117,29 @@ $(document).ready(function(){initNavTree('dispersal_kernels.html',''); initResiz
 <div class="title">Dispersal Kernels </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><dl class="section note"><dt>Note</dt><dd>The objective of this section is to parametrize a Dispersal Location Kernel (in the sense of <a href="nathan-et-al-2012.pdf" target="_blank"><b> Nathan et al. 2012</b></a>) and to compute useful quantities, such as the distance between two locations, the probability to disperse from one to the other, and the mean dispersal distance expected under the distribution.</dd></dl>
-<h2><a class="anchor" id="autotoc_md103"></a>
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#autotoc_md103">Background</a></li>
+<li class="level1"><a href="#autotoc_md104">Neighborhood-based Dispersal</a></li>
+<li class="level1"><a href="#autotoc_md105">Distance-based Dispersal</a></li>
+<li class="level1"><a href="#autotoc_md106">Resistance-based Dispersal</a><ul><li class="level2"><a href="#autotoc_md107">Background</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md103"></a>
+Background</h1>
+<h1><a class="anchor" id="autotoc_md104"></a>
+Neighborhood-based Dispersal</h1>
+<h1><a class="anchor" id="autotoc_md105"></a>
+Distance-based Dispersal</h1>
+<h1><a class="anchor" id="autotoc_md106"></a>
+Resistance-based Dispersal</h1>
+<dl class="section note"><dt>Note</dt><dd>Simulating a demographic process on a spatial graph first requires to account for the modality of dispersal between the vertices (locations) of the graph. A relatively simple way to do so is to link the geographic distance between two locations to the probability to disperse between them. The objective of this section is to highlight this model choice by parametrizing a simple Dispersal Location Kernel (in the sense of <a href="nathan-et-al-2012.pdf" target="_blank"><b> Nathan et al. 2012</b></a>) and to compute useful quantities, such as the distance between two coordinates, the probability to disperse from one to the other, and the mean dispersal distance expected under the distribution.</dd></dl>
+<h2><a class="anchor" id="autotoc_md107"></a>
 Background</h2>
 <p>The dispersal location kernel represents the statistical pattern of dispersal distances within a population. In this context, it essentially serves as the probability density function (pdf) that outlines the distribution of locations after dispersal in relation to the original location. The expressions have been adjusted to incorporate a scale parameter, \(a\), which is consistent with a distance unit, and a shape parameter, \(b\), that dictates the curvature of the distribution curve, emphasizing the influence of long-distance events.</p>
 <p>For a source \((x_0,y_0)\), the dispersal location kernel denoted as \(k_L(r)\) provides the density of the probability of the dispersal end point in the 2D space. In this case, \(k_L(r)dA\) is the probability of a dispersal end point to be within a small 2D area \(dA\) around the location \((x,y)\). Since a probability is unitless and \(dA\) is an area, \(k_L(r)\) is expressed in per unit area in a 2D space.</p>
-<p>Quetzal automate dimensional analysis and conversion thanks to the <code>mp-units</code> library.</p>
+<p>Quetzal implements several types of kernel available in the <code><a class="el" href="namespacequetzal_1_1demography_1_1dispersal__kernel.html" title="Dispersal location kernels as defined in Nathan et al 2012, table 15.1.">quetzal::demography::dispersal_kernel</a></code> namespace, and automates compile-time dimensional analysis and units conversion thanks to the <code>mp-units</code> library.</p>
 <p><b>Input</b></p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;quetzal/quetzal.hpp&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
@@ -134,7 +151,7 @@ Background</h2>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;{</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="comment">// Shorten notation</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keyword">using namespace </span>mp_units::si::unit_symbols; <span class="comment">// SI system: km, m, s </span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keyword">using</span> <a class="code" href="structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian.html">quetzal::demography::dispersal_kernel::Gaussian</a>;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keyword">using</span> <a class="code" href="structquetzal_1_1demography_1_1dispersal__kernel_1_1gaussian.html">quetzal::demography::dispersal_kernel::gaussian</a>;</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keyword">using</span> <a class="code" href="structquetzal_1_1geography_1_1lonlat.html">quetzal::geography::lonlat</a>;</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="comment">// Dispersal kernels operate on distances between geographic coordinates</span></div>
@@ -143,11 +160,11 @@ Background</h2>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    constexpr <span class="keyword">auto</span> distance = source.great_circle_distance_to(target) * km;</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="comment">// Used to parametrize the kernel</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    constexpr <span class="keyword">auto</span> param = Gaussian&lt;&gt;::param_type {.a=1000.*m};</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    constexpr <span class="keyword">auto</span> param = gaussian&lt;&gt;::param_type {.a=1000.*m};</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="comment">// Compute quantities</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">auto</span> p = Gaussian&lt;&gt;::pdf(distance, param);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">auto</span> d = Gaussian&lt;&gt;::mean_dispersal_distance(param);</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">auto</span> p = gaussian&lt;&gt;::pdf(distance, param);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">auto</span> d = gaussian&lt;&gt;::mean_dispersal_distance(param);</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;Dispersal from &quot;</span> &lt;&lt; source &lt;&lt; <span class="stringliteral">&quot; to &quot;</span> &lt;&lt; target &lt;&lt; <span class="stringliteral">&quot; :\n&quot;</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;distance is &quot;</span> &lt;&lt; distance &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
@@ -155,7 +172,7 @@ Background</h2>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;mean dispersal distance is &quot;</span> &lt;&lt; d &lt;&lt; std::endl; </div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}</div>
 <div class="ttc" id="anamespacequetzal_html"><div class="ttname"><a href="namespacequetzal.html">quetzal</a></div><div class="ttdoc">Simulation of coalescence-based models of molecular evolution.</div><div class="ttdef"><b>Definition:</b> merge.hpp:24</div></div>
-<div class="ttc" id="astructquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian_html"><div class="ttname"><a href="structquetzal_1_1demography_1_1dispersal__kernel_1_1Gaussian.html">quetzal::demography::dispersal_kernel::Gaussian</a></div><div class="ttdoc">Gaussian dispersal location kernel (thin-tailed)</div><div class="ttdef"><b>Definition:</b> dispersal_kernel.hpp:35</div></div>
+<div class="ttc" id="astructquetzal_1_1demography_1_1dispersal__kernel_1_1gaussian_html"><div class="ttname"><a href="structquetzal_1_1demography_1_1dispersal__kernel_1_1gaussian.html">quetzal::demography::dispersal_kernel::gaussian</a></div><div class="ttdoc">Gaussian dispersal location kernel (thin-tailed)</div><div class="ttdef"><b>Definition:</b> dispersal_kernel.hpp:35</div></div>
 <div class="ttc" id="astructquetzal_1_1geography_1_1lonlat_html"><div class="ttname"><a href="structquetzal_1_1geography_1_1lonlat.html">quetzal::geography::lonlat</a></div><div class="ttdoc">Geographic coordinates.</div><div class="ttdef"><b>Definition:</b> coordinates.hpp:216</div></div>
 </div><!-- fragment --><p><b>Output</b></p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;Dispersal from (Lat: 48.9176 , Lon: 2.25) to (Lat: 48.95 , Lon: 2.25) :</div>
@@ -169,6 +186,7 @@ Background</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><a class="el" href="tutorials.html">Tutorials</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
