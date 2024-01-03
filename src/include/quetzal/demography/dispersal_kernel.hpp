@@ -31,7 +31,7 @@ namespace quetzal
       /// @details To be used as a reference against leptokurtic kernels.
       ///          Suitable for diffusion-based dispersal or complete random-walk during a constant time.
       template<QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::metre>>
-      struct Gaussian
+      struct gaussian
       {
 
         /// @brief Dispersal location kernel parameter
@@ -65,7 +65,7 @@ namespace quetzal
       /// @brief Logistic dispersal location kernel (fat-tailed, power-law tail)
       /// @ingroup demography
       /// @details Suitable for frequent long-distance dispersal events and weak effect of distance close to the source.
-      template<QuantityOf<isq::length> Distance>
+      template<QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::metre>>
       struct logistic
       {
         
@@ -113,7 +113,7 @@ namespace quetzal
       /// @details To be used as reference against more fat-tailed kernels. 
       ///          Suitable for representing a travel at constant speed in a random direction with a constant
       ///          stopping rate, or a correlated random walk with settlement.
-      template<QuantityOf<isq::length> Distance>
+      template<QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::metre>>
       struct negative_exponential
       {
         /// @brief Dispersal location kernel parameter
@@ -149,7 +149,7 @@ namespace quetzal
       /// @brief Exponential Power dispersal location kernel (\f$b > 1\f$ : thin-tailed, \f$b < 1\f$ : fat-tailed. Always thinner than power laws.)
       /// @ingroup demography
       /// @details Suitable for pollen dispersal. Gaussian and Exponential are special cases, making it suitable for shape comparisons.
-      template<QuantityOf<isq::length> Distance>
+      template<QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::metre>>
       struct exponential_power
       {
         /// @brief Dispersal location kernel parameter
@@ -194,7 +194,7 @@ namespace quetzal
       /// @ingroup demography
       /// @details Suitable for seed dispersal. Obtained as a continuous mixture of Gaussian kernels with variance
       ///          parameters distributed as the inverse of a Gamma distribution.
-      template<QuantityOf<isq::length> Distance>
+      template<QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::metre>>
       struct two_dt
       {
         /// @brief Dispersal location kernel parameter
@@ -242,7 +242,7 @@ namespace quetzal
       /// @brief Inverse Power Law dispersal location kernel (fat-tailed, power-law tail)
       /// @ingroup demography
       /// @details Suitable for very fat tails.
-      template<QuantityOf<isq::length> Distance>
+      template<QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::metre>>
       struct inverse_power_law
       {
         /// @brief Dispersal location kernel parameter
@@ -288,7 +288,7 @@ namespace quetzal
       /// @brief Lognormal dispersal location kernel (fat-tailed)
       /// @ingroup demography
       /// @details Suitable for seed dispersal, particularly when the peak of the distribution is not at zero distance from the source.
-      template<QuantityOf<isq::length> Distance>
+      template<QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::metre>>
       struct lognormal
       {
         /// @brief Dispersal location kernel parameter
@@ -329,7 +329,7 @@ namespace quetzal
       /// @brief Gaussian Mixture dispersal location kernel (leptokurtic, never fat-tailed)
       /// @ingroup demography
       /// @details Used in theoretical studies.
-      template<QuantityOf<isq::length> Distance>
+      template<QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::metre>>
       struct gaussian_mixture
       {
         /// @brief Dispersal location kernel parameter

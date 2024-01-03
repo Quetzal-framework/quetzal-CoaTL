@@ -27,7 +27,7 @@
 
 - @subpage demographic_histories_in_quetzal
 - Examples
-  - @subpage dispersal-kernels
+  - @subpage dispersal_kernels
   - @subpage Growth Expressions
   - @subpage Memory Management
 
@@ -814,10 +814,18 @@ There a different modeling approaches to look at these demographic histories, pr
 
 [//]: # (----------------------------------------------------------------------)
 @page dispersal_kernels Dispersal Kernels
+@tableofcontents
+
+# Background
+
+# Neighborhood-based Dispersal
+
+# Distance-based Dispersal
+
+# Resistance-based Dispersal
 
 @note 
-The objective of this section is to parametrize a Dispersal Location Kernel (in the sense of <a href="nathan-et-al-2012.pdf" target="_blank"><b> Nathan et al. 2012</b></a>)
-and to compute useful quantities, such as the distance between two locations, the probability to disperse from one to the other, and the mean dispersal distance expected under the distribution.
+Simulating a demographic process on a spatial graph first requires to account for the modality of dispersal between the vertices (locations) of the graph. A relatively simple way to do so is to link the geographic distance between two locations to the probability to disperse between them. The objective of this section is to highlight this model choice by parametrizing a simple Dispersal Location Kernel (in the sense of <a href="nathan-et-al-2012.pdf" target="_blank"><b> Nathan et al. 2012</b></a>) and to compute useful quantities, such as the distance between two coordinates, the probability to disperse from one to the other, and the mean dispersal distance expected under the distribution.
 
 ## Background 
 
@@ -827,7 +835,7 @@ The dispersal location kernel represents the statistical pattern of dispersal di
 
 For a source \f$(x_0,y_0)\f$, the dispersal location kernel denoted as \f$k_L(r)\f$ provides the density of the probability of the dispersal end point in the 2D space. In this case, \f$k_L(r)dA\f$ is the probability of a dispersal end point to be within a small 2D area \f$dA\f$ around the location \f$(x,y)\f$. Since a probability is unitless and \f$dA\f$ is an area, \f$k_L(r)\f$ is expressed in per unit area in a 2D space.
 
-Quetzal automate dimensional analysis and conversion thanks to the `mp-units` library.
+Quetzal implements several types of kernel available in the `quetzal::demography::dispersal_kernel` namespace, and automates compile-time dimensional analysis and units conversion thanks to the `mp-units` library. 
 
 **Input**
 

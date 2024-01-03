@@ -8,7 +8,7 @@ int main()
 {
 	// Shorten notation
 	using namespace mp_units::si::unit_symbols; // SI system: km, m, s 
-	using quetzal::demography::dispersal_kernel::Gaussian;
+	using quetzal::demography::dispersal_kernel::gaussian;
 	using quetzal::geography::lonlat;
 
 	// Dispersal kernels operate on distances between geographic coordinates
@@ -17,11 +17,11 @@ int main()
 	constexpr auto distance = source.great_circle_distance_to(target) * km;
 
 	// Used to parametrize the kernel
-	constexpr auto param = Gaussian<>::param_type {.a=1000.*m};
+	constexpr auto param = gaussian<>::param_type {.a=1000.*m};
 
 	// Compute quantities
-	auto p = Gaussian<>::pdf(distance, param);
-	auto d = Gaussian<>::mean_dispersal_distance(param);
+	auto p = gaussian<>::pdf(distance, param);
+	auto d = gaussian<>::mean_dispersal_distance(param);
 
 	std::cout << "Dispersal from " << source << " to " << target << " :\n"
 			  << "distance is " << distance << "\n"
