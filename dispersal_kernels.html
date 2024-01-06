@@ -119,27 +119,41 @@ $(document).ready(function(){initNavTree('dispersal_kernels.html',''); initResiz
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#autotoc_md103">Background</a></li>
-<li class="level1"><a href="#autotoc_md104">Neighborhood-based Dispersal</a></li>
-<li class="level1"><a href="#autotoc_md105">Distance-based Dispersal</a></li>
-<li class="level1"><a href="#autotoc_md106">Resistance-based Dispersal</a><ul><li class="level2"><a href="#autotoc_md107">Background</a></li>
+<li class="level1"><a href="#autotoc_md104">4-neighbors graph</a></li>
+<li class="level1"><a href="#autotoc_md105">8-neighbors graph</a></li>
+<li class="level1"><a href="#autotoc_md106">Complete graph</a><ul><li class="level2"><a href="#autotoc_md107">Distance-based kernel</a></li>
+<li class="level2"><a href="#autotoc_md109">Resistance-based Dispersal</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="textblock"><h1><a class="anchor" id="autotoc_md103"></a>
+<div class="textblock"><dl class="section note"><dt>Note</dt><dd>The objective of this section is to define the modality of dispersal of a species across a discrete landscape. Because dispersal is so tightly related to graph connectivity and performance, this will require to:<ol type="1">
+<li>transform a <code><a class="el" href="classquetzal_1_1geography_1_1landscape.html" title="Discrete spatio-temporal variations of a set of environmental variables.">quetzal::geography::landscape</a></code> into a <code>quetzal::geography::graph</code> selecting the desired level of connectivity</li>
+<li>update the edges information of the graph to reflect the desired rate of movement.</li>
+</ol>
+</dd></dl>
+<h1><a class="anchor" id="autotoc_md103"></a>
 Background</h1>
+<p>The challenge of replicating a demographic process within a discrete landscape can be framed as a process on a spatial graph. In this graph, the vertices represent the cells of the landscape grid, while the edges link the areas where migration occurs.</p>
+<p>The quantity of edges in this graph significantly influences both complexity and performance. For instance, in a landscape containing \(n\) cells, considering migration between any two arbitrary locations would result in a complete graph with \(\frac{n(n-1)}{2}\) edges, which could pose computational difficulties.</p>
+<p>For this reason, constructing a spatial graph first requires to account for the modality of dispersal between the vertices (locations) of the graph. We distinguish at least 3 modalities:</p>
+<ul>
+<li>4-neighbors: each cell of the landscape grid is connected only to its cardinal neighbors (N, E, S, W).</li>
+<li>8-neighbors: each cell of the landscape grid is connected only to its cardinal and intercardinal (NE, SE, SW, NW) neighbors.</li>
+<li>complete graph: each cell of the landscape grid is connected to all others: the rate of migration between two cells will be a function of the distance or path of least resistance.</li>
+</ul>
 <h1><a class="anchor" id="autotoc_md104"></a>
-Neighborhood-based Dispersal</h1>
+4-neighbors graph</h1>
 <h1><a class="anchor" id="autotoc_md105"></a>
-Distance-based Dispersal</h1>
+8-neighbors graph</h1>
 <h1><a class="anchor" id="autotoc_md106"></a>
-Resistance-based Dispersal</h1>
-<dl class="section note"><dt>Note</dt><dd>Simulating a demographic process on a spatial graph first requires to account for the modality of dispersal between the vertices (locations) of the graph. A relatively simple way to do so is to link the geographic distance between two locations to the probability to disperse between them. The objective of this section is to highlight this model choice by parametrizing a simple Dispersal Location Kernel (in the sense of <a href="nathan-et-al-2012.pdf" target="_blank"><b> Nathan et al. 2012</b></a>) and to compute useful quantities, such as the distance between two coordinates, the probability to disperse from one to the other, and the mean dispersal distance expected under the distribution.</dd></dl>
+Complete graph</h1>
 <h2><a class="anchor" id="autotoc_md107"></a>
-Background</h2>
+Distance-based kernel</h2>
+<p>A straightforward approach to determine the dispersal mode across a complete spatial graph involves correlating the geographic distance between two locations with the likelihood of dispersal between them. The objective of this section is to highlight this model choice by parametrizing a simple Dispersal Location Kernel (in the sense of <a href="nathan-et-al-2012.pdf" target="_blank"><b> Nathan et al. 2012</b></a>). Additionally, we will calculate essential metrics, such as the distance between two coordinates, the dispersal probability between them, and the average dispersal distance anticipated under this distribution.</p>
 <p>The dispersal location kernel represents the statistical pattern of dispersal distances within a population. In this context, it essentially serves as the probability density function (pdf) that outlines the distribution of locations after dispersal in relation to the original location. The expressions have been adjusted to incorporate a scale parameter, \(a\), which is consistent with a distance unit, and a shape parameter, \(b\), that dictates the curvature of the distribution curve, emphasizing the influence of long-distance events.</p>
 <p>For a source \((x_0,y_0)\), the dispersal location kernel denoted as \(k_L(r)\) provides the density of the probability of the dispersal end point in the 2D space. In this case, \(k_L(r)dA\) is the probability of a dispersal end point to be within a small 2D area \(dA\) around the location \((x,y)\). Since a probability is unitless and \(dA\) is an area, \(k_L(r)\) is expressed in per unit area in a 2D space.</p>
-<p>Quetzal implements several types of kernel available in the <code><a class="el" href="namespacequetzal_1_1demography_1_1dispersal__kernel.html" title="Dispersal location kernels as defined in Nathan et al 2012, table 15.1.">quetzal::demography::dispersal_kernel</a></code> namespace, and automates compile-time dimensional analysis and units conversion thanks to the <code>mp-units</code> library.</p>
+<p>Quetzal incorporates various kernel types available in the <code><a class="el" href="namespacequetzal_1_1demography_1_1dispersal__kernel.html" title="Dispersal location kernels as defined in Nathan et al 2012, table 15.1.">quetzal::demography::dispersal_kernel</a></code> namespace, and streamlines compile-time dimensional analysis and units conversion using the <code>mp-units</code> library.</p>
 <p><b>Input</b></p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;quetzal/quetzal.hpp&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
@@ -180,7 +194,9 @@ Background</h2>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;probability is 7.34343e-13 1/m²</div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;mean dispersal distance is 886.227 m</div>
 </div><!-- fragment --><hr  />
- </div></div><!-- contents -->
+<h2><a class="anchor" id="autotoc_md109"></a>
+Resistance-based Dispersal</h2>
+</div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->

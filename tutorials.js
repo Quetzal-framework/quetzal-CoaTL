@@ -34,9 +34,9 @@ var tutorials =
     [ "Demographic Histories in Quetzal", "demographic_histories_in_quetzal.html", null ],
     [ "Dispersal Kernels", "dispersal_kernels.html", [
       [ "Background", "dispersal_kernels.html#autotoc_md103", null ],
-      [ "Neighborhood-based Dispersal", "dispersal_kernels.html#autotoc_md104", null ],
-      [ "Distance-based Dispersal", "dispersal_kernels.html#autotoc_md105", null ],
-      [ "Resistance-based Dispersal", "dispersal_kernels.html#autotoc_md106", [
+      [ "4-neighbors graph", "dispersal_kernels.html#autotoc_md104", null ],
+      [ "8-neighbors graph", "dispersal_kernels.html#autotoc_md105", null ],
+      [ "Complete graph", "dispersal_kernels.html#autotoc_md106", [
         [ "Objectives", "newick_generator.html#autotoc_md53", null ],
         [ "From a Quetzal binary tree", "newick_generator.html#autotoc_md55", [
           [ "No property", "newick_generator.html#autotoc_md57", null ],
@@ -60,7 +60,8 @@ var tutorials =
         [ "Why separating Elevation from Suitability ?", "expressive_suitability_DEM_landscape.html#autotoc_md97", null ],
         [ "Background", "demographic_histories_in_quetzal.html#autotoc_md100", null ],
         [ "Graphs structure", "demographic_histories_in_quetzal.html#autotoc_md101", null ],
-        [ "Background", "dispersal_kernels.html#autotoc_md107", null ]
+        [ "Distance-based kernel", "dispersal_kernels.html#autotoc_md107", null ],
+        [ "Resistance-based Dispersal", "dispersal_kernels.html#autotoc_md109", null ]
       ] ]
     ] ],
     [ "Graphs in Quetzal", "graphs_in_quetzal.html", null ],
