@@ -1,8 +1,7 @@
 #include "quetzal/quetzal.hpp"
 #include <filesystem>
 #include <cassert>
-
-using namespace quetzal;
+//#include <print>
 
 int main()
 {
@@ -18,15 +17,17 @@ int main()
 	auto env = quetzal::geography::landscape<>::from_files( { {"bio1", file1}, {"bio12", file2} }, times );
 	std::cout << env << std::endl;
 
-	// // Embed default demographic quantities along vertices (N_{xt}) and edges (Phi_{xyt})
-	// auto graph1 = env.to_4_neighborhood_graph<>();
-	// auto graph2 = env.to_8_neighborhood_graph<>();
-	// auto graph3 = env.to_complete_graph<>();
+	// We convert the grid to a fully connected graph
+	auto graph = env.to_complete_graph<>();
 
-	// auto weights graph.edges()
-	// 	| [](const & e){ return { graph.source(e), graph.target(e)};  }
-	// 	| [](const & p){ return { env.to_latlon(s), graph.to_latlon(t)};  }
-	// 	| [](const & p){ return x.great_circle_distance_to(y);}
-	// 	| [](const & d){ return quetzal::demography::dispersal_kernel::ExponentialPower(d, {.a=1., .b=5.5});}
-	// 	| []()
+	// A little helper function
+	auto constexpr sphere_distance = [&]( auto const& p1, auto const& p2 ){ 
+		return env.to_latlon( p1 ).great_circle_distance( env.to_latlon( p2 ) );}
+	
+	auto v = graph.edges()
+		| std::transform( [&](auto const& e){ sphere_distance( graph.source( e ), graph.target( e ) );} )
+		| std::transform( [&](auto const& d){ return quetzal::demography::dispersal_kernel::exponential_power( d, {.a=1., .b=5.5} ) ;} )
+		| std::ranges::to<std::vector>();
+
+    //std::println("{}", v);
 }

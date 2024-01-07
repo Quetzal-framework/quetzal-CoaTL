@@ -6,8 +6,8 @@ RUN apt-get update -y
 RUN apt-get install -y --no-install-recommends\
                     vim \
                     git \
-                    gcc-12 \
-                    g++-12 \
+                    gcc-13 \
+                    g++-13 \
                     build-essential \
                     libboost-all-dev \
                     cmake \

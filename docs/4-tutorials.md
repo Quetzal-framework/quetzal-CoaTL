@@ -853,11 +853,11 @@ Quetzal incorporates various kernel types available in the `quetzal::demography:
 
 **Input**
 
-@include{lineno} dispersal_kernel.cpp
+@include{lineno} demography_dispersal_kernel.cpp
 
 **Output**
 
-@include{lineno} dispersal_kernel.txt
+@include{lineno} demography_dispersal_kernel.txt
 
 ---
 
