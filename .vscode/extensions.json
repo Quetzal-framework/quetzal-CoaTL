@@ -4,6 +4,7 @@
         "ms-vscode.cpptools-themes",
         "ms-vscode.cpptools",
         "ms-vscode.cpptools-extension-pack",
-        "twxs.cmake"
+        "twxs.cmake",
+        "ms-azuretools.vscode-docker"
     ]
 }

@@ -1,5 +1,6 @@
 // Workspace settings are stored in the workspace .vscode folder and only apply when the workspace is opened.
 {
+    "C_Cpp.default.cppStandard": "c++23",
     "cmake.configureOnOpen": false,
     "files.associations": {
         "cwchar": "cpp",
@@ -77,6 +78,7 @@
         "typeindex": "cpp",
         "typeinfo": "cpp",
         "valarray": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "*.ipp": "cpp"
     }
 }

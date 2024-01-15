@@ -10,8 +10,6 @@
 
 #pragma once
 
-#include "detail/graph_traits.hpp"
-
 #include <boost/range/iterator_range.hpp>
 #include <boost/range/adaptor/transformed.hpp>
 
