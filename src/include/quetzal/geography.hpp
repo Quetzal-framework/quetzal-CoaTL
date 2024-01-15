@@ -12,6 +12,7 @@
 #include "geography/landscape.hpp"
 #include "geography/coordinates.hpp"
 #include "geography/graph/graph.hpp"
+#include "geography/graph/from_grid.hpp"
 ///
 /// @brief Geospatial data formatting and processing
 ///
