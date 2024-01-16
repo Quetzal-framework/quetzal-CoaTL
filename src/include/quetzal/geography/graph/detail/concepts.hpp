@@ -17,40 +17,28 @@
 
 namespace quetzal::geography
 {
-  ///
-  /// @brief Concept of a landscape for the from_grid graph construction method
-  ///
-  template <typename T>
-  concept SpatialGrid = requires(T a, typename T::location_type loc)
-  {
-    requires std::is_convertible_v<decltype(a.width()), int>;
-    requires std::is_convertible_v<decltype(a.height()), int>;
-    {  a.locations()  } -> std::ranges::range;
-    loc = std::ranges::begin(a.locations());
-  };
 
-  ///
-  /// @brief Concept of a connector
-  ///
   template <typename T>
-  concept Vicinity = requires(T t, typename T::graph_type const& graph)
+  concept two_dimensional = requires(T a)
   {
-    {  t.connect(graph) } -> std::same_as<void>;
+    requires std::convertible_to<decltype(a.width()), int>;
+    requires std::convertible_to<decltype(a.height()), int>;
   };
 
   namespace detail
   {
   template <typename T, typename... U>
-  concept IsAnyOf = (std::same_as<T, U> || ...);
+  concept is_any_of = (std::same_as<T, U> || ...);
   }
 
   template <typename T>
-  concept Directionality = detail::IsAnyOf<T, isotropy, anisotropy>;
+  concept directional = detail::is_any_of<T, isotropy, anisotropy>;
 
-  template<typename T, class U, class Graph>
-  concept BoundPolicy = SpatialGrid<U> and requires(T policy, typename Graph::vertex_descriptor s, Graph& graph, U const& grid)
+  template<typename T, class G,  class S>
+  concept bounding = two_dimensional<S> and 
+  requires(T t, typename G::vertex_descriptor s, G& graph, S const& grid)
   {
-    { policy(s, graph, grid) } -> std::same_as<void>;
+    { t(s, graph, grid) } -> std::same_as<void>;
   };
 
 }

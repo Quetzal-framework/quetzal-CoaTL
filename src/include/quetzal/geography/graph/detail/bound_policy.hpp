@@ -23,8 +23,8 @@ namespace quetzal::geography
     /// @param s The source vertex
     /// @param graph The graph to update
     /// @param grid The spatial grid 
-    template<typename EdgeProperty, class Graph>
-    void operator()([[maybe_unused]] typename Graph::vertex_descriptor s, [[maybe_unused]] Graph & graph, [[maybe_unused]] const SpatialGrid auto & grid) const
+    template<class Graph>
+    void operator()([[maybe_unused]] typename Graph::vertex_descriptor s, [[maybe_unused]] Graph & graph, [[maybe_unused]] const two_dimensional auto & grid) const
     {
       // do nothing as by default bounding box is reflective
     }
@@ -39,15 +39,16 @@ namespace quetzal::geography
     /// @param s The source vertex
     /// @param graph The graph to update
     /// @param grid The spatial grid
-    template<typename EdgeProperty, class Graph>
-    void operator()(typename Graph::vertex_descriptor s, Graph & graph, const SpatialGrid auto & grid) const
+    template<class Graph>
+    void operator()(typename Graph::vertex_descriptor s, Graph & graph, const two_dimensional auto & grid) const
     {
+      using edge_property_type = typename Graph::edge_property_type;
       int sink = grid.width() * grid.height() ;
 
       if ( graph.num_vertices() == sink ) // sink vertex is missing
         sink = graph.add_vertex();
       
-      graph.add_edge(s, sink, EdgeProperty(s, sink)); // one-way ticket :(
+      graph.add_edge(s, sink, edge_property_type(s, sink)); // one-way ticket :(
     }
   };
 
@@ -60,9 +61,10 @@ namespace quetzal::geography
     /// @param s The source vertex
     /// @param graph The graph to update
     /// @param grid The spatial grid 
-    template<typename EdgeProperty, class Graph>
-    void operator()(typename Graph::vertex_descriptor s, Graph & graph, const SpatialGrid auto & grid) const
+    template<class Graph>
+    void operator()(typename Graph::vertex_descriptor s, Graph & graph, const two_dimensional auto & grid) const
     {
+      using edge_property_type = typename Graph::edge_property_type;
       auto width = grid.width();
       auto height = grid.height();
       int symmetricIndex = 0;
@@ -87,22 +89,8 @@ namespace quetzal::geography
       {
         symmetricIndex = s - width + 1;
       }
-      graph.add_edge(s, symmetricIndex, EdgeProperty(s, symmetricIndex) );
+      graph.add_edge(s, symmetricIndex, edge_property_type(s, symmetricIndex) );
     }
   };
 
-  namespace
-  {
-    template <BoundPolicy<class Grid, class Graph> T>
-    using Concept_checked = T;
-
-    template <class V, class E>
-    using Concept_t = BoundPolicy<mirror>;
-
-    template <class V, class E>
-    using Concept_t = BoundPolicy<sink>;
-
-    template <class V, class E>
-    using Concept_t = BoundPolicy<torus>;
-  }
 }

@@ -18,19 +18,18 @@ namespace quetzal::geography
 {
   /// @brief Spatial graph construction method
   /// @param grid A spatial grid, e.g. raster or landscape.
+  /// @param v An example of information to be stored on vertices
+  /// @param e An example of information to be stored on edges
   /// @param vicinity A policy class giving the connectivity method to be applied
   /// @param directionality A policy class giving the directionality (isotropy or anistropy)
   /// @param bound A BoundPolicy
   /// @return A graph with the desired level of connectivity
-  template <class VertexProperty, class EdgeProperty>
-  auto from_grid(SpatialGrid auto const& grid, Vicinity auto const& vicinity, Directionality auto const& directionality, auto bound)
+  template <two_dimensional SpatialGrid, class VertexProperty, class EdgeProperty, class Vicinity, directional Directionality, class Policy>
+  auto from_grid(SpatialGrid const& grid, VertexProperty const& v, EdgeProperty const& e, Vicinity const& vicinity, Directionality dir, Policy const& bound)
   {
-    using graph_type = typename decltype(vicinity)::template graph_type<decltype(directionality)>;
-    const int x = grid.width();
-    const int y = grid.height();
-    const int num_vertices = x * y;
-    graph_type graph(num_vertices);
-    vicinity.connect(graph, bound);
+    using graph_type = typename Vicinity::graph_type< Directionality, VertexProperty, EdgeProperty >;
+    graph_type graph( grid.width() * grid.height() );
+    vicinity.connect( graph, grid, bound );
     return graph;
   }
 
