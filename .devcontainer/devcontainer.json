@@ -16,11 +16,20 @@
 
 	// Configure tool-specific properties.
 	"customizations": {
-		// Configure properties specific to VS Code.
+		// Configure properties specific to VS Code to be installed in the devcontainer
 		"vscode": {
-			"settings": {},
+			"settings": {
+				"clangd.path": "/usr/bin/clangd"
+			},
 			"extensions": [
-				"streetsidesoftware.code-spell-checker"
+				// Static analyzer
+				"llvm-vs-code-extensions.vscode-clangd",
+				// Cmake syntax highliting
+				"twxs.cmake",
+				// Check grammar in text and Markdown
+				"znck.grammarly",
+				// Spelling check in code
+				"streetsidesoftware.code-spell-checker",
 			]
 		}
 	}

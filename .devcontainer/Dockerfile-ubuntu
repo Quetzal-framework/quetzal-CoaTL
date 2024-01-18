@@ -8,6 +8,7 @@ RUN apt-get install -y --no-install-recommends\
                     git \
                     gcc-13 \
                     g++-13 \
+                    clangd \
                     build-essential \
                     libboost-all-dev \
                     cmake \

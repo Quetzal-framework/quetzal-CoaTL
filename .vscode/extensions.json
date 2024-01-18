@@ -1,10 +1,21 @@
 {
     "recommendations": [
+        // Dev Containers
         "ms-vscode-remote.remote-containers",
-        "ms-vscode.cpptools-themes",
-        "ms-vscode.cpptools",
-        "ms-vscode.cpptools-extension-pack",
-        "twxs.cmake",
-        "ms-azuretools.vscode-docker"
+        // Docker Explorer view to VS Code
+        "ms-azuretools.vscode-docker",
+        // Understanding of complex code
+        // "lvm-vs-code-extensions.vscode-clangd"
+        // Bundle the 4 next extensions
+        // "ms-vscode.cpptools-extension-pack",        
+        // 1. Semantic colorization
+        // "ms-vscode.cpptools-themes",
+        // 2. Intellisense
+        // "ms-vscode.cpptools",
+        // 3. CMake syntax
+        // "twxs.cmake",
+        // 4. Cmake workflow
+        // "ms-vscode.cmake-tool",
+
     ]
 }
