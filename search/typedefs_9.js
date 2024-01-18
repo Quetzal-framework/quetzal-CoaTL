@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['node_5ftype_929',['node_type',['../classquetzal_1_1format_1_1newick_1_1Formatter.html#a381b1c239b6ada63f77b909490328937',1,'quetzal::format::newick::Formatter::node_type()'],['../classquetzal_1_1format_1_1newick_1_1generator.html#a61ced85026e0a425892c56e9177295f1',1,'quetzal::format::newick::generator::node_type()']]]
+  ['model_963',['model',['../structquetzal_1_1coalescence_1_1detail_1_1tree__traits.html#aa4ce6bf8924d7db90412289fd1a3cdaf',1,'quetzal::coalescence::detail::tree_traits']]]
 ];

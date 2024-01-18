@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['model_928',['model',['../structquetzal_1_1coalescence_1_1detail_1_1tree__traits.html#aa4ce6bf8924d7db90412289fd1a3cdaf',1,'quetzal::coalescence::detail::tree_traits']]]
+  ['in_5fedge_5fiterator_961',['in_edge_iterator',['../classquetzal_1_1coalescence_1_1detail_1_1binary__tree__common.html#a60f8b0952cb6f2a8649f650a70dbcee5',1,'quetzal::coalescence::detail::binary_tree_common::in_edge_iterator()'],['../classboost_1_1binary__tree_3_01true_00_01Vertex_01_4.html#a8bc312ba32a5a2c7945b51045db893d0',1,'boost::binary_tree&lt; true, Vertex &gt;::in_edge_iterator()'],['../classquetzal_1_1coalescence_1_1detail_1_1k__ary__tree__common.html#a4a88613a428c15520000a49b25a5f76e',1,'quetzal::coalescence::detail::k_ary_tree_common::in_edge_iterator()'],['../classquetzal_1_1coalescence_1_1detail_1_1network__common.html#ae1939b623dcac920b8a0feaf6e042d0e',1,'quetzal::coalescence::detail::network_common::in_edge_iterator()'],['../classquetzal_1_1geography_1_1detail_1_1graph__common.html#a796f62314eea85ab16dfb1d6c195a591',1,'quetzal::geography::detail::graph_common::in_edge_iterator()']]],
+  ['isotropy_962',['isotropy',['../namespacequetzal_1_1geography.html#af6da7867d1c7f8864a04f8b003a4fabd',1,'quetzal::geography']]]
 ];

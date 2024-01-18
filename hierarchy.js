@@ -63,6 +63,9 @@ var hierarchy =
     [ "quetzal::expressive::composite_functor< Outer >", "structquetzal_1_1expressive_1_1composite__functor.html", [
       [ "quetzal::expressive::compose_t< Outer >", "structquetzal_1_1expressive_1_1compose__t_3_01Outer_01_4.html", null ]
     ] ],
+    [ "quetzal::geography::connect_4_neighbors", "classquetzal_1_1geography_1_1connect__4__neighbors.html", null ],
+    [ "quetzal::geography::connect_8_neighbors", "classquetzal_1_1geography_1_1connect__8__neighbors.html", null ],
+    [ "quetzal::geography::connect_fully", "structquetzal_1_1geography_1_1connect__fully.html", null ],
     [ "quetzal::sampling::constrained_sampling< X, N >", "classquetzal_1_1sampling_1_1constrained__sampling.html", null ],
     [ "quetzal::geography::gdalcpp::Dataset", "classquetzal_1_1geography_1_1gdalcpp_1_1Dataset.html", null ],
     [ "boost::default_dfs_visitor", null, [
@@ -90,6 +93,11 @@ var hierarchy =
     [ "quetzal::polymorphism::fuzzy_transfer_distance::FuzzyPartition< Element >", "classquetzal_1_1polymorphism_1_1fuzzy__transfer__distance_1_1FuzzyPartition.html", null ],
     [ "quetzal::demography::dispersal_kernel::gaussian< Distance >", "structquetzal_1_1demography_1_1dispersal__kernel_1_1gaussian.html", null ],
     [ "quetzal::demography::dispersal_kernel::gaussian_mixture< Distance >", "structquetzal_1_1demography_1_1dispersal__kernel_1_1gaussian__mixture.html", null ],
+    [ "quetzal::geography::graph< VertexProperty, EdgeProperty, Representation, Directed >", "classquetzal_1_1geography_1_1graph.html", null ],
+    [ "quetzal::geography::detail::graph_common< CRTP, VertexProperty, EdgeProperty, Representation, Directed >", "classquetzal_1_1geography_1_1detail_1_1graph__common.html", null ],
+    [ "quetzal::geography::detail::graph_common< graph< no_property, no_property, Representation, Directed >, no_property, no_property, Representation, Directed >", "classquetzal_1_1geography_1_1detail_1_1graph__common.html", [
+      [ "quetzal::geography::graph< no_property, no_property, Representation, Directed >", "classquetzal_1_1geography_1_1graph_3_01no__property_00_01no__property_00_01Representation_00_01Directed_01_4.html", null ]
+    ] ],
     [ "quetzal::coalescence::occupancy_spectrum::memoize::hash_parameters", "structquetzal_1_1coalescence_1_1occupancy__spectrum_1_1memoize_1_1hash__parameters.html", null ],
     [ "quetzal::demography::HistoryBase< Space, DemographicPolicy, MemoryPolicy >", "classquetzal_1_1demography_1_1HistoryBase.html", [
       [ "quetzal::demography::History< coord_type, DispersalPolicy, memory_policy >", "classquetzal_1_1demography_1_1History.html", null ]
@@ -159,6 +167,7 @@ var hierarchy =
     [ "quetzal::polymorphism::fuzzy_transfer_distance::Matrix< T >", "classquetzal_1_1polymorphism_1_1fuzzy__transfer__distance_1_1Matrix.html", null ],
     [ "quetzal::polymorphism::fuzzy_transfer_distance::Matrix< Data >", "classquetzal_1_1polymorphism_1_1fuzzy__transfer__distance_1_1Matrix.html", null ],
     [ "quetzal::polymorphism::fuzzy_transfer_distance::Matrix< int >", "classquetzal_1_1polymorphism_1_1fuzzy__transfer__distance_1_1Matrix.html", null ],
+    [ "quetzal::geography::mirror", "classquetzal_1_1geography_1_1mirror.html", null ],
     [ "quetzal::polymorphism::fuzzy_transfer_distance::Munkres< Data >", "classquetzal_1_1polymorphism_1_1fuzzy__transfer__distance_1_1Munkres.html", null ],
     [ "MyNode", "structMyNode.html", null ],
     [ "MyVisitor< Graph >", "structMyVisitor.html", null ],
@@ -228,6 +237,7 @@ var hierarchy =
     [ "quetzal::format::newick::single_function_argument< std::function< Ret(Arg)> >", "structquetzal_1_1format_1_1newick_1_1single__function__argument_3_01std_1_1function_3_01Ret_07Arg_08_4_01_4.html", null ],
     [ "quetzal::format::newick::detail::single_function_argument_impl< P1 >", "structquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument__impl.html", null ],
     [ "quetzal::format::newick::single_function_argument_impl< P1 >", "structquetzal_1_1format_1_1newick_1_1single__function__argument__impl.html", null ],
+    [ "quetzal::geography::sink", "classquetzal_1_1geography_1_1sink.html", null ],
     [ "quetzal::format::genetics::SpatialGeneticSample< Space, Individual >", "classquetzal_1_1format_1_1genetics_1_1SpatialGeneticSample.html", null ],
     [ "quetzal::format::genetics::SpatialGeneticSample< coord_type, quetzal::format::genetics::DiploidIndividual >", "classquetzal_1_1format_1_1genetics_1_1SpatialGeneticSample.html", null ],
     [ "quetzal::format::newick::detail::square_bracket", "structquetzal_1_1format_1_1newick_1_1detail_1_1square__bracket.html", null ],
@@ -237,6 +247,7 @@ var hierarchy =
     [ "quetzal::coalescence::occupancy_spectrum::Support", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1Support.html", null ],
     [ "quetzal::coalescence::detail::tag< T >", "structquetzal_1_1coalescence_1_1detail_1_1tag.html", null ],
     [ "quetzal::polymorphism::statistics::tajimasD< T >", "classquetzal_1_1polymorphism_1_1statistics_1_1tajimasD.html", null ],
+    [ "quetzal::geography::torus", "classquetzal_1_1geography_1_1torus.html", null ],
     [ "transition_matrix", "structtransition__matrix.html", null ],
     [ "quetzal::utils::random::TransitionKernel< T >", "classquetzal_1_1utils_1_1random_1_1TransitionKernel.html", null ],
     [ "quetzal::utils::random::TransitionKernel< Distribution >", "classquetzal_1_1utils_1_1random_1_1TransitionKernel_3_01Distribution_01_4.html", null ],

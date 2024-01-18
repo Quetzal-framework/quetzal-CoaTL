@@ -167,6 +167,9 @@ var annotated_dup =
         [ "is_balanced< square_bracket >", "structquetzal_1_1format_1_1is__balanced_3_01square__bracket_01_4.html", null ]
       ] ],
       [ "geography", "namespacequetzal_1_1geography.html", [
+        [ "detail", "namespacequetzal_1_1geography_1_1detail.html", [
+          [ "graph_common", "classquetzal_1_1geography_1_1detail_1_1graph__common.html", "classquetzal_1_1geography_1_1detail_1_1graph__common" ]
+        ] ],
         [ "gdalcpp", null, [
           [ "detail", null, [
             [ "init_wrapper", "structquetzal_1_1geography_1_1gdalcpp_1_1detail_1_1init__wrapper.html", "structquetzal_1_1geography_1_1gdalcpp_1_1detail_1_1init__wrapper" ],
@@ -185,6 +188,14 @@ var annotated_dup =
         [ "latlon", "structquetzal_1_1geography_1_1latlon.html", "structquetzal_1_1geography_1_1latlon" ],
         [ "lonlat", "structquetzal_1_1geography_1_1lonlat.html", "structquetzal_1_1geography_1_1lonlat" ],
         [ "extent", "classquetzal_1_1geography_1_1extent.html", "classquetzal_1_1geography_1_1extent" ],
+        [ "mirror", "classquetzal_1_1geography_1_1mirror.html", "classquetzal_1_1geography_1_1mirror" ],
+        [ "sink", "classquetzal_1_1geography_1_1sink.html", "classquetzal_1_1geography_1_1sink" ],
+        [ "torus", "classquetzal_1_1geography_1_1torus.html", "classquetzal_1_1geography_1_1torus" ],
+        [ "connect_fully", "structquetzal_1_1geography_1_1connect__fully.html", "structquetzal_1_1geography_1_1connect__fully" ],
+        [ "connect_4_neighbors", "classquetzal_1_1geography_1_1connect__4__neighbors.html", "classquetzal_1_1geography_1_1connect__4__neighbors" ],
+        [ "connect_8_neighbors", "classquetzal_1_1geography_1_1connect__8__neighbors.html", "classquetzal_1_1geography_1_1connect__8__neighbors" ],
+        [ "graph", "classquetzal_1_1geography_1_1graph.html", null ],
+        [ "graph< no_property, no_property, Representation, Directed >", "classquetzal_1_1geography_1_1graph_3_01no__property_00_01no__property_00_01Representation_00_01Directed_01_4.html", "classquetzal_1_1geography_1_1graph_3_01no__property_00_01no__property_00_01Representation_00_01Directed_01_4" ],
         [ "landscape", "classquetzal_1_1geography_1_1landscape.html", "classquetzal_1_1geography_1_1landscape" ],
         [ "raster", "classquetzal_1_1geography_1_1raster.html", "classquetzal_1_1geography_1_1raster" ],
         [ "resolution", "classquetzal_1_1geography_1_1resolution.html", "classquetzal_1_1geography_1_1resolution" ]
