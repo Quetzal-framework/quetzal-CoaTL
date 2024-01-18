@@ -17,6 +17,7 @@ namespace quetzal::geography
   /// @brief Individuals can not escape the landscape's borders.
   class mirror
   {
+    public:
     /// @brief Does nothing as by default the bounding box is reflective
     /// @tparam EdgeProperty The edge information
     /// @tparam Graph The graph type 
@@ -33,6 +34,8 @@ namespace quetzal::geography
   /// @brief Individuals can migrate out of the landscape to a sink vertex, but can not come back.
   class sink
   {
+    public:
+
     /// @brief Connect source vertex s to a sink vertex if on the border
     /// @tparam EdgeProperty 
     /// @tparam Graph The graph type 
@@ -55,6 +58,8 @@ namespace quetzal::geography
   /// @brief The 2D landscape becomes a 3D torus connecting opposed borders
   class torus
   {
+    public:
+
     /// @brief Connect edges of source vertex s in a graph given a spatial grid
     /// @tparam EdgeProperty
     /// @tparam Graph The graph type

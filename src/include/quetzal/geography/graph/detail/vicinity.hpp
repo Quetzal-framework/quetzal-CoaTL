@@ -11,6 +11,7 @@
 #pragma once
 
 #include "concepts.hpp"
+#include "../graph.hpp"
 
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/adjacency_matrix.hpp>
@@ -20,24 +21,24 @@ namespace quetzal::geography
   struct connect_fully
   {
     template <directional T, class VertexProperty, class EdgeProperty>
-    using graph_type = boost::adjacency_matrix< boost::setS, boost::vecS,T, VertexProperty, EdgeProperty>;
+    using graph_type = graph< VertexProperty, EdgeProperty, boost::adjacency_matrix, T>; 
 
-    template<class G, two_dimensional S, directional D, bounding<G,S> B>
-    void connect(G & graph, [[maybe_unused]] S const& grid, [[maybe_unused]] B policy)
+    template<class G, two_dimensional S, bounding<G,S> B>
+    void connect(G & graph, [[maybe_unused]] S const& grid, [[maybe_unused]] B policy) const
     {
-      using directed_type = typename G::directed_type;
-      using vertex_property_type = typename G::vertex_property_type;
-      using edge_property_type = typename G::edge_property_type;
+      using directed_category = typename G::directed_category;
+      using vertex_property = typename G::vertex_property;
+      using edge_property = typename G::edge_property;
 
-      static_assert( std::same_as<G, graph_type<directed_type, vertex_property_type, edge_property_type>>);
+      static_assert( std::same_as<G, graph_type<directed_category, vertex_property, edge_property>>);
 
       for (auto s = 0; s < graph.num_vertices(); ++s)
       {
         for (auto t = s + 1; t < graph.num_vertices(); ++t)
         {
-          graph.add_edge(s, t, edge_property_type(s, t)); // (s -> v) == (s <- v) if undirected
-          if constexpr (std::same_as<directed_type, anisotropy>) 
-            graph.add_edge(t, s, edge_property_type(t, s)); // (s -> v) != (s <- v) because directed
+          graph.add_edge(s, t, edge_property(s, t)); // (s -> v) == (s <- v) if undirected
+          if constexpr (std::same_as<directed_category, anisotropy>) 
+            graph.add_edge(t, s, edge_property(t, s)); // (s -> v) != (s <- v) because directed
         }
       }
     }
@@ -49,18 +50,18 @@ namespace quetzal::geography
     public:
 
     template <two_dimensional T, class VertexProperty, class EdgeProperty>
-    using graph_type = boost::adjacency_list<boost::setS, boost::vecS, T, VertexProperty, EdgeProperty>;
+    using graph_type = graph< VertexProperty, EdgeProperty, boost::adjacency_list, T>;
 
     private:
 
     template<typename G>
     void connect(auto s, auto t, G & graph, auto const& grid)
     {
-      using edge_property_type = typename G::edge_property_type;
-      graph.add_edge(s, t, edge_property_type(s, t));
-      if constexpr (std::same_as< typename G::directed_type, anisotropy >)
+      using edge_property = typename G::edge_property;
+      graph.add_edge(s, t, edge_property(s, t));
+      if constexpr (std::same_as< typename G::directed_category, anisotropy >)
       {
-        graph.add_edge(t, s, edge_property_type(t, s));
+        graph.add_edge(t, s, edge_property(t, s));
       }
     }
     
@@ -135,14 +136,14 @@ namespace quetzal::geography
 
     public:
 
-    template<class G, two_dimensional S, directional D, bounding<G, S> B>
-    void connect(G & graph, S const& grid, B bound_policy)
+    template<class G, two_dimensional S, bounding<G, S> B>
+    void connect(G & graph, S const& grid, B bound_policy) const
     {
-      using directed_type = typename G::directed_type;
-      using vertex_property_type = typename G::vertex_property_type;
-      using edge_property_type = typename G::edge_property_type;
+      using directed_category = typename G::directed_category;
+      using vertex_property = typename G::vertex_property;
+      using edge_property = typename G::edge_property;
 
-      static_assert(std::same_as<G, graph_type<directed_type, vertex_property_type, edge_property_type>> );
+      static_assert(std::same_as<G, graph_type<directed_category, vertex_property, edge_property>> );
 
       int width = grid.width();
       int height = grid.height();
@@ -203,24 +204,24 @@ namespace quetzal::geography
     public:
 
     template <two_dimensional T, class VertexProperty, class EdgeProperty>
-    using graph_type = boost::adjacency_list< boost::setS, boost::vecS, T, VertexProperty, EdgeProperty>;
+    using graph_type = graph< VertexProperty, EdgeProperty, boost::adjacency_list, T> ;
 
     private:
 
     template<class G>
     void connect(auto s, auto t, G & graph, auto const& grid)
     {
-      using directed_type = typename G::directed_type;
-      using vertex_property_type = typename G::vertex_property_type;
-      using edge_property_type = typename G::edge_property_type;
+      using directed_category = typename G::directed_category;
+      using vertex_property = typename G::vertex_property;
+      using edge_property = typename G::edge_property;
 
-      static_assert(std::same_as< G, graph_type<directed_type, vertex_property_type, edge_property_type>> );
+      static_assert(std::same_as< G, graph_type<directed_category, vertex_property, edge_property>> );
 
-      graph.add_edge(s, t, edge_property_type(s, t));
+      graph.add_edge(s, t, edge_property(s, t));
 
-      if constexpr (std::same_as<directed_type, anisotropy>)
+      if constexpr (std::same_as<directed_category, anisotropy>)
       {
-        graph.add_edge(t, s, edge_property_type(t, s));
+        graph.add_edge(t, s, edge_property(t, s));
       }
 
     }
@@ -312,13 +313,13 @@ namespace quetzal::geography
 
     public:
 
-    template<class G, two_dimensional S, directional D, bounding<G, S> B>
-    void connect(G & graph, S const& grid, B bound_policy)
+    template<class G, two_dimensional S, bounding<G, S> B>
+    void connect(G & graph, S const& grid, B bound_policy) const
     {
-      using directed_type = typename G::directed_type;
-      using vertex_property_type = typename G::vertex_property_type;
-      using edge_property_type = typename G::edge_property_type;
-      static_assert(std::same_as<G, graph_type<directed_type, vertex_property_type, edge_property_type> > );
+      using directed_category = typename G::directed_category;
+      using vertex_property = typename G::vertex_property;
+      using edge_property = typename G::edge_property;
+      static_assert(std::same_as<G, graph_type<directed_category, vertex_property, edge_property> > );
 
       int width = grid.width();
       int height = grid.height();

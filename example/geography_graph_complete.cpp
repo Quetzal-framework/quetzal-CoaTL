@@ -39,7 +39,7 @@ int main()
 
 	// A little helper function
 	auto sphere_distance = [&]( auto const& p1, auto const& p2 ){ 
-		return land.to_latlon( p1 ).great_circle_distance( land.to_latlon( p2 ) );}
+		return land.to_latlon( p1 ).great_circle_distance( land.to_latlon( p2 ) );};
 	
 	// auto v = graph1.edges()
 	// 	| std::transform( [&](auto const& e){ sphere_distance( graph.source( e ), graph.target( e ) );} )
