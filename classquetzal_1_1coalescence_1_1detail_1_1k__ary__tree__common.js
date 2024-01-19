@@ -1,6 +1,6 @@
 var classquetzal_1_1coalescence_1_1detail_1_1k__ary__tree__common =
 [
-    [ "base", "classquetzal_1_1coalescence_1_1detail_1_1k__ary__tree__common.html#ac6e34a3a6e0e70eba53489a3097b1753", null ],
+    [ "base", "classquetzal_1_1coalescence_1_1detail_1_1k__ary__tree__common.html#a748a5287ac858a18b7c584acb51376ef", null ],
     [ "degree_size_type", "classquetzal_1_1coalescence_1_1detail_1_1k__ary__tree__common.html#a027592c611944a1c1bdfb3611be8849f", null ],
     [ "directed_category", "classquetzal_1_1coalescence_1_1detail_1_1k__ary__tree__common.html#a0b817531105da7e223fe39f312d53b6f", null ],
     [ "edge_descriptor", "classquetzal_1_1coalescence_1_1detail_1_1k__ary__tree__common.html#a1d49414a35c3be75be46ec32012d0f29", null ],

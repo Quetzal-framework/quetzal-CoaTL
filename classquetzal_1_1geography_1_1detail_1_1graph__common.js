@@ -1,6 +1,6 @@
 var classquetzal_1_1geography_1_1detail_1_1graph__common =
 [
-    [ "base_type", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#a80412779bc6c5e8399175737c9f9d5f3", null ],
+    [ "base_type", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#acebe3660d43ad6d4e160d00b30f22023", null ],
     [ "degree_size_type", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#a7354a36365639a2a6f1feb5d419e47ff", null ],
     [ "directed_category", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#a0daa0dbbeadd5076bcbfad8e393e65e0", null ],
     [ "edge_descriptor", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#ab49a428cbd67b81d959a2056761c2014", null ],

@@ -1,71 +1,102 @@
 <!-- HTML header for doxygen 1.9.1-->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<meta name="generator" content="Doxygen 1.9.1"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Quetzal-CoaTL: /home/runner/work/quetzal-CoaTL/quetzal-CoaTL/src/include/quetzal/geography/resolution.hpp Source File</title>
-<link href="tabs.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="jquery.js"></script>
-<script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
+  <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=9" />
+  <meta name="generator" content="Doxygen 1.9.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quetzal-CoaTL: /home/runner/work/quetzal-CoaTL/quetzal-CoaTL/src/include/quetzal/geography/resolution.hpp Source File</title>
+  <link href="tabs.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="jquery.js"></script>
+  <script type="text/javascript" src="dynsections.js"></script>
+  <link href="navtree.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="resize.js"></script>
 <script type="text/javascript" src="navtreedata.js"></script>
 <script type="text/javascript" src="navtree.js"></script>
-<link href="search/search.css" rel="stylesheet" type="text/css"/>
+  <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<script type="text/x-mathjax-config">
+  <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
     extensions: ["tex2jax.js"],
     jax: ["input/TeX","output/HTML-CSS"],
 });
 </script>
 <script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
-<link href="doxygen.css" rel="stylesheet" type="text/css" />
-<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+  <link href="doxygen.css" rel="stylesheet" type="text/css" />
+  <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen-awesome-darkmode-toggle.js" rel="stylesheet" type="text/css"/>
 <link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen-awesome-fragment-copy-button.js" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
-<script type="text/javascript">
+  <script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+  <script type="text/javascript">
     DoxygenAwesomeDarkModeToggle.init()
-</script>
-<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
-<script type="text/javascript">
+  </script>
+  <script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+  <script type="text/javascript">
     DoxygenAwesomeFragmentCopyButton.init()
-</script>
-<a href="https://github.com/Quetzal-framework/quetzal-CoaTL" class="github-corner" aria-label="View source on GitHub">
-  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#70B7FD; color:#151513; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
-    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
-    <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
-    <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body">
-    </path>
-  </svg>
-</a>
-<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+  </script>
+  <a href="https://github.com/Quetzal-framework/quetzal-CoaTL" class="github-corner" aria-label="View source on GitHub">
+    <svg width="80" height="80" viewBox="0 0 250 250"
+      style="fill:#70B7FD; color:#151513; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+      <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+      <path
+        d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+        fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+      <path
+        d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+        fill="currentColor" class="octo-body">
+      </path>
+    </svg>
+  </a>
+  <style>
+    .github-corner:hover .octo-arm {
+      animation: octocat-wave 560ms ease-in-out
+    }
+    @keyframes octocat-wave {
+      0%,
+      100% {
+        transform: rotate(0)
+      }
+      20%,
+      60% {
+        transform: rotate(-25deg)
+      }
+      40%,
+      80% {
+        transform: rotate(10deg)
+      }
+    }
+    @media (max-width:500px) {
+      .github-corner:hover .octo-arm {
+        animation: none
+      }
+      .github-corner .octo-arm {
+        animation: octocat-wave 560ms ease-in-out
+      }
+    }
+  </style>
 </head>
 <body>
-<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
-<div id="titlearea">
-<table cellspacing="0" cellpadding="0">
- <tbody>
- <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="quetzal-coaltl-fa.png"/></td>
-  <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Quetzal-CoaTL
-   </div>
-   <div id="projectbrief">The Coalescence Template Library</div>
-  </td>
- </tr>
- </tbody>
-</table>
-</div>
-<!-- end header part -->
-<!-- Generated by Doxygen 1.9.1 -->
+  <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+    <div id="titlearea">
+      <table cellspacing="0" cellpadding="0">
+        <tbody>
+          <tr style="height: 56px;">
+            <td id="projectlogo"><img alt="Logo" src="quetzal-coaltl-fa.png" /></td>
+            <td id="projectalign" style="padding-left: 0.5em;">
+              <div id="projectname">Quetzal-CoaTL
+              </div>
+              <div id="projectbrief">The Coalescence Template Library</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- end header part --><!-- Generated by Doxygen 1.9.1 -->
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
 var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
@@ -119,78 +150,75 @@ $(document).ready(function(){initNavTree('resolution_8hpp_source.html',''); init
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// Copyright 2021 Arnaud Becheler    &lt;abechele@umich.edu&gt;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">/***********************************************************************                                                                         *</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">* This program is free software; you can redistribute it and/or modify *</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">* it under the terms of the GNU General Public License as published by *</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">* the Free Software Foundation; either version 2 of the License, or    *</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">* (at your option) any later version.                                  *</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">*                                                                      *</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">***************************************************************************/</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">/*********************************************************************** * This program is free software; you can</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *redistribute it and/or modify * it under the terms of the GNU General Public License as published by * the Free</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *Software Foundation; either version 2 of the License, or    * (at your option) any later version. *</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> *                                                                      *</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> ***************************************************************************/</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#pragma once</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacequetzal_1_1geography.html">quetzal::geography</a></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;{</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1resolution.html">   18</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classquetzal_1_1geography_1_1resolution.html">resolution</a></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        T _lat;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        T _lon;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacequetzal_1_1geography.html">quetzal::geography</a></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;{</div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1resolution.html">   15</a></span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">class </span><a class="code" href="classquetzal_1_1geography_1_1resolution.html">resolution</a></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    T _lat;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    T _lon;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">using</span> value_type = T;</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keyword">using</span> value_type = T;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1resolution.html#a872182751ee0962646b1013bf3171b51">   34</a></span>&#160;        constexpr <span class="keyword">explicit</span> <a class="code" href="classquetzal_1_1geography_1_1resolution.html#a872182751ee0962646b1013bf3171b51">resolution</a>(value_type <a class="code" href="classquetzal_1_1geography_1_1resolution.html#a3b68f93c9f9d73e0f3c59547b565c9af">lat</a>, value_type <a class="code" href="classquetzal_1_1geography_1_1resolution.html#a9c9b2499d45a3fd2685eca0e77ff6575">lon</a>) : _lat(<a class="code" href="classquetzal_1_1geography_1_1resolution.html#a3b68f93c9f9d73e0f3c59547b565c9af">lat</a>), _lon(<a class="code" href="classquetzal_1_1geography_1_1resolution.html#a9c9b2499d45a3fd2685eca0e77ff6575">lon</a>) {}</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1resolution.html#a3b68f93c9f9d73e0f3c59547b565c9af">   38</a></span>&#160;        constexpr value_type <a class="code" href="classquetzal_1_1geography_1_1resolution.html#a3b68f93c9f9d73e0f3c59547b565c9af">lat</a>() const noexcept</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <span class="keywordflow">return</span> _lat;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        }</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1resolution.html#a9c9b2499d45a3fd2685eca0e77ff6575">   44</a></span>&#160;        constexpr  value_type <a class="code" href="classquetzal_1_1geography_1_1resolution.html#a9c9b2499d45a3fd2685eca0e77ff6575">lon</a>() const noexcept</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            <span class="keywordflow">return</span> _lon;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1resolution.html#ab76f76a991cce8c5b6c90abe37255ce1">   52</a></span>&#160;        constexpr <a class="code" href="classquetzal_1_1geography_1_1resolution.html">resolution</a>&amp; <a class="code" href="classquetzal_1_1geography_1_1resolution.html#ab76f76a991cce8c5b6c90abe37255ce1">lat</a>(value_type value) noexcept </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        {</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            _lat = value;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        }</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1resolution.html#a1d8ccb2279499f73eba682bbf99a49ad">   61</a></span>&#160;        constexpr <a class="code" href="classquetzal_1_1geography_1_1resolution.html">resolution</a>&amp; <a class="code" href="classquetzal_1_1geography_1_1resolution.html#a1d8ccb2279499f73eba682bbf99a49ad">lon</a>(value_type value) noexcept</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            _lon = value;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        }</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1resolution.html#a3a6b8b1149d8efae963b3189eee9fe76">   70</a></span>&#160;        constexpr <span class="keywordtype">bool</span> <a class="code" href="classquetzal_1_1geography_1_1resolution.html#a3a6b8b1149d8efae963b3189eee9fe76">operator==</a>(<span class="keyword">const</span> <a class="code" href="classquetzal_1_1geography_1_1resolution.html">resolution</a>&amp; other) <span class="keyword">const</span> noexcept</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="keywordflow">if</span>(_lat == other.lat() &amp;&amp; _lon == other.lon() ) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        }</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1resolution.html#ade06ee7656e36fee6d8baae59815b565">   79</a></span>&#160;        constexpr <span class="keywordtype">bool</span> <a class="code" href="classquetzal_1_1geography_1_1resolution.html#ade06ee7656e36fee6d8baae59815b565">operator!=</a>(<span class="keyword">const</span> <a class="code" href="classquetzal_1_1geography_1_1resolution.html">resolution</a>&amp; other) <span class="keyword">const</span>  noexcept</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        {</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <span class="keywordflow">return</span> !(<a class="code" href="classquetzal_1_1geography_1_1resolution.html#a3a6b8b1149d8efae963b3189eee9fe76">operator==</a>(other));</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        }</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    };</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;} <span class="comment">// namespace geography</span></div>
-<div class="ttc" id="aclassquetzal_1_1geography_1_1resolution_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1resolution.html">quetzal::geography::resolution</a></div><div class="ttdoc">Resolution of a spatial grid.</div><div class="ttdef"><b>Definition:</b> resolution.hpp:19</div></div>
-<div class="ttc" id="aclassquetzal_1_1geography_1_1resolution_html_a1d8ccb2279499f73eba682bbf99a49ad"><div class="ttname"><a href="classquetzal_1_1geography_1_1resolution.html#a1d8ccb2279499f73eba682bbf99a49ad">quetzal::geography::resolution::lon</a></div><div class="ttdeci">constexpr resolution &amp; lon(value_type value) noexcept</div><div class="ttdoc">Sets longitude resolution.</div><div class="ttdef"><b>Definition:</b> resolution.hpp:61</div></div>
-<div class="ttc" id="aclassquetzal_1_1geography_1_1resolution_html_a3a6b8b1149d8efae963b3189eee9fe76"><div class="ttname"><a href="classquetzal_1_1geography_1_1resolution.html#a3a6b8b1149d8efae963b3189eee9fe76">quetzal::geography::resolution::operator==</a></div><div class="ttdeci">constexpr bool operator==(const resolution &amp;other) const noexcept</div><div class="ttdoc">EqualityComparable.</div><div class="ttdef"><b>Definition:</b> resolution.hpp:70</div></div>
-<div class="ttc" id="aclassquetzal_1_1geography_1_1resolution_html_a3b68f93c9f9d73e0f3c59547b565c9af"><div class="ttname"><a href="classquetzal_1_1geography_1_1resolution.html#a3b68f93c9f9d73e0f3c59547b565c9af">quetzal::geography::resolution::lat</a></div><div class="ttdeci">constexpr value_type lat() const noexcept</div><div class="ttdoc">Gets latitude resolution.</div><div class="ttdef"><b>Definition:</b> resolution.hpp:38</div></div>
-<div class="ttc" id="aclassquetzal_1_1geography_1_1resolution_html_a872182751ee0962646b1013bf3171b51"><div class="ttname"><a href="classquetzal_1_1geography_1_1resolution.html#a872182751ee0962646b1013bf3171b51">quetzal::geography::resolution::resolution</a></div><div class="ttdeci">constexpr resolution(value_type lat, value_type lon)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition:</b> resolution.hpp:34</div></div>
-<div class="ttc" id="aclassquetzal_1_1geography_1_1resolution_html_a9c9b2499d45a3fd2685eca0e77ff6575"><div class="ttname"><a href="classquetzal_1_1geography_1_1resolution.html#a9c9b2499d45a3fd2685eca0e77ff6575">quetzal::geography::resolution::lon</a></div><div class="ttdeci">constexpr value_type lon() const noexcept</div><div class="ttdoc">Gets longitude resolution.</div><div class="ttdef"><b>Definition:</b> resolution.hpp:44</div></div>
-<div class="ttc" id="aclassquetzal_1_1geography_1_1resolution_html_ab76f76a991cce8c5b6c90abe37255ce1"><div class="ttname"><a href="classquetzal_1_1geography_1_1resolution.html#ab76f76a991cce8c5b6c90abe37255ce1">quetzal::geography::resolution::lat</a></div><div class="ttdeci">constexpr resolution &amp; lat(value_type value) noexcept</div><div class="ttdoc">Sets latitude resolution.</div><div class="ttdef"><b>Definition:</b> resolution.hpp:52</div></div>
-<div class="ttc" id="aclassquetzal_1_1geography_1_1resolution_html_ade06ee7656e36fee6d8baae59815b565"><div class="ttname"><a href="classquetzal_1_1geography_1_1resolution.html#ade06ee7656e36fee6d8baae59815b565">quetzal::geography::resolution::operator!=</a></div><div class="ttdeci">constexpr bool operator!=(const resolution &amp;other) const noexcept</div><div class="ttdoc">Unequality comparison operator.</div><div class="ttdef"><b>Definition:</b> resolution.hpp:79</div></div>
-<div class="ttc" id="anamespacequetzal_1_1geography_html"><div class="ttname"><a href="namespacequetzal_1_1geography.html">quetzal::geography</a></div><div class="ttdoc">Geospatial data formatting and processing.</div><div class="ttdef"><b>Definition:</b> coordinates.hpp:18</div></div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1resolution.html#a872182751ee0962646b1013bf3171b51">   29</a></span>&#160;    constexpr <span class="keyword">explicit</span> <a class="code" href="classquetzal_1_1geography_1_1resolution.html#a872182751ee0962646b1013bf3171b51">resolution</a>(value_type <a class="code" href="classquetzal_1_1geography_1_1resolution.html#a3b68f93c9f9d73e0f3c59547b565c9af">lat</a>, value_type <a class="code" href="classquetzal_1_1geography_1_1resolution.html#a9c9b2499d45a3fd2685eca0e77ff6575">lon</a>) : _lat(<a class="code" href="classquetzal_1_1geography_1_1resolution.html#a3b68f93c9f9d73e0f3c59547b565c9af">lat</a>), _lon(<a class="code" href="classquetzal_1_1geography_1_1resolution.html#a9c9b2499d45a3fd2685eca0e77ff6575">lon</a>)</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    }</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1resolution.html#a3b68f93c9f9d73e0f3c59547b565c9af">   35</a></span>&#160;    constexpr value_type <a class="code" href="classquetzal_1_1geography_1_1resolution.html#a3b68f93c9f9d73e0f3c59547b565c9af">lat</a>() const noexcept</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keywordflow">return</span> _lat;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    }</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1resolution.html#a9c9b2499d45a3fd2685eca0e77ff6575">   41</a></span>&#160;    constexpr value_type <a class="code" href="classquetzal_1_1geography_1_1resolution.html#a9c9b2499d45a3fd2685eca0e77ff6575">lon</a>() const noexcept</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordflow">return</span> _lon;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    }</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1resolution.html#ab76f76a991cce8c5b6c90abe37255ce1">   49</a></span>&#160;    constexpr <a class="code" href="classquetzal_1_1geography_1_1resolution.html">resolution</a> &amp;<a class="code" href="classquetzal_1_1geography_1_1resolution.html#ab76f76a991cce8c5b6c90abe37255ce1">lat</a>(value_type value) noexcept</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    {</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        _lat = value;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1resolution.html#a1d8ccb2279499f73eba682bbf99a49ad">   58</a></span>&#160;    constexpr <a class="code" href="classquetzal_1_1geography_1_1resolution.html">resolution</a> &amp;<a class="code" href="classquetzal_1_1geography_1_1resolution.html#a1d8ccb2279499f73eba682bbf99a49ad">lon</a>(value_type value) noexcept</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        _lon = value;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    }</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1resolution.html#a3a6b8b1149d8efae963b3189eee9fe76">   67</a></span>&#160;    constexpr <span class="keywordtype">bool</span> <a class="code" href="classquetzal_1_1geography_1_1resolution.html#a3a6b8b1149d8efae963b3189eee9fe76">operator==</a>(<span class="keyword">const</span> <a class="code" href="classquetzal_1_1geography_1_1resolution.html">resolution</a> &amp;other) <span class="keyword">const</span> noexcept</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keywordflow">if</span> (_lat == other.lat() &amp;&amp; _lon == other.lon())</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1resolution.html#ade06ee7656e36fee6d8baae59815b565">   77</a></span>&#160;    constexpr <span class="keywordtype">bool</span> <a class="code" href="classquetzal_1_1geography_1_1resolution.html#ade06ee7656e36fee6d8baae59815b565">operator!=</a>(<span class="keyword">const</span> <a class="code" href="classquetzal_1_1geography_1_1resolution.html">resolution</a> &amp;other) <span class="keyword">const</span> noexcept</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    {</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordflow">return</span> !(<a class="code" href="classquetzal_1_1geography_1_1resolution.html#a3a6b8b1149d8efae963b3189eee9fe76">operator==</a>(other));</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    }</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;};</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;} <span class="comment">// namespace quetzal::geography</span></div>
+<div class="ttc" id="aclassquetzal_1_1geography_1_1resolution_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1resolution.html">quetzal::geography::resolution</a></div><div class="ttdoc">Resolution of a spatial grid.</div><div class="ttdef"><b>Definition:</b> resolution.hpp:16</div></div>
+<div class="ttc" id="aclassquetzal_1_1geography_1_1resolution_html_a1d8ccb2279499f73eba682bbf99a49ad"><div class="ttname"><a href="classquetzal_1_1geography_1_1resolution.html#a1d8ccb2279499f73eba682bbf99a49ad">quetzal::geography::resolution::lon</a></div><div class="ttdeci">constexpr resolution &amp; lon(value_type value) noexcept</div><div class="ttdoc">Sets longitude resolution.</div><div class="ttdef"><b>Definition:</b> resolution.hpp:58</div></div>
+<div class="ttc" id="aclassquetzal_1_1geography_1_1resolution_html_a3a6b8b1149d8efae963b3189eee9fe76"><div class="ttname"><a href="classquetzal_1_1geography_1_1resolution.html#a3a6b8b1149d8efae963b3189eee9fe76">quetzal::geography::resolution::operator==</a></div><div class="ttdeci">constexpr bool operator==(const resolution &amp;other) const noexcept</div><div class="ttdoc">EqualityComparable.</div><div class="ttdef"><b>Definition:</b> resolution.hpp:67</div></div>
+<div class="ttc" id="aclassquetzal_1_1geography_1_1resolution_html_a3b68f93c9f9d73e0f3c59547b565c9af"><div class="ttname"><a href="classquetzal_1_1geography_1_1resolution.html#a3b68f93c9f9d73e0f3c59547b565c9af">quetzal::geography::resolution::lat</a></div><div class="ttdeci">constexpr value_type lat() const noexcept</div><div class="ttdoc">Gets latitude resolution.</div><div class="ttdef"><b>Definition:</b> resolution.hpp:35</div></div>
+<div class="ttc" id="aclassquetzal_1_1geography_1_1resolution_html_a872182751ee0962646b1013bf3171b51"><div class="ttname"><a href="classquetzal_1_1geography_1_1resolution.html#a872182751ee0962646b1013bf3171b51">quetzal::geography::resolution::resolution</a></div><div class="ttdeci">constexpr resolution(value_type lat, value_type lon)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition:</b> resolution.hpp:29</div></div>
+<div class="ttc" id="aclassquetzal_1_1geography_1_1resolution_html_a9c9b2499d45a3fd2685eca0e77ff6575"><div class="ttname"><a href="classquetzal_1_1geography_1_1resolution.html#a9c9b2499d45a3fd2685eca0e77ff6575">quetzal::geography::resolution::lon</a></div><div class="ttdeci">constexpr value_type lon() const noexcept</div><div class="ttdoc">Gets longitude resolution.</div><div class="ttdef"><b>Definition:</b> resolution.hpp:41</div></div>
+<div class="ttc" id="aclassquetzal_1_1geography_1_1resolution_html_ab76f76a991cce8c5b6c90abe37255ce1"><div class="ttname"><a href="classquetzal_1_1geography_1_1resolution.html#ab76f76a991cce8c5b6c90abe37255ce1">quetzal::geography::resolution::lat</a></div><div class="ttdeci">constexpr resolution &amp; lat(value_type value) noexcept</div><div class="ttdoc">Sets latitude resolution.</div><div class="ttdef"><b>Definition:</b> resolution.hpp:49</div></div>
+<div class="ttc" id="aclassquetzal_1_1geography_1_1resolution_html_ade06ee7656e36fee6d8baae59815b565"><div class="ttname"><a href="classquetzal_1_1geography_1_1resolution.html#ade06ee7656e36fee6d8baae59815b565">quetzal::geography::resolution::operator!=</a></div><div class="ttdeci">constexpr bool operator!=(const resolution &amp;other) const noexcept</div><div class="ttdoc">Unequality comparison operator.</div><div class="ttdef"><b>Definition:</b> resolution.hpp:77</div></div>
+<div class="ttc" id="anamespacequetzal_1_1geography_html"><div class="ttname"><a href="namespacequetzal_1_1geography.html">quetzal::geography</a></div><div class="ttdoc">Geospatial data formatting and processing.</div><div class="ttdef"><b>Definition:</b> coordinates.hpp:16</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

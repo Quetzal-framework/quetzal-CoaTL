@@ -1,71 +1,102 @@
 <!-- HTML header for doxygen 1.9.1-->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<meta name="generator" content="Doxygen 1.9.1"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Quetzal-CoaTL: quetzal::geography Namespace Reference</title>
-<link href="tabs.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="jquery.js"></script>
-<script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
+  <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=9" />
+  <meta name="generator" content="Doxygen 1.9.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quetzal-CoaTL: quetzal::geography Namespace Reference</title>
+  <link href="tabs.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="jquery.js"></script>
+  <script type="text/javascript" src="dynsections.js"></script>
+  <link href="navtree.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="resize.js"></script>
 <script type="text/javascript" src="navtreedata.js"></script>
 <script type="text/javascript" src="navtree.js"></script>
-<link href="search/search.css" rel="stylesheet" type="text/css"/>
+  <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<script type="text/x-mathjax-config">
+  <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
     extensions: ["tex2jax.js"],
     jax: ["input/TeX","output/HTML-CSS"],
 });
 </script>
 <script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
-<link href="doxygen.css" rel="stylesheet" type="text/css" />
-<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+  <link href="doxygen.css" rel="stylesheet" type="text/css" />
+  <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen-awesome-darkmode-toggle.js" rel="stylesheet" type="text/css"/>
 <link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen-awesome-fragment-copy-button.js" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
-<script type="text/javascript">
+  <script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+  <script type="text/javascript">
     DoxygenAwesomeDarkModeToggle.init()
-</script>
-<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
-<script type="text/javascript">
+  </script>
+  <script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+  <script type="text/javascript">
     DoxygenAwesomeFragmentCopyButton.init()
-</script>
-<a href="https://github.com/Quetzal-framework/quetzal-CoaTL" class="github-corner" aria-label="View source on GitHub">
-  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#70B7FD; color:#151513; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
-    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
-    <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
-    <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body">
-    </path>
-  </svg>
-</a>
-<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+  </script>
+  <a href="https://github.com/Quetzal-framework/quetzal-CoaTL" class="github-corner" aria-label="View source on GitHub">
+    <svg width="80" height="80" viewBox="0 0 250 250"
+      style="fill:#70B7FD; color:#151513; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+      <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+      <path
+        d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+        fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+      <path
+        d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+        fill="currentColor" class="octo-body">
+      </path>
+    </svg>
+  </a>
+  <style>
+    .github-corner:hover .octo-arm {
+      animation: octocat-wave 560ms ease-in-out
+    }
+    @keyframes octocat-wave {
+      0%,
+      100% {
+        transform: rotate(0)
+      }
+      20%,
+      60% {
+        transform: rotate(-25deg)
+      }
+      40%,
+      80% {
+        transform: rotate(10deg)
+      }
+    }
+    @media (max-width:500px) {
+      .github-corner:hover .octo-arm {
+        animation: none
+      }
+      .github-corner .octo-arm {
+        animation: octocat-wave 560ms ease-in-out
+      }
+    }
+  </style>
 </head>
 <body>
-<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
-<div id="titlearea">
-<table cellspacing="0" cellpadding="0">
- <tbody>
- <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="quetzal-coaltl-fa.png"/></td>
-  <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Quetzal-CoaTL
-   </div>
-   <div id="projectbrief">The Coalescence Template Library</div>
-  </td>
- </tr>
- </tbody>
-</table>
-</div>
-<!-- end header part -->
-<!-- Generated by Doxygen 1.9.1 -->
+  <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+    <div id="titlearea">
+      <table cellspacing="0" cellpadding="0">
+        <tbody>
+          <tr style="height: 56px;">
+            <td id="projectlogo"><img alt="Logo" src="quetzal-coaltl-fa.png" /></td>
+            <td id="projectalign" style="padding-left: 0.5em;">
+              <div id="projectname">Quetzal-CoaTL
+              </div>
+              <div id="projectbrief">The Coalescence Template Library</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- end header part --><!-- Generated by Doxygen 1.9.1 -->
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
 var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
@@ -222,18 +253,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a42aabda21a3d733ec2b10973524d4671"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#a42aabda21a3d733ec2b10973524d4671">from_grid</a> (SpatialGrid const &amp;grid, VertexProperty const &amp;v, EdgeProperty const &amp;e, Vicinity const &amp;vicinity, Directionality dir, Policy const &amp;bound)</td></tr>
 <tr class="memdesc:a42aabda21a3d733ec2b10973524d4671"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spatial graph construction method.  <a href="namespacequetzal_1_1geography.html#a42aabda21a3d733ec2b10973524d4671">More...</a><br /></td></tr>
 <tr class="separator:a42aabda21a3d733ec2b10973524d4671"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a500eac968c0237e01840013b089681b0"><td class="memTemplParams" colspan="2">template&lt;class VertexProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </td></tr>
-<tr class="memitem:a500eac968c0237e01840013b089681b0"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#a500eac968c0237e01840013b089681b0">requires</a> (! std::is_same_v&lt; VertexProperty, no_property &gt;) class <a class="el" href="classquetzal_1_1geography_1_1graph.html">graph</a>&lt; VertexProperty</td></tr>
-<tr class="memdesc:a500eac968c0237e01840013b089681b0"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="anchor" id="SpatialGraphVertexPropertyNoProperty"></a>A graph class with information attached to vertices.  <a href="namespacequetzal_1_1geography.html#a500eac968c0237e01840013b089681b0">More...</a><br /></td></tr>
-<tr class="separator:a500eac968c0237e01840013b089681b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f05af9335923ac31a3470db53764568"><td class="memTemplParams" colspan="2">template&lt;class VertexProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </td></tr>
+<tr class="memitem:a2f05af9335923ac31a3470db53764568"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#a2f05af9335923ac31a3470db53764568">requires</a> (!std::is_same_v&lt; VertexProperty, no_property &gt;) class <a class="el" href="classquetzal_1_1geography_1_1graph.html">graph</a>&lt; VertexProperty</td></tr>
+<tr class="memdesc:a2f05af9335923ac31a3470db53764568"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="anchor" id="SpatialGraphVertexPropertyNoProperty"></a>A graph class with information attached to vertices.  <a href="namespacequetzal_1_1geography.html#a2f05af9335923ac31a3470db53764568">More...</a><br /></td></tr>
+<tr class="separator:a2f05af9335923ac31a3470db53764568"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6405005a5098bb475c8bbb63a184eee1"><td class="memTemplParams" colspan="2">template&lt;class EdgeProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </td></tr>
 <tr class="memitem:a6405005a5098bb475c8bbb63a184eee1"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#a6405005a5098bb475c8bbb63a184eee1">requires</a> (!std::is_same_v&lt; EdgeProperty, no_property &gt;) class <a class="el" href="classquetzal_1_1geography_1_1graph.html">graph</a>&lt; no_property</td></tr>
 <tr class="memdesc:a6405005a5098bb475c8bbb63a184eee1"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="anchor" id="SpatialGraphNoPropertyEdgeProperty"></a>A graph class with information attached to edges.  <a href="namespacequetzal_1_1geography.html#a6405005a5098bb475c8bbb63a184eee1">More...</a><br /></td></tr>
 <tr class="separator:a6405005a5098bb475c8bbb63a184eee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9881c7a7386144934eb8622084245773"><td class="memTemplParams" colspan="2">template&lt;class VertexProperty , class EdgeProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </td></tr>
-<tr class="memitem:a9881c7a7386144934eb8622084245773"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#a9881c7a7386144934eb8622084245773">requires</a> (! std::is_same_v&lt; VertexProperty, no_property &gt; and ! std::is_same_v&lt; EdgeProperty, no_property &gt;) class <a class="el" href="classquetzal_1_1geography_1_1graph.html">graph</a>&lt; VertexProperty</td></tr>
-<tr class="memdesc:a9881c7a7386144934eb8622084245773"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="anchor" id="SpatialGraphVertexPropertyEdgeProperty"></a>A graph class with information attached to vertices.  <a href="namespacequetzal_1_1geography.html#a9881c7a7386144934eb8622084245773">More...</a><br /></td></tr>
-<tr class="separator:a9881c7a7386144934eb8622084245773"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cc95aef34443b164f4252556da62f75"><td class="memTemplParams" colspan="2">template&lt;class VertexProperty , class EdgeProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </td></tr>
+<tr class="memitem:a4cc95aef34443b164f4252556da62f75"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#a4cc95aef34443b164f4252556da62f75">requires</a> (!std::is_same_v&lt; VertexProperty, no_property &gt; and !std::is_same_v&lt; EdgeProperty, no_property &gt;) class <a class="el" href="classquetzal_1_1geography_1_1graph.html">graph</a>&lt; VertexProperty</td></tr>
+<tr class="memdesc:a4cc95aef34443b164f4252556da62f75"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="anchor" id="SpatialGraphVertexPropertyEdgeProperty"></a>A graph class with information attached to vertices.  <a href="namespacequetzal_1_1geography.html#a4cc95aef34443b164f4252556da62f75">More...</a><br /></td></tr>
+<tr class="separator:a4cc95aef34443b164f4252556da62f75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3e6c428433c62c3549e2117e4a27186"><td class="memTemplParams" colspan="2"><a id="ad3e6c428433c62c3549e2117e4a27186"></a>
 template&lt;typename Key , typename Time &gt; </td></tr>
 <tr class="memitem:ad3e6c428433c62c3549e2117e4a27186"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;os, const <a class="el" href="classquetzal_1_1geography_1_1landscape.html">landscape</a>&lt; Key, Time &gt; &amp;l)</td></tr>
@@ -594,67 +625,8 @@ template&lt;GridCoordinate C1, GridCoordinate C2&gt; </div>
 
 </div>
 </div>
-<a id="a9881c7a7386144934eb8622084245773"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9881c7a7386144934eb8622084245773">&#9670;&nbsp;</a></span>requires() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class VertexProperty , class EdgeProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">quetzal::geography::requires </td>
-          <td>(</td>
-          <td class="paramtype">! std::is_same_v&lt; VertexProperty, no_property &gt; and ! std::is_same_v&lt; EdgeProperty, no_property &gt;&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p><a class="anchor" id="SpatialGraphVertexPropertyEdgeProperty"></a>A graph class with information attached to vertices. </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">VertexProperty</td><td>The type of information to store at each vertex. </td></tr>
-    <tr><td class="paramname">EdgeProperty</td><td>The type of information to store at each edge.</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Vertices and edges embed additional information as user-defined types. This graph structure is bidirected and allows to model a forest of disconnected graphs and isolated vertices. </p><dl class="section invariant"><dt>Invariant</dt><dd>Guarantees that if \((u,v)\) is an edge of the graph, then \((v,u)\) is also an edge. </dd></dl>
-
-</div>
-</div>
-<a id="a500eac968c0237e01840013b089681b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a500eac968c0237e01840013b089681b0">&#9670;&nbsp;</a></span>requires() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class VertexProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">quetzal::geography::requires </td>
-          <td>(</td>
-          <td class="paramtype">! std::is_same_v&lt; VertexProperty, no_property &gt;&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p><a class="anchor" id="SpatialGraphVertexPropertyNoProperty"></a>A graph class with information attached to vertices. </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">VertexProperty</td><td>The type of information to store at each vertex.</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Vertices embed a user-defined type of information. Edges embed no additional information. This graph structure is bidirected and allows to model a forest of disconnected graphs and isolated vertices. </p><dl class="section invariant"><dt>Invariant</dt><dd>Guarantees that if \((u,v)\) is an edge of the graph, then \((v,u)\) is also an edge. </dd></dl>
-
-</div>
-</div>
 <a id="a6405005a5098bb475c8bbb63a184eee1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6405005a5098bb475c8bbb63a184eee1">&#9670;&nbsp;</a></span>requires() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6405005a5098bb475c8bbb63a184eee1">&#9670;&nbsp;</a></span>requires() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -682,6 +654,65 @@ template&lt;class EdgeProperty , template&lt; typename, typename, typename, type
 
 </div>
 </div>
+<a id="a4cc95aef34443b164f4252556da62f75"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4cc95aef34443b164f4252556da62f75">&#9670;&nbsp;</a></span>requires() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class VertexProperty , class EdgeProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">quetzal::geography::requires </td>
+          <td>(</td>
+          <td class="paramtype">!std::is_same_v&lt; VertexProperty, no_property &gt; and !std::is_same_v&lt; EdgeProperty, no_property &gt;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="anchor" id="SpatialGraphVertexPropertyEdgeProperty"></a>A graph class with information attached to vertices. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">VertexProperty</td><td>The type of information to store at each vertex. </td></tr>
+    <tr><td class="paramname">EdgeProperty</td><td>The type of information to store at each edge.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Vertices and edges embed additional information as user-defined types. This graph structure is bidirected and allows to model a forest of disconnected graphs and isolated vertices. </p><dl class="section invariant"><dt>Invariant</dt><dd>Guarantees that if \((u,v)\) is an edge of the graph, then \((v,u)\) is also an edge. </dd></dl>
+
+</div>
+</div>
+<a id="a2f05af9335923ac31a3470db53764568"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f05af9335923ac31a3470db53764568">&#9670;&nbsp;</a></span>requires() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class VertexProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">quetzal::geography::requires </td>
+          <td>(</td>
+          <td class="paramtype">!std::is_same_v&lt; VertexProperty, no_property &gt;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="anchor" id="SpatialGraphVertexPropertyNoProperty"></a>A graph class with information attached to vertices. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">VertexProperty</td><td>The type of information to store at each vertex.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Vertices embed a user-defined type of information. Edges embed no additional information. This graph structure is bidirected and allows to model a forest of disconnected graphs and isolated vertices. </p><dl class="section invariant"><dt>Invariant</dt><dd>Guarantees that if \((u,v)\) is an edge of the graph, then \((v,u)\) is also an edge. </dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">Variable Documentation</h2>
 <a id="a1eaf3470c14887d56dbd7a834ad6fba9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1eaf3470c14887d56dbd7a834ad6fba9">&#9670;&nbsp;</a></span>bounding</h2>
@@ -696,11 +727,11 @@ template&lt;typename T , class G , class S &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= two_dimensional&lt;S&gt; and </div>
-<div class="line">  <a class="code" href="namespacequetzal_1_1coalescence.html#a06357d81858f27f2ebb3a0d250a8969c">requires</a>(T t, <span class="keyword">typename</span> G::vertex_descriptor s, G&amp; graph, S <span class="keyword">const</span>&amp; grid)</div>
-<div class="line">  {</div>
-<div class="line">    { t(s, graph, grid) } -&gt; std::same_as&lt;void&gt;;</div>
-<div class="line">  }</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= two_dimensional&lt;S&gt; and <a class="code" href="namespacequetzal_1_1coalescence.html#a06357d81858f27f2ebb3a0d250a8969c">requires</a>(T t, <span class="keyword">typename</span> G::vertex_descriptor s, G &amp;graph, S <span class="keyword">const</span> &amp;grid) {</div>
+<div class="line">                                              {</div>
+<div class="line">                                                  t(s, graph, grid)</div>
+<div class="line">                                                  } -&gt; std::same_as&lt;void&gt;;</div>
+<div class="line">                                          }</div>
 <div class="ttc" id="anamespacequetzal_1_1coalescence_html_a06357d81858f27f2ebb3a0d250a8969c"><div class="ttname"><a href="namespacequetzal_1_1coalescence.html#a06357d81858f27f2ebb3a0d250a8969c">quetzal::coalescence::requires</a></div><div class="ttdeci">requires(!std::is_same_v&lt; VertexProperty, no_property &gt;) class binary_tree&lt; VertexProperty</div><div class="ttdoc">A binary tree class with information attached to vertices.</div></div>
 </div><!-- fragment -->
 </div>
@@ -719,10 +750,10 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= <a class="code" href="namespacequetzal_1_1coalescence.html#a06357d81858f27f2ebb3a0d250a8969c">requires</a>(T t) {</div>
-<div class="line">        {</div>
-<div class="line">            t.lon &lt;=&gt; t.lat</div>
-<div class="line">        };</div>
-<div class="line">    }</div>
+<div class="line">                         {</div>
+<div class="line">                             t.lon &lt;=&gt; t.lat</div>
+<div class="line">                         };</div>
+<div class="line">                     }</div>
 </div><!-- fragment -->
 <p>Requires a type to define a lat and a lon member. </p>
 
@@ -741,7 +772,6 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">{</div>
 <div class="line">  <span class="keyword">private</span>:</div>
-<div class="line"> </div>
 <div class="line">    <span class="keyword">using</span> self_type = graph&lt;VertexProperty, no_property, Representation, Directed&gt;</div>
 </div><!-- fragment -->
 </div>
@@ -760,10 +790,10 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= <a class="code" href="namespacequetzal_1_1coalescence.html#a06357d81858f27f2ebb3a0d250a8969c">requires</a>(T t) {</div>
-<div class="line">        {</div>
-<div class="line">            t.col &lt;=&gt; t.row</div>
-<div class="line">        };</div>
-<div class="line">    }</div>
+<div class="line">                             {</div>
+<div class="line">                                 t.col &lt;=&gt; t.row</div>
+<div class="line">                             };</div>
+<div class="line">                         }</div>
 </div><!-- fragment -->
 <p>Requires a type to define a row and a col member. </p>
 
@@ -782,11 +812,10 @@ template&lt;typename T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code" href="namespacequetzal_1_1coalescence.html#a06357d81858f27f2ebb3a0d250a8969c">requires</a>(T a)</div>
-<div class="line">  {</div>
-<div class="line">    <a class="code" href="namespacequetzal_1_1coalescence.html#a06357d81858f27f2ebb3a0d250a8969c">requires</a> std::convertible_to&lt;decltype(a.width()), <span class="keywordtype">int</span>&gt;;</div>
-<div class="line">    <a class="code" href="namespacequetzal_1_1coalescence.html#a06357d81858f27f2ebb3a0d250a8969c">requires</a> std::convertible_to&lt;decltype(a.height()), <span class="keywordtype">int</span>&gt;;</div>
-<div class="line">  }</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code" href="namespacequetzal_1_1coalescence.html#a06357d81858f27f2ebb3a0d250a8969c">requires</a>(T a) {</div>
+<div class="line">                              <a class="code" href="namespacequetzal_1_1coalescence.html#a06357d81858f27f2ebb3a0d250a8969c">requires</a> std::convertible_to&lt;decltype(a.width()), <span class="keywordtype">int</span>&gt;;</div>
+<div class="line">                              <a class="code" href="namespacequetzal_1_1coalescence.html#a06357d81858f27f2ebb3a0d250a8969c">requires</a> std::convertible_to&lt;decltype(a.height()), <span class="keywordtype">int</span>&gt;;</div>
+<div class="line">                          }</div>
 </div><!-- fragment -->
 </div>
 </div>

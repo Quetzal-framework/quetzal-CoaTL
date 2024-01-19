@@ -1,6 +1,6 @@
 var classquetzal_1_1coalescence_1_1detail_1_1network__common =
 [
-    [ "base", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#af969ba0926577a27e3ae3d93dedc11d7", null ],
+    [ "base", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a1edc9158b05cfd5d2c02baa307417de2", null ],
     [ "degree_size_type", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a385fba6e22b1aca6cd46b02df84ee37f", null ],
     [ "directed_category", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#af0a8f377a9c00c831e268b4d04fb48d8", null ],
     [ "edge_descriptor", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#aa917a2b35a91e6468c7b33c493d1bfcf", null ],

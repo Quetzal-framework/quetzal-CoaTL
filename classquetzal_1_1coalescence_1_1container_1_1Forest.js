@@ -24,6 +24,6 @@ var classquetzal_1_1coalescence_1_1container_1_1Forest =
     [ "operator=", "classquetzal_1_1coalescence_1_1container_1_1Forest.html#abfa746671548611f2f1843f51c38feee", null ],
     [ "operator=", "classquetzal_1_1coalescence_1_1container_1_1Forest.html#ac235b631a173cdbc7fbb8cefc9bf3d49", null ],
     [ "positions", "classquetzal_1_1coalescence_1_1container_1_1Forest.html#aa1a3ed112143328665453f247598f3dc", null ],
-    [ "trees_at_same_position", "classquetzal_1_1coalescence_1_1container_1_1Forest.html#ab5b89bbefd74f58130de85c26742a51e", null ],
-    [ "trees_at_same_position", "classquetzal_1_1coalescence_1_1container_1_1Forest.html#a89dfd349bd2a0ce2144c688a8352ba90", null ]
+    [ "trees_at_same_position", "classquetzal_1_1coalescence_1_1container_1_1Forest.html#a5f2883a26d2fbe7533b497e65ca74123", null ],
+    [ "trees_at_same_position", "classquetzal_1_1coalescence_1_1container_1_1Forest.html#a4dbc94f575f0eb1f07bcf600d32ab495", null ]
 ];

@@ -23,8 +23,8 @@ var namespacequetzal_1_1format_1_1newick =
       [ "detail", null, [
         [ "regraft_cycles", "to__network_8hpp.html#a57208fa5b657eb2f009f1d5621e0a489", null ]
       ] ],
-      [ "to_network", "namespacequetzal_1_1format_1_1newick_1_1extended.html#a32ab27e78b03c5c50eee5c08c6b3dea3", null ],
-      [ "to_network", "namespacequetzal_1_1format_1_1newick_1_1extended.html#a8d817e352a05114e724120c72dc2dfa5", null ]
+      [ "to_network", "namespacequetzal_1_1format_1_1newick_1_1extended.html#a5afda7c15f71d5cbfec8c3d5040ae6c0", null ],
+      [ "to_network", "namespacequetzal_1_1format_1_1newick_1_1extended.html#a1d7e296931a5c93953b1dd844ea1a2f3", null ]
     ] ],
     [ "parser", null, [
       [ "BOOST_SPIRIT_DEFINE", "parser_8hpp.html#a9d0eb994ac8ccc82b7c787b64b1e8e03", null ],
@@ -51,7 +51,7 @@ var namespacequetzal_1_1format_1_1newick =
     [ "make_formatter", "namespacequetzal_1_1format_1_1newick.html#a4ad923ca93503327ef9d4eb4f02be74e", null ],
     [ "make_formatter", "namespacequetzal_1_1format_1_1newick.html#aea42d397ac7bb26c441284439983ad73", null ],
     [ "requires", "namespacequetzal_1_1format_1_1newick.html#a80e2e34aa7f580554d5a4b9b273c2327", null ],
-    [ "to_k_ary_tree", "namespacequetzal_1_1format_1_1newick.html#a123af539cb65c5d62020a2c7dc7f051f", null ],
-    [ "to_k_ary_tree", "namespacequetzal_1_1format_1_1newick.html#a9d6d10274c08a42694a4748415efccb6", null ],
+    [ "to_k_ary_tree", "namespacequetzal_1_1format_1_1newick.html#a8fbe8018b366bd59cc1746bc951dc4b9", null ],
+    [ "to_k_ary_tree", "namespacequetzal_1_1format_1_1newick.html#a78a29e6a5a3dc6f68ff3aa3941b1a836", null ],
     [ "Formattable", "namespacequetzal_1_1format_1_1newick.html#ad541166fae72d249f209dbf086039e6d", null ]
 ];

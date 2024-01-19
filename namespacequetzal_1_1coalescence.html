@@ -1,71 +1,102 @@
 <!-- HTML header for doxygen 1.9.1-->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<meta name="generator" content="Doxygen 1.9.1"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Quetzal-CoaTL: quetzal::coalescence Namespace Reference</title>
-<link href="tabs.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="jquery.js"></script>
-<script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
+  <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=9" />
+  <meta name="generator" content="Doxygen 1.9.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quetzal-CoaTL: quetzal::coalescence Namespace Reference</title>
+  <link href="tabs.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="jquery.js"></script>
+  <script type="text/javascript" src="dynsections.js"></script>
+  <link href="navtree.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="resize.js"></script>
 <script type="text/javascript" src="navtreedata.js"></script>
 <script type="text/javascript" src="navtree.js"></script>
-<link href="search/search.css" rel="stylesheet" type="text/css"/>
+  <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
-<script type="text/x-mathjax-config">
+  <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
     extensions: ["tex2jax.js"],
     jax: ["input/TeX","output/HTML-CSS"],
 });
 </script>
 <script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
-<link href="doxygen.css" rel="stylesheet" type="text/css" />
-<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+  <link href="doxygen.css" rel="stylesheet" type="text/css" />
+  <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen-awesome-darkmode-toggle.js" rel="stylesheet" type="text/css"/>
 <link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen-awesome-fragment-copy-button.js" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
-<script type="text/javascript">
+  <script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+  <script type="text/javascript">
     DoxygenAwesomeDarkModeToggle.init()
-</script>
-<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
-<script type="text/javascript">
+  </script>
+  <script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+  <script type="text/javascript">
     DoxygenAwesomeFragmentCopyButton.init()
-</script>
-<a href="https://github.com/Quetzal-framework/quetzal-CoaTL" class="github-corner" aria-label="View source on GitHub">
-  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#70B7FD; color:#151513; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
-    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
-    <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
-    <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body">
-    </path>
-  </svg>
-</a>
-<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+  </script>
+  <a href="https://github.com/Quetzal-framework/quetzal-CoaTL" class="github-corner" aria-label="View source on GitHub">
+    <svg width="80" height="80" viewBox="0 0 250 250"
+      style="fill:#70B7FD; color:#151513; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+      <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+      <path
+        d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+        fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+      <path
+        d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+        fill="currentColor" class="octo-body">
+      </path>
+    </svg>
+  </a>
+  <style>
+    .github-corner:hover .octo-arm {
+      animation: octocat-wave 560ms ease-in-out
+    }
+    @keyframes octocat-wave {
+      0%,
+      100% {
+        transform: rotate(0)
+      }
+      20%,
+      60% {
+        transform: rotate(-25deg)
+      }
+      40%,
+      80% {
+        transform: rotate(10deg)
+      }
+    }
+    @media (max-width:500px) {
+      .github-corner:hover .octo-arm {
+        animation: none
+      }
+      .github-corner .octo-arm {
+        animation: octocat-wave 560ms ease-in-out
+      }
+    }
+  </style>
 </head>
 <body>
-<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
-<div id="titlearea">
-<table cellspacing="0" cellpadding="0">
- <tbody>
- <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="quetzal-coaltl-fa.png"/></td>
-  <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Quetzal-CoaTL
-   </div>
-   <div id="projectbrief">The Coalescence Template Library</div>
-  </td>
- </tr>
- </tbody>
-</table>
-</div>
-<!-- end header part -->
-<!-- Generated by Doxygen 1.9.1 -->
+  <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+    <div id="titlearea">
+      <table cellspacing="0" cellpadding="0">
+        <tbody>
+          <tr style="height: 56px;">
+            <td id="projectlogo"><img alt="Logo" src="quetzal-coaltl-fa.png" /></td>
+            <td id="projectalign" style="padding-left: 0.5em;">
+              <div id="projectname">Quetzal-CoaTL
+              </div>
+              <div id="projectbrief">The Coalescence Template Library</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- end header part --><!-- Generated by Doxygen 1.9.1 -->
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
 var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
@@ -191,14 +222,14 @@ Functions</h2></td></tr>
 <tr class="memitem:a0a97b1c9bfe7fc9f0f1524761285307b"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1coalescence.html#a0a97b1c9bfe7fc9f0f1524761285307b">requires</a> (!std::is_same_v&lt; VertexProperty, no_property &gt; &amp;&amp;!std::is_same_v&lt; EdgeProperty, no_property &gt;) class <a class="el" href="classquetzal_1_1coalescence_1_1binary__tree.html">binary_tree</a>&lt; VertexProperty</td></tr>
 <tr class="memdesc:a0a97b1c9bfe7fc9f0f1524761285307b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="anchor" id="CoalescenceBinaryTreeVertexPropertyEdgeProperty"></a>A binary tree class with information attached to vertices.  <a href="namespacequetzal_1_1coalescence.html#a0a97b1c9bfe7fc9f0f1524761285307b">More...</a><br /></td></tr>
 <tr class="separator:a0a97b1c9bfe7fc9f0f1524761285307b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae93bc4ce9596239e86396d3fdef8fd6a"><td class="memTemplParams" colspan="2">template&lt;typename Vertex  = boost::no_property, typename Edge  = boost::no_property, typename Generator &gt; </td></tr>
-<tr class="memitem:ae93bc4ce9596239e86396d3fdef8fd6a"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="classquetzal_1_1coalescence_1_1binary__tree.html">quetzal::coalescence::binary_tree</a>&lt; Vertex, Edge &gt;, typename <a class="el" href="classquetzal_1_1coalescence_1_1binary__tree.html">quetzal::coalescence::binary_tree</a>&lt; Vertex, Edge &gt;::<a class="el" href="namespacequetzal_1_1coalescence.html#ac9a3f034e7242b2eabdafb3a70a6017c">vertex_descriptor</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1coalescence.html#ae93bc4ce9596239e86396d3fdef8fd6a">get_random_binary_tree</a> (int n_leaves, Generator &amp;rng)</td></tr>
-<tr class="memdesc:ae93bc4ce9596239e86396d3fdef8fd6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a random binary tree.  <a href="namespacequetzal_1_1coalescence.html#ae93bc4ce9596239e86396d3fdef8fd6a">More...</a><br /></td></tr>
-<tr class="separator:ae93bc4ce9596239e86396d3fdef8fd6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac591b3fa01e8b6810b52a23359031614"><td class="memTemplParams" colspan="2">template&lt;typename Vertex  = boost::no_property, typename Edge  = boost::no_property, typename Generator &gt; </td></tr>
-<tr class="memitem:ac591b3fa01e8b6810b52a23359031614"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="classquetzal_1_1coalescence_1_1k__ary__tree.html">quetzal::coalescence::k_ary_tree</a>&lt; Vertex, Edge &gt;, typename <a class="el" href="classquetzal_1_1coalescence_1_1k__ary__tree.html">quetzal::coalescence::k_ary_tree</a>&lt; Vertex, Edge &gt;::<a class="el" href="namespacequetzal_1_1coalescence.html#ac9a3f034e7242b2eabdafb3a70a6017c">vertex_descriptor</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1coalescence.html#ac591b3fa01e8b6810b52a23359031614">get_random_k_ary_tree</a> (int n_leaves, Generator &amp;rng)</td></tr>
-<tr class="memdesc:ac591b3fa01e8b6810b52a23359031614"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a random k-ary tree.  <a href="namespacequetzal_1_1coalescence.html#ac591b3fa01e8b6810b52a23359031614">More...</a><br /></td></tr>
-<tr class="separator:ac591b3fa01e8b6810b52a23359031614"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b0be67503cc6c4e1a9c20d8f8285f89"><td class="memTemplParams" colspan="2">template&lt;typename Vertex  = boost::no_property, typename Edge  = boost::no_property, typename Generator &gt; </td></tr>
+<tr class="memitem:a2b0be67503cc6c4e1a9c20d8f8285f89"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="classquetzal_1_1coalescence_1_1binary__tree.html">quetzal::coalescence::binary_tree</a>&lt; Vertex, Edge &gt;, typename <a class="el" href="classquetzal_1_1coalescence_1_1binary__tree.html">quetzal::coalescence::binary_tree</a>&lt; Vertex, Edge &gt;::<a class="el" href="namespacequetzal_1_1coalescence.html#ac9a3f034e7242b2eabdafb3a70a6017c">vertex_descriptor</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1coalescence.html#a2b0be67503cc6c4e1a9c20d8f8285f89">get_random_binary_tree</a> (int n_leaves, Generator &amp;rng)</td></tr>
+<tr class="memdesc:a2b0be67503cc6c4e1a9c20d8f8285f89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a random binary tree.  <a href="namespacequetzal_1_1coalescence.html#a2b0be67503cc6c4e1a9c20d8f8285f89">More...</a><br /></td></tr>
+<tr class="separator:a2b0be67503cc6c4e1a9c20d8f8285f89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0db3e22d1bbb2f5554754792baa77efb"><td class="memTemplParams" colspan="2">template&lt;typename Vertex  = boost::no_property, typename Edge  = boost::no_property, typename Generator &gt; </td></tr>
+<tr class="memitem:a0db3e22d1bbb2f5554754792baa77efb"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="classquetzal_1_1coalescence_1_1k__ary__tree.html">quetzal::coalescence::k_ary_tree</a>&lt; Vertex, Edge &gt;, typename <a class="el" href="classquetzal_1_1coalescence_1_1k__ary__tree.html">quetzal::coalescence::k_ary_tree</a>&lt; Vertex, Edge &gt;::<a class="el" href="namespacequetzal_1_1coalescence.html#ac9a3f034e7242b2eabdafb3a70a6017c">vertex_descriptor</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1coalescence.html#a0db3e22d1bbb2f5554754792baa77efb">get_random_k_ary_tree</a> (int n_leaves, Generator &amp;rng)</td></tr>
+<tr class="memdesc:a0db3e22d1bbb2f5554754792baa77efb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a random k-ary tree.  <a href="namespacequetzal_1_1coalescence.html#a0db3e22d1bbb2f5554754792baa77efb">More...</a><br /></td></tr>
+<tr class="separator:a0db3e22d1bbb2f5554754792baa77efb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Constructors</div></td></tr>
 <tr class="memitem:a033129fee28f20359423fc724c6e8b0f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1coalescence.html#a033129fee28f20359423fc724c6e8b0f">binary_tree</a> ()</td></tr>
 <tr class="memdesc:a033129fee28f20359423fc724c6e8b0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. Initializes a graph with 0 vertices.  <a href="namespacequetzal_1_1coalescence.html#a033129fee28f20359423fc724c6e8b0f">More...</a><br /></td></tr>
@@ -330,8 +361,8 @@ EdgeProperty&#160;</td><td class="memItemRight" valign="bottom"><b>__pad2__</b><
 
 </div>
 </div>
-<a id="ae93bc4ce9596239e86396d3fdef8fd6a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae93bc4ce9596239e86396d3fdef8fd6a">&#9670;&nbsp;</a></span>get_random_binary_tree()</h2>
+<a id="a2b0be67503cc6c4e1a9c20d8f8285f89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b0be67503cc6c4e1a9c20d8f8285f89">&#9670;&nbsp;</a></span>get_random_binary_tree()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -339,7 +370,7 @@ EdgeProperty&#160;</td><td class="memItemRight" valign="bottom"><b>__pad2__</b><
 template&lt;typename Vertex  = boost::no_property, typename Edge  = boost::no_property, typename Generator &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::pair&lt; <a class="el" href="classquetzal_1_1coalescence_1_1binary__tree.html">quetzal::coalescence::binary_tree</a>&lt;Vertex, Edge&gt;, typename <a class="el" href="classquetzal_1_1coalescence_1_1binary__tree.html">quetzal::coalescence::binary_tree</a>&lt;Vertex, Edge&gt;::<a class="el" href="namespacequetzal_1_1coalescence.html#ac9a3f034e7242b2eabdafb3a70a6017c">vertex_descriptor</a>&gt; quetzal::coalescence::get_random_binary_tree </td>
+          <td class="memname">std::pair&lt;<a class="el" href="classquetzal_1_1coalescence_1_1binary__tree.html">quetzal::coalescence::binary_tree</a>&lt;Vertex, Edge&gt;, typename <a class="el" href="classquetzal_1_1coalescence_1_1binary__tree.html">quetzal::coalescence::binary_tree</a>&lt;Vertex, Edge&gt;::<a class="el" href="namespacequetzal_1_1coalescence.html#ac9a3f034e7242b2eabdafb3a70a6017c">vertex_descriptor</a>&gt; quetzal::coalescence::get_random_binary_tree </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>n_leaves</em>, </td>
@@ -376,8 +407,8 @@ template&lt;typename Vertex  = boost::no_property, typename Edge  = boost::no_pr
 
 </div>
 </div>
-<a id="ac591b3fa01e8b6810b52a23359031614"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac591b3fa01e8b6810b52a23359031614">&#9670;&nbsp;</a></span>get_random_k_ary_tree()</h2>
+<a id="a0db3e22d1bbb2f5554754792baa77efb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0db3e22d1bbb2f5554754792baa77efb">&#9670;&nbsp;</a></span>get_random_k_ary_tree()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -385,7 +416,7 @@ template&lt;typename Vertex  = boost::no_property, typename Edge  = boost::no_pr
 template&lt;typename Vertex  = boost::no_property, typename Edge  = boost::no_property, typename Generator &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::pair&lt; <a class="el" href="classquetzal_1_1coalescence_1_1k__ary__tree.html">quetzal::coalescence::k_ary_tree</a>&lt;Vertex, Edge&gt;, typename <a class="el" href="classquetzal_1_1coalescence_1_1k__ary__tree.html">quetzal::coalescence::k_ary_tree</a>&lt;Vertex, Edge&gt;::<a class="el" href="namespacequetzal_1_1coalescence.html#ac9a3f034e7242b2eabdafb3a70a6017c">vertex_descriptor</a>&gt; quetzal::coalescence::get_random_k_ary_tree </td>
+          <td class="memname">std::pair&lt;<a class="el" href="classquetzal_1_1coalescence_1_1k__ary__tree.html">quetzal::coalescence::k_ary_tree</a>&lt;Vertex, Edge&gt;, typename <a class="el" href="classquetzal_1_1coalescence_1_1k__ary__tree.html">quetzal::coalescence::k_ary_tree</a>&lt;Vertex, Edge&gt;::<a class="el" href="namespacequetzal_1_1coalescence.html#ac9a3f034e7242b2eabdafb3a70a6017c">vertex_descriptor</a>&gt; quetzal::coalescence::get_random_k_ary_tree </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>n_leaves</em>, </td>
@@ -572,54 +603,54 @@ Example</h1>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main()</div>
 <div class="line">{</div>
-<div class="line">  <span class="keyword">using</span> <a class="code" href="structvertex__info.html">vertex_info</a> = boost::no_property;</div>
-<div class="line">  <span class="keyword">using</span> <a class="code" href="structedge__info.html">edge_info</a> = std::vector&lt;int&gt;;</div>
-<div class="line">  <span class="keyword">using</span> tree_type = <a class="code" href="classquetzal_1_1coalescence_1_1k__ary__tree.html">quetzal::coalescence::k_ary_tree&lt;vertex_info, edge_info&gt;</a>;</div>
+<div class="line">    <span class="keyword">using</span> <a class="code" href="structvertex__info.html">vertex_info</a> = boost::no_property;</div>
+<div class="line">    <span class="keyword">using</span> <a class="code" href="structedge__info.html">edge_info</a> = std::vector&lt;int&gt;;</div>
+<div class="line">    <span class="keyword">using</span> tree_type = <a class="code" href="classquetzal_1_1coalescence_1_1k__ary__tree.html">quetzal::coalescence::k_ary_tree&lt;vertex_info, edge_info&gt;</a>;</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">/*</span></div>
-<div class="line"><span class="comment">  *              a</span></div>
-<div class="line"><span class="comment">  *            /   \</span></div>
-<div class="line"><span class="comment">  *           /     c</span></div>
-<div class="line"><span class="comment">  *          /    / | \</span></div>
-<div class="line"><span class="comment">  *         b    d  e  f</span></div>
-<div class="line"><span class="comment">  */</span></div>
+<div class="line">    <span class="comment">/*</span></div>
+<div class="line"><span class="comment">     *              a</span></div>
+<div class="line"><span class="comment">     *            /   \</span></div>
+<div class="line"><span class="comment">     *           /     c</span></div>
+<div class="line"><span class="comment">     *          /    / | \</span></div>
+<div class="line"><span class="comment">     *         b    d  e  f</span></div>
+<div class="line"><span class="comment">     */</span></div>
 <div class="line"> </div>
-<div class="line">  tree_type tree;</div>
-<div class="line">  <span class="keyword">auto</span> a = tree.add_vertex();</div>
-<div class="line">  <span class="keyword">auto</span> b = tree.add_vertex();</div>
-<div class="line">  <span class="keyword">auto</span> c = tree.add_vertex();</div>
-<div class="line">  <span class="keyword">auto</span> d = tree.add_vertex();</div>
-<div class="line">  <span class="keyword">auto</span> e = tree.add_vertex();</div>
-<div class="line">  <span class="keyword">auto</span> f = tree.add_vertex();</div>
+<div class="line">    tree_type tree;</div>
+<div class="line">    <span class="keyword">auto</span> a = tree.add_vertex();</div>
+<div class="line">    <span class="keyword">auto</span> b = tree.add_vertex();</div>
+<div class="line">    <span class="keyword">auto</span> c = tree.add_vertex();</div>
+<div class="line">    <span class="keyword">auto</span> d = tree.add_vertex();</div>
+<div class="line">    <span class="keyword">auto</span> e = tree.add_vertex();</div>
+<div class="line">    <span class="keyword">auto</span> f = tree.add_vertex();</div>
 <div class="line"> </div>
-<div class="line">  <span class="keyword">auto</span> first_edges  = tree.add_edges( a, { {b, <a class="code" href="structedge__info.html">edge_info</a>{1,2,3} }, {c, <a class="code" href="structedge__info.html">edge_info</a>{4,5,6} } } );</div>
-<div class="line">  <span class="keyword">auto</span> other_edges  = tree.add_edges( c, { {d, <a class="code" href="structedge__info.html">edge_info</a>()}, {e, <a class="code" href="structedge__info.html">edge_info</a>()}, {f, <a class="code" href="structedge__info.html">edge_info</a>()} } );</div>
+<div class="line">    <span class="keyword">auto</span> first_edges = tree.add_edges(a, {{b, <a class="code" href="structedge__info.html">edge_info</a>{1, 2, 3}}, {c, <a class="code" href="structedge__info.html">edge_info</a>{4, 5, 6}}});</div>
+<div class="line">    <span class="keyword">auto</span> other_edges = tree.add_edges(c, {{d, <a class="code" href="structedge__info.html">edge_info</a>()}, {e, <a class="code" href="structedge__info.html">edge_info</a>()}, {f, <a class="code" href="structedge__info.html">edge_info</a>()}});</div>
 <div class="line"> </div>
-<div class="line">  assert(tree.in_degree(c) == 1);</div>
-<div class="line">  assert(tree.out_degree(c) == 3);</div>
-<div class="line">  assert(tree.degree(c) == 4);</div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Degree of inner vertex c is &quot;</span> &lt;&lt; tree.degree(c) &lt;&lt; std::endl;</div>
+<div class="line">    assert(tree.in_degree(c) == 1);</div>
+<div class="line">    assert(tree.out_degree(c) == 3);</div>
+<div class="line">    assert(tree.degree(c) == 4);</div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Degree of inner vertex c is &quot;</span> &lt;&lt; tree.degree(c) &lt;&lt; std::endl;</div>
 <div class="line"> </div>
-<div class="line">  <span class="keyword">auto</span> root = tree.find_root_from(e);</div>
+<div class="line">    <span class="keyword">auto</span> root = tree.find_root_from(e);</div>
 <div class="line"> </div>
-<div class="line">  assert(root == a &amp;&amp; !tree.has_predecessor(root));</div>
-<div class="line">  assert(tree.predecessor(c) == root);</div>
-<div class="line">  assert(tree.has_successors(root) == <span class="keyword">true</span>);</div>
-<div class="line">  assert( std::ranges::none_of( tree.successors(c), [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; v){ return tree.has_successors(v);}  ));</div>
-<div class="line">  </div>
-<div class="line">  <span class="comment">// Edges from the root were assigned at construction</span></div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Edge (a-&gt;b) values are:\t&quot;</span>;</div>
-<div class="line">  std::copy(tree[first_edges[0]].cbegin(), tree[first_edges[0]].cend(), std::ostream_iterator&lt;int&gt;(std::cout, <span class="stringliteral">&quot; &quot;</span>));</div>
+<div class="line">    assert(root == a &amp;&amp; !tree.has_predecessor(root));</div>
+<div class="line">    assert(tree.predecessor(c) == root);</div>
+<div class="line">    assert(tree.has_successors(root) == <span class="keyword">true</span>);</div>
+<div class="line">    assert(std::ranges::none_of(tree.successors(c), [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span> &amp;v) { return tree.has_successors(v); }));</div>
 <div class="line"> </div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;\nEdge (a-&gt;c) values are:\t&quot;</span>;</div>
-<div class="line">  std::copy(tree[first_edges[1]].cbegin(),tree[first_edges[1]].cend(), std::ostream_iterator&lt;int&gt;(std::cout, <span class="stringliteral">&quot; &quot;</span>));</div>
-<div class="line">  std::cout &lt;&lt; std::endl;</div>
-<div class="line">  </div>
-<div class="line">  <span class="comment">// Other edges values were left default initialized</span></div>
-<div class="line">  assert(tree[other_edges[0]].size() == 0);</div>
+<div class="line">    <span class="comment">// Edges from the root were assigned at construction</span></div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Edge (a-&gt;b) values are:\t&quot;</span>;</div>
+<div class="line">    std::copy(tree[first_edges[0]].cbegin(), tree[first_edges[0]].cend(), std::ostream_iterator&lt;int&gt;(std::cout, <span class="stringliteral">&quot; &quot;</span>));</div>
+<div class="line"> </div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;\nEdge (a-&gt;c) values are:\t&quot;</span>;</div>
+<div class="line">    std::copy(tree[first_edges[1]].cbegin(), tree[first_edges[1]].cend(), std::ostream_iterator&lt;int&gt;(std::cout, <span class="stringliteral">&quot; &quot;</span>));</div>
+<div class="line">    std::cout &lt;&lt; std::endl;</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// Other edges values were left default initialized</span></div>
+<div class="line">    assert(tree[other_edges[0]].size() == 0);</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassquetzal_1_1coalescence_1_1k__ary__tree_html"><div class="ttname"><a href="classquetzal_1_1coalescence_1_1k__ary__tree.html">quetzal::coalescence::k_ary_tree</a></div><div class="ttdef"><b>Definition:</b> k_ary_tree.hpp:344</div></div>
-<div class="ttc" id="astructedge__info_html"><div class="ttname"><a href="structedge__info.html">edge_info</a></div><div class="ttdef"><b>Definition:</b> newick_parser_2.cpp:8</div></div>
+<div class="ttc" id="aclassquetzal_1_1coalescence_1_1k__ary__tree_html"><div class="ttname"><a href="classquetzal_1_1coalescence_1_1k__ary__tree.html">quetzal::coalescence::k_ary_tree</a></div><div class="ttdef"><b>Definition:</b> k_ary_tree.hpp:349</div></div>
+<div class="ttc" id="astructedge__info_html"><div class="ttname"><a href="structedge__info.html">edge_info</a></div><div class="ttdef"><b>Definition:</b> newick_parser_2.cpp:12</div></div>
 <div class="ttc" id="astructvertex__info_html"><div class="ttname"><a href="structvertex__info.html">vertex_info</a></div><div class="ttdef"><b>Definition:</b> coalescence_binary_tree_2.cpp:5</div></div>
 </div><!-- fragment --> <h1><a class="anchor" id="ex2"></a>
 Output</h1>
@@ -682,78 +713,78 @@ Guarantees that if \((u,v)\) is an edge of the graph, then \((v,u)\) is also an 
 <h1><a class="anchor" id="ex1"></a>
 Example</h1>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;quetzal/quetzal.hpp&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;cassert&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;iterator&gt;</span> <span class="comment">// for std::ostream_iterator</span></div>
 <div class="line"><span class="preprocessor">#include &lt;algorithm&gt;</span> <span class="comment">// for std::ranges::copy</span></div>
+<div class="line"><span class="preprocessor">#include &lt;cassert&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;iterator&gt;</span> <span class="comment">// for std::ostream_iterator</span></div>
+<div class="line"><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">struct </span><a class="code" href="structvertex__info.html">vertex_info</a></div>
 <div class="line">{</div>
-<div class="line">  std::string field1;</div>
-<div class="line">  <span class="keywordtype">int</span> field2;</div>
+<div class="line">    std::string field1;</div>
+<div class="line">    <span class="keywordtype">int</span> field2;</div>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main()</div>
 <div class="line">{</div>
-<div class="line">  <span class="keyword">using</span> <a class="code" href="structedge__info.html">edge_info</a> = std::vector&lt;int&gt;;</div>
-<div class="line">  <span class="keyword">using</span> tree_type = <a class="code" href="classquetzal_1_1coalescence_1_1binary__tree.html">quetzal::coalescence::binary_tree&lt;vertex_info, edge_info&gt;</a>;</div>
+<div class="line">    <span class="keyword">using</span> <a class="code" href="structedge__info.html">edge_info</a> = std::vector&lt;int&gt;;</div>
+<div class="line">    <span class="keyword">using</span> tree_type = <a class="code" href="classquetzal_1_1coalescence_1_1binary__tree.html">quetzal::coalescence::binary_tree&lt;vertex_info, edge_info&gt;</a>;</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">/*</span></div>
-<div class="line"><span class="comment">  *             a</span></div>
-<div class="line"><span class="comment">  *           /   \</span></div>
-<div class="line"><span class="comment">  *          /     c</span></div>
-<div class="line"><span class="comment">  *         /     / \</span></div>
-<div class="line"><span class="comment">  *        b     d   e</span></div>
-<div class="line"><span class="comment">  */</span></div>
+<div class="line">    <span class="comment">/*</span></div>
+<div class="line"><span class="comment">     *             a</span></div>
+<div class="line"><span class="comment">     *           /   \</span></div>
+<div class="line"><span class="comment">     *          /     c</span></div>
+<div class="line"><span class="comment">     *         /     / \</span></div>
+<div class="line"><span class="comment">     *        b     d   e</span></div>
+<div class="line"><span class="comment">     */</span></div>
 <div class="line"> </div>
-<div class="line">  tree_type tree;</div>
+<div class="line">    tree_type tree;</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// Let&#39;s attach information to the root vertex</span></div>
-<div class="line">  <span class="keyword">auto</span> a = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{<span class="stringliteral">&quot;Im Root&quot;</span>, 47});</div>
+<div class="line">    <span class="comment">// Let&#39;s attach information to the root vertex</span></div>
+<div class="line">    <span class="keyword">auto</span> a = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{<span class="stringliteral">&quot;Im Root&quot;</span>, 47});</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// Other vertices have default values</span></div>
-<div class="line">  <span class="keyword">auto</span> b = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{});</div>
-<div class="line">  <span class="keyword">auto</span> c = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{});</div>
-<div class="line">  <span class="keyword">auto</span> d = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{});</div>
-<div class="line">  <span class="keyword">auto</span> e = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{});</div>
+<div class="line">    <span class="comment">// Other vertices have default values</span></div>
+<div class="line">    <span class="keyword">auto</span> b = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{});</div>
+<div class="line">    <span class="keyword">auto</span> c = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{});</div>
+<div class="line">    <span class="keyword">auto</span> d = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{});</div>
+<div class="line">    <span class="keyword">auto</span> e = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{});</div>
 <div class="line"> </div>
-<div class="line">  <span class="keyword">auto</span> [ab_edge, ac_edge] = tree.add_edges(a, {b, <a class="code" href="structedge__info.html">edge_info</a>{1,2,3}}, {c, <a class="code" href="structedge__info.html">edge_info</a>{4,5,6}});</div>
-<div class="line">  <span class="keyword">auto</span> [cd_edge, ce_edge] = tree.add_edges(c, {d, <a class="code" href="structedge__info.html">edge_info</a>{}}, {e, <a class="code" href="structedge__info.html">edge_info</a>{}});</div>
+<div class="line">    <span class="keyword">auto</span> [ab_edge, ac_edge] = tree.add_edges(a, {b, <a class="code" href="structedge__info.html">edge_info</a>{1, 2, 3}}, {c, <a class="code" href="structedge__info.html">edge_info</a>{4, 5, 6}});</div>
+<div class="line">    <span class="keyword">auto</span> [cd_edge, ce_edge] = tree.add_edges(c, {d, <a class="code" href="structedge__info.html">edge_info</a>{}}, {e, <a class="code" href="structedge__info.html">edge_info</a>{}});</div>
 <div class="line"> </div>
-<div class="line">  <span class="keyword">auto</span> root = tree.find_root_from(e);</div>
+<div class="line">    <span class="keyword">auto</span> root = tree.find_root_from(e);</div>
 <div class="line"> </div>
-<div class="line">  assert(root == a &amp;&amp; !tree.has_predecessor(root));</div>
-<div class="line">  assert(root == a &amp;&amp; !tree.has_predecessor(root));</div>
-<div class="line">  assert(tree.degree(c) == 3);</div>
-<div class="line">  assert(tree.in_degree(c) == 1);</div>
-<div class="line">  assert(tree.out_degree(c) == 2);</div>
-<div class="line">  assert(tree.has_predecessor(root) == <span class="keyword">false</span>);</div>
-<div class="line">  assert(tree.predecessor(c) == root);</div>
-<div class="line">  assert(tree.has_successors(root) == <span class="keyword">true</span>);</div>
-<div class="line">  assert( std::ranges::none_of( tree.successors(c), [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; v){ return tree.has_successors(v);} ));</div>
-<div class="line">  </div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Degree of inner vertex c is &quot;</span> &lt;&lt; tree.degree(c) &lt;&lt; std::endl;</div>
+<div class="line">    assert(root == a &amp;&amp; !tree.has_predecessor(root));</div>
+<div class="line">    assert(root == a &amp;&amp; !tree.has_predecessor(root));</div>
+<div class="line">    assert(tree.degree(c) == 3);</div>
+<div class="line">    assert(tree.in_degree(c) == 1);</div>
+<div class="line">    assert(tree.out_degree(c) == 2);</div>
+<div class="line">    assert(tree.has_predecessor(root) == <span class="keyword">false</span>);</div>
+<div class="line">    assert(tree.predecessor(c) == root);</div>
+<div class="line">    assert(tree.has_successors(root) == <span class="keyword">true</span>);</div>
+<div class="line">    assert(std::ranges::none_of(tree.successors(c), [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span> &amp;v) { return tree.has_successors(v); }));</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// Root vertex field values were assigned at construction</span></div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Root first field is:\t&quot;</span> &lt;&lt; tree[a].field1 &lt;&lt; std::endl;</div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Root other field is:\t&quot;</span>&lt;&lt; tree[a].field2 &lt;&lt; std::endl;</div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Degree of inner vertex c is &quot;</span> &lt;&lt; tree.degree(c) &lt;&lt; std::endl;</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// Other vertices fields values were left default initialized</span></div>
-<div class="line">  assert(tree[b].field1.size() == tree[b].field2);</div>
+<div class="line">    <span class="comment">// Root vertex field values were assigned at construction</span></div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Root first field is:\t&quot;</span> &lt;&lt; tree[a].field1 &lt;&lt; std::endl;</div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Root other field is:\t&quot;</span> &lt;&lt; tree[a].field2 &lt;&lt; std::endl;</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// Edges from the root were assigned at construction</span></div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Edge (a-b) values are:\t&quot;</span>;</div>
-<div class="line">  std::copy(tree[ab_edge].cbegin(), tree[ab_edge].cend(), std::ostream_iterator&lt;int&gt;(std::cout, <span class="stringliteral">&quot; &quot;</span>));</div>
+<div class="line">    <span class="comment">// Other vertices fields values were left default initialized</span></div>
+<div class="line">    assert(tree[b].field1.size() == tree[b].field2);</div>
 <div class="line"> </div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;\nEdge (a-c) values are:\t&quot;</span>;</div>
-<div class="line">  std::copy(tree[ac_edge].cbegin(), tree[ac_edge].cend(), std::ostream_iterator&lt;int&gt;(std::cout, <span class="stringliteral">&quot; &quot;</span>));</div>
-<div class="line">  std::cout &lt;&lt; std::endl;</div>
-<div class="line">  </div>
-<div class="line">  <span class="comment">// Other edges values were left default initialized</span></div>
-<div class="line">  assert(tree[cd_edge].size() == 0);</div>
+<div class="line">    <span class="comment">// Edges from the root were assigned at construction</span></div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Edge (a-b) values are:\t&quot;</span>;</div>
+<div class="line">    std::copy(tree[ab_edge].cbegin(), tree[ab_edge].cend(), std::ostream_iterator&lt;int&gt;(std::cout, <span class="stringliteral">&quot; &quot;</span>));</div>
+<div class="line"> </div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;\nEdge (a-c) values are:\t&quot;</span>;</div>
+<div class="line">    std::copy(tree[ac_edge].cbegin(), tree[ac_edge].cend(), std::ostream_iterator&lt;int&gt;(std::cout, <span class="stringliteral">&quot; &quot;</span>));</div>
+<div class="line">    std::cout &lt;&lt; std::endl;</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// Other edges values were left default initialized</span></div>
+<div class="line">    assert(tree[cd_edge].size() == 0);</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassquetzal_1_1coalescence_1_1binary__tree_html"><div class="ttname"><a href="classquetzal_1_1coalescence_1_1binary__tree.html">quetzal::coalescence::binary_tree</a></div><div class="ttdef"><b>Definition:</b> binary_tree.hpp:344</div></div>
+<div class="ttc" id="aclassquetzal_1_1coalescence_1_1binary__tree_html"><div class="ttname"><a href="classquetzal_1_1coalescence_1_1binary__tree.html">quetzal::coalescence::binary_tree</a></div><div class="ttdef"><b>Definition:</b> binary_tree.hpp:328</div></div>
 </div><!-- fragment --> <h1><a class="anchor" id="ex2"></a>
 Output</h1>
 <div class="fragment"><div class="line">Degree of inner vertex c is 3</div>
@@ -781,69 +812,68 @@ Example</h1>
 <div class="line"> </div>
 <div class="line"><span class="keyword">struct </span><a class="code" href="structvertex__info.html">vertex_info</a></div>
 <div class="line">{</div>
-<div class="line">  std::string field1;</div>
-<div class="line">  <span class="keywordtype">int</span> field2;</div>
+<div class="line">    std::string field1;</div>
+<div class="line">    <span class="keywordtype">int</span> field2;</div>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main()</div>
 <div class="line">{</div>
-<div class="line">  <span class="keyword">using</span> <a class="code" href="structedge__info.html">edge_info</a> = std::vector&lt;int&gt;;</div>
-<div class="line">  <span class="keyword">using</span> tree_type = <a class="code" href="classquetzal_1_1coalescence_1_1k__ary__tree.html">quetzal::coalescence::k_ary_tree&lt;vertex_info, edge_info&gt;</a>;</div>
+<div class="line">    <span class="keyword">using</span> <a class="code" href="structedge__info.html">edge_info</a> = std::vector&lt;int&gt;;</div>
+<div class="line">    <span class="keyword">using</span> tree_type = <a class="code" href="classquetzal_1_1coalescence_1_1k__ary__tree.html">quetzal::coalescence::k_ary_tree&lt;vertex_info, edge_info&gt;</a>;</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">/*</span></div>
-<div class="line"><span class="comment">  *              a</span></div>
-<div class="line"><span class="comment">  *            /   \</span></div>
-<div class="line"><span class="comment">  *           /     c</span></div>
-<div class="line"><span class="comment">  *          /    / | \</span></div>
-<div class="line"><span class="comment">  *         b    d  e  f</span></div>
-<div class="line"><span class="comment">  */</span></div>
+<div class="line">    <span class="comment">/*</span></div>
+<div class="line"><span class="comment">     *              a</span></div>
+<div class="line"><span class="comment">     *            /   \</span></div>
+<div class="line"><span class="comment">     *           /     c</span></div>
+<div class="line"><span class="comment">     *          /    / | \</span></div>
+<div class="line"><span class="comment">     *         b    d  e  f</span></div>
+<div class="line"><span class="comment">     */</span></div>
 <div class="line"> </div>
-<div class="line">  tree_type tree;</div>
+<div class="line">    tree_type tree;</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// Let&#39;s attach information to the root vertex</span></div>
-<div class="line">  <span class="keyword">auto</span> a = tree.add_vertex( <a class="code" href="structvertex__info.html">vertex_info</a>{<span class="stringliteral">&quot;Im Root&quot;</span>, 47} );</div>
+<div class="line">    <span class="comment">// Let&#39;s attach information to the root vertex</span></div>
+<div class="line">    <span class="keyword">auto</span> a = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{<span class="stringliteral">&quot;Im Root&quot;</span>, 47});</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// Other vertices have default values</span></div>
-<div class="line">  <span class="keyword">auto</span> b = tree.add_vertex( <a class="code" href="structvertex__info.html">vertex_info</a>{} );</div>
-<div class="line">  <span class="keyword">auto</span> c = tree.add_vertex( <a class="code" href="structvertex__info.html">vertex_info</a>{} );</div>
-<div class="line">  <span class="keyword">auto</span> d = tree.add_vertex( <a class="code" href="structvertex__info.html">vertex_info</a>{} );</div>
-<div class="line">  <span class="keyword">auto</span> e = tree.add_vertex( <a class="code" href="structvertex__info.html">vertex_info</a>{} );</div>
-<div class="line">  <span class="keyword">auto</span> f = tree.add_vertex( <a class="code" href="structvertex__info.html">vertex_info</a>{} );</div>
+<div class="line">    <span class="comment">// Other vertices have default values</span></div>
+<div class="line">    <span class="keyword">auto</span> b = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{});</div>
+<div class="line">    <span class="keyword">auto</span> c = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{});</div>
+<div class="line">    <span class="keyword">auto</span> d = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{});</div>
+<div class="line">    <span class="keyword">auto</span> e = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{});</div>
+<div class="line">    <span class="keyword">auto</span> f = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{});</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// Attaches information to the edges from the root</span></div>
-<div class="line">  <span class="keyword">auto</span> first_edges  = tree.add_edges( a, { {b, <a class="code" href="structedge__info.html">edge_info</a>{1,2,3} }, {c, <a class="code" href="structedge__info.html">edge_info</a>{4,5,6} } } );</div>
+<div class="line">    <span class="comment">// Attaches information to the edges from the root</span></div>
+<div class="line">    <span class="keyword">auto</span> first_edges = tree.add_edges(a, {{b, <a class="code" href="structedge__info.html">edge_info</a>{1, 2, 3}}, {c, <a class="code" href="structedge__info.html">edge_info</a>{4, 5, 6}}});</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// Other edges have default values</span></div>
-<div class="line">  <span class="keyword">auto</span> other_edges  = tree.add_edges( c, { {d, <a class="code" href="structedge__info.html">edge_info</a>{}}, {e, <a class="code" href="structedge__info.html">edge_info</a>{}}, {f, <a class="code" href="structedge__info.html">edge_info</a>{}} } );</div>
+<div class="line">    <span class="comment">// Other edges have default values</span></div>
+<div class="line">    <span class="keyword">auto</span> other_edges = tree.add_edges(c, {{d, <a class="code" href="structedge__info.html">edge_info</a>{}}, {e, <a class="code" href="structedge__info.html">edge_info</a>{}}, {f, <a class="code" href="structedge__info.html">edge_info</a>{}}});</div>
 <div class="line"> </div>
-<div class="line">  assert(tree.degree(c) == 4);</div>
-<div class="line">  assert(tree.in_degree(c) == 1);</div>
-<div class="line">  assert(tree.out_degree(c) == 3);</div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Degree of inner vertex c is &quot;</span> &lt;&lt; tree.degree(c) &lt;&lt; std::endl;</div>
+<div class="line">    assert(tree.degree(c) == 4);</div>
+<div class="line">    assert(tree.in_degree(c) == 1);</div>
+<div class="line">    assert(tree.out_degree(c) == 3);</div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Degree of inner vertex c is &quot;</span> &lt;&lt; tree.degree(c) &lt;&lt; std::endl;</div>
 <div class="line"> </div>
-<div class="line">  <span class="keyword">auto</span> root = tree.find_root_from(e);</div>
+<div class="line">    <span class="keyword">auto</span> root = tree.find_root_from(e);</div>
 <div class="line"> </div>
-<div class="line">  assert(root == a &amp;&amp; !tree.has_predecessor(root));</div>
-<div class="line">  assert(tree.has_predecessor(root) == <span class="keyword">false</span>);</div>
-<div class="line">  assert(tree.predecessor(c) == root);</div>
-<div class="line">  assert(tree.has_successors(root) == <span class="keyword">true</span>);</div>
-<div class="line">  assert( std::ranges::none_of( tree.successors(c), [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; v){ return tree.has_successors(v);}  ));</div>
-<div class="line">  </div>
-<div class="line">  <span class="comment">// Retrieve root vertex information</span></div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Root first field is:\t&quot;</span> &lt;&lt; tree[a].field1 &lt;&lt; std::endl;</div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Root other field is:\t&quot;</span> &lt;&lt; tree[a].field2 &lt;&lt; std::endl;</div>
+<div class="line">    assert(root == a &amp;&amp; !tree.has_predecessor(root));</div>
+<div class="line">    assert(tree.has_predecessor(root) == <span class="keyword">false</span>);</div>
+<div class="line">    assert(tree.predecessor(c) == root);</div>
+<div class="line">    assert(tree.has_successors(root) == <span class="keyword">true</span>);</div>
+<div class="line">    assert(std::ranges::none_of(tree.successors(c), [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span> &amp;v) { return tree.has_successors(v); }));</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// Retrieve edges information</span></div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Edge (a-&gt;b) values are:\t&quot;</span>;</div>
-<div class="line">  std::copy(tree[first_edges[0]].cbegin(), tree[first_edges[0]].cend(), std::ostream_iterator&lt;int&gt;(std::cout, <span class="stringliteral">&quot; &quot;</span>));</div>
-<div class="line">  </div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;\nEdge (a-&gt;c) values are:\t&quot;</span>;</div>
-<div class="line">  std::copy(tree[first_edges[1]].cbegin(),tree[first_edges[1]].cend(), std::ostream_iterator&lt;int&gt;(std::cout, <span class="stringliteral">&quot; &quot;</span>));</div>
-<div class="line">  std::cout &lt;&lt; std::endl;</div>
-<div class="line">  </div>
-<div class="line">  <span class="comment">// Other edges values were left default initialized</span></div>
-<div class="line">  assert(tree[other_edges[0]].size() == 0);</div>
+<div class="line">    <span class="comment">// Retrieve root vertex information</span></div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Root first field is:\t&quot;</span> &lt;&lt; tree[a].field1 &lt;&lt; std::endl;</div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Root other field is:\t&quot;</span> &lt;&lt; tree[a].field2 &lt;&lt; std::endl;</div>
 <div class="line"> </div>
+<div class="line">    <span class="comment">// Retrieve edges information</span></div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Edge (a-&gt;b) values are:\t&quot;</span>;</div>
+<div class="line">    std::copy(tree[first_edges[0]].cbegin(), tree[first_edges[0]].cend(), std::ostream_iterator&lt;int&gt;(std::cout, <span class="stringliteral">&quot; &quot;</span>));</div>
+<div class="line"> </div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;\nEdge (a-&gt;c) values are:\t&quot;</span>;</div>
+<div class="line">    std::copy(tree[first_edges[1]].cbegin(), tree[first_edges[1]].cend(), std::ostream_iterator&lt;int&gt;(std::cout, <span class="stringliteral">&quot; &quot;</span>));</div>
+<div class="line">    std::cout &lt;&lt; std::endl;</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// Other edges values were left default initialized</span></div>
+<div class="line">    assert(tree[other_edges[0]].size() == 0);</div>
 <div class="line">}</div>
 </div><!-- fragment --> <h1><a class="anchor" id="ex2"></a>
 Output</h1>
@@ -914,57 +944,57 @@ Example</h1>
 <div class="line"> </div>
 <div class="line"><span class="keyword">struct </span><a class="code" href="structvertex__info.html">vertex_info</a></div>
 <div class="line">{</div>
-<div class="line">  std::string field1;</div>
-<div class="line">  <span class="keywordtype">int</span> field2;</div>
+<div class="line">    std::string field1;</div>
+<div class="line">    <span class="keywordtype">int</span> field2;</div>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main()</div>
 <div class="line">{</div>
-<div class="line">  <span class="keyword">using</span> <a class="code" href="structedge__info.html">edge_info</a> = boost::no_property;</div>
-<div class="line">  <span class="keyword">using</span> tree_type = <a class="code" href="classquetzal_1_1coalescence_1_1binary__tree.html">quetzal::coalescence::binary_tree&lt;vertex_info, edge_info&gt;</a>;</div>
+<div class="line">    <span class="keyword">using</span> <a class="code" href="structedge__info.html">edge_info</a> = boost::no_property;</div>
+<div class="line">    <span class="keyword">using</span> tree_type = <a class="code" href="classquetzal_1_1coalescence_1_1binary__tree.html">quetzal::coalescence::binary_tree&lt;vertex_info, edge_info&gt;</a>;</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">/*</span></div>
-<div class="line"><span class="comment">  *             a</span></div>
-<div class="line"><span class="comment">  *           /   \</span></div>
-<div class="line"><span class="comment">  *          /     c</span></div>
-<div class="line"><span class="comment">  *         /     / \</span></div>
-<div class="line"><span class="comment">  *        b     d   e</span></div>
-<div class="line"><span class="comment">  */</span></div>
+<div class="line">    <span class="comment">/*</span></div>
+<div class="line"><span class="comment">     *             a</span></div>
+<div class="line"><span class="comment">     *           /   \</span></div>
+<div class="line"><span class="comment">     *          /     c</span></div>
+<div class="line"><span class="comment">     *         /     / \</span></div>
+<div class="line"><span class="comment">     *        b     d   e</span></div>
+<div class="line"><span class="comment">     */</span></div>
 <div class="line"> </div>
-<div class="line">  tree_type tree;</div>
+<div class="line">    tree_type tree;</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// Let&#39;s attach information to the root vertex</span></div>
-<div class="line">  <span class="keyword">auto</span> a = tree.add_vertex( <a class="code" href="structvertex__info.html">vertex_info</a>{ <span class="stringliteral">&quot;Im Root&quot;</span>, 47 });</div>
+<div class="line">    <span class="comment">// Let&#39;s attach information to the root vertex</span></div>
+<div class="line">    <span class="keyword">auto</span> a = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{<span class="stringliteral">&quot;Im Root&quot;</span>, 47});</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// Other vertices have default values</span></div>
-<div class="line">  <span class="keyword">auto</span> b = tree.add_vertex( <a class="code" href="structvertex__info.html">vertex_info</a>{} );</div>
-<div class="line">  <span class="keyword">auto</span> c = tree.add_vertex( <a class="code" href="structvertex__info.html">vertex_info</a>{} );</div>
-<div class="line">  <span class="keyword">auto</span> d = tree.add_vertex( <a class="code" href="structvertex__info.html">vertex_info</a>{} );</div>
-<div class="line">  <span class="keyword">auto</span> e = tree.add_vertex( <a class="code" href="structvertex__info.html">vertex_info</a>{} );</div>
+<div class="line">    <span class="comment">// Other vertices have default values</span></div>
+<div class="line">    <span class="keyword">auto</span> b = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{});</div>
+<div class="line">    <span class="keyword">auto</span> c = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{});</div>
+<div class="line">    <span class="keyword">auto</span> d = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{});</div>
+<div class="line">    <span class="keyword">auto</span> e = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{});</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// No information are attached to edges</span></div>
-<div class="line">  <span class="keyword">auto</span> [ab_edge, ac_edge] = tree.add_edges(a, b, c);</div>
-<div class="line">  <span class="keyword">auto</span> [cd_edge, ce_edge] = tree.add_edges(c, d, e);</div>
+<div class="line">    <span class="comment">// No information are attached to edges</span></div>
+<div class="line">    <span class="keyword">auto</span> [ab_edge, ac_edge] = tree.add_edges(a, b, c);</div>
+<div class="line">    <span class="keyword">auto</span> [cd_edge, ce_edge] = tree.add_edges(c, d, e);</div>
 <div class="line"> </div>
-<div class="line">  <span class="keyword">auto</span> root = tree.find_root_from(e);</div>
+<div class="line">    <span class="keyword">auto</span> root = tree.find_root_from(e);</div>
 <div class="line"> </div>
-<div class="line">  assert(root == a &amp;&amp; !tree.has_predecessor(root));</div>
-<div class="line">  assert(tree.degree(c) == 3);</div>
-<div class="line">  assert(tree.in_degree(c) == 1);</div>
-<div class="line">  assert(tree.out_degree(c) == 2);</div>
-<div class="line">  assert(tree.has_predecessor(root) == <span class="keyword">false</span>);</div>
-<div class="line">  assert(tree.predecessor(c) == root);</div>
-<div class="line">  assert(tree.has_successors(root) == <span class="keyword">true</span>);</div>
-<div class="line">  assert( std::ranges::none_of( tree.successors(c), [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; v){ return tree.has_successors(v);} ));</div>
+<div class="line">    assert(root == a &amp;&amp; !tree.has_predecessor(root));</div>
+<div class="line">    assert(tree.degree(c) == 3);</div>
+<div class="line">    assert(tree.in_degree(c) == 1);</div>
+<div class="line">    assert(tree.out_degree(c) == 2);</div>
+<div class="line">    assert(tree.has_predecessor(root) == <span class="keyword">false</span>);</div>
+<div class="line">    assert(tree.predecessor(c) == root);</div>
+<div class="line">    assert(tree.has_successors(root) == <span class="keyword">true</span>);</div>
+<div class="line">    assert(std::ranges::none_of(tree.successors(c), [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span> &amp;v) { return tree.has_successors(v); }));</div>
 <div class="line"> </div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Degree of inner vertex c is &quot;</span> &lt;&lt; tree.degree(c) &lt;&lt; std::endl;</div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Degree of inner vertex c is &quot;</span> &lt;&lt; tree.degree(c) &lt;&lt; std::endl;</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// Root vertex field values were assigned</span></div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Root first field is:\t&quot;</span> &lt;&lt; tree[a].field1 &lt;&lt; std::endl;</div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Root other field is:\t&quot;</span> &lt;&lt; tree[a].field2 &lt;&lt; std::endl;</div>
+<div class="line">    <span class="comment">// Root vertex field values were assigned</span></div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Root first field is:\t&quot;</span> &lt;&lt; tree[a].field1 &lt;&lt; std::endl;</div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Root other field is:\t&quot;</span> &lt;&lt; tree[a].field2 &lt;&lt; std::endl;</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// Other vertices fields values were left default initialized</span></div>
-<div class="line">  assert(tree[b].field1.size() == tree[b].field2);</div>
+<div class="line">    <span class="comment">// Other vertices fields values were left default initialized</span></div>
+<div class="line">    assert(tree[b].field1.size() == tree[b].field2);</div>
 <div class="line">}</div>
 </div><!-- fragment --> <h1><a class="anchor" id="ex2"></a>
 Output</h1>
@@ -990,59 +1020,59 @@ Example</h1>
 <div class="line"> </div>
 <div class="line"><span class="keyword">struct </span><a class="code" href="structvertex__info.html">vertex_info</a></div>
 <div class="line">{</div>
-<div class="line">  std::string field1;</div>
-<div class="line">  <span class="keywordtype">int</span> field2;</div>
+<div class="line">    std::string field1;</div>
+<div class="line">    <span class="keywordtype">int</span> field2;</div>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main()</div>
 <div class="line">{</div>
-<div class="line">  <span class="keyword">using</span> <a class="code" href="structedge__info.html">edge_info</a> = boost::no_property;</div>
-<div class="line">  <span class="keyword">using</span> tree_type = <a class="code" href="classquetzal_1_1coalescence_1_1k__ary__tree.html">quetzal::coalescence::k_ary_tree&lt;vertex_info, edge_info&gt;</a>;</div>
+<div class="line">    <span class="keyword">using</span> <a class="code" href="structedge__info.html">edge_info</a> = boost::no_property;</div>
+<div class="line">    <span class="keyword">using</span> tree_type = <a class="code" href="classquetzal_1_1coalescence_1_1k__ary__tree.html">quetzal::coalescence::k_ary_tree&lt;vertex_info, edge_info&gt;</a>;</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">/*</span></div>
-<div class="line"><span class="comment">  *              a</span></div>
-<div class="line"><span class="comment">  *            /   \</span></div>
-<div class="line"><span class="comment">  *           /     c</span></div>
-<div class="line"><span class="comment">  *          /    / | \</span></div>
-<div class="line"><span class="comment">  *         b    d  e  f</span></div>
-<div class="line"><span class="comment">  */</span></div>
+<div class="line">    <span class="comment">/*</span></div>
+<div class="line"><span class="comment">     *              a</span></div>
+<div class="line"><span class="comment">     *            /   \</span></div>
+<div class="line"><span class="comment">     *           /     c</span></div>
+<div class="line"><span class="comment">     *          /    / | \</span></div>
+<div class="line"><span class="comment">     *         b    d  e  f</span></div>
+<div class="line"><span class="comment">     */</span></div>
 <div class="line"> </div>
-<div class="line">  tree_type tree;</div>
+<div class="line">    tree_type tree;</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// Let&#39;s attach information to the root vertex</span></div>
-<div class="line">  <span class="keyword">auto</span> a = tree.add_vertex( <a class="code" href="structvertex__info.html">vertex_info</a>{ <span class="stringliteral">&quot;Im Root&quot;</span>, 47 } );</div>
+<div class="line">    <span class="comment">// Let&#39;s attach information to the root vertex</span></div>
+<div class="line">    <span class="keyword">auto</span> a = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{<span class="stringliteral">&quot;Im Root&quot;</span>, 47});</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// Other vertices have default values</span></div>
-<div class="line">  <span class="keyword">auto</span> b = tree.add_vertex( <a class="code" href="structvertex__info.html">vertex_info</a>{} );</div>
-<div class="line">  <span class="keyword">auto</span> c = tree.add_vertex( <a class="code" href="structvertex__info.html">vertex_info</a>{} );</div>
-<div class="line">  <span class="keyword">auto</span> d = tree.add_vertex( <a class="code" href="structvertex__info.html">vertex_info</a>{} );</div>
-<div class="line">  <span class="keyword">auto</span> e = tree.add_vertex( <a class="code" href="structvertex__info.html">vertex_info</a>{} );</div>
-<div class="line">  <span class="keyword">auto</span> f = tree.add_vertex( <a class="code" href="structvertex__info.html">vertex_info</a>{} );</div>
+<div class="line">    <span class="comment">// Other vertices have default values</span></div>
+<div class="line">    <span class="keyword">auto</span> b = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{});</div>
+<div class="line">    <span class="keyword">auto</span> c = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{});</div>
+<div class="line">    <span class="keyword">auto</span> d = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{});</div>
+<div class="line">    <span class="keyword">auto</span> e = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{});</div>
+<div class="line">    <span class="keyword">auto</span> f = tree.add_vertex(<a class="code" href="structvertex__info.html">vertex_info</a>{});</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// No information are attached to edges</span></div>
-<div class="line">  <span class="keyword">auto</span> first_edges = tree.add_edges(a, {b, c} );</div>
-<div class="line">  <span class="keyword">auto</span> other_edges = tree.add_edges(c, {d, e, f} );</div>
+<div class="line">    <span class="comment">// No information are attached to edges</span></div>
+<div class="line">    <span class="keyword">auto</span> first_edges = tree.add_edges(a, {b, c});</div>
+<div class="line">    <span class="keyword">auto</span> other_edges = tree.add_edges(c, {d, e, f});</div>
 <div class="line"> </div>
-<div class="line">  <span class="keyword">auto</span> root = tree.find_root_from(e);</div>
+<div class="line">    <span class="keyword">auto</span> root = tree.find_root_from(e);</div>
 <div class="line"> </div>
-<div class="line">  assert(root == a &amp;&amp; !tree.has_predecessor(root));</div>
-<div class="line">  assert(root == a &amp;&amp; !tree.has_predecessor(root));</div>
-<div class="line">  assert(tree.degree(c) == 4);</div>
-<div class="line">  assert(tree.in_degree(c) == 1);</div>
-<div class="line">  assert(tree.out_degree(c) == 3);</div>
-<div class="line">  assert(tree.has_predecessor(root) == <span class="keyword">false</span>);</div>
-<div class="line">  assert(tree.predecessor(c) == root);</div>
-<div class="line">  assert(tree.has_successors(root) == <span class="keyword">true</span>);</div>
-<div class="line">  assert( std::ranges::none_of( tree.successors(c), [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; v){ return tree.has_successors(v);}  ));</div>
-<div class="line">  </div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Degree of inner vertex c is &quot;</span> &lt;&lt; tree.degree(c) &lt;&lt; std::endl;</div>
+<div class="line">    assert(root == a &amp;&amp; !tree.has_predecessor(root));</div>
+<div class="line">    assert(root == a &amp;&amp; !tree.has_predecessor(root));</div>
+<div class="line">    assert(tree.degree(c) == 4);</div>
+<div class="line">    assert(tree.in_degree(c) == 1);</div>
+<div class="line">    assert(tree.out_degree(c) == 3);</div>
+<div class="line">    assert(tree.has_predecessor(root) == <span class="keyword">false</span>);</div>
+<div class="line">    assert(tree.predecessor(c) == root);</div>
+<div class="line">    assert(tree.has_successors(root) == <span class="keyword">true</span>);</div>
+<div class="line">    assert(std::ranges::none_of(tree.successors(c), [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span> &amp;v) { return tree.has_successors(v); }));</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// Root vertex field values were assigned</span></div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Root vertex first field is:\t&quot;</span> &lt;&lt; tree[root].field1 &lt;&lt; std::endl;</div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Root other field is:\t&quot;</span>&lt;&lt; tree[a].field2 &lt;&lt; std::endl;</div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Degree of inner vertex c is &quot;</span> &lt;&lt; tree.degree(c) &lt;&lt; std::endl;</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// Other vertices fields values were left default initialized</span></div>
-<div class="line">  assert(tree[b].field1.size() == tree[b].field2);</div>
+<div class="line">    <span class="comment">// Root vertex field values were assigned</span></div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Root vertex first field is:\t&quot;</span> &lt;&lt; tree[root].field1 &lt;&lt; std::endl;</div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Root other field is:\t&quot;</span> &lt;&lt; tree[a].field2 &lt;&lt; std::endl;</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// Other vertices fields values were left default initialized</span></div>
+<div class="line">    assert(tree[b].field1.size() == tree[b].field2);</div>
 <div class="line">}</div>
 </div><!-- fragment --> <h1><a class="anchor" id="ex2"></a>
 Output</h1>
