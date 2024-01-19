@@ -80,5 +80,9 @@
         "valarray": "cpp",
         "variant": "cpp",
         "*.ipp": "cpp"
-    }
+    },
+    "cSpell.words": [
+        "clangd",
+        "devcontainer"
+    ]
 }

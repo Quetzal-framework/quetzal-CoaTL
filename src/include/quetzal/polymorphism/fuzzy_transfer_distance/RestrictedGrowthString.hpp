@@ -1,62 +1,75 @@
 // Copyright 2021 Arnaud Becheler    <abechele@umich.edu>
 
-/***********************************************************************                                                                         *
-* This program is free software; you can redistribute it and/or modify *
-* it under the terms of the GNU General Public License as published by *
-* the Free Software Foundation; either version 2 of the License, or    *
-* (at your option) any later version.                                  *
-*                                                                      *
-***************************************************************************/
+/*********************************************************************** * This program is free software; you can
+ *redistribute it and/or modify * it under the terms of the GNU General Public License as published by * the Free
+ *Software Foundation; either version 2 of the License, or    * (at your option) any later version. *
+ *                                                                      *
+ ***************************************************************************/
 
 #ifndef RESTRICTED_GROWTH_STRING
 #define RESTRICTED_GROWTH_STRING
 
+#include <iostream>
 #include <set>
 #include <vector>
-#include <iostream>
 
 namespace quetzal::polymorphism::fuzzy_transfer_distance
 {
-		class RestrictedGrowthString
-		{
+class RestrictedGrowthString
+{
 
-		public:
-			using block_type = unsigned int;
+  public:
+    using block_type = unsigned int;
 
-			RestrictedGrowthString(std::vector<block_type> const& rgs) : m_rgs(rgs), m_blocks_id(retrieve_unique_blocks(rgs))
-			{}
+    RestrictedGrowthString(std::vector<block_type> const &rgs) : m_rgs(rgs), m_blocks_id(retrieve_unique_blocks(rgs))
+    {
+    }
 
-			auto nBlocks() const { return m_blocks_id.size();}
+    auto nBlocks() const
+    {
+        return m_blocks_id.size();
+    }
 
-			auto size() const { return m_rgs.size();}
+    auto size() const
+    {
+        return m_rgs.size();
+    }
 
-			auto begin() const {return m_rgs.cbegin();}
+    auto begin() const
+    {
+        return m_rgs.cbegin();
+    }
 
-			auto end() const {return m_rgs.cend();}
+    auto end() const
+    {
+        return m_rgs.cend();
+    }
 
-			bool operator==(RestrictedGrowthString const& other) const {
-				return (this->m_rgs == other.m_rgs);
-			}
+    bool operator==(RestrictedGrowthString const &other) const
+    {
+        return (this->m_rgs == other.m_rgs);
+    }
 
-			auto at(unsigned int n) const {
-				return m_rgs.at(n);
-			}
+    auto at(unsigned int n) const
+    {
+        return m_rgs.at(n);
+    }
 
-		private:
-			std::vector<block_type> m_rgs;
-			std::set<block_type> m_blocks_id;
+  private:
+    std::vector<block_type> m_rgs;
+    std::set<block_type> m_blocks_id;
 
-			std::set<block_type> retrieve_unique_blocks(std::vector<block_type> const& rgs){
-				std::set<block_type> ids;
-				for(auto const& it : rgs){
-					ids.insert(it);
-				}
-				return ids;
-			}
+    std::set<block_type> retrieve_unique_blocks(std::vector<block_type> const &rgs)
+    {
+        std::set<block_type> ids;
+        for (auto const &it : rgs)
+        {
+            ids.insert(it);
+        }
+        return ids;
+    }
+};
 
-		};
-
-} // end namespace quetzal
-
+} // namespace quetzal::polymorphism::fuzzy_transfer_distance
 
 #endif
