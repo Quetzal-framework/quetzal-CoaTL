@@ -13,24 +13,38 @@
 	"remoteUser": "root",
 	// Features to add to the dev container, see https://containers.dev/feature
 	"features": {},
-
 	// Configure tool-specific properties.
 	"customizations": {
-		// Configure properties specific to VS Code.
+		// Configure properties specific to VS Code to be installed in the devcontainer
 		"vscode": {
-			"settings": {},
 			"extensions": [
-				"streetsidesoftware.code-spell-checker"
-			]
+				// Clangd: code complete, compile error, clang-format etc
+				"llvm-vs-code-extensions.vscode-clangd",
+				// Format all files in the workspace
+				"jbockle.jbockle-format-files",
+				// Cmake syntax highlighting
+				"twxs.cmake",
+				// Check grammar in text and Markdown
+				"znck.grammarly",
+				// Spelling check in code
+				"streetsidesoftware.code-spell-checker",
+			],
+			"settings": {
+				"clangd.path": "/usr/bin/clangd",
+				"clangd.arguments": [
+					"--compile-commands-dir=${workspaceFolder}",
+					"-std=c++23"
+				],
+				"clang-format.executable": "clang-format",
+				"clang-format.style": "file",
+				"clang-format.fallbackStyle": "Microsoft",
+				"clang-format.formatOnSave": true,
+				"clang-format.formatOnType": true,
+				"clang-format.arguments": [
+					"-assume-filename=${workspaceFolder}/.clang-format"
+				],
+				"formatFiles.excludePattern": "**/.vscode/**,**/.git/**,**/build/**,**/.cache/**"
+			}
 		}
 	}
-
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
-
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "gcc -v",
-
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
 }

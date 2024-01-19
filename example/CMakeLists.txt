@@ -32,7 +32,7 @@ foreach(testSrc ${SRCS})
   # Add compile target
   add_executable(${testName} ${testSrc})
   # Require the standard
-  target_compile_features(${testName} PUBLIC cxx_std_20)
+  target_compile_features(${testName} PUBLIC cxx_std_23)
   # Ignore warnings about subtle ABI change
   target_compile_options(${testName} PUBLIC "-Wno-psabi")
   # Link to Boost libraries AND other targets and dependencies

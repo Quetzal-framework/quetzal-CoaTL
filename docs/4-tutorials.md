@@ -816,18 +816,32 @@ There a different modeling approaches to look at these demographic histories, pr
 @page dispersal_kernels Dispersal Kernels
 @tableofcontents
 
+@note 
+The objective of this section is to define the modality of dispersal of a species across a discrete landscape. Because dispersal is so tightly related to graph connectivity and performance, this will require to:
+1. transform a `quetzal::geography::landscape` into a `quetzal::geography::graph` selecting the desired level of connectivity
+2. update the edges information of the graph to reflect the desired rate of movement.
+
 # Background
 
-# Neighborhood-based Dispersal
+The challenge of replicating a demographic process within a discrete landscape can be framed as a process on a spatial graph. In this graph, the vertices represent the cells of the landscape grid, while the edges link the areas where migration occurs.
 
-# Distance-based Dispersal
+The quantity of edges in this graph significantly influences both complexity and performance. For instance, in a landscape containing \f$n\f$ cells, considering migration between any two arbitrary locations would result in a complete graph with \f$\frac{n(n-1)}{2}\f$ edges, which could pose computational difficulties.
 
-# Resistance-based Dispersal
+For this reason, constructing a spatial graph first requires to account for the modality of dispersal between the vertices (locations) of the graph. We distinguish at least 3 modalities:
 
-@note 
-Simulating a demographic process on a spatial graph first requires to account for the modality of dispersal between the vertices (locations) of the graph. A relatively simple way to do so is to link the geographic distance between two locations to the probability to disperse between them. The objective of this section is to highlight this model choice by parametrizing a simple Dispersal Location Kernel (in the sense of <a href="nathan-et-al-2012.pdf" target="_blank"><b> Nathan et al. 2012</b></a>) and to compute useful quantities, such as the distance between two coordinates, the probability to disperse from one to the other, and the mean dispersal distance expected under the distribution.
+* 4-neighbors: each cell of the landscape grid is connected only to its cardinal neighbors (N, E, S, W). 
+* 8-neighbors: each cell of the landscape grid is connected only to its cardinal and intercardinal (NE, SE, SW, NW) neighbors.
+* complete graph: each cell of the landscape grid is connected to all others: the rate of migration between two cells will be a function of the distance or path of least resistance.
 
-## Background 
+# 4-neighbors graph
+
+# 8-neighbors graph
+
+# Complete graph
+
+## Distance-based kernel
+
+A straightforward approach to determine the dispersal mode across a complete spatial graph involves correlating the geographic distance between two locations with the likelihood of dispersal between them. The objective of this section is to highlight this model choice by parametrizing a simple Dispersal Location Kernel (in the sense of <a href="nathan-et-al-2012.pdf" target="_blank"><b> Nathan et al. 2012</b></a>). Additionally, we will calculate essential metrics, such as the distance between two coordinates, the dispersal probability between them, and the average dispersal distance anticipated under this distribution.
 
 The dispersal location kernel represents the statistical pattern of dispersal distances within a population. In this context, it essentially serves as the probability density function (pdf) that outlines the distribution of locations after dispersal in relation to the original location. The expressions have been adjusted to incorporate a scale parameter, 
 \f$a\f$, which is consistent with a distance unit, and a shape parameter, 
@@ -835,14 +849,17 @@ The dispersal location kernel represents the statistical pattern of dispersal di
 
 For a source \f$(x_0,y_0)\f$, the dispersal location kernel denoted as \f$k_L(r)\f$ provides the density of the probability of the dispersal end point in the 2D space. In this case, \f$k_L(r)dA\f$ is the probability of a dispersal end point to be within a small 2D area \f$dA\f$ around the location \f$(x,y)\f$. Since a probability is unitless and \f$dA\f$ is an area, \f$k_L(r)\f$ is expressed in per unit area in a 2D space.
 
-Quetzal implements several types of kernel available in the `quetzal::demography::dispersal_kernel` namespace, and automates compile-time dimensional analysis and units conversion thanks to the `mp-units` library. 
+Quetzal incorporates various kernel types available in the `quetzal::demography::dispersal_kernel` namespace, and streamlines compile-time dimensional analysis and units conversion using the `mp-units` library. 
 
 **Input**
 
-@include{lineno} dispersal_kernel.cpp
+@include{lineno} demography_dispersal_kernel.cpp
 
 **Output**
 
-@include{lineno} dispersal_kernel.txt
+@include{lineno} demography_dispersal_kernel.txt
 
 ---
+
+## Resistance-based Dispersal
+

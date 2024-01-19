@@ -27,7 +27,7 @@ foreach(testSrc ${TEST_SRCS})
   # Add compile target
   add_executable(${testName} ${testSrc})
   # Require the standard
-  target_compile_features(${testName} PRIVATE cxx_std_20)
+  target_compile_features(${testName} PRIVATE cxx_std_23)
   # Ignore warnings about subtle ABI change
   target_compile_options(${testName} PUBLIC "-Wno-psabi")
   # Link to targets and dependencies

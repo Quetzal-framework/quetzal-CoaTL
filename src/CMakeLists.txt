@@ -26,7 +26,7 @@ target_include_directories(${PROJECT_NAME}
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 # If we have compiler requirements for this library, list them here
-target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
+target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_23)
 
 ###########################
 # INSTALLATION

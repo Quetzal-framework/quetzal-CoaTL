@@ -11,6 +11,9 @@ project(quetzal-coatl-dev LANGUAGES CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
+# Support for clangd
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # add project code
 add_subdirectory(src)
 

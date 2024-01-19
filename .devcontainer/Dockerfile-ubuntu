@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:23.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -6,8 +6,9 @@ RUN apt-get update -y
 RUN apt-get install -y --no-install-recommends\
                     vim \
                     git \
-                    gcc-12 \
-                    g++-12 \
+                    gcc-13 \
+                    g++-13 \
+                    clangd \
                     build-essential \
                     libboost-all-dev \
                     cmake \
@@ -16,6 +17,6 @@ RUN apt-get install -y --no-install-recommends\
                     ca-certificates \
                     doxygen \
                     graphviz \ 
-                    python3-pip
+                    pipx
                     
-RUN pip install conan==2.0.13
+RUN pipx ensurepath && pipx install conan==2.0.13

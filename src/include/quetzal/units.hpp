@@ -1,14 +1,13 @@
 #ifndef PHYSIC_CONSTANTS_HPP
 #define PHYSIC_CONSTANTS_HPP
 
-
+#include <iostream>
+#include <type_traits>
 #include <units/base_dimension.h>
 #include <units/isq/si/prefixes.h>
 #include <units/quantity.h>
 #include <units/quantity_io.h>
 #include <units/unit.h>
-#include <iostream>
-#include <type_traits>
 
 using namespace units;
 
@@ -24,12 +23,12 @@ using namespace units;
 //
 // }  // namespace fps
 
-
 ///
 /// @brief Compile-time unit quantities for coalescence
 ///
 namespace quetzal::units
-{}
+{
+}
 
 //     using namespace units;
 //     ///
