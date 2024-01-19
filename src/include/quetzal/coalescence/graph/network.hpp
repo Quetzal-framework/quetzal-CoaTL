@@ -226,7 +226,7 @@ template <class VertexProperty, class EdgeProperty, class CRTP> class network_co
     }
 
     //// @brief Inserts the edge \f$(u,v)\f$ into the graph if it does not exist, and returns an edge descriptor
-    ///pointing to the new edge.
+    /// pointing to the new edge.
     /// @param u Source vertex
     /// @param u Target vertex
     edge_descriptor add_edge(vertex_descriptor u, vertex_descriptor v)

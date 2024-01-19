@@ -9,7 +9,8 @@
     box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
     font-family: Helvetica, Arial, sans-serif;
     background: #fff;
     margin: 0px;

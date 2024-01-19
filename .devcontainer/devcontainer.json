@@ -17,7 +17,6 @@
 	"customizations": {
 		// Configure properties specific to VS Code to be installed in the devcontainer
 		"vscode": {
-
 			"extensions": [
 				// Clangd: code complete, compile error, clang-format etc
 				"llvm-vs-code-extensions.vscode-clangd",
@@ -30,7 +29,6 @@
 				// Spelling check in code
 				"streetsidesoftware.code-spell-checker",
 			],
-			
 			"settings": {
 				"clangd.path": "/usr/bin/clangd",
 				"clangd.arguments": [
@@ -44,7 +42,8 @@
 				"clang-format.formatOnType": true,
 				"clang-format.arguments": [
 					"-assume-filename=${workspaceFolder}/.clang-format"
-				]
+				],
+				"formatFiles.excludePattern": "**/.vscode/**,**/.git/**,**/build/**,**/.cache/**"
 			}
 		}
 	}
