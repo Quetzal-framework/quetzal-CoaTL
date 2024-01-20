@@ -9,26 +9,30 @@
 #pragma once
 
 #include <cassert>
-#include <cmath> // M_PI tgamma pow
+#include <cmath> // tgamma pow
+#include <numbers> // pi 
 
 #include <mp-units/math.h>            // mp_units::tgamma, exp etc
 #include <mp-units/systems/isq/isq.h> // QuantityOf<isq::length>
 #include <mp-units/systems/si/si.h>
+
 namespace quetzal
 {
 namespace demography
 {
 namespace dispersal_kernel
 {
+
 using namespace mp_units;
-// enables the use of shortened units notation: km, m, s
-using namespace mp_units::si::unit_symbols;
+using namespace mp_units::si::unit_symbols; // shortened units notation: km, m, s
+using std::numbers::pi;
 
 /// @brief Gaussian dispersal location kernel (thin-tailed)
 /// @ingroup demography
 /// @details To be used as a reference against leptokurtic kernels.
 ///          Suitable for diffusion-based dispersal or complete random-walk during a constant time.
-template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::metre>> struct gaussian
+template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::metre>> 
+struct gaussian
 {
 
     /// @brief Dispersal location kernel parameter
@@ -45,7 +49,7 @@ template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::me
     static constexpr auto pdf(Distance r, param_type const &p)
     {
         assert(p.a > 0. * m && r >= 0. * m);
-        return (1. / (M_PI * p.a * p.a)) * exp(-(r * r) / (p.a * p.a));
+        return (1. / (pi * p.a * p.a)) * exp(-(r * r) / (p.a * p.a));
     }
 
     /// @brief Mean dispersal distance
@@ -55,7 +59,7 @@ template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::me
     {
         using std::pow;
         assert(p.a > 0. * m);
-        return (p.a * pow(M_PI, 0.5)) / 2.;
+        return (p.a * pow(pi, 0.5)) / 2.;
     }
 };
 
@@ -89,7 +93,7 @@ template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::me
         Distance a = p.a;
         double b = p.b;
         assert(a > 0. * m && b > 2. && r >= 0. * m);
-        return (b / (2. * M_PI * (a * a) * tgamma(2. / b) * tgamma(1. - 2. / b))) *
+        return (b / (2. * pi * (a * a) * tgamma(2. / b) * tgamma(1. - 2. / b))) *
                (1. / (1. + (pow(r, b) / (pow(a, b)))));
     }
 
@@ -112,7 +116,8 @@ template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::me
 /// @details To be used as reference against more fat-tailed kernels.
 ///          Suitable for representing a travel at constant speed in a random direction with a constant
 ///          stopping rate, or a correlated random walk with settlement.
-template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::metre>> struct negative_exponential
+template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::metre>> 
+struct negative_exponential
 {
     /// @brief Dispersal location kernel parameter
     struct param_type
@@ -130,7 +135,7 @@ template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::me
         using std::exp;
         Distance a = p.a;
         assert(a > 0. * m && r >= 0. * m);
-        return 1. / (2. * M_PI * a * a) * exp(-r / a);
+        return 1. / (2. * pi * a * a) * exp(-r / a);
     }
 
     /// @brief Mean dispersal distance
@@ -167,12 +172,12 @@ template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::me
     /// @return The value of the expression \f$ \frac{b}{2 \pi a^2 \Gamma(\frac{2}{b})} exp(-\frac{r^b}{a^b}) \f$
     static constexpr auto pdf(Distance r, param_type const &p)
     {
-        using std::pow;
-        using std::tgamma;
+        //using std::pow;
+        //using std::tgamma;
         Distance a = p.a;
         double b = p.b;
         assert(a > 0. * m && b > 0. && r >= 0. * m);
-        return b / (2. * M_PI * a * a * tgamma(2. / b)) * exp(-pow(r, b) / pow(a, b));
+        return b / (2. * pi * a * a * tgamma(2. / b)) * exp(- pow(r.numerical_value_in(m), b) / pow(a.numerical_value_in(m),b));
     }
 
     /// @brief Mean dispersal distance
@@ -214,7 +219,7 @@ template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::me
         Distance a = p.a;
         double b = p.b;
         assert(a > 0. * m && b > 1. && r >= 0. * m);
-        return (b - 1.) / (M_PI * a * a) * pow((1. + (r * r) / (a * a)), -b);
+        return (b - 1.) / (pi * a * a) * pow((1. + (r * r) / (a * a)), -b);
     }
 
     /// @brief Mean dispersal distance
@@ -232,7 +237,7 @@ template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::me
         {
             return std::numeric_limits<double>::infinity();
         }
-        return (a * pow(M_PI, 0.5) * tgamma(b - 3. / 2.)) / (2. * tgamma(b - 1.));
+        return (a * pow(pi, 0.5) * tgamma(b - 3. / 2.)) / (2. * tgamma(b - 1.));
     }
 };
 
@@ -261,7 +266,7 @@ template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::me
         Distance a = p.a;
         double b = p.b;
         assert(a > 0. * m && b > 2. && r >= 0. * m);
-        return pow(1. + r / a, -b) * (b - 2.) * (b - 1.) / (2. * M_PI * a * a);
+        return pow(1. + r / a, -b) * (b - 2.) * (b - 1.) / (2. * pi * a * a);
     }
 
     /// @brief Mean dispersal distance
@@ -306,7 +311,7 @@ template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::me
     //   Distance a = p.a;
     //   double b = p.b;
     //   assert(a > 0. * m && b > 0. && r >= 0. * m);
-    //   return (1./(pow(2.*M_PI, 3./.2)*b*r*r)) * exp(- (mp_units::log(r/a)*mp_units::log(r/a) / (2.*b*b) ) );
+    //   return (1./(pow(2.*pi, 3./.2)*b*r*r)) * exp(- (mp_units::log(r/a)*mp_units::log(r/a) / (2.*b*b) ) );
     // }
 
     /// @brief Mean dispersal distance
@@ -352,8 +357,8 @@ template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::me
         Distance a2 = param.a2;
         double p = param.p;
         assert(a1 > 0. * m && a2 > 0. * m && p > 0. && p < 1. && r >= 0. * m);
-        return p / (M_PI * a1 * a1) * exp(-(r * r) / (a1 * a1)) +
-               (1. - p) / (M_PI * a2 * a2) * exp(-(r * r) / (a2 * a2));
+        return p / (pi * a1 * a1) * exp(-(r * r) / (a1 * a1)) +
+               (1. - p) / (pi * a2 * a2) * exp(-(r * r) / (a2 * a2));
     }
 
     /// @brief Mean dispersal distance
@@ -366,7 +371,7 @@ template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::me
         Distance a2 = param.a2;
         double p = param.p;
         assert(a1 > 0. * m && a2 > 0. * m && p > 0. && p < 1.);
-        return pow(M_PI, 0.5) * (p * a1 + (1. - p) * a2) / 2.;
+        return pow(pi, 0.5) * (p * a1 + (1. - p) * a2) / 2.;
     }
 };
 } // namespace dispersal_kernel

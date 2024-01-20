@@ -27,6 +27,7 @@
 #include <iostream>
 #include <optional>
 #include <type_traits>
+#include <ranges>
 
 namespace quetzal::geography
 {
@@ -40,7 +41,7 @@ template <template <class...> class Lhs> constexpr bool is_same_template<Lhs, Lh
 
 // Base class and common implementation
 template <class CRTP, class VertexProperty, class EdgeProperty,
-          template <typename, typename, typename, typename, typename> class Representation, class Directed>
+          template <class ...> class Representation, class Directed>
 class graph_common
 {
 
@@ -243,6 +244,14 @@ class graph_common
         return boost::make_iterator_range(boost::vertices(_graph));
     }
 
+    /// @brief Provides a range to iterate over the edges of the graph
+    /// @return A range
+    auto edges() const
+    {
+        auto [first, last] = boost::edges(_graph);
+        return std::ranges::subrange(first, last);
+    }
+
     /// @}
 
     /// @brief Null vertex identifier
@@ -411,7 +420,7 @@ class graph<no_property, EdgeProperty, Representation, Directed>
     /// @param u Target vertex
     edge_descriptor add_edge(vertex_descriptor u, vertex_descriptor v, const EdgeProperty &p)
     {
-        return boost::add_edge(p, u, v, this->_graph).first;
+        return boost::add_edge(u, v, p, this->_graph).first;
     }
 
     /// @}

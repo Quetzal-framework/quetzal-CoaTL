@@ -27,10 +27,11 @@
 				// Check grammar in text and Markdown
 				"znck.grammarly",
 				// Spelling check in code
-				"streetsidesoftware.code-spell-checker",
+				"streetsidesoftware.code-spell-checker"
 			],
 			"settings": {
 				"clangd.path": "/usr/bin/clangd",
+				"clangdVersion": "15.0.7",
 				"clangd.arguments": [
 					"--compile-commands-dir=${workspaceFolder}",
 					"-std=c++23"

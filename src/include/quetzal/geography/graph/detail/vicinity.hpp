@@ -18,6 +18,28 @@
 
 namespace quetzal::geography
 {
+namespace detail
+{
+    template<typename T>
+    struct edge_construction
+    {
+        static inline constexpr void delegate(auto s, auto t, auto& graph)
+        {
+            graph.add_edge(s, t, T(s,t));
+        }
+    };
+
+    template<>
+    struct edge_construction<boost::no_property>
+    {
+        static inline constexpr void delegate(auto s, auto t, auto& graph)
+        {
+            graph.add_edge(s, t);
+        }
+    };
+
+}
+
 struct connect_fully
 {
     template <directional T, class VertexProperty, class EdgeProperty>
@@ -36,9 +58,9 @@ struct connect_fully
         {
             for (auto t = s + 1; t < graph.num_vertices(); ++t)
             {
-                graph.add_edge(s, t, edge_property(s, t)); // (s -> v) == (s <- v) if undirected
+                detail::edge_construction<edge_property>::delegate(s,t, graph); // (s -> v) == (s <- v) if undirected
                 if constexpr (std::same_as<directed_category, anisotropy>)
-                    graph.add_edge(t, s, edge_property(t, s)); // (s -> v) != (s <- v) because directed
+                    detail::edge_construction<edge_property>::delegate(t, s, graph); // (s -> v) != (s <- v) because directed
             }
         }
     }
@@ -54,11 +76,9 @@ class connect_4_neighbors
     template <typename G> void connect(auto s, auto t, G &graph, auto const &grid)
     {
         using edge_property = typename G::edge_property;
-        graph.add_edge(s, t, edge_property(s, t));
+        detail::edge_construction<edge_property>::delegate(s, t, graph);
         if constexpr (std::same_as<typename G::directed_category, anisotropy>)
-        {
-            graph.add_edge(t, s, edge_property(t, s));
-        }
+            detail::edge_construction<edge_property>::delegate(t, s, graph);
     }
 
     void connect_top_left_corner(auto s, auto &graph, auto const &grid, auto const &bound_policy)
@@ -208,11 +228,11 @@ class connect_8_neighbors
 
         static_assert(std::same_as<G, graph_type<directed_category, vertex_property, edge_property>>);
 
-        graph.add_edge(s, t, edge_property(s, t));
+        detail::edge_construction<edge_property>::delegate(s,t, graph);
 
         if constexpr (std::same_as<directed_category, anisotropy>)
         {
-            graph.add_edge(t, s, edge_property(t, s));
+            detail::edge_construction<edge_property>::delegate(t,s, graph);
         }
     }
 

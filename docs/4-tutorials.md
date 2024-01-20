@@ -831,7 +831,20 @@ For this reason, constructing a spatial graph first requires to account for the 
 
 * 4-neighbors: each cell of the landscape grid is connected only to its cardinal neighbors (N, E, S, W). 
 * 8-neighbors: each cell of the landscape grid is connected only to its cardinal and intercardinal (NE, SE, SW, NW) neighbors.
-* complete graph: each cell of the landscape grid is connected to all others: the rate of migration between two cells will be a function of the distance or path of least resistance.
+* fully connected graph: each cell of the landscape grid is connected to all others: the rate of migration between two cells will be a function of the distance or path of least resistance.
+
+Similarly, assumptions we make about the model's behavior at the bounds of the finite landscape influence the connectivity of the graph. We distinguish at least three bounding modalities:
+
+* mirror: cells at the borders of the landscape are connected to their neighbors, without any further modification. In this case the individuals moving between cells will be *reflected* into the landscape.
+* sink: cells at the borders of the landscape will be connected to a sink vertex: individuals that migrate past the boundaries of the landscape *escape* into the world and never come back.
+* torus: the 2D landscape becomes a 3D torus world, as vertices on opposite borders are linked to their symmetric vertex: individuals that cross the Northern (resp. Western) border reappear on the Southern (resp. Eastern) border.
+
+Finally, a last assumption we make about the population process that impacts the graph representation is the directionality of the process: 
+
+* isotropic migration means that the edge \f$( u,v)\f$ and the edge \f$(v,u)\f$ are one and the same. 
+* anisotropic migration will distinguish between these two edges.
+
+All these choices are independently represented in the code and can be extended (although that may require some efforts).
 
 # 4-neighbors graph
 
