@@ -11,6 +11,7 @@
 #include <assert.h>
 #include <cmath> // trigonometry
 #include <ostream>
+#include <tuple>
 
 namespace quetzal::geography
 {

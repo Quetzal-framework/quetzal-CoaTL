@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE(landscape, *utf::disabled())
         auto env = landscape_type::from_files({{"bio1", file1}, {"bio12", file2}},
                                               {2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010});
 
-        BOOST_CHECK_EQUAL(env.size(), 2);
+        BOOST_CHECK_EQUAL(env.num_variables(), 2);
 
         landscape_type::latlon Bordeaux(44.5, 0.34);
 

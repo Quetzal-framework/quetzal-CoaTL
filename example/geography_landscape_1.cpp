@@ -19,7 +19,7 @@ int main()
     std::cout << env << std::endl;
 
     // We indeed recorded 2 variables: bio1 and bio12
-    assert(env.size() == 2);
+    assert(env.num_variables() == 2);
 
     // The semantic shares strong similarities with a raster
     landscape_type::latlon Bordeaux(44.5, 0.34);

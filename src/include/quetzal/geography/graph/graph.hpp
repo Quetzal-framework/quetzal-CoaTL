@@ -102,11 +102,17 @@ class graph_common
     /// @{
 
     /// @brief Number of vertices in the graph.
-    /// @param other A graph.
     /// @return The number of vertices.
     int num_vertices() const
     {
         return boost::num_vertices(_graph);
+    }
+
+    /// @brief Number of edges in the graph.
+    /// @return The number of edges.
+    int num_edges() const
+    {
+        return boost::num_edges(_graph);
     }
 
     /// @brief Detects if there is a 1-to-1 mapping of the vertices in one graph to the vertices of another graph such

@@ -190,9 +190,16 @@ template <typename Key = std::string, typename Time = int> class landscape
 
     /// @brief Retrieves the number of variables (rasters)
     /// @return the number of variables
-    auto size() const noexcept
+    auto num_variables() const noexcept
     {
         return _variables.size();
+    }
+
+    /// @brief Number of cells in the raster
+    /// @return the number of variables
+    auto num_locations() const noexcept
+    {
+        return this->width() * this->height();
     }
 
     /// @}

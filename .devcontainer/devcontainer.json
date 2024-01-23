@@ -2,20 +2,16 @@
 // For config options, see the README at: https://github.com/devcontainers/templates/tree/main/src/cpp
 {
 	"name": "C++",
-	// have no effect on the build but are only used when creating and running the dev container from the image
 	"workspaceMount": "source=${localWorkspaceFolder},target=/app,type=bind",
-	"workspaceFolder": "/app", // /default path in container to open
+	"workspaceFolder": "/app",
 	"build": {
 		"context": "..",
 		"dockerfile": "Dockerfile-ubuntu"
 	},
 	"onCreateCommand": "chmod +x .devcontainer/onCreateCommand.sh && ./.devcontainer/onCreateCommand.sh",
 	"remoteUser": "root",
-	// Features to add to the dev container, see https://containers.dev/feature
 	"features": {},
-	// Configure tool-specific properties.
 	"customizations": {
-		// Configure properties specific to VS Code to be installed in the devcontainer
 		"vscode": {
 			"extensions": [
 				// Clangd: code complete, compile error, clang-format etc
@@ -31,9 +27,8 @@
 			],
 			"settings": {
 				"clangd.path": "/usr/bin/clangd",
-				"clangdVersion": "15.0.7",
 				"clangd.arguments": [
-					"--compile-commands-dir=${workspaceFolder}",
+					"--compile-commands-dir=${workspaceFolder}/build",
 					"-std=c++23"
 				],
 				"clang-format.executable": "clang-format",
@@ -44,7 +39,7 @@
 				"clang-format.arguments": [
 					"-assume-filename=${workspaceFolder}/.clang-format"
 				],
-				"formatFiles.excludePattern": "**/.vscode/**,**/.git/**,**/build/**,**/.cache/**"
+				"formatFiles.excludedFolders": [ "node_modules", ".vscode", ".git", "dist", ".chrome", ".cache", "build"]
 			}
 		}
 	}

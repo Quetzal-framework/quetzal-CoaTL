@@ -16,6 +16,7 @@
 
 namespace quetzal::geography
 {
+
 /// @brief Spatial graph construction method
 /// @param grid A spatial grid, e.g. raster or landscape.
 /// @param v An example of information to be stored on vertices
@@ -27,11 +28,13 @@ namespace quetzal::geography
 template <two_dimensional SpatialGrid, class VertexProperty, class EdgeProperty, class Vicinity,
           directional Directionality, class Policy>
 auto from_grid(SpatialGrid const &grid, VertexProperty const &v, EdgeProperty const &e, Vicinity const &vicinity,
-               Directionality dir, Policy const &bound)
+               Directionality dir, Policy const &bounding_policy)
 {
     using graph_type = typename Vicinity::graph_type<Directionality, VertexProperty, EdgeProperty>;
-    graph_type graph(grid.width() * grid.height());
-    vicinity.connect(graph, grid, bound);
+    // Graph size has to be static in dense graphs :/ 
+    graph_type graph( grid.width() * grid.height() + bounding_policy.num_extra_vertices() ) ;
+    std::cout << "graph initialized" << std::endl;
+    vicinity.connect(graph, grid, bounding_policy);
     return graph;
 }
 

@@ -1,4 +1,4 @@
-#include "quetzal/quetzal.hpp"
+#include "quetzal/coalescence.hpp"
 #include <cassert>
 
 struct vertex_info

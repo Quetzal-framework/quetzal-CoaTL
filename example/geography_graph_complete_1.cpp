@@ -20,7 +20,6 @@ int main()
     // Initialize the landscape: for each var a key and a file, for all a time series.
     using landscape_type = geo::landscape<>;
     auto land = landscape_type::from_files({{"bio1", file1}, {"bio12", file2}}, times);
-    std::cout << land << std::endl;
 
     // Our graph will not store any useful information
     using vertex_info = geo::no_property;
@@ -39,10 +38,10 @@ int main()
     // Define the type of distance-based kernel to use
     using kernel = quetzal::demography::dispersal_kernel::exponential_power<>;
 
-    // Transform the edges of the graph to a vector of probability to disperse from a source to a target
+    // Transform the edges of the graph to a vector of probability to disperse from source to target
     auto probabilities = graph.edges()
     	| std::views::transform( [&](auto const& e){ return sphere_distance( graph.source( e ), graph.target( e ) );} )
-    	| std::views::transform( [&](auto distance){ return kernel::pdf( distance*km, { .a=1.*m , .b=5.5 } ) ;} );
+    	| std::views::transform( [&](auto distance){ return kernel::pdf( distance*km, { .a=200.*km , .b=5.5 } ) ;} );
 
     // Print the result
     for (auto const& i : probabilities)

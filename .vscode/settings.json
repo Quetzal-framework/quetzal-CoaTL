@@ -88,5 +88,6 @@
         "latlon",
         "Newick",
         "regraft"
-    ]
+    ],
+    "formatFiles.excludePattern": ""
 }
