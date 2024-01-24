@@ -371,11 +371,12 @@ template <typename Key = std::string, typename Time = int> class landscape
     }
 
     /// @brief Reprojects a coordinate to the centroid of the cell it belongs.
-    ///        If no such cell exists, an exception of type std::out_of_range is thrown.
+    /// @pre The landscape must contain the coordinate in its spatial extent.
     /// @param x The location to reproject
     /// @return The coordinate of the centroid of the cell it belongs.
     latlon to_centroid(const latlon &x) const
     {
+        assert(this->contains(x));
         return _variables.cbegin()->second.to_centroid(x);
     }
 

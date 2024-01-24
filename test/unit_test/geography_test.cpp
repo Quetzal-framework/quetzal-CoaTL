@@ -74,19 +74,23 @@ BOOST_AUTO_TEST_CASE(raster)
     BOOST_CHECK_EQUAL(bio1.times().size(), 10);
     BOOST_CHECK_EQUAL(bio1.locations().size(), 9);
     BOOST_CHECK_EQUAL(bio1.origin(), raster_type::latlon(52., -5.));
+
     auto f = bio1.to_view();
     BOOST_TEST(f(bio1.to_descriptor(bio1.origin()), bio1.times().front()).has_value());
 
     auto space = bio1.locations() |
-                 ranges::views::transform([&r = std::as_const(bio1)](auto i) { return r.to_latlon(i); }) |
+                 ranges::views::transform([&](auto i) { return bio1.to_latlon(i); }) |
                  ranges::to<std::vector>();
 
-    auto c6 = space.at(0);
-    auto c8 = space.at(2);
+    auto c0 = space.at(0);
+    auto c1 = space.at(1);
+    auto c2 = space.at(2);
     auto c3 = space.at(3);
     auto c4 = space.at(4);
-    auto c0 = space.at(6);
-    auto c1 = space.at(7);
+    auto c5 = space.at(5);
+    auto c6 = space.at(6);
+    auto c7 = space.at(7);
+    auto c8 = space.at(8);
 
     /*
     //  Expected dataSet structure
@@ -98,42 +102,45 @@ BOOST_AUTO_TEST_CASE(raster)
     //  * East and South limits ARE NOT in spatial extent
     //
     //
-      // origin	    -5        0       5      10
-      // 			 \   /         /  	 /		/
-      // 			\ / 		/		/	   /
-      // 		52	 * ------ * ----- * ---- *
-      // 			 |    .   |   .   |   .
-      // 			 |   c0   |  c1   |  c2
-      // 		47	 * ------ * ----- * ---- *
-      // 			 |    .   |   .   |   .
-      // 			 |   c3   |  c4   |  c5
-      // 		42	 * ------ * ----- * ---- *
-      // 			 |   .    |   .   |   .
-      // 			 |   c6   |  c7   |  c8
-      // 		37	 *        *       *      *
+    // origin        -5        0       5      10
+    //           \   /         /       /      /
+    //            \ /         /       /      /
+    //         52   * ------ * ----- * ---- *
+    //              |    .   |   .   |   .
+    //              |   c0   |  c1   |  c2
+    //         47   * ------ * ----- * ---- *
+    //              |    .   |   .   |   .
+    //              |   c3   |  c4   |  c5
+    //         42   * ------ * ----- * ---- *
+    //              |   .    |   .   |   .
+    //              |   c6   |  c7   |  c8
+    //         37   *        *       *      *
     //
-      // 		0	-  -----> + 180    Xsize positive in decimal degre (east direction positive)
+    //         0    -  -----> + 180    Xsize positive in decimal degre (east direction positive)
     //
-      // 		90
-      // 		+
-      // 			 |
-      // 			 |
-      // 		-	 \/ Y size negative in decimal degree (south direction negative)
-      // 		0
+    //         90
+    //         +
+    //              |
+    //              |
+    //         -    \/ Y size negative in decimal degree (south direction negative)
+    //         0
     */
-    // Corners
 
+    // Corners
     latlon expected_top_left(52., -5.);
     latlon expected_bottom_right(37., 10.);
     BOOST_TEST(bio1.contains(expected_top_left));
     BOOST_TEST(!bio1.contains(expected_bottom_right));
+
     // In boxes
     latlon in_box_0(51., -4.5);
     latlon in_box_1(48.32, 1.5);
     latlon in_box_6(37.21, -3.2);
     latlon in_box_8(38.21, 7.125);
+
     // Out of all boxes
     latlon out_north(55., 0.);
+
     // At boxes limits
     latlon W_c0_limit(48., -5.);
     latlon N_c0_limit(52., -2.);
@@ -141,20 +148,23 @@ BOOST_AUTO_TEST_CASE(raster)
     latlon W_c0_c3_limit(47., -5);
     latlon c0_c1_c3_c4_limit(47., 0.);
     latlon E_c2_c5_limit(47., 10.);
+
     // In boxes
     BOOST_TEST(bio1.to_centroid(in_box_0) == c0);
     BOOST_TEST(bio1.to_centroid(in_box_1) == c1);
     BOOST_TEST(bio1.to_centroid(in_box_6) == c6);
     BOOST_TEST(bio1.to_centroid(in_box_8) == c8);
-    // Out of all boxes
-    BOOST_CHECK_THROW(bio1.to_centroid(out_north), std::runtime_error);
+
     // At boxes limits
     BOOST_TEST(bio1.to_centroid(W_c0_limit) == c0);
     BOOST_TEST(bio1.to_centroid(N_c0_limit) == c0);
     BOOST_TEST(bio1.to_centroid(c0_c3_limit) == c3);
     BOOST_TEST(bio1.to_centroid(W_c0_c3_limit) == c3);
     BOOST_TEST(bio1.to_centroid(c0_c1_c3_c4_limit) == c4);
-    BOOST_CHECK_THROW(bio1.to_centroid(E_c2_c5_limit), std::runtime_error);
+
+    // Out of all boxes
+    // bio1.to_centroid(out_north); // assertion raised
+    // bio1.to_centroid(E_c2_c5_limit); // assertion raised
 }
 
 BOOST_AUTO_TEST_CASE(extent)

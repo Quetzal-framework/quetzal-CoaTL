@@ -408,13 +408,12 @@ template <typename Time = int> class raster
     }
 
     /// @brief Reprojects a coordinate to the centroid of the cell it belongs.
-    ///        If no such cell exists, an exception of type std::out_of_range is thrown.
+    /// @pre The spatial extent of the raster must contain the coordinate.
     /// @param x The location to reproject
     /// @return The coordinate of the centroid of the cell it belongs.
     latlon to_centroid(const latlon &x) const
     {
-        if (!contains(x))
-            throw std::out_of_range(
+        assert(this->contains(x) and 
                 "latlon does not belong to spatial extent and can not be reprojected to a cell centroid.");
 
         return to_latlon(to_colrow(x));
