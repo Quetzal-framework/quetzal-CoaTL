@@ -18,7 +18,7 @@ namespace utf = boost::unit_test;
 
 BOOST_AUTO_TEST_SUITE(geography)
 
-BOOST_AUTO_TEST_CASE(landscape, *utf::disabled())
+BOOST_AUTO_TEST_CASE(landscape)
 {
     using time_type = int;
     using landscape_type = quetzal::geography::landscape<std::string, time_type>;
@@ -61,7 +61,7 @@ BOOST_AUTO_TEST_CASE(landscape, *utf::disabled())
     }
 }
 
-BOOST_AUTO_TEST_CASE(raster, *utf::disabled())
+BOOST_AUTO_TEST_CASE(raster)
 {
     using time_type = unsigned int;
     using raster_type = quetzal::geography::raster<time_type>;
@@ -203,7 +203,7 @@ BOOST_AUTO_TEST_CASE(resolution)
     assert(copy != res);
 }
 
-BOOST_AUTO_TEST_CASE(gdalcppTest, *utf::disabled())
+BOOST_AUTO_TEST_CASE(gdalcppTest)
 {
     auto file = std::filesystem::current_path() / "test/data/bio1.tif";
 
