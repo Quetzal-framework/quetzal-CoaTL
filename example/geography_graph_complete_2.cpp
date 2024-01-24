@@ -27,41 +27,60 @@ int main()
 
     auto graph1 = geo::from_grid(land, vertex_info(), edge_info(), geo::connect_fully(), geo::isotropy(), geo::mirror());
     auto graph2 = geo::from_grid(land, vertex_info(), edge_info(), geo::connect_fully(), geo::isotropy(), geo::sink());
-    //auto graph3 = geo::from_grid(land, vertex_info(), edge_info(), geo::connect_fully(), geo::anisotropy(), geo::sink());
-    //auto graph4 = geo::from_grid(land, vertex_info(), edge_info(), geo::connect_4_neighbors(), geo::isotropy(), geo::torus());
-    //auto graph4 = geo::from_grid(land, vertex_info(), edge_info(), geo::connect_8_neighbors(), geo::isotropy(), geo::torus());
+    auto graph3 = geo::from_grid(land, vertex_info(), edge_info(), geo::connect_fully(), geo::anisotropy(), geo::sink());
+    auto graph4 = geo::from_grid(land, vertex_info(), edge_info(), geo::connect_4_neighbors(), geo::isotropy(), geo::torus());
+    auto graph5 = geo::from_grid(land, vertex_info(), edge_info(), geo::connect_8_neighbors(), geo::isotropy(), geo::mirror());
+    auto graph6 = geo::from_grid(land, vertex_info(), edge_info(), geo::connect_8_neighbors(), geo::anisotropy(), geo::mirror());
+    auto graph7 = geo::from_grid(land, vertex_info(), edge_info(), geo::connect_8_neighbors(), geo::anisotropy(), geo::torus());
 
     // Checking the numbers of edges is consistent with our assumptions
 
-    // Typical undirected complete graph
     int w = land.width();
     int h = land.height();
 
     int n1 = graph1.num_vertices();
-    int e1 = n1 * ( n1 - 1 ) / 2  ;
+    int e1 = n1 * ( n1 - 1 ) / 2  ;      // typical undirected complete graph
+
     assert( n1 == land.num_locations() );
     assert( e1 == graph1.num_edges() );
 
     int n2 = graph2.num_vertices();
-    int e2 = e1 + 2 * ( w + h - 2 ) ; 
-    std::cout << e2 << " " <<  graph2.num_edges() << std::endl;
+    int e2 = e1 + 2 * ( w + h - 2 ) ;    // border vertices connected to the outland - a sink vertex
     assert( n2 == n1 + 1 );              // sink vertex added
-    assert( e2 == graph2.num_edges() );  // border vertices connected to sink
+    assert( e2 == graph2.num_edges() ); 
     
-    // Edges become directed: (u->v) != (u<-v) , and border vertices are one-way connected to the outland, a sink vertex
-    //n = graph2.num_vertices();
-    //assert( graph2.num_edges() == 2 * ( w + h - 2) + 2 * ( w -2) * (h - 2));
-    // assert( graph2.num_edges() == 2 * (w + h -2) // number of border vertices connected to sink
-    //     + 2 * (n-1) * n / 2 );                   // number of edges are doubled with anisotropy
+    int n3 = graph3.num_vertices();
+    int e3 = 2 * e1 + 2 * ( w + h - 2 ); // number of land edges are doubled with anisotropy
+    assert( n3 == n2 );                  // sink vertex added
+    assert( e3 == graph3.num_edges() );
+                
+    int n4 = graph4.num_vertices();
+    int e4 = h * ( w - 1 )               // horizontal edges
+        + w * ( h - 1 )                  // vertical edges
+        + h                              // torus joining West to East
+        + w - 2 ;                        // torus joining North to South
+    assert( n4 == n1 );                  // no vertex added
+    assert( e4 == graph4.num_edges() );
 
-    // Edges are undirected and border vertices are connected to each other to form a doughnut
-    // n = graph3.num_vertices();
-    // assert( graph3.num_edges() == 4 * 2                   // 4 corners have 2 neighbors
-    //     + 2 * 3 * (land.width() - 2)                      // top and bottom borders have 3
-    //     + 2 * 3 * (land.height() - 2)                     // left and right borders have 3
-    //     + 4 * (land.width() - 2 ) * (land.height() - 2 )  // internal have 4 
-    //     + land.width() + land.height()                    // torus: borders are joined
-    //     );
+    int n5 = graph5.num_vertices();
+    int e5 = h * ( w - 1 )               // horizontal edges
+        + w * ( h - 1 )                  // vertical edges
+        + 2 * ( w - 1 ) * ( h - 1 ) ;    // intercardinal for internal vertices only
+    assert( n5 == n1 );                      // no vertex added
+    assert( e5 == graph5.num_edges() );
+
+    int n6 = graph6.num_vertices();
+    int e6 = 2* e5;
+    assert( n5 == n1 );                      // no vertex added
+    assert( e6 == graph6.num_edges() );
+
+    int n7 = graph7.num_vertices();
+    int e7 = 2 * e5 + 2 * (w + h - 2);
+    std::cout << n7 << " " << e7 << " " <<  graph7.num_edges() << std::endl;
+
+    assert( n7 == n1 );                      // no vertex added
+    assert( e7 == graph7.num_edges() );
+
 
     std::cout << "Assumptions checked!" << std::endl;
 }

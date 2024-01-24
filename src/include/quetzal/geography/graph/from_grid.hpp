@@ -33,7 +33,6 @@ auto from_grid(SpatialGrid const &grid, VertexProperty const &v, EdgeProperty co
     using graph_type = typename Vicinity::graph_type<Directionality, VertexProperty, EdgeProperty>;
     // Graph size has to be static in dense graphs :/ 
     graph_type graph( grid.width() * grid.height() + bounding_policy.num_extra_vertices() ) ;
-    std::cout << "graph initialized" << std::endl;
     vicinity.connect(graph, grid, bounding_policy);
     return graph;
 }

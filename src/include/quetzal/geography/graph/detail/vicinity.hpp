@@ -179,8 +179,11 @@ class connect_4_neighbors
 
         int width = grid.width();
         int height = grid.height();
+        int num_land_vertices = width * height;
 
-        for (auto s = 0; s < graph.num_vertices(); ++s)
+        assert(num_land_vertices > 0 and "trying to initialize a graph from an empty grid.");
+
+        for (auto s = 0; s < num_land_vertices; ++s)
         {
             int row = s / width;
             int col = s % width;
@@ -246,12 +249,17 @@ class connect_8_neighbors
 
         static_assert(std::same_as<G, graph_type<directed_category, vertex_property, edge_property>>);
 
-        detail::edge_construction<edge_property>::delegate(s,t, graph);
+        int width = grid.width();
+        int height = grid.height();
+        int num_land_vertices = width * height;
+        assert( s >= 0 );
+        assert( s < num_land_vertices);
+        assert( t >= 0 );
+        assert( t < num_land_vertices);
 
+        detail::edge_construction<edge_property>::delegate(s, t, graph);
         if constexpr (std::same_as<directed_category, anisotropy>)
-        {
-            detail::edge_construction<edge_property>::delegate(t,s, graph);
-        }
+            detail::edge_construction<edge_property>::delegate(t, s, graph);
     }
 
     void connect_top_left_corner(auto s, auto &graph, auto const &grid, auto const &bound_policy) const
@@ -302,8 +310,8 @@ class connect_8_neighbors
         connect(s, s - 1, graph, grid);
         connect(s, s + 1, graph, grid);
         connect(s, s - grid.width(), graph, grid);
-        connect(s, s + grid.width() - 1, graph, grid);
-        connect(s, s + grid.width() + 1, graph, grid);
+        connect(s, s - grid.width() - 1, graph, grid);
+        connect(s, s - grid.width() + 1, graph, grid);
     }
 
     void connect_left_border_no_corner(auto s, auto &graph, auto const &grid, auto const &bound_policy) const
@@ -349,8 +357,11 @@ class connect_8_neighbors
 
         int width = grid.width();
         int height = grid.height();
+        int num_land_vertices = width * height;
 
-        for (auto s = 0; s < graph.num_vertices(); ++s)
+        assert(num_land_vertices > 0 and "trying to initialize a graph from an empty grid.");
+
+        for (auto s = 0; s < num_land_vertices; ++s)
         {
             int row = s / width;
             int col = s % width;

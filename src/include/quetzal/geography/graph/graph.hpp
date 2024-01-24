@@ -46,7 +46,7 @@ class graph_common
 {
 
   protected:
-    /// @brief The type of graph hold by the graph class
+    /// @brief The type of graph hold by the graph class - disallow parallel edges
     using base_type =
         std::conditional_t<is_same_template<Representation, boost::adjacency_list>,
                            Representation<boost::setS, boost::vecS, Directed, VertexProperty, EdgeProperty>,
