@@ -26,8 +26,12 @@
 ## Demographic Histories
 
 - @subpage demographic_histories_in_quetzal
-- Examples
+- @subpage spatial_graphs
+  - @subpage Construction from landscapes
+  - @subpage Construction from abstract grids
   - @subpage dispersal_kernels
+
+- Examples
   - @subpage Growth Expressions
   - @subpage Memory Management
 
@@ -813,7 +817,7 @@ There a different modeling approaches to look at these demographic histories, pr
 ---
 
 [//]: # (----------------------------------------------------------------------)
-@page dispersal_kernels Dispersal Kernels
+@page spatial_graphs Spatial Graphs
 @tableofcontents
 
 @note 
@@ -844,13 +848,21 @@ Finally, a last assumption we make about the population process that impacts the
 * isotropic migration means that the edge \f$( u,v)\f$ and the edge \f$(v,u)\f$ are one and the same. 
 * anisotropic migration will distinguish between these two edges.
 
-All these choices are independently represented in the code and can be extended (although that may require some efforts).
+All these choices are independently represented in the code and can be extended (although that may require some efforts):
 
-# 4-neighbors graph
+**Input**
 
-# 8-neighbors graph
+@include{lineno} geography_graph_1.cpp
 
-# Complete graph
+**Output**
+
+@include{lineno} geography_graph_1.txt
+
+---
+
+[//]: # (----------------------------------------------------------------------)
+@page dispersal_kernels Dispersal Kernels
+@tableofcontents
 
 ## Distance-based kernel
 
