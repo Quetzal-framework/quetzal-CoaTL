@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE(raster)
     using raster_type = quetzal::geography::raster<time_type>;
     using latlon = raster_type::latlon;
 
-    auto file = std::filesystem::current_path() / "test/data/bio1.tif";
+    auto file = std::filesystem::current_path() / "data/bio1.tif";
 
     auto bio1 = raster_type::from_file(file, {2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010});
 
@@ -205,7 +205,7 @@ BOOST_AUTO_TEST_CASE(resolution)
 
 BOOST_AUTO_TEST_CASE(gdalcppTest)
 {
-    auto file = std::filesystem::current_path() / "test/data/bio1.tif";
+    auto file = std::filesystem::current_path() / "data/bio1.tif";
 
     quetzal::geography::gdalcpp::Dataset data(file.string());
 
