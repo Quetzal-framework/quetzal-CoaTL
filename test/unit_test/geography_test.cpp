@@ -23,8 +23,8 @@ BOOST_AUTO_TEST_CASE(landscape)
     using time_type = int;
     using landscape_type = quetzal::geography::landscape<std::string, time_type>;
 
-    auto file1 = std::filesystem::current_path() / "test/data/bio1.tif";
-    auto file2 = std::filesystem::current_path() / "test/data/bio12.tif";
+    auto file1 = std::filesystem::current_path() / "data/bio1.tif";
+    auto file2 = std::filesystem::current_path() / "data/bio12.tif";
 
     try
     {
