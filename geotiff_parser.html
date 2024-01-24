@@ -182,7 +182,7 @@ Reading a single variable</h2>
 <li>When reading the value of a variable at a specific location, it may or may not exist. In the latter case, it is considered a NA (Not Available) value, and an empty optional is returned. The actual representation of NA in the dataset can be obtained using the <code>NA()</code> function.</li>
 </ol>
 <p><b>Input</b></p>
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;quetzal/quetzal.hpp&quot;</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;quetzal/geography.hpp&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;cassert&gt;</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;filesystem&gt;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
@@ -225,7 +225,7 @@ Reading a single variable</h2>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keywordtype">int</span> main()</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">using</span> time_type = int;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">using</span> <a class="code" href="classquetzal_1_1geography_1_1raster.html">raster_type</a> = <a class="code" href="classquetzal_1_1geography_1_1raster.html">geography::raster&lt;time_type&gt;</a>;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">using</span> raster_type = <a class="code" href="classquetzal_1_1geography_1_1raster.html">geography::raster&lt;time_type&gt;</a>;</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="comment">// The raster has 10 bands that we will assign to 2001 ... 2011.</span></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    std::vector&lt;time_type&gt; times(10);</div>
@@ -234,7 +234,7 @@ Reading a single variable</h2>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">auto</span> file = std::filesystem::current_path() / <span class="stringliteral">&quot;data/bio1.tif&quot;</span>;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="comment">// Read the raster</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">auto</span> bio1 = <a class="code" href="classquetzal_1_1geography_1_1raster.html#a0ff840b704392f9ef3e63d4b74a83385">raster_type::from_file</a>(file, times);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">auto</span> bio1 = raster_type::from_file(file, times);</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    std::cout &lt;&lt; bio1 &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
@@ -245,10 +245,10 @@ Reading a single variable</h2>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    assert(std::ranges::distance(bio1.locations()) == 9);</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="comment">// You will typically have georeferenced sampling points</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">using</span> <a class="code" href="structquetzal_1_1geography_1_1latlon.html">latlon</a> = <span class="keyword">typename</span> <a class="code" href="structquetzal_1_1geography_1_1latlon.html">raster_type::latlon</a>;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keyword">using</span> lonlat = <span class="keyword">typename</span> <a class="code" href="structquetzal_1_1geography_1_1lonlat.html">raster_type::lonlat</a>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">using</span> latlon = <span class="keyword">typename</span> raster_type::latlon;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keyword">using</span> lonlat = <span class="keyword">typename</span> raster_type::lonlat;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">auto</span> point_1 = <a class="code" href="structquetzal_1_1geography_1_1latlon.html">latlon</a>(52., -5.);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">auto</span> point_1 = latlon(52., -5.);</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keyword">auto</span> point_2 = lonlat(-5., 52.);</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    assert(point_1 == point_2);</div>
@@ -285,10 +285,7 @@ Reading a single variable</h2>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    std::cout &lt;&lt; maybe_bio1.value_or(bio1.NA()) &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;}</div>
 <div class="ttc" id="aclassquetzal_1_1geography_1_1raster_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1raster.html">quetzal::geography::raster</a></div><div class="ttdoc">Discrete spatio-temporal variations of an environmental variable.</div><div class="ttdef"><b>Definition:</b> raster.hpp:38</div></div>
-<div class="ttc" id="aclassquetzal_1_1geography_1_1raster_html_a0ff840b704392f9ef3e63d4b74a83385"><div class="ttname"><a href="classquetzal_1_1geography_1_1raster.html#a0ff840b704392f9ef3e63d4b74a83385">quetzal::geography::raster::from_file</a></div><div class="ttdeci">static raster from_file(const std::filesystem::path &amp;file, const std::vector&lt; time_type &gt; &amp;times)</div><div class="ttdoc">Read the raster from an input file in the geotiff format.</div><div class="ttdef"><b>Definition:</b> raster.hpp:119</div></div>
 <div class="ttc" id="anamespacequetzal_html"><div class="ttname"><a href="namespacequetzal.html">quetzal</a></div><div class="ttdoc">Simulation of coalescence-based models of molecular evolution.</div><div class="ttdef"><b>Definition:</b> merge.hpp:22</div></div>
-<div class="ttc" id="astructquetzal_1_1geography_1_1latlon_html"><div class="ttname"><a href="structquetzal_1_1geography_1_1latlon.html">quetzal::geography::latlon</a></div><div class="ttdoc">Geographic coordinates.</div><div class="ttdef"><b>Definition:</b> coordinates.hpp:174</div></div>
-<div class="ttc" id="astructquetzal_1_1geography_1_1lonlat_html"><div class="ttname"><a href="structquetzal_1_1geography_1_1lonlat.html">quetzal::geography::lonlat</a></div><div class="ttdoc">Geographic coordinates.</div><div class="ttdef"><b>Definition:</b> coordinates.hpp:215</div></div>
 </div><!-- fragment --><p><b>Output</b></p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;Origin: (Lat: 52 , Lon: -5)</div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;Width: 3</div>
@@ -338,12 +335,12 @@ Reading multiple variables</h2>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    std::iota(times.begin(), times.end(), 2001);</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="comment">// Initialize the landscape: for each var a key and a file, for all a time series.</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keyword">using</span> <a class="code" href="classquetzal_1_1geography_1_1landscape.html">landscape_type</a> = <a class="code" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape&lt;&gt;</a>;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keyword">using</span> landscape_type = <a class="code" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape&lt;&gt;</a>;</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keyword">auto</span> env = <a class="code" href="classquetzal_1_1geography_1_1landscape.html#a0fa9fa6c1e027352919bb35d2b40c61b">quetzal::geography::landscape&lt;&gt;::from_files</a>({{<span class="stringliteral">&quot;bio1&quot;</span>, file1}, {<span class="stringliteral">&quot;bio12&quot;</span>, file2}}, times);</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    std::cout &lt;&lt; env &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="comment">// We indeed recorded 2 variables: bio1 and bio12</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    assert(env.size() == 2);</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    assert(env.num_variables() == 2);</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="comment">// The semantic shares strong similarities with a raster</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    landscape_type::latlon Bordeaux(44.5, 0.34);</div>

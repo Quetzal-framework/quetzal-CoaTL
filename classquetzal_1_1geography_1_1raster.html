@@ -292,7 +292,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a69078a5d193060397f81bf8022b287e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Longitude and latitude of the deme identified by its column/row.  <a href="classquetzal_1_1geography_1_1raster.html#a69078a5d193060397f81bf8022b287e6">More...</a><br /></td></tr>
 <tr class="separator:a69078a5d193060397f81bf8022b287e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac2bb734b3fd032885cbfcdff2d26236"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structquetzal_1_1geography_1_1latlon.html">latlon</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1raster.html#aac2bb734b3fd032885cbfcdff2d26236">to_centroid</a> (const <a class="el" href="structquetzal_1_1geography_1_1latlon.html">latlon</a> &amp;x) const</td></tr>
-<tr class="memdesc:aac2bb734b3fd032885cbfcdff2d26236"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reprojects a coordinate to the centroid of the cell it belongs. If no such cell exists, an exception of type std::out_of_range is thrown.  <a href="classquetzal_1_1geography_1_1raster.html#aac2bb734b3fd032885cbfcdff2d26236">More...</a><br /></td></tr>
+<tr class="memdesc:aac2bb734b3fd032885cbfcdff2d26236"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reprojects a coordinate to the centroid of the cell it belongs.  <a href="classquetzal_1_1geography_1_1raster.html#aac2bb734b3fd032885cbfcdff2d26236">More...</a><br /></td></tr>
 <tr class="separator:aac2bb734b3fd032885cbfcdff2d26236"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">Input/Output</h2></td></tr>
@@ -560,7 +560,8 @@ template&lt;typename Time  = int&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Reprojects a coordinate to the centroid of the cell it belongs. If no such cell exists, an exception of type std::out_of_range is thrown. </p>
+<p>Reprojects a coordinate to the centroid of the cell it belongs. </p>
+<dl class="section pre"><dt>Precondition</dt><dd>The spatial extent of the raster must contain the coordinate. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">x</td><td>The location to reproject </td></tr>

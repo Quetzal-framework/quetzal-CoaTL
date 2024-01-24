@@ -172,7 +172,7 @@ Why separating Elevation from Suitability ?</h2>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="comment">// defining some useful type aliases</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keyword">using</span> key_type = std::string;</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keyword">using</span> time_type = int;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keyword">using</span> <a class="code" href="classquetzal_1_1geography_1_1landscape.html">landscape_type</a> = <a class="code" href="classquetzal_1_1geography_1_1landscape.html">geography::landscape&lt;key_type, time_type&gt;</a>;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keyword">using</span> landscape_type = <a class="code" href="classquetzal_1_1geography_1_1landscape.html">geography::landscape&lt;key_type, time_type&gt;</a>;</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keyword">using</span> location_type = landscape_type::location_descriptor;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="comment">// Load the suitability map</span></div>
@@ -184,7 +184,7 @@ Why separating Elevation from Suitability ?</h2>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    std::iota(times.begin(), times.end(), 2001);</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="comment">// Makes sure the rasters are aligned</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keyword">auto</span> landscape = <a class="code" href="classquetzal_1_1geography_1_1landscape.html#a0fa9fa6c1e027352919bb35d2b40c61b">landscape_type::from_files</a>({{<span class="stringliteral">&quot;suit&quot;</span>, file1}, {<span class="stringliteral">&quot;DEM&quot;</span>, file2}}, times);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keyword">auto</span> landscape = landscape_type::from_files({{<span class="stringliteral">&quot;suit&quot;</span>, file1}, {<span class="stringliteral">&quot;DEM&quot;</span>, file2}}, times);</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="comment">// lightweight functor returning empty optionals where NA</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">auto</span> s_view = landscape[<span class="stringliteral">&quot;suit&quot;</span>].to_view();</div>
@@ -220,7 +220,6 @@ Why separating Elevation from Suitability ?</h2>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;              &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
 <div class="ttc" id="aclassquetzal_1_1geography_1_1landscape_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a></div><div class="ttdoc">Discrete spatio-temporal variations of a set of environmental variables.</div><div class="ttdef"><b>Definition:</b> landscape.hpp:42</div></div>
-<div class="ttc" id="aclassquetzal_1_1geography_1_1landscape_html_a0fa9fa6c1e027352919bb35d2b40c61b"><div class="ttname"><a href="classquetzal_1_1geography_1_1landscape.html#a0fa9fa6c1e027352919bb35d2b40c61b">quetzal::geography::landscape::from_files</a></div><div class="ttdeci">static landscape from_files(const std::map&lt; key_type, std::filesystem::path &gt; &amp;files, const std::vector&lt; time_type &gt; &amp;times)</div><div class="ttdoc">Read the rasters from a set of input geotiff files.</div><div class="ttdef"><b>Definition:</b> landscape.hpp:135</div></div>
 <div class="ttc" id="anamespacequetzal_1_1expressive_html_acdec2cd4ec959709f7a1891702c4d5dd"><div class="ttname"><a href="namespacequetzal_1_1expressive.html#acdec2cd4ec959709f7a1891702c4d5dd">quetzal::expressive::use</a></div><div class="ttdeci">constexpr auto use(F f)</div><div class="ttdoc">Transforms functions into operator friendly classes.</div><div class="ttdef"><b>Definition:</b> expressive.hpp:205</div></div>
 <div class="ttc" id="anamespacequetzal_html"><div class="ttname"><a href="namespacequetzal.html">quetzal</a></div><div class="ttdoc">Simulation of coalescence-based models of molecular evolution.</div><div class="ttdef"><b>Definition:</b> merge.hpp:22</div></div>
 </div><!-- fragment --><p><b>Output</b></p>

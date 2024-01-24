@@ -46,7 +46,7 @@ var namespacequetzal_1_1geography =
     [ "vertex_descriptor", "namespacequetzal_1_1geography.html#a3d14a9179e1b39fa2edf7431e6b37f71", null ],
     [ "add_edge", "namespacequetzal_1_1geography.html#ac1a88517e97ab6c5346ec3cc4183eed6", null ],
     [ "add_vertex", "namespacequetzal_1_1geography.html#a4a56ffca730d2e50f78bc049619bdff3", null ],
-    [ "from_grid", "namespacequetzal_1_1geography.html#a42aabda21a3d733ec2b10973524d4671", null ],
+    [ "from_grid", "namespacequetzal_1_1geography.html#aefd1b77745ebec6627cd0b29ac101afd", null ],
     [ "graph", "namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a", null ],
     [ "graph", "namespacequetzal_1_1geography.html#a294dc473ebf90afadff97398c1ae79eb", null ],
     [ "operator<<", "namespacequetzal_1_1geography.html#ad3e6c428433c62c3549e2117e4a27186", null ],

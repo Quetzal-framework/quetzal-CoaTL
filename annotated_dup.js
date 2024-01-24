@@ -168,6 +168,8 @@ var annotated_dup =
       ] ],
       [ "geography", "namespacequetzal_1_1geography.html", [
         [ "detail", "namespacequetzal_1_1geography_1_1detail.html", [
+          [ "edge_construction", "structquetzal_1_1geography_1_1detail_1_1edge__construction.html", null ],
+          [ "edge_construction< boost::no_property >", "structquetzal_1_1geography_1_1detail_1_1edge__construction_3_01boost_1_1no__property_01_4.html", null ],
           [ "graph_common", "classquetzal_1_1geography_1_1detail_1_1graph__common.html", "classquetzal_1_1geography_1_1detail_1_1graph__common" ]
         ] ],
         [ "gdalcpp", null, [
@@ -231,6 +233,9 @@ var annotated_dup =
         [ "generation", "structquetzal_1_1units_1_1generation.html", null ]
       ] ],
       [ "utils", "namespacequetzal_1_1utils.html", [
+        [ "details", null, [
+          [ "to_helper", "structquetzal_1_1utils_1_1details_1_1to__helper.html", null ]
+        ] ],
         [ "random", "namespacequetzal_1_1utils_1_1random.html", [
           [ "DiscreteDistribution", "classquetzal_1_1utils_1_1random_1_1DiscreteDistribution.html", "classquetzal_1_1utils_1_1random_1_1DiscreteDistribution" ],
           [ "TransitionKernel", "classquetzal_1_1utils_1_1random_1_1TransitionKernel.html", null ],

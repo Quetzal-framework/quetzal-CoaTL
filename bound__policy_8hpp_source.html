@@ -154,80 +154,88 @@ $(document).ready(function(){initNavTree('bound__policy_8hpp_source.html',''); i
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;concepts.hpp&quot;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacequetzal_1_1geography.html">quetzal::geography</a></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{</div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1mirror.html">   18</a></span>&#160;<span class="keyword">class </span><a class="code" href="classquetzal_1_1geography_1_1mirror.html">mirror</a></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;{</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> Graph&gt;</div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1mirror.html#acc348142b31ba4ea778e112342fe6990">   28</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classquetzal_1_1geography_1_1mirror.html#acc348142b31ba4ea778e112342fe6990">operator()</a>([[maybe_unused]] <span class="keyword">typename</span> Graph::vertex_descriptor s, [[maybe_unused]] Graph &amp;<a class="code" href="classquetzal_1_1geography_1_1graph.html">graph</a>,</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;                    [[maybe_unused]] <span class="keyword">const</span> two_dimensional <span class="keyword">auto</span> &amp;grid)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="comment">// do nothing as by default bounding box is reflective</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    }</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;};</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1sink.html">   36</a></span>&#160;<span class="keyword">class </span><a class="code" href="classquetzal_1_1geography_1_1sink.html">sink</a></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> Graph&gt;</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1sink.html#a2733d083f19df10a5aeb8e83318416e4">   46</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classquetzal_1_1geography_1_1sink.html#a2733d083f19df10a5aeb8e83318416e4">operator()</a>(<span class="keyword">typename</span> Graph::vertex_descriptor s, Graph &amp;<a class="code" href="classquetzal_1_1geography_1_1graph.html">graph</a>, <span class="keyword">const</span> two_dimensional <span class="keyword">auto</span> &amp;grid)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keyword">using</span> edge_property_type = <span class="keyword">typename</span> Graph::edge_property_type;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keywordtype">int</span> <a class="code" href="classquetzal_1_1geography_1_1sink.html">sink</a> = grid.width() * grid.height();</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="classquetzal_1_1geography_1_1graph.html">graph</a>.num_vertices() == <a class="code" href="classquetzal_1_1geography_1_1sink.html">sink</a>) <span class="comment">// sink vertex is missing</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <a class="code" href="classquetzal_1_1geography_1_1sink.html">sink</a> = <a class="code" href="classquetzal_1_1geography_1_1graph.html">graph</a>.add_vertex();</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <a class="code" href="classquetzal_1_1geography_1_1graph.html">graph</a>.add_edge(s, <a class="code" href="classquetzal_1_1geography_1_1sink.html">sink</a>, edge_property_type(s, <a class="code" href="classquetzal_1_1geography_1_1sink.html">sink</a>)); <span class="comment">// one-way ticket :(</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    }</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;};</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1torus.html">   59</a></span>&#160;<span class="keyword">class </span><a class="code" href="classquetzal_1_1geography_1_1torus.html">torus</a></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> Graph&gt;</div>
-<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1torus.html#aaf34fe6feca5ee1e641385cc11481845">   69</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classquetzal_1_1geography_1_1torus.html#aaf34fe6feca5ee1e641385cc11481845">operator()</a>(<span class="keyword">typename</span> Graph::vertex_descriptor s, Graph &amp;<a class="code" href="classquetzal_1_1geography_1_1graph.html">graph</a>, <span class="keyword">const</span> two_dimensional <span class="keyword">auto</span> &amp;grid)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keyword">    </span>{</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keyword">using</span> edge_property_type = <span class="keyword">typename</span> Graph::edge_property_type;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keyword">auto</span> width = grid.width();</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keyword">auto</span> height = grid.height();</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordtype">int</span> symmetricIndex = 0;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="comment">// top border</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keywordflow">if</span> (s &lt; width)</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            symmetricIndex = s + width * (height - 1);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        }</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="comment">// bottom border</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (s &gt;= (height - 1) * width)</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        {</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            symmetricIndex = s - (height - 1) * width;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        }</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="comment">// left border</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (s % width == 0)</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        {</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            symmetricIndex = s + width - 1;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        }</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="comment">// right border</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((s + 1) % width == 0)</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        {</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            symmetricIndex = s - width + 1;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        }</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <a class="code" href="classquetzal_1_1geography_1_1graph.html">graph</a>.add_edge(s, symmetricIndex, edge_property_type(s, symmetricIndex));</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    }</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;};</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;} <span class="comment">// namespace quetzal::geography</span></div>
-<div class="ttc" id="aclassquetzal_1_1geography_1_1graph_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1graph.html">quetzal::geography::graph</a></div><div class="ttdef"><b>Definition:</b> graph.hpp:263</div></div>
-<div class="ttc" id="aclassquetzal_1_1geography_1_1mirror_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1mirror.html">quetzal::geography::mirror</a></div><div class="ttdoc">Individuals can not escape the landscape's borders.</div><div class="ttdef"><b>Definition:</b> bound_policy.hpp:19</div></div>
-<div class="ttc" id="aclassquetzal_1_1geography_1_1mirror_html_acc348142b31ba4ea778e112342fe6990"><div class="ttname"><a href="classquetzal_1_1geography_1_1mirror.html#acc348142b31ba4ea778e112342fe6990">quetzal::geography::mirror::operator()</a></div><div class="ttdeci">void operator()([[maybe_unused]] typename Graph::vertex_descriptor s, [[maybe_unused]] Graph &amp;graph, [[maybe_unused]] const two_dimensional auto &amp;grid) const</div><div class="ttdoc">Does nothing as by default the bounding box is reflective.</div><div class="ttdef"><b>Definition:</b> bound_policy.hpp:28</div></div>
-<div class="ttc" id="aclassquetzal_1_1geography_1_1sink_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1sink.html">quetzal::geography::sink</a></div><div class="ttdoc">Individuals can migrate out of the landscape to a sink vertex, but can not come back.</div><div class="ttdef"><b>Definition:</b> bound_policy.hpp:37</div></div>
-<div class="ttc" id="aclassquetzal_1_1geography_1_1sink_html_a2733d083f19df10a5aeb8e83318416e4"><div class="ttname"><a href="classquetzal_1_1geography_1_1sink.html#a2733d083f19df10a5aeb8e83318416e4">quetzal::geography::sink::operator()</a></div><div class="ttdeci">void operator()(typename Graph::vertex_descriptor s, Graph &amp;graph, const two_dimensional auto &amp;grid) const</div><div class="ttdoc">Connect source vertex s to a sink vertex if on the border.</div><div class="ttdef"><b>Definition:</b> bound_policy.hpp:46</div></div>
-<div class="ttc" id="aclassquetzal_1_1geography_1_1torus_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1torus.html">quetzal::geography::torus</a></div><div class="ttdoc">The 2D landscape becomes a 3D torus connecting opposed borders.</div><div class="ttdef"><b>Definition:</b> bound_policy.hpp:60</div></div>
-<div class="ttc" id="aclassquetzal_1_1geography_1_1torus_html_aaf34fe6feca5ee1e641385cc11481845"><div class="ttname"><a href="classquetzal_1_1geography_1_1torus.html#aaf34fe6feca5ee1e641385cc11481845">quetzal::geography::torus::operator()</a></div><div class="ttdeci">void operator()(typename Graph::vertex_descriptor s, Graph &amp;graph, const two_dimensional auto &amp;grid) const</div><div class="ttdoc">Connect edges of source vertex s in a graph given a spatial grid.</div><div class="ttdef"><b>Definition:</b> bound_policy.hpp:69</div></div>
-<div class="ttc" id="anamespacequetzal_1_1geography_html"><div class="ttname"><a href="namespacequetzal_1_1geography.html">quetzal::geography</a></div><div class="ttdoc">Geospatial data formatting and processing.</div><div class="ttdef"><b>Definition:</b> coordinates.hpp:16</div></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;cassert&gt;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacequetzal_1_1geography.html">quetzal::geography</a></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;{</div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1mirror.html">   19</a></span>&#160;<span class="keyword">class </span><a class="code" href="classquetzal_1_1geography_1_1mirror.html">mirror</a></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;{</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keywordtype">int</span> constexpr <span class="keyword">inline</span> num_extra_vertices()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> 0; }</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> Graph&gt;</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1mirror.html#acc348142b31ba4ea778e112342fe6990">   31</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classquetzal_1_1geography_1_1mirror.html#acc348142b31ba4ea778e112342fe6990">operator()</a>([[maybe_unused]] <span class="keyword">typename</span> Graph::vertex_descriptor s, [[maybe_unused]] Graph &amp;<a class="code" href="classquetzal_1_1geography_1_1graph.html">graph</a>,</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                    [[maybe_unused]] <span class="keyword">const</span> two_dimensional <span class="keyword">auto</span> &amp;grid)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="comment">// do nothing as by default bounding box is reflective</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    }</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;};</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1sink.html">   39</a></span>&#160;<span class="keyword">class </span><a class="code" href="classquetzal_1_1geography_1_1sink.html">sink</a></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordtype">int</span> constexpr <span class="keyword">inline</span> num_extra_vertices()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> 1; }</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> Graph&gt;</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1sink.html#a2733d083f19df10a5aeb8e83318416e4">   52</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classquetzal_1_1geography_1_1sink.html#a2733d083f19df10a5aeb8e83318416e4">operator()</a>(<span class="keyword">typename</span> Graph::vertex_descriptor s, Graph &amp;<a class="code" href="classquetzal_1_1geography_1_1graph.html">graph</a>, <span class="keyword">const</span> two_dimensional <span class="keyword">auto</span> &amp;grid)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keyword">using</span> edge_property = <span class="keyword">typename</span> Graph::edge_property;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keywordtype">int</span> num_land_vertices = grid.width() * grid.height();</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keywordtype">int</span> <a class="code" href="classquetzal_1_1geography_1_1sink.html">sink</a> = num_land_vertices;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        assert( <a class="code" href="classquetzal_1_1geography_1_1graph.html">graph</a>.num_vertices() == <a class="code" href="classquetzal_1_1geography_1_1sink.html">sink</a> + 1 );</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keywordflow">if</span> ( s &lt; <a class="code" href="classquetzal_1_1geography_1_1sink.html">sink</a> )</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <a class="code" href="structquetzal_1_1geography_1_1detail_1_1edge__construction.html">detail::edge_construction&lt;edge_property&gt;::delegate</a>(s, <a class="code" href="classquetzal_1_1geography_1_1sink.html">sink</a>, <a class="code" href="classquetzal_1_1geography_1_1graph.html">graph</a>); <span class="comment">// one-way ticket :(</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    }</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;};</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1torus.html">   64</a></span>&#160;<span class="keyword">class </span><a class="code" href="classquetzal_1_1geography_1_1torus.html">torus</a></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;{</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">int</span> constexpr <span class="keyword">inline</span> num_extra_vertices()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> 0; }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> Graph&gt;</div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="classquetzal_1_1geography_1_1torus.html#aaf34fe6feca5ee1e641385cc11481845">   76</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classquetzal_1_1geography_1_1torus.html#aaf34fe6feca5ee1e641385cc11481845">operator()</a>(<span class="keyword">typename</span> Graph::vertex_descriptor s, Graph &amp;<a class="code" href="classquetzal_1_1geography_1_1graph.html">graph</a>, <span class="keyword">const</span> two_dimensional <span class="keyword">auto</span> &amp;grid)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keyword">using</span> edge_property = <span class="keyword">typename</span> Graph::edge_property;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keyword">auto</span> width = grid.width();</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keyword">auto</span> height = grid.height();</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordtype">int</span> symmetricIndex = 0;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="comment">// top border</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordflow">if</span> (s &lt; width)</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        {</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            symmetricIndex = s + width * (height - 1);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        }</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="comment">// bottom border</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (s &gt;= (height - 1) * width)</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        {</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            symmetricIndex = s - (height - 1) * width;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        }</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="comment">// left border</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (s % width == 0)</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        {</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            symmetricIndex = s + width - 1;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        }</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="comment">// right border</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> ((s + 1) % width == 0)</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        {</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            symmetricIndex = s - width + 1;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        }</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <a class="code" href="structquetzal_1_1geography_1_1detail_1_1edge__construction.html">detail::edge_construction&lt;edge_property&gt;::delegate</a>(s, symmetricIndex, <a class="code" href="classquetzal_1_1geography_1_1graph.html">graph</a>);</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    }</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;};</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;} <span class="comment">// namespace quetzal::geography</span></div>
+<div class="ttc" id="aclassquetzal_1_1geography_1_1graph_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1graph.html">quetzal::geography::graph</a></div><div class="ttdef"><b>Definition:</b> graph.hpp:278</div></div>
+<div class="ttc" id="aclassquetzal_1_1geography_1_1mirror_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1mirror.html">quetzal::geography::mirror</a></div><div class="ttdoc">Individuals can not escape the landscape's borders.</div><div class="ttdef"><b>Definition:</b> bound_policy.hpp:20</div></div>
+<div class="ttc" id="aclassquetzal_1_1geography_1_1mirror_html_acc348142b31ba4ea778e112342fe6990"><div class="ttname"><a href="classquetzal_1_1geography_1_1mirror.html#acc348142b31ba4ea778e112342fe6990">quetzal::geography::mirror::operator()</a></div><div class="ttdeci">void operator()([[maybe_unused]] typename Graph::vertex_descriptor s, [[maybe_unused]] Graph &amp;graph, [[maybe_unused]] const two_dimensional auto &amp;grid) const</div><div class="ttdoc">Does nothing as by default the bounding box is reflective.</div><div class="ttdef"><b>Definition:</b> bound_policy.hpp:31</div></div>
+<div class="ttc" id="aclassquetzal_1_1geography_1_1sink_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1sink.html">quetzal::geography::sink</a></div><div class="ttdoc">Individuals can migrate out of the landscape to a sink vertex, but can not come back.</div><div class="ttdef"><b>Definition:</b> bound_policy.hpp:40</div></div>
+<div class="ttc" id="aclassquetzal_1_1geography_1_1sink_html_a2733d083f19df10a5aeb8e83318416e4"><div class="ttname"><a href="classquetzal_1_1geography_1_1sink.html#a2733d083f19df10a5aeb8e83318416e4">quetzal::geography::sink::operator()</a></div><div class="ttdeci">void operator()(typename Graph::vertex_descriptor s, Graph &amp;graph, const two_dimensional auto &amp;grid) const</div><div class="ttdoc">Connect source vertex s to a sink vertex if on the border.</div><div class="ttdef"><b>Definition:</b> bound_policy.hpp:52</div></div>
+<div class="ttc" id="aclassquetzal_1_1geography_1_1torus_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1torus.html">quetzal::geography::torus</a></div><div class="ttdoc">The 2D landscape becomes a 3D torus connecting opposed borders.</div><div class="ttdef"><b>Definition:</b> bound_policy.hpp:65</div></div>
+<div class="ttc" id="aclassquetzal_1_1geography_1_1torus_html_aaf34fe6feca5ee1e641385cc11481845"><div class="ttname"><a href="classquetzal_1_1geography_1_1torus.html#aaf34fe6feca5ee1e641385cc11481845">quetzal::geography::torus::operator()</a></div><div class="ttdeci">void operator()(typename Graph::vertex_descriptor s, Graph &amp;graph, const two_dimensional auto &amp;grid) const</div><div class="ttdoc">Connect edges of source vertex s in a graph given a spatial grid.</div><div class="ttdef"><b>Definition:</b> bound_policy.hpp:76</div></div>
+<div class="ttc" id="anamespacequetzal_1_1geography_html"><div class="ttname"><a href="namespacequetzal_1_1geography.html">quetzal::geography</a></div><div class="ttdoc">Geospatial data formatting and processing.</div><div class="ttdef"><b>Definition:</b> coordinates.hpp:17</div></div>
+<div class="ttc" id="astructquetzal_1_1geography_1_1detail_1_1edge__construction_html"><div class="ttname"><a href="structquetzal_1_1geography_1_1detail_1_1edge__construction.html">quetzal::geography::detail::edge_construction</a></div><div class="ttdef"><b>Definition:</b> concepts.hpp:47</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

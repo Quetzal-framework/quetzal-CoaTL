@@ -9,5 +9,6 @@ var dir_1ec746fd7cd1428d7c47245faacb5a8f =
     [ "PointWithId.hpp", "PointWithId_8hpp_source.html", null ],
     [ "random.hpp", "random_8hpp_source.html", null ],
     [ "random_tree.hpp", "random__tree_8hpp_source.html", null ],
+    [ "ranges_to.hpp", "ranges__to_8hpp_source.html", null ],
     [ "sampling_scheme.hpp", "sampling__scheme_8hpp_source.html", null ]
 ];

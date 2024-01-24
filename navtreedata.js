@@ -52,17 +52,17 @@ var NAVTREE =
     [ "Include", "md_3_include.html", null ],
     [ "Tutorials", "tutorials.html", "tutorials" ],
     [ "Developer's notes", "md_99_developers_notes.html", [
-      [ "Conventions", "md_99_developers_notes.html#autotoc_md111", null ],
-      [ "Build process", "md_99_developers_notes.html#autotoc_md112", null ],
-      [ "Packaging", "md_99_developers_notes.html#autotoc_md113", null ],
-      [ "Documentation", "md_99_developers_notes.html#autotoc_md114", null ]
+      [ "Conventions", "md_99_developers_notes.html#autotoc_md112", null ],
+      [ "Build process", "md_99_developers_notes.html#autotoc_md113", null ],
+      [ "Packaging", "md_99_developers_notes.html#autotoc_md114", null ],
+      [ "Documentation", "md_99_developers_notes.html#autotoc_md115", null ]
     ] ],
     [ "Abstract", "md_drafts_2_abstract.html", [
-      [ "Input/Output", "md_drafts_2_abstract.html#autotoc_md116", null ],
-      [ "Algorithms", "md_drafts_2_abstract.html#autotoc_md117", null ],
-      [ "Graphs", "md_drafts_2_abstract.html#autotoc_md118", null ],
-      [ "Compile-time units system", "md_drafts_2_abstract.html#autotoc_md119", null ],
-      [ "Data Structures", "md_drafts_2_abstract.html#autotoc_md120", null ]
+      [ "Input/Output", "md_drafts_2_abstract.html#autotoc_md117", null ],
+      [ "Algorithms", "md_drafts_2_abstract.html#autotoc_md118", null ],
+      [ "Graphs", "md_drafts_2_abstract.html#autotoc_md119", null ],
+      [ "Compile-time units system", "md_drafts_2_abstract.html#autotoc_md120", null ],
+      [ "Data Structures", "md_drafts_2_abstract.html#autotoc_md121", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -96,12 +96,12 @@ var NAVTREEINDEX =
 "Allele_8hpp_source.html",
 "classquetzal_1_1coalescence_1_1container_1_1Tree.html#a4fe6a06de0a46e276079faafd3d9ea00",
 "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1ProbabilityDistribution.html#aa640f4535ce8bf4b12c934942c18ae03",
-"classquetzal_1_1geography_1_1extent.html#aebb7db4681c7865487239d191ceff0e7",
-"classquetzal_1_1polymorphism_1_1statistics_1_1tajimasD.html#a49d636ab29272bc5f08113943cb1b72f",
-"geography_2graph_2detail_2adl__resolution_8hpp.html#a3cdd2548308fc9ecbe66607fd14c2b2e",
-"namespacequetzal_1_1geography.html#a8180da208d637cbf63b29b97604d9f94",
-"structquetzal_1_1demography_1_1memory__policy_1_1on__disk.html#a603033093dbf11897e598e0a77b1b008",
-""
+"classquetzal_1_1geography_1_1extent.html#a99c260b1db4cf5568cd178157443a885",
+"classquetzal_1_1polymorphism_1_1fuzzy__transfer__distance_1_1RestrictedGrowthString.html#a8c52a49fa8e8dea74e950ad0ed6ed31d",
+"gdalcpp_8hpp.html#a7e98cc326ec6cb96581f547cd43c6893",
+"namespacequetzal_1_1geography.html#a5efa3345365125218f21d63ca8bea1d8",
+"structquetzal_1_1demography_1_1dispersal__kernel_1_1logistic_1_1param__type.html#a03db44772f495f3def21071ca55ad385",
+"vicinity_8hpp_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

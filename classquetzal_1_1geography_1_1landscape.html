@@ -202,9 +202,12 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>decimal_degree</b> =
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Capacity</div></td></tr>
-<tr class="memitem:abce6b6b7687064004888281afee67907"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#abce6b6b7687064004888281afee67907">size</a> () const noexcept</td></tr>
-<tr class="memdesc:abce6b6b7687064004888281afee67907"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the number of variables (rasters)  <a href="classquetzal_1_1geography_1_1landscape.html#abce6b6b7687064004888281afee67907">More...</a><br /></td></tr>
-<tr class="separator:abce6b6b7687064004888281afee67907"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f2edd53cfd6bc60d4a9deb843cc7765"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#a7f2edd53cfd6bc60d4a9deb843cc7765">num_variables</a> () const noexcept</td></tr>
+<tr class="memdesc:a7f2edd53cfd6bc60d4a9deb843cc7765"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the number of variables (rasters)  <a href="classquetzal_1_1geography_1_1landscape.html#a7f2edd53cfd6bc60d4a9deb843cc7765">More...</a><br /></td></tr>
+<tr class="separator:a7f2edd53cfd6bc60d4a9deb843cc7765"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1324a19f40068b154090c75e79001899"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#a1324a19f40068b154090c75e79001899">num_locations</a> () const noexcept</td></tr>
+<tr class="memdesc:a1324a19f40068b154090c75e79001899"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of cells in the raster.  <a href="classquetzal_1_1geography_1_1landscape.html#a1324a19f40068b154090c75e79001899">More...</a><br /></td></tr>
+<tr class="separator:a1324a19f40068b154090c75e79001899"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Element access</div></td></tr>
 <tr class="memitem:ae727e6edb81b5c9a2d78e58cf7a2d92c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classquetzal_1_1geography_1_1raster.html">raster</a>&lt; time_type &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#ae727e6edb81b5c9a2d78e58cf7a2d92c">operator[]</a> (const key_type &amp;key) const</td></tr>
 <tr class="memdesc:ae727e6edb81b5c9a2d78e58cf7a2d92c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a const reference to the mapped raster with key equivalent to <code>key</code>. If no such raster exists, an exception of type std::out_of_range is thrown.  <a href="classquetzal_1_1geography_1_1landscape.html#ae727e6edb81b5c9a2d78e58cf7a2d92c">More...</a><br /></td></tr>
@@ -284,7 +287,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:ab3d71385903ab2659e028a5058dbe550"><td class="mdescLeft">&#160;</td><td class="mdescRight">Longitude and latitude of the deme identified by its column/row.  <a href="classquetzal_1_1geography_1_1landscape.html#ab3d71385903ab2659e028a5058dbe550">More...</a><br /></td></tr>
 <tr class="separator:ab3d71385903ab2659e028a5058dbe550"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9dfd95704c08353e7ea05b3d5974680e"><td class="memItemLeft" align="right" valign="top">latlon&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#a9dfd95704c08353e7ea05b3d5974680e">to_centroid</a> (const latlon &amp;x) const</td></tr>
-<tr class="memdesc:a9dfd95704c08353e7ea05b3d5974680e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reprojects a coordinate to the centroid of the cell it belongs. If no such cell exists, an exception of type std::out_of_range is thrown.  <a href="classquetzal_1_1geography_1_1landscape.html#a9dfd95704c08353e7ea05b3d5974680e">More...</a><br /></td></tr>
+<tr class="memdesc:a9dfd95704c08353e7ea05b3d5974680e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reprojects a coordinate to the centroid of the cell it belongs.  <a href="classquetzal_1_1geography_1_1landscape.html#a9dfd95704c08353e7ea05b3d5974680e">More...</a><br /></td></tr>
 <tr class="separator:a9dfd95704c08353e7ea05b3d5974680e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">Input/Output</h2></td></tr>
@@ -355,6 +358,66 @@ template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A raster object </dd></dl>
 <dl class="section remark"><dt>Remarks</dt><dd>error will be thrown if the datasets do not have the exactly same geographical properties (origin, extent, resolution, number of layers). </dd></dl>
+
+</div>
+</div>
+<a id="a1324a19f40068b154090c75e79001899"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1324a19f40068b154090c75e79001899">&#9670;&nbsp;</a></span>num_locations()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::num_locations </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Number of cells in the raster. </p>
+<dl class="section return"><dt>Returns</dt><dd>the number of variables </dd></dl>
+
+</div>
+</div>
+<a id="a7f2edd53cfd6bc60d4a9deb843cc7765"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f2edd53cfd6bc60d4a9deb843cc7765">&#9670;&nbsp;</a></span>num_variables()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::num_variables </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieves the number of variables (rasters) </p>
+<dl class="section return"><dt>Returns</dt><dd>the number of variables </dd></dl>
 
 </div>
 </div>
@@ -432,36 +495,6 @@ template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
 
 </div>
 </div>
-<a id="abce6b6b7687064004888281afee67907"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abce6b6b7687064004888281afee67907">&#9670;&nbsp;</a></span>size()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::size </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Retrieves the number of variables (rasters) </p>
-<dl class="section return"><dt>Returns</dt><dd>the number of variables </dd></dl>
-
-</div>
-</div>
 <a id="a9dfd95704c08353e7ea05b3d5974680e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9dfd95704c08353e7ea05b3d5974680e">&#9670;&nbsp;</a></span>to_centroid()</h2>
 
@@ -488,7 +521,8 @@ template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Reprojects a coordinate to the centroid of the cell it belongs. If no such cell exists, an exception of type std::out_of_range is thrown. </p>
+<p>Reprojects a coordinate to the centroid of the cell it belongs. </p>
+<dl class="section pre"><dt>Precondition</dt><dd>The landscape must contain the coordinate in its spatial extent. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">x</td><td>The location to reproject </td></tr>

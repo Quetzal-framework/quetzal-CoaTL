@@ -217,6 +217,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5fd0dce2cec9cb6417595b760da88369"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1detail_1_1graph__common.html#a5fd0dce2cec9cb6417595b760da88369">num_vertices</a> () const</td></tr>
 <tr class="memdesc:a5fd0dce2cec9cb6417595b760da88369"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of vertices in the graph.  <a href="classquetzal_1_1geography_1_1detail_1_1graph__common.html#a5fd0dce2cec9cb6417595b760da88369">More...</a><br /></td></tr>
 <tr class="separator:a5fd0dce2cec9cb6417595b760da88369"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0b5f1fd7dd9d80ee86124cfc758ba78"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1detail_1_1graph__common.html#ab0b5f1fd7dd9d80ee86124cfc758ba78">num_edges</a> () const</td></tr>
+<tr class="memdesc:ab0b5f1fd7dd9d80ee86124cfc758ba78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of edges in the graph.  <a href="classquetzal_1_1geography_1_1detail_1_1graph__common.html#ab0b5f1fd7dd9d80ee86124cfc758ba78">More...</a><br /></td></tr>
+<tr class="separator:ab0b5f1fd7dd9d80ee86124cfc758ba78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7167d99410079dac3a0e6e5f80e1155f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1detail_1_1graph__common.html#a7167d99410079dac3a0e6e5f80e1155f">is_isomorphic</a> (<a class="el" href="classquetzal_1_1geography_1_1detail_1_1graph__common.html">graph_common</a> const &amp;other) const</td></tr>
 <tr class="memdesc:a7167d99410079dac3a0e6e5f80e1155f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detects if there is a 1-to-1 mapping of the vertices in one graph to the vertices of another graph such that adjacency is preserved.  <a href="classquetzal_1_1geography_1_1detail_1_1graph__common.html#a7167d99410079dac3a0e6e5f80e1155f">More...</a><br /></td></tr>
 <tr class="separator:a7167d99410079dac3a0e6e5f80e1155f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -268,6 +271,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4a490b4bc4f0d2f89e0a1212ff81f10f"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1detail_1_1graph__common.html#a4a490b4bc4f0d2f89e0a1212ff81f10f">vertices</a> () const</td></tr>
 <tr class="memdesc:a4a490b4bc4f0d2f89e0a1212ff81f10f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides a range to iterate over the vertices of the graph.  <a href="classquetzal_1_1geography_1_1detail_1_1graph__common.html#a4a490b4bc4f0d2f89e0a1212ff81f10f">More...</a><br /></td></tr>
 <tr class="separator:a4a490b4bc4f0d2f89e0a1212ff81f10f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adae5ecb0869c8fe08bedc8533371aa44"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1detail_1_1graph__common.html#adae5ecb0869c8fe08bedc8533371aa44">edges</a> () const</td></tr>
+<tr class="memdesc:adae5ecb0869c8fe08bedc8533371aa44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides a range to iterate over the edges of the graph.  <a href="classquetzal_1_1geography_1_1detail_1_1graph__common.html#adae5ecb0869c8fe08bedc8533371aa44">More...</a><br /></td></tr>
+<tr class="separator:adae5ecb0869c8fe08bedc8533371aa44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -279,7 +285,7 @@ Static Public Member Functions</h2></td></tr>
 Protected Types</h2></td></tr>
 <tr class="memitem:acebe3660d43ad6d4e160d00b30f22023"><td class="memItemLeft" align="right" valign="top"><a id="acebe3660d43ad6d4e160d00b30f22023"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1detail_1_1graph__common.html#acebe3660d43ad6d4e160d00b30f22023">base_type</a> = std::conditional_t&lt; is_same_template&lt; Representation, boost::adjacency_list &gt;, Representation&lt; boost::setS, boost::vecS, Directed, VertexProperty, EdgeProperty &gt;, Representation&lt; Directed, VertexProperty, EdgeProperty, no_property, std::allocator&lt; bool &gt; &gt;&gt;</td></tr>
-<tr class="memdesc:acebe3660d43ad6d4e160d00b30f22023"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type of graph hold by the graph class. <br /></td></tr>
+<tr class="memdesc:acebe3660d43ad6d4e160d00b30f22023"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type of graph hold by the graph class - disallow parallel edges. <br /></td></tr>
 <tr class="separator:acebe3660d43ad6d4e160d00b30f22023"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
@@ -295,7 +301,7 @@ Protected Attributes</h2></td></tr>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </div>
+template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; class ... &gt; class Representation, class Directed &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -342,7 +348,7 @@ template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </div>
+template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; class ... &gt; class Representation, class Directed &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -378,7 +384,7 @@ template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </div>
+template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; class ... &gt; class Representation, class Directed &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -415,7 +421,7 @@ template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </div>
+template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; class ... &gt; class Representation, class Directed &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -457,13 +463,43 @@ template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt
 
 </div>
 </div>
+<a id="adae5ecb0869c8fe08bedc8533371aa44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adae5ecb0869c8fe08bedc8533371aa44">&#9670;&nbsp;</a></span>edges()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; class ... &gt; class Representation, class Directed &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="classquetzal_1_1geography_1_1detail_1_1graph__common.html">quetzal::geography::detail::graph_common</a>&lt; CRTP, VertexProperty, EdgeProperty, Representation, Directed &gt;::edges </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Provides a range to iterate over the edges of the graph. </p>
+<dl class="section return"><dt>Returns</dt><dd>A range </dd></dl>
+
+</div>
+</div>
 <a id="a30eb051aec5fb6d7b0a7c866819018fa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a30eb051aec5fb6d7b0a7c866819018fa">&#9670;&nbsp;</a></span>in_degree()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </div>
+template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; class ... &gt; class Representation, class Directed &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -500,7 +536,7 @@ template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </div>
+template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; class ... &gt; class Representation, class Directed &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -537,7 +573,7 @@ template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </div>
+template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; class ... &gt; class Representation, class Directed &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -574,7 +610,7 @@ template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </div>
+template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; class ... &gt; class Representation, class Directed &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -598,13 +634,43 @@ template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt
 
 </div>
 </div>
+<a id="ab0b5f1fd7dd9d80ee86124cfc758ba78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0b5f1fd7dd9d80ee86124cfc758ba78">&#9670;&nbsp;</a></span>num_edges()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; class ... &gt; class Representation, class Directed &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="classquetzal_1_1geography_1_1detail_1_1graph__common.html">quetzal::geography::detail::graph_common</a>&lt; CRTP, VertexProperty, EdgeProperty, Representation, Directed &gt;::num_edges </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Number of edges in the graph. </p>
+<dl class="section return"><dt>Returns</dt><dd>The number of edges. </dd></dl>
+
+</div>
+</div>
 <a id="a5fd0dce2cec9cb6417595b760da88369"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5fd0dce2cec9cb6417595b760da88369">&#9670;&nbsp;</a></span>num_vertices()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </div>
+template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; class ... &gt; class Representation, class Directed &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -624,12 +690,6 @@ template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt
 </div><div class="memdoc">
 
 <p>Number of vertices in the graph. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">other</td><td>A graph. </td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="section return"><dt>Returns</dt><dd>The number of vertices. </dd></dl>
 
 </div>
@@ -640,7 +700,7 @@ template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </div>
+template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; class ... &gt; class Representation, class Directed &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -677,7 +737,7 @@ template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </div>
+template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; class ... &gt; class Representation, class Directed &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -713,7 +773,7 @@ template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </div>
+template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; class ... &gt; class Representation, class Directed &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -760,7 +820,7 @@ template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </div>
+template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; class ... &gt; class Representation, class Directed &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -796,7 +856,7 @@ template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </div>
+template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; class ... &gt; class Representation, class Directed &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -833,7 +893,7 @@ template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </div>
+template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; class ... &gt; class Representation, class Directed &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -870,7 +930,7 @@ template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </div>
+template&lt;class CRTP , class VertexProperty , class EdgeProperty , template&lt; class ... &gt; class Representation, class Directed &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">

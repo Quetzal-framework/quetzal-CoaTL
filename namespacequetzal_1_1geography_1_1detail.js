@@ -17,7 +17,14 @@ var namespacequetzal_1_1geography_1_1detail =
       [ "predecessor", "geography_2graph_2detail_2adl__resolution_8hpp.html#a5efb65ea286c63c7b651e77b80d86ee2", null ],
       [ "root", "geography_2graph_2detail_2adl__resolution_8hpp.html#a662703f0ac9f36bd8deda7a063ea5d54", null ]
     ] ],
+    [ "edge_construction", "structquetzal_1_1geography_1_1detail_1_1edge__construction.html", null ],
+    [ "edge_construction< boost::no_property >", "structquetzal_1_1geography_1_1detail_1_1edge__construction_3_01boost_1_1no__property_01_4.html", null ],
     [ "graph_common", "classquetzal_1_1geography_1_1detail_1_1graph__common.html", "classquetzal_1_1geography_1_1detail_1_1graph__common" ],
+    [ "is_on_border", "namespacequetzal_1_1geography_1_1detail.html#ac4b248b1bacf55ef4b5651781468cb28", null ],
+    [ "is_on_bottom_border", "namespacequetzal_1_1geography_1_1detail.html#add8a64797df7cf1ad8c6605fb0d3310c", null ],
+    [ "is_on_left_border", "namespacequetzal_1_1geography_1_1detail.html#a65e7233b47ee4172b6b8d75254719212", null ],
+    [ "is_on_right_border", "namespacequetzal_1_1geography_1_1detail.html#a147c9ee88f5a0b576f16b693a834a707", null ],
+    [ "is_on_top_border", "namespacequetzal_1_1geography_1_1detail.html#aee56592a6b29afdc4dd8b9229c018f04", null ],
     [ "is_any_of", "namespacequetzal_1_1geography_1_1detail.html#ad1cbcaccdf6a6ff2f0f6f408e5c22da3", null ],
     [ "is_same_template", "namespacequetzal_1_1geography_1_1detail.html#ae7e93f7fb2cd4a2e7aab7e94cc1c0855", null ],
     [ "is_same_template< Lhs, Lhs >", "namespacequetzal_1_1geography_1_1detail.html#a393a88951c259ab6bd9533f501e10678", null ]

@@ -249,10 +249,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a58de22cc39d66f9a0986a25486e7cec4"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#a58de22cc39d66f9a0986a25486e7cec4">operator&lt;&lt;</a> (std::ostream &amp;stream, const C &amp;c)</td></tr>
 <tr class="memdesc:a58de22cc39d66f9a0986a25486e7cec4"><td class="mdescLeft">&#160;</td><td class="mdescRight">GridCoordinates are streamable.  <a href="namespacequetzal_1_1geography.html#a58de22cc39d66f9a0986a25486e7cec4">More...</a><br /></td></tr>
 <tr class="separator:a58de22cc39d66f9a0986a25486e7cec4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42aabda21a3d733ec2b10973524d4671"><td class="memTemplParams" colspan="2">template&lt;two_dimensional SpatialGrid, class VertexProperty , class EdgeProperty , class Vicinity , directional Directionality, class Policy &gt; </td></tr>
-<tr class="memitem:a42aabda21a3d733ec2b10973524d4671"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#a42aabda21a3d733ec2b10973524d4671">from_grid</a> (SpatialGrid const &amp;grid, VertexProperty const &amp;v, EdgeProperty const &amp;e, Vicinity const &amp;vicinity, Directionality dir, Policy const &amp;bound)</td></tr>
-<tr class="memdesc:a42aabda21a3d733ec2b10973524d4671"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spatial graph construction method.  <a href="namespacequetzal_1_1geography.html#a42aabda21a3d733ec2b10973524d4671">More...</a><br /></td></tr>
-<tr class="separator:a42aabda21a3d733ec2b10973524d4671"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefd1b77745ebec6627cd0b29ac101afd"><td class="memTemplParams" colspan="2">template&lt;two_dimensional SpatialGrid, class VertexProperty , class EdgeProperty , class Vicinity , directional Directionality, class Policy &gt; </td></tr>
+<tr class="memitem:aefd1b77745ebec6627cd0b29ac101afd"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#aefd1b77745ebec6627cd0b29ac101afd">from_grid</a> (SpatialGrid const &amp;grid, VertexProperty const &amp;v, EdgeProperty const &amp;e, Vicinity const &amp;vicinity, Directionality dir, Policy const &amp;bounding_policy)</td></tr>
+<tr class="memdesc:aefd1b77745ebec6627cd0b29ac101afd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spatial graph construction method.  <a href="namespacequetzal_1_1geography.html#aefd1b77745ebec6627cd0b29ac101afd">More...</a><br /></td></tr>
+<tr class="separator:aefd1b77745ebec6627cd0b29ac101afd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f05af9335923ac31a3470db53764568"><td class="memTemplParams" colspan="2">template&lt;class VertexProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </td></tr>
 <tr class="memitem:a2f05af9335923ac31a3470db53764568"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#a2f05af9335923ac31a3470db53764568">requires</a> (!std::is_same_v&lt; VertexProperty, no_property &gt;) class <a class="el" href="classquetzal_1_1geography_1_1graph.html">graph</a>&lt; VertexProperty</td></tr>
 <tr class="memdesc:a2f05af9335923ac31a3470db53764568"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="anchor" id="SpatialGraphVertexPropertyNoProperty"></a>A graph class with information attached to vertices.  <a href="namespacequetzal_1_1geography.html#a2f05af9335923ac31a3470db53764568">More...</a><br /></td></tr>
@@ -388,8 +388,8 @@ Directed&#160;</td><td class="memItemRight" valign="bottom"><b>__pad2__</b></td>
 
 </div>
 </div>
-<a id="a42aabda21a3d733ec2b10973524d4671"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a42aabda21a3d733ec2b10973524d4671">&#9670;&nbsp;</a></span>from_grid()</h2>
+<a id="aefd1b77745ebec6627cd0b29ac101afd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefd1b77745ebec6627cd0b29ac101afd">&#9670;&nbsp;</a></span>from_grid()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -430,7 +430,7 @@ template&lt;two_dimensional SpatialGrid, class VertexProperty , class EdgeProper
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Policy const &amp;&#160;</td>
-          <td class="paramname"><em>bound</em>&#160;</td>
+          <td class="paramname"><em>bounding_policy</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

@@ -182,11 +182,35 @@ $(document).ready(function(){initNavTree('geography_2graph_2detail_2concepts_8hp
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                                                  t(s, <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a>, grid)</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                                                  } -&gt; std::same_as&lt;void&gt;;</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                                          };</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;} <span class="comment">// namespace quetzal::geography</span></div>
-<div class="ttc" id="anamespacequetzal_1_1geography_html"><div class="ttname"><a href="namespacequetzal_1_1geography.html">quetzal::geography</a></div><div class="ttdoc">Geospatial data formatting and processing.</div><div class="ttdef"><b>Definition:</b> coordinates.hpp:16</div></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">namespace </span>detail</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="structquetzal_1_1geography_1_1detail_1_1edge__construction.html">   46</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structquetzal_1_1geography_1_1detail_1_1edge__construction.html">edge_construction</a></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span> constexpr <span class="keywordtype">void</span> delegate(<span class="keyword">auto</span> s, <span class="keyword">auto</span> t, <span class="keyword">auto</span>&amp; <a class="code" href="classquetzal_1_1geography_1_1graph.html">graph</a>)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <a class="code" href="classquetzal_1_1geography_1_1graph.html">graph</a>.add_edge(s, t, T(s,t));</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    }</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;};</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="structquetzal_1_1geography_1_1detail_1_1edge__construction_3_01boost_1_1no__property_01_4.html">   55</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structquetzal_1_1geography_1_1detail_1_1edge__construction.html">edge_construction</a>&lt;<a class="code" href="namespaceboost.html">boost</a>::no_property&gt;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;{</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span> constexpr <span class="keywordtype">void</span> delegate(<span class="keyword">auto</span> s, <span class="keyword">auto</span> t, <span class="keyword">auto</span>&amp; <a class="code" href="classquetzal_1_1geography_1_1graph.html">graph</a>)</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <a class="code" href="classquetzal_1_1geography_1_1graph.html">graph</a>.add_edge(s, t);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    }</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;};</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;} <span class="comment">// namespace quetzal::geography</span></div>
+<div class="ttc" id="aclassquetzal_1_1geography_1_1graph_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1graph.html">quetzal::geography::graph</a></div><div class="ttdef"><b>Definition:</b> graph.hpp:278</div></div>
+<div class="ttc" id="anamespaceboost_html"><div class="ttname"><a href="namespaceboost.html">boost</a></div><div class="ttdef"><b>Definition:</b> cardinal_k_ary_tree.hpp:46</div></div>
+<div class="ttc" id="anamespacequetzal_1_1geography_html"><div class="ttname"><a href="namespacequetzal_1_1geography.html">quetzal::geography</a></div><div class="ttdoc">Geospatial data formatting and processing.</div><div class="ttdef"><b>Definition:</b> coordinates.hpp:17</div></div>
 <div class="ttc" id="anamespacequetzal_1_1geography_html_a2f05af9335923ac31a3470db53764568"><div class="ttname"><a href="namespacequetzal_1_1geography.html#a2f05af9335923ac31a3470db53764568">quetzal::geography::requires</a></div><div class="ttdeci">requires(!std::is_same_v&lt; VertexProperty, no_property &gt;) class graph&lt; VertexProperty</div><div class="ttdoc">A graph class with information attached to vertices.</div></div>
-<div class="ttc" id="anamespacequetzal_1_1geography_html_aadfe5745b336d30d919a91a10c6dfe7a"><div class="ttname"><a href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">quetzal::geography::graph</a></div><div class="ttdeci">graph()</div><div class="ttdoc">Default constructor. Initializes a graph with 0 vertices.</div><div class="ttdef"><b>Definition:</b> graph.hpp:325</div></div>
+<div class="ttc" id="anamespacequetzal_1_1geography_html_aadfe5745b336d30d919a91a10c6dfe7a"><div class="ttname"><a href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">quetzal::geography::graph</a></div><div class="ttdeci">graph()</div><div class="ttdoc">Default constructor. Initializes a graph with 0 vertices.</div><div class="ttdef"><b>Definition:</b> graph.hpp:340</div></div>
+<div class="ttc" id="astructquetzal_1_1geography_1_1detail_1_1edge__construction_html"><div class="ttname"><a href="structquetzal_1_1geography_1_1detail_1_1edge__construction.html">quetzal::geography::detail::edge_construction</a></div><div class="ttdef"><b>Definition:</b> concepts.hpp:47</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
