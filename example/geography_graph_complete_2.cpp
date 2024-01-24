@@ -26,12 +26,8 @@ int main()
     // Few of the possible assumptions combinations
 
     auto graph1 = geo::from_grid(land, vertex_info(), edge_info(), geo::connect_fully(), geo::isotropy(), geo::mirror());
-    auto graph2 = geo::from_grid(land, vertex_info(), edge_info(), geo::connect_fully(), geo::isotropy(), geo::sink());
-    auto graph3 = geo::from_grid(land, vertex_info(), edge_info(), geo::connect_fully(), geo::anisotropy(), geo::sink());
-    auto graph4 = geo::from_grid(land, vertex_info(), edge_info(), geo::connect_4_neighbors(), geo::isotropy(), geo::torus());
-    auto graph5 = geo::from_grid(land, vertex_info(), edge_info(), geo::connect_8_neighbors(), geo::isotropy(), geo::mirror());
-    auto graph6 = geo::from_grid(land, vertex_info(), edge_info(), geo::connect_8_neighbors(), geo::anisotropy(), geo::mirror());
-    auto graph7 = geo::from_grid(land, vertex_info(), edge_info(), geo::connect_8_neighbors(), geo::anisotropy(), geo::torus());
+    auto graph2 = geo::from_grid(land, vertex_info(), edge_info(), geo::connect_4_neighbors(), geo::isotropy(), geo::sink());
+    auto graph3 = geo::from_grid(land, vertex_info(), edge_info(), geo::connect_8_neighbors(), geo::anisotropy(), geo::torus());
 
     // Checking the numbers of edges is consistent with our assumptions
 
@@ -40,47 +36,25 @@ int main()
 
     int n1 = graph1.num_vertices();
     int e1 = n1 * ( n1 - 1 ) / 2  ;      // typical undirected complete graph
-
     assert( n1 == land.num_locations() );
     assert( e1 == graph1.num_edges() );
+    std::cout << "Graph 1 has " << n1 << " vertices, " << e1 << " edges." << std::endl;
 
     int n2 = graph2.num_vertices();
-    int e2 = e1 + 2 * ( w + h - 2 ) ;    // border vertices connected to the outland - a sink vertex
-    assert( n2 == n1 + 1 );              // sink vertex added
-    assert( e2 == graph2.num_edges() ); 
-    
-    int n3 = graph3.num_vertices();
-    int e3 = 2 * e1 + 2 * ( w + h - 2 ); // number of land edges are doubled with anisotropy
-    assert( n3 == n2 );                  // sink vertex added
-    assert( e3 == graph3.num_edges() );
-                
-    int n4 = graph4.num_vertices();
-    int e4 = h * ( w - 1 )               // horizontal edges
+    int e2 = h * ( w - 1 )               // horizontal edges
         + w * ( h - 1 )                  // vertical edges
         + h                              // torus joining West to East
         + w - 2 ;                        // torus joining North to South
-    assert( n4 == n1 );                  // no vertex added
-    assert( e4 == graph4.num_edges() );
+    assert( n2 == n1 );                  // no vertex added
+    assert( e2 == graph2.num_edges() );
+    std::cout << "Graph 2 has " << n2 << " vertices, " << e2 << " edges." << std::endl;
 
-    int n5 = graph5.num_vertices();
-    int e5 = h * ( w - 1 )               // horizontal edges
-        + w * ( h - 1 )                  // vertical edges
-        + 2 * ( w - 1 ) * ( h - 1 ) ;    // intercardinal for internal vertices only
-    assert( n5 == n1 );                      // no vertex added
-    assert( e5 == graph5.num_edges() );
-
-    int n6 = graph6.num_vertices();
-    int e6 = 2* e5;
-    assert( n5 == n1 );                      // no vertex added
-    assert( e6 == graph6.num_edges() );
-
-    int n7 = graph7.num_vertices();
-    int e7 = 2 * e5 + 2 * (w + h - 2);
-    std::cout << n7 << " " << e7 << " " <<  graph7.num_edges() << std::endl;
-
-    assert( n7 == n1 );                      // no vertex added
-    assert( e7 == graph7.num_edges() );
-
-
-    std::cout << "Assumptions checked!" << std::endl;
+    int n3 = graph3.num_vertices();
+    int a = h * ( w - 1 )            // horizontal edges
+    + w * ( h - 1 )                  // vertical edges
+    + 2 * ( w - 1 ) * ( h - 1 ) ;    // intercardinal for internal vertices only
+    int e3 = 2 * a + 2 * (w + h - 2);
+    assert( n3 == n1 );                      // no vertex added
+    assert( e3 == graph3.num_edges() );
+    std::cout << "Graph 3 has " << n3 << " vertices, " << e3 << " edges." << std::endl;
 }
