@@ -11,6 +11,7 @@
 #pragma once
 
 #include "concepts.hpp"
+#include <cassert>
 
 namespace quetzal::geography
 {
@@ -18,6 +19,8 @@ namespace quetzal::geography
 class mirror
 {
   public:
+    int constexpr inline num_extra_vertices() const { return 0; }
+
     /// @brief Does nothing as by default the bounding box is reflective
     /// @tparam EdgeProperty The edge information
     /// @tparam Graph The graph type
@@ -36,6 +39,9 @@ class mirror
 class sink
 {
   public:
+
+    int constexpr inline num_extra_vertices() const { return 1; }
+
     /// @brief Connect source vertex s to a sink vertex if on the border
     /// @tparam EdgeProperty
     /// @tparam Graph The graph type
@@ -45,13 +51,12 @@ class sink
     template <class Graph>
     void operator()(typename Graph::vertex_descriptor s, Graph &graph, const two_dimensional auto &grid) const
     {
-        using edge_property_type = typename Graph::edge_property_type;
-        int sink = grid.width() * grid.height();
-
-        if (graph.num_vertices() == sink) // sink vertex is missing
-            sink = graph.add_vertex();
-
-        graph.add_edge(s, sink, edge_property_type(s, sink)); // one-way ticket :(
+        using edge_property = typename Graph::edge_property;
+        int num_land_vertices = grid.width() * grid.height();
+        int sink = num_land_vertices;
+        assert( graph.num_vertices() == sink + 1 );
+        if ( s < sink )
+            detail::edge_construction<edge_property>::delegate(s, sink, graph); // one-way ticket :(
     }
 };
 
@@ -59,6 +64,8 @@ class sink
 class torus
 {
   public:
+    int constexpr inline num_extra_vertices() const { return 0; }
+
     /// @brief Connect edges of source vertex s in a graph given a spatial grid
     /// @tparam EdgeProperty
     /// @tparam Graph The graph type
@@ -68,7 +75,7 @@ class torus
     template <class Graph>
     void operator()(typename Graph::vertex_descriptor s, Graph &graph, const two_dimensional auto &grid) const
     {
-        using edge_property_type = typename Graph::edge_property_type;
+        using edge_property = typename Graph::edge_property;
         auto width = grid.width();
         auto height = grid.height();
         int symmetricIndex = 0;
@@ -93,7 +100,7 @@ class torus
         {
             symmetricIndex = s - width + 1;
         }
-        graph.add_edge(s, symmetricIndex, edge_property_type(s, symmetricIndex));
+        detail::edge_construction<edge_property>::delegate(s, symmetricIndex, graph);
     }
 };
 

@@ -26,8 +26,15 @@
 ## Demographic Histories
 
 - @subpage demographic_histories_in_quetzal
-- Examples
+- @subpage Phylogenetic Trees
+- @subpage Phylogenetic Networks
+- @subpage spatial_graphs
+  - @subpage Construction from landscapes
+  - @subpage Construction from abstract grids
+  - @subpage SettingVertex/Edge information at construction
   - @subpage dispersal_kernels
+
+- Examples
   - @subpage Growth Expressions
   - @subpage Memory Management
 
@@ -804,16 +811,22 @@ In population genetics, demographic history refers to the historical changes in 
 
 There a different modeling approaches to look at these demographic histories, primarily based on the level of intricacy one intends to incorporate into the framework:
 
-- **Phylogenetic Trees:** typically represent a bifurcating pattern of evolution, where each node (or branching point) represents a speciation event. This gives population histories the semantic of a tree graph (called a population tree or species tree), where ancestral populations split into sub-populations, sometimes loosely connected by migration. Gene trees coalesce into these species tree. Genetic inference under this kind of model aims at estimating the tree topology and/or the timing and parameters of events, such as ancestral population size changes and migration rates. It is important to note that in this framework geography is implicit and events such as population size changes and admixture events are explicitely modeled and estimated.
+### Phylogenetic Trees
 
-- **Phylogenetic Networks:** while a phylogenetic tree typically represents a bifurcating pattern of evolution, real-world evolutionary processes can be more intricate. Phylogenetic networks are employed when evolutionary events like horizontal gene transfer, hybridization, recombination, and other reticulate processes are involved. These events can lead to interconnected patterns that cannot be accurately illustrated by a simple tree. Networks with Hybridization are specifically designed to capture the evolutionary relationships of organisms that have undergone hybridization events, where two distinct species interbreed to produce hybrid offspring.
+Typically represent a bifurcating pattern of evolution, where each node (or branching point) represents a speciation event. This gives population histories the semantic of a tree graph (called a population tree or species tree), where ancestral populations split into sub-populations, sometimes loosely connected by migration. Gene trees coalesce into these species tree. Genetic inference under this kind of model aims at estimating the tree topology and/or the timing and parameters of events, such as ancestral population size changes and migration rates. It is important to note that in this framework geography is implicit and events such as population size changes and admixture events are explicitely modeled and estimated.
 
-- **Spatial graph structure:** Another category of models puts an emphasis on the geographic structure of these populations and embed GIS information into the model. Here the demographic history receives the semantic of a dense spatial graph where geolocalized nodes represent demes and local processes whereas edges represent distances and dispersal processes. In this kind of models estimating the individual properties of so many demes is not judicious and genetic inference rather aims at estimating species-wide parameters that link local deme conditions (such as rainfall) to populational processes (like growth rate). It's crucial to understand that within this geospatial framework, events like population changes and admixture events are emergent properties of the model: they are generally not explicitly outlined in the model nor subjected to direct estimation.
+### Phylogenetic Networks 
+
+While a phylogenetic tree typically represents a bifurcating pattern of evolution, real-world evolutionary processes can be more intricate. Phylogenetic networks are employed when evolutionary events like horizontal gene transfer, hybridization, recombination, and other reticulate processes are involved. These events can lead to interconnected patterns that cannot be accurately illustrated by a simple tree. Networks with Hybridization are specifically designed to capture the evolutionary relationships of organisms that have undergone hybridization events, where two distinct species interbreed to produce hybrid offspring.
+
+### Spatial Graphs
+
+Another category of models puts an emphasis on the geographic structure of these populations and embed GIS information into the model. Here the demographic history receives the semantic of a dense spatial graph where geolocalized nodes represent demes and local processes whereas edges represent distances and dispersal processes. In this kind of models estimating the individual properties of so many demes is not judicious and genetic inference rather aims at estimating species-wide parameters that link local deme conditions (such as rainfall) to populational processes (like growth rate). It's crucial to understand that within this geospatial framework, events like population changes and admixture events are emergent properties of the model: they are generally not explicitly outlined in the model nor subjected to direct estimation.
 
 ---
 
 [//]: # (----------------------------------------------------------------------)
-@page dispersal_kernels Dispersal Kernels
+@page spatial_graphs Spatial Graphs
 @tableofcontents
 
 @note 
@@ -821,7 +834,7 @@ The objective of this section is to define the modality of dispersal of a specie
 1. transform a `quetzal::geography::landscape` into a `quetzal::geography::graph` selecting the desired level of connectivity
 2. update the edges information of the graph to reflect the desired rate of movement.
 
-# Background
+## Background
 
 The challenge of replicating a demographic process within a discrete landscape can be framed as a process on a spatial graph. In this graph, the vertices represent the cells of the landscape grid, while the edges link the areas where migration occurs.
 
@@ -831,13 +844,34 @@ For this reason, constructing a spatial graph first requires to account for the 
 
 * 4-neighbors: each cell of the landscape grid is connected only to its cardinal neighbors (N, E, S, W). 
 * 8-neighbors: each cell of the landscape grid is connected only to its cardinal and intercardinal (NE, SE, SW, NW) neighbors.
-* complete graph: each cell of the landscape grid is connected to all others: the rate of migration between two cells will be a function of the distance or path of least resistance.
+* fully connected graph: each cell of the landscape grid is connected to all others: the rate of migration between two cells will be a function of the distance or path of least resistance.
 
-# 4-neighbors graph
+Similarly, assumptions we make about the model's behavior at the bounds of the finite landscape influence the connectivity of the graph. We distinguish at least three bounding modalities:
 
-# 8-neighbors graph
+* mirror: cells at the borders of the landscape are connected to their neighbors, without any further modification. In this case the individuals moving between cells will be *reflected* into the landscape.
+* sink: cells at the borders of the landscape will be connected to a sink vertex: individuals that migrate past the boundaries of the landscape *escape* into the world and never come back.
+* torus: the 2D landscape becomes a 3D torus world, as vertices on opposite borders are linked to their symmetric vertex: individuals that cross the Northern (resp. Western) border reappear on the Southern (resp. Eastern) border.
 
-# Complete graph
+Finally, a last assumption we make about the population process that impacts the graph representation is the directionality of the process: 
+
+* isotropic migration means that the edge \f$( u,v)\f$ and the edge \f$(v,u)\f$ are one and the same. 
+* anisotropic migration will distinguish between these two edges.
+
+All these choices are independently represented in the code and can be extended (although that may require some efforts):
+
+**Input**
+
+@include{lineno} geography_graph_1.cpp
+
+**Output**
+
+@include{lineno} geography_graph_1.txt
+
+---
+
+[//]: # (----------------------------------------------------------------------)
+@page dispersal_kernels Dispersal Kernels
+@tableofcontents
 
 ## Distance-based kernel
 

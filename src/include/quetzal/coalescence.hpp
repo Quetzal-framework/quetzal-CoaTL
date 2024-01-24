@@ -9,7 +9,10 @@
 #include "coalescence/container/Forest.hpp"
 #include "coalescence/container/Network.hpp"
 #include "coalescence/container/Tree.hpp"
+
+#include "coalescence/graph/binary_tree.hpp"
 #include "coalescence/graph/k_ary_tree.hpp"
+
 #include "coalescence/merger_policy.hpp"
 #include "coalescence/occupancy_spectrum.hpp"
 #include "coalescence/policies/distance_to_parent.hpp"

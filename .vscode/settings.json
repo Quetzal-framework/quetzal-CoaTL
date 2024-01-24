@@ -83,6 +83,11 @@
     },
     "cSpell.words": [
         "clangd",
-        "devcontainer"
-    ]
+        "devcontainer",
+        "intercardinal",
+        "latlon",
+        "Newick",
+        "regraft"
+    ],
+    "formatFiles.excludePattern": ""
 }

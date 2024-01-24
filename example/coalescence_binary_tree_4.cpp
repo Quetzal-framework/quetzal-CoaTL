@@ -1,4 +1,4 @@
-#include "quetzal/quetzal.hpp"
+#include "quetzal/coalescence.hpp"
 #include <algorithm> // for std::ranges::copy
 #include <cassert>
 #include <iterator> // for std::ostream_iterator

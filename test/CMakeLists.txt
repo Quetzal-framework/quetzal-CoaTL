@@ -19,6 +19,9 @@ find_package(range-v3)
 # mp-units
 find_package(mp-units CONFIG REQUIRED)
 
+# Copy the data required
+file(COPY data DESTINATION ${CMAKE_BINARY_DIR}/test)
+
 ### UNIT TEST
 file(GLOB TEST_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} unit_test/*.cpp)
 foreach(testSrc ${TEST_SRCS})

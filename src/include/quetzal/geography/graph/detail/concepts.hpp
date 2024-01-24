@@ -39,5 +39,26 @@ concept bounding = two_dimensional<S> and requires(T t, typename G::vertex_descr
                                                   t(s, graph, grid)
                                                   } -> std::same_as<void>;
                                           };
+namespace detail
+{
+    
+template<typename T>
+struct edge_construction
+{
+    static inline constexpr void delegate(auto s, auto t, auto& graph)
+    {
+        graph.add_edge(s, t, T(s,t));
+    }
+};
 
+template<>
+struct edge_construction<boost::no_property>
+{
+    static inline constexpr void delegate(auto s, auto t, auto& graph)
+    {
+        graph.add_edge(s, t);
+    }
+};
+
+}
 } // namespace quetzal::geography

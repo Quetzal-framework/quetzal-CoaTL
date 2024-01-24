@@ -5,7 +5,7 @@
         // Docker Explorer view to VS Code
         "ms-azuretools.vscode-docker",
         // Understanding of complex code
-        // "lvm-vs-code-extensions.vscode-clangd"
+        //"lvm-vs-code-extensions.vscode-clangd"
         // Bundle the 4 next extensions
         // "ms-vscode.cpptools-extension-pack",        
         // 1. Semantic colorization

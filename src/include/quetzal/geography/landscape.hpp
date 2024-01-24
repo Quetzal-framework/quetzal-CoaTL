@@ -190,9 +190,16 @@ template <typename Key = std::string, typename Time = int> class landscape
 
     /// @brief Retrieves the number of variables (rasters)
     /// @return the number of variables
-    auto size() const noexcept
+    auto num_variables() const noexcept
     {
         return _variables.size();
+    }
+
+    /// @brief Number of cells in the raster
+    /// @return the number of variables
+    auto num_locations() const noexcept
+    {
+        return this->width() * this->height();
     }
 
     /// @}
@@ -364,11 +371,12 @@ template <typename Key = std::string, typename Time = int> class landscape
     }
 
     /// @brief Reprojects a coordinate to the centroid of the cell it belongs.
-    ///        If no such cell exists, an exception of type std::out_of_range is thrown.
+    /// @pre The landscape must contain the coordinate in its spatial extent.
     /// @param x The location to reproject
     /// @return The coordinate of the centroid of the cell it belongs.
     latlon to_centroid(const latlon &x) const
     {
+        assert(this->contains(x));
         return _variables.cbegin()->second.to_centroid(x);
     }
 

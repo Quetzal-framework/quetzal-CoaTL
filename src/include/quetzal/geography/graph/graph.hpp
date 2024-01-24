@@ -27,6 +27,7 @@
 #include <iostream>
 #include <optional>
 #include <type_traits>
+#include <ranges>
 
 namespace quetzal::geography
 {
@@ -40,12 +41,12 @@ template <template <class...> class Lhs> constexpr bool is_same_template<Lhs, Lh
 
 // Base class and common implementation
 template <class CRTP, class VertexProperty, class EdgeProperty,
-          template <typename, typename, typename, typename, typename> class Representation, class Directed>
+          template <class ...> class Representation, class Directed>
 class graph_common
 {
 
   protected:
-    /// @brief The type of graph hold by the graph class
+    /// @brief The type of graph hold by the graph class - disallow parallel edges
     using base_type =
         std::conditional_t<is_same_template<Representation, boost::adjacency_list>,
                            Representation<boost::setS, boost::vecS, Directed, VertexProperty, EdgeProperty>,
@@ -101,11 +102,17 @@ class graph_common
     /// @{
 
     /// @brief Number of vertices in the graph.
-    /// @param other A graph.
     /// @return The number of vertices.
     int num_vertices() const
     {
         return boost::num_vertices(_graph);
+    }
+
+    /// @brief Number of edges in the graph.
+    /// @return The number of edges.
+    int num_edges() const
+    {
+        return boost::num_edges(_graph);
     }
 
     /// @brief Detects if there is a 1-to-1 mapping of the vertices in one graph to the vertices of another graph such
@@ -241,6 +248,14 @@ class graph_common
     auto vertices() const
     {
         return boost::make_iterator_range(boost::vertices(_graph));
+    }
+
+    /// @brief Provides a range to iterate over the edges of the graph
+    /// @return A range
+    auto edges() const
+    {
+        auto [first, last] = boost::edges(_graph);
+        return std::ranges::subrange(first, last);
     }
 
     /// @}
@@ -411,7 +426,7 @@ class graph<no_property, EdgeProperty, Representation, Directed>
     /// @param u Target vertex
     edge_descriptor add_edge(vertex_descriptor u, vertex_descriptor v, const EdgeProperty &p)
     {
-        return boost::add_edge(p, u, v, this->_graph).first;
+        return boost::add_edge(u, v, p, this->_graph).first;
     }
 
     /// @}
