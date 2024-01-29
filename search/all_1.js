@@ -5,7 +5,7 @@ var searchData=
   ['backward_5fkernel_21',['backward_kernel',['../classquetzal_1_1demography_1_1HistoryBase.html#a9ed684393fd0aee91a15b63b80c9fcac',1,'quetzal::demography::HistoryBase']]],
   ['band_22',['band',['../classquetzal_1_1geography_1_1gdalcpp_1_1Dataset.html#a2c0f739010ef43dc68871bdbcb2f46e8',1,'quetzal::geography::gdalcpp::Dataset']]],
   ['base_23',['base',['../classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a1edc9158b05cfd5d2c02baa307417de2',1,'quetzal::coalescence::detail::network_common::base()'],['../classquetzal_1_1coalescence_1_1detail_1_1binary__tree__common.html#aa74af67f0fd0f12addd4371057a99893',1,'quetzal::coalescence::detail::binary_tree_common::base()'],['../classquetzal_1_1coalescence_1_1detail_1_1k__ary__tree__common.html#a748a5287ac858a18b7c584acb51376ef',1,'quetzal::coalescence::detail::k_ary_tree_common::base()']]],
-  ['base_5ftype_24',['base_type',['../classquetzal_1_1geography_1_1detail_1_1graph__common.html#acebe3660d43ad6d4e160d00b30f22023',1,'quetzal::geography::detail::graph_common']]],
+  ['base_5ftype_24',['base_type',['../classquetzal_1_1geography_1_1detail_1_1graph__common.html#a8974911051749c81c516cc20622f732d',1,'quetzal::geography::detail::graph_common']]],
   ['begin_25',['begin',['../classquetzal_1_1coalescence_1_1container_1_1Forest.html#a8aef21fe4b55766771612952198d07b1',1,'quetzal::coalescence::container::Forest::begin()'],['../classquetzal_1_1coalescence_1_1container_1_1Forest.html#a0f0cb5d9a9e3626b85251a1293e884c8',1,'quetzal::coalescence::container::Forest::begin() const'],['../classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrum.html#a856ae4aff0c2adb1c49a063ca6bb31f7',1,'quetzal::coalescence::occupancy_spectrum::OccupancySpectrum::begin()'],['../classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrum.html#a07fec7b390247e2551d4d359dc59c1c6',1,'quetzal::coalescence::occupancy_spectrum::OccupancySpectrum::begin() const'],['../classquetzal_1_1demography_1_1FlowHashMapImplementation.html#aa927f00b1431941ff05e2fffffeb0512',1,'quetzal::demography::FlowHashMapImplementation::begin()']]],
   ['bidirectional_5fbinary_5ftree_26',['bidirectional_binary_tree',['../namespaceboost.html#aaa55a8be4c0e30675215f8b0ca637706',1,'boost']]],
   ['binary_20trees_27',['Binary Trees',['../coalescence_binary_tree.html',1,'tutorials']]],
@@ -25,7 +25,8 @@ var searchData=
   ['binarymerger_41',['BinaryMerger',['../structquetzal_1_1coalescence_1_1merger__policy_1_1BinaryMerger.html',1,'quetzal::coalescence::merger_policy']]],
   ['bit_42',['BIT',['../classBIT.html',1,'']]],
   ['boost_43',['boost',['../namespaceboost.html',1,'']]],
-  ['branch_44',['branch',['../classquetzal_1_1coalescence_1_1newick__with__distance__to__parent.html#a1aaa2a4ecf29fa3f84b06e29cb1b6bd5',1,'quetzal::coalescence::newick_with_distance_to_parent::branch()'],['../classquetzal_1_1coalescence_1_1newick__with__distance__to__parent__and__leaf__name.html#ad8c19b9130712710f4c7863f4b15f420',1,'quetzal::coalescence::newick_with_distance_to_parent_and_leaf_name::branch()']]],
-  ['concepts_45',['concepts',['../namespaceboost_1_1concepts.html',1,'boost']]],
-  ['impl_46',['impl',['../namespaceboost_1_1accumulators_1_1impl.html',1,'boost::accumulators']]]
+  ['bounding_44',['bounding',['../namespacequetzal_1_1geography.html#a1eaf3470c14887d56dbd7a834ad6fba9',1,'quetzal::geography']]],
+  ['branch_45',['branch',['../classquetzal_1_1coalescence_1_1newick__with__distance__to__parent.html#a1aaa2a4ecf29fa3f84b06e29cb1b6bd5',1,'quetzal::coalescence::newick_with_distance_to_parent::branch()'],['../classquetzal_1_1coalescence_1_1newick__with__distance__to__parent__and__leaf__name.html#ad8c19b9130712710f4c7863f4b15f420',1,'quetzal::coalescence::newick_with_distance_to_parent_and_leaf_name::branch()']]],
+  ['concepts_46',['concepts',['../namespaceboost_1_1concepts.html',1,'boost']]],
+  ['impl_47',['impl',['../namespaceboost_1_1accumulators_1_1impl.html',1,'boost::accumulators']]]
 ];

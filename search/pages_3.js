@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['generating_20a_20newick_20string_1011',['Generating a Newick string',['../newick_generator.html',1,'tutorials']]],
-  ['generating_20an_20extended_20newick_20string_1012',['Generating an Extended Newick string',['../extended_newick_generator.html',1,'tutorials']]],
-  ['graphs_20in_20quetzal_1013',['Graphs in Quetzal',['../graphs_in_quetzal.html',1,'tutorials']]]
+  ['defining_20a_20friction_20model_20for_20trans_2doceanic_20dispersal_20events_1026',['Defining a friction model for trans-oceanic dispersal events',['../expressive_friction.html',1,'tutorials']]],
+  ['demographic_20histories_20in_20quetzal_1027',['Demographic Histories in Quetzal',['../demographic_histories_in_quetzal.html',1,'tutorials']]],
+  ['developer_27s_20notes_1028',['Developer&apos;s notes',['../md_99_developers_notes.html',1,'']]],
+  ['dispersal_20kernels_1029',['Dispersal Kernels',['../dispersal_kernels.html',1,'tutorials']]]
 ];

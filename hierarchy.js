@@ -71,6 +71,7 @@ var hierarchy =
     [ "boost::default_dfs_visitor", null, [
       [ "quetzal::format::newick::detail::KaryTreeVisitorWrap< Gen, Stack >", "structquetzal_1_1format_1_1newick_1_1detail_1_1KaryTreeVisitorWrap.html", null ]
     ] ],
+    [ "quetzal::geography::dense", "structquetzal_1_1geography_1_1dense.html", null ],
     [ "depends_on", null, [
       [ "boost::accumulators::tag::tajima", "structboost_1_1accumulators_1_1tag_1_1tajima.html", null ],
       [ "boost::accumulators::tag::tajima", "structboost_1_1accumulators_1_1tag_1_1tajima.html", null ]
@@ -172,6 +173,7 @@ var hierarchy =
     [ "quetzal::geography::mirror", "classquetzal_1_1geography_1_1mirror.html", null ],
     [ "quetzal::polymorphism::fuzzy_transfer_distance::Munkres< Data >", "classquetzal_1_1polymorphism_1_1fuzzy__transfer__distance_1_1Munkres.html", null ],
     [ "MyNode", "structMyNode.html", null ],
+    [ "MySpatialGrid", "structMySpatialGrid.html", null ],
     [ "MyVisitor< Graph >", "structMyVisitor.html", null ],
     [ "named_unit", null, [
       [ "quetzal::units::generation", "structquetzal_1_1units_1_1generation.html", null ]
@@ -240,6 +242,7 @@ var hierarchy =
     [ "quetzal::format::newick::detail::single_function_argument_impl< P1 >", "structquetzal_1_1format_1_1newick_1_1detail_1_1single__function__argument__impl.html", null ],
     [ "quetzal::format::newick::single_function_argument_impl< P1 >", "structquetzal_1_1format_1_1newick_1_1single__function__argument__impl.html", null ],
     [ "quetzal::geography::sink", "classquetzal_1_1geography_1_1sink.html", null ],
+    [ "quetzal::geography::sparse", "structquetzal_1_1geography_1_1sparse.html", null ],
     [ "quetzal::format::genetics::SpatialGeneticSample< Space, Individual >", "classquetzal_1_1format_1_1genetics_1_1SpatialGeneticSample.html", null ],
     [ "quetzal::format::genetics::SpatialGeneticSample< coord_type, quetzal::format::genetics::DiploidIndividual >", "classquetzal_1_1format_1_1genetics_1_1SpatialGeneticSample.html", null ],
     [ "quetzal::format::newick::detail::square_bracket", "structquetzal_1_1format_1_1newick_1_1detail_1_1square__bracket.html", null ],

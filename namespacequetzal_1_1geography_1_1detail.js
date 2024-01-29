@@ -25,7 +25,5 @@ var namespacequetzal_1_1geography_1_1detail =
     [ "is_on_left_border", "namespacequetzal_1_1geography_1_1detail.html#a65e7233b47ee4172b6b8d75254719212", null ],
     [ "is_on_right_border", "namespacequetzal_1_1geography_1_1detail.html#a147c9ee88f5a0b576f16b693a834a707", null ],
     [ "is_on_top_border", "namespacequetzal_1_1geography_1_1detail.html#aee56592a6b29afdc4dd8b9229c018f04", null ],
-    [ "is_any_of", "namespacequetzal_1_1geography_1_1detail.html#ad1cbcaccdf6a6ff2f0f6f408e5c22da3", null ],
-    [ "is_same_template", "namespacequetzal_1_1geography_1_1detail.html#ae7e93f7fb2cd4a2e7aab7e94cc1c0855", null ],
-    [ "is_same_template< Lhs, Lhs >", "namespacequetzal_1_1geography_1_1detail.html#a393a88951c259ab6bd9533f501e10678", null ]
+    [ "is_any_of", "namespacequetzal_1_1geography_1_1detail.html#ad1cbcaccdf6a6ff2f0f6f408e5c22da3", null ]
 ];

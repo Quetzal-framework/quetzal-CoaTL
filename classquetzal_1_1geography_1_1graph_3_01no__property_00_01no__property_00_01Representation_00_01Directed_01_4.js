@@ -7,7 +7,6 @@ var classquetzal_1_1geography_1_1graph_3_01no__property_00_01no__property_00_01R
     [ "edge_property", "classquetzal_1_1geography_1_1graph_3_01no__property_00_01no__property_00_01Representation_00_01Directed_01_4.html#ad4ce8465d7680b99b2e7be465fb796a8", null ],
     [ "in_edge_iterator", "classquetzal_1_1geography_1_1graph_3_01no__property_00_01no__property_00_01Representation_00_01Directed_01_4.html#a796f62314eea85ab16dfb1d6c195a591", null ],
     [ "out_edge_iterator", "classquetzal_1_1geography_1_1graph_3_01no__property_00_01no__property_00_01Representation_00_01Directed_01_4.html#a3e7f76b545480ffeecd25e153999252e", null ],
-    [ "representation_type", "classquetzal_1_1geography_1_1graph_3_01no__property_00_01no__property_00_01Representation_00_01Directed_01_4.html#ab497945a115e8303cf6724cf03669a0f", null ],
     [ "traversal_category", "classquetzal_1_1geography_1_1graph_3_01no__property_00_01no__property_00_01Representation_00_01Directed_01_4.html#a49b6be9a5e127f5d921a91986049defc", null ],
     [ "vertex_descriptor", "classquetzal_1_1geography_1_1graph_3_01no__property_00_01no__property_00_01Representation_00_01Directed_01_4.html#a1bf3cc3dea1eb043488493b567309f54", null ],
     [ "vertex_property", "classquetzal_1_1geography_1_1graph_3_01no__property_00_01no__property_00_01Representation_00_01Directed_01_4.html#a080aa121b0f7c7b6bc67f98a40283b36", null ],

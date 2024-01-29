@@ -1,6 +1,6 @@
 var classquetzal_1_1geography_1_1detail_1_1graph__common =
 [
-    [ "base_type", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#acebe3660d43ad6d4e160d00b30f22023", null ],
+    [ "base_type", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#a8974911051749c81c516cc20622f732d", null ],
     [ "degree_size_type", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#a7354a36365639a2a6f1feb5d419e47ff", null ],
     [ "directed_category", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#a0daa0dbbeadd5076bcbfad8e393e65e0", null ],
     [ "edge_descriptor", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#ab49a428cbd67b81d959a2056761c2014", null ],
@@ -8,7 +8,6 @@ var classquetzal_1_1geography_1_1detail_1_1graph__common =
     [ "edge_property", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#ad4ce8465d7680b99b2e7be465fb796a8", null ],
     [ "in_edge_iterator", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#a796f62314eea85ab16dfb1d6c195a591", null ],
     [ "out_edge_iterator", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#a3e7f76b545480ffeecd25e153999252e", null ],
-    [ "representation_type", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#ab497945a115e8303cf6724cf03669a0f", null ],
     [ "traversal_category", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#a49b6be9a5e127f5d921a91986049defc", null ],
     [ "vertex_descriptor", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#a1bf3cc3dea1eb043488493b567309f54", null ],
     [ "vertex_property", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#a080aa121b0f7c7b6bc67f98a40283b36", null ],

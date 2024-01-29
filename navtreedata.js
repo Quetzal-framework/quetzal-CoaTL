@@ -51,18 +51,19 @@ var NAVTREE =
     ] ],
     [ "Include", "md_3_include.html", null ],
     [ "Tutorials", "tutorials.html", "tutorials" ],
+    [ "Construction", "spatial_graph_construction.html", null ],
     [ "Developer's notes", "md_99_developers_notes.html", [
-      [ "Conventions", "md_99_developers_notes.html#autotoc_md112", null ],
-      [ "Build process", "md_99_developers_notes.html#autotoc_md113", null ],
-      [ "Packaging", "md_99_developers_notes.html#autotoc_md114", null ],
-      [ "Documentation", "md_99_developers_notes.html#autotoc_md115", null ]
+      [ "Conventions", "md_99_developers_notes.html#autotoc_md125", null ],
+      [ "Build process", "md_99_developers_notes.html#autotoc_md126", null ],
+      [ "Packaging", "md_99_developers_notes.html#autotoc_md127", null ],
+      [ "Documentation", "md_99_developers_notes.html#autotoc_md128", null ]
     ] ],
     [ "Abstract", "md_drafts_2_abstract.html", [
-      [ "Input/Output", "md_drafts_2_abstract.html#autotoc_md117", null ],
-      [ "Algorithms", "md_drafts_2_abstract.html#autotoc_md118", null ],
-      [ "Graphs", "md_drafts_2_abstract.html#autotoc_md119", null ],
-      [ "Compile-time units system", "md_drafts_2_abstract.html#autotoc_md120", null ],
-      [ "Data Structures", "md_drafts_2_abstract.html#autotoc_md121", null ]
+      [ "Input/Output", "md_drafts_2_abstract.html#autotoc_md130", null ],
+      [ "Algorithms", "md_drafts_2_abstract.html#autotoc_md131", null ],
+      [ "Graphs", "md_drafts_2_abstract.html#autotoc_md132", null ],
+      [ "Compile-time units system", "md_drafts_2_abstract.html#autotoc_md133", null ],
+      [ "Data Structures", "md_drafts_2_abstract.html#autotoc_md134", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -96,12 +97,12 @@ var NAVTREEINDEX =
 "",
 "classquetzal_1_1coalescence_1_1container_1_1Network.html#a55ebf715f5584f9d0bfcf95d6c11545c",
 "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrum.html#a856ae4aff0c2adb1c49a063ca6bb31f7",
-"classquetzal_1_1geography_1_1detail_1_1graph__common.html#acebe3660d43ad6d4e160d00b30f22023",
-"classquetzal_1_1polymorphism_1_1fuzzy__transfer__distance_1_1Matrix.html#a7713d6881e87eef318980ba12c43736a",
-"functions_g.html",
-"namespacequetzal_1_1format_1_1newick.html#ac04dce58a77b28f9485ddecc444fdf4c",
-"structquetzal_1_1demography_1_1FlowOnDiskImplementation_1_1key__type.html#aff55e112d1206fea600a8430f74b6774",
-"structvertex__info.html#a71905cfe2a3f7e37d39da2563a2b3131"
+"classquetzal_1_1geography_1_1detail_1_1graph__common.html#ad4ce8465d7680b99b2e7be465fb796a8",
+"classquetzal_1_1polymorphism_1_1fuzzy__transfer__distance_1_1Matrix.html#a866d1744cfa0ef4f4aa52e4cce070f1a",
+"functions_i.html",
+"namespacequetzal_1_1format_1_1newick.html#aea42d397ac7bb26c441284439983ad73",
+"structquetzal_1_1demography_1_1FlowHashMapImplementation_1_1key__type.html#a486c29379fcb0d5318729c0d79d13022",
+"structquetzal_1_1geography_1_1sparse.html#af55da4ba67813a03a6d6a1d86915814c"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

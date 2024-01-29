@@ -1,40 +1,5 @@
 var namespaceboost =
 [
-    [ "Objectives", "newick_generator.html#autotoc_md53", null ],
-    [ "From a Quetzal binary tree", "newick_generator.html#autotoc_md55", [
-      [ "No property", "newick_generator.html#autotoc_md57", null ],
-      [ "Custom properties", "newick_generator.html#autotoc_md59", null ]
-    ] ],
-    [ "From a Quetzal k-ary tree", "newick_generator.html#autotoc_md61", [
-      [ "No property", "newick_generator.html#autotoc_md63", null ],
-      [ "Custom properties", "newick_generator.html#autotoc_md65", null ]
-    ] ],
-    [ "Interfacing legacy code", "newick_generator.html#autotoc_md67", [
-      [ "No property", "newick_generator.html#autotoc_md69", null ],
-      [ "Custom properties", "newick_generator.html#autotoc_md71", null ]
-    ] ],
-    [ "Reading a single variable", "geotiff_parser.html#autotoc_md81", null ],
-    [ "Reading multiple variables", "geotiff_parser.html#autotoc_md83", null ],
-    [ "Next steps", "geotiff_parser.html#autotoc_md85", [
-      [ "Demes on a regular spatial grid", "geotiff_parser.html#autotoc_md87", null ],
-      [ "Demes on a variable spatial graph", "geotiff_parser.html#autotoc_md89", null ],
-      [ "Inform local processes", "geotiff_parser.html#autotoc_md91", null ]
-    ] ],
-    [ "Why separating Elevation from Suitability ?", "expressive_suitability_DEM_landscape.html#autotoc_md97", null ],
-    [ "Background", "demographic_histories_in_quetzal.html#autotoc_md100", null ],
-    [ "Graphs structure", "demographic_histories_in_quetzal.html#autotoc_md101", [
-      [ "Phylogenetic Trees", "demographic_histories_in_quetzal.html#autotoc_md102", null ],
-      [ "Phylogenetic Networks", "demographic_histories_in_quetzal.html#autotoc_md103", null ],
-      [ "Spatial Graphs", "demographic_histories_in_quetzal.html#autotoc_md104", null ]
-    ] ],
-    [ "Background", "spatial_graphs.html#autotoc_md106", null ],
-    [ "Distance-based kernel", "dispersal_kernels.html#autotoc_md108", null ],
-    [ "Resistance-based Dispersal", "dispersal_kernels.html#autotoc_md110", null ],
-    [ "Invariants Guarantee", "graphs_in_quetzal.html#autotoc_md72", null ],
-    [ "Edge and Vertices descriptors", "graphs_in_quetzal.html#autotoc_md73", null ],
-    [ "Edge and Vertices Information (Property Classes)", "graphs_in_quetzal.html#autotoc_md74", null ],
-    [ "Depth First Search (DFS)  Algorithms", "graphs_in_quetzal.html#autotoc_md75", null ],
-    [ "DFS on trees", "graphs_in_quetzal.html#autotoc_md76", null ],
     [ "accumulators", null, [
       [ "extract", null, [
         [ "tajima", "accumulator_8hpp.html#a546c9fcb7963ce0b708bb38573235d15", null ]

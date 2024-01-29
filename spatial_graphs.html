@@ -150,36 +150,56 @@ $(document).ready(function(){initNavTree('spatial_graphs.html',''); initResizabl
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
 <ul><ul><li class="level2"><a href="#autotoc_md106">Background</a></li>
+<li class="level2"><a href="#autotoc_md107">Assumptions</a><ul><li class="level3"><a href="#autotoc_md108">Vicinity</a></li>
+<li class="level3"><a href="#autotoc_md109">Bounding policy</a></li>
+<li class="level3"><a href="#autotoc_md110">Directionality</a></li>
+</ul>
+</li>
+<li class="level2"><a href="#autotoc_md111">Example</a></li>
 </ul>
 </ul>
 </div>
-<div class="textblock"><dl class="section note"><dt>Note</dt><dd>The objective of this section is to define the modality of dispersal of a species across a discrete landscape. Because dispersal is so tightly related to graph connectivity and performance, this will require to:<ol type="1">
-<li>transform a <code><a class="el" href="classquetzal_1_1geography_1_1landscape.html" title="Discrete spatio-temporal variations of a set of environmental variables.">quetzal::geography::landscape</a></code> into a <code><a class="el" href="classquetzal_1_1geography_1_1graph.html">quetzal::geography::graph</a></code> selecting the desired level of connectivity</li>
-<li>update the edges information of the graph to reflect the desired rate of movement.</li>
+<div class="textblock"><dl class="section note"><dt>Note</dt><dd>The objective of this section is to understand the concepts and assumptions required to define the modality of dispersal of a species across a landscape. Because dispersal is so tightly related to graph connectivity and performance, this will require to:<ol type="1">
+<li>transform a <code><a class="el" href="classquetzal_1_1geography_1_1landscape.html" title="Discrete spatio-temporal variations of a set of environmental variables.">quetzal::geography::landscape</a></code> into a <code><a class="el" href="classquetzal_1_1geography_1_1graph.html">quetzal::geography::graph</a></code>.</li>
+<li>select the desired assumptions to control the level of connectivity in the graph.</li>
+</ol>
+<ol type="1">
+<li>understand how assumptions define the number of edges in the resulting spatial graph.</li>
 </ol>
 </dd></dl>
 <h2><a class="anchor" id="autotoc_md106"></a>
 Background</h2>
 <p>The challenge of replicating a demographic process within a discrete landscape can be framed as a process on a spatial graph. In this graph, the vertices represent the cells of the landscape grid, while the edges link the areas where migration occurs.</p>
-<p>The quantity of edges in this graph significantly influences both complexity and performance. For instance, in a landscape containing \(n\) cells, considering migration between any two arbitrary locations would result in a complete graph with \(\frac{n(n-1)}{2}\) edges, which could pose computational difficulties.</p>
-<p>For this reason, constructing a spatial graph first requires to account for the modality of dispersal between the vertices (locations) of the graph. We distinguish at least 3 modalities:</p>
+<p>The quantity of edges in this graph significantly influences both complexity and performance. For instance, in a landscape containing \(n\) cells, considering migration between any two arbitrary locations would result in a complete graph with \(\frac{n(n-1)}{2}\) edges, which could pose computational difficulties. A number of alternative assumptions can be made to control the computational feasibility.</p>
+<p>All these choices are independently represented in the code and can be extended (although that may require some efforts).</p>
+<h2><a class="anchor" id="autotoc_md107"></a>
+Assumptions</h2>
+<h3><a class="anchor" id="autotoc_md108"></a>
+Vicinity</h3>
+<p>Constructing a spatial graph first requires to account for the modality of dispersal between the vertices (locations) of the graph. That is, from one source vertex, define which vertices can be targeted: this is the concept of vicinity, or neighborhood.</p>
+<p>We distinguish at least 3 modalities:</p>
 <ul>
-<li>4-neighbors: each cell of the landscape grid is connected only to its cardinal neighbors (N, E, S, W).</li>
-<li>8-neighbors: each cell of the landscape grid is connected only to its cardinal and intercardinal (NE, SE, SW, NW) neighbors.</li>
-<li>fully connected graph: each cell of the landscape grid is connected to all others: the rate of migration between two cells will be a function of the distance or path of least resistance.</li>
+<li><code>connect_4_neighbors</code>: each cell of the landscape grid is connected only to its cardinal neighbors (N, E, S, W).</li>
+<li><code>connect_8_neighbors</code>: each cell of the landscape grid is connected only to its cardinal (N, E, S, W) and intercardinal (NE, SE, SW, NW) neighbors.</li>
+<li><code>connect_fully</code>: each cell of the landscape grid is connected to all others: the graph is complete.</li>
 </ul>
+<h3><a class="anchor" id="autotoc_md109"></a>
+Bounding policy</h3>
 <p>Similarly, assumptions we make about the model's behavior at the bounds of the finite landscape influence the connectivity of the graph. We distinguish at least three bounding modalities:</p>
 <ul>
-<li>mirror: cells at the borders of the landscape are connected to their neighbors, without any further modification. In this case the individuals moving between cells will be <em>reflected</em> into the landscape.</li>
-<li>sink: cells at the borders of the landscape will be connected to a sink vertex: individuals that migrate past the boundaries of the landscape <em>escape</em> into the world and never come back.</li>
-<li>torus: the 2D landscape becomes a 3D torus world, as vertices on opposite borders are linked to their symmetric vertex: individuals that cross the Northern (resp. Western) border reappear on the Southern (resp. Eastern) border.</li>
+<li><code>mirror</code>: cells at the borders of the landscape are connected to their neighbors, without any further modification. In this case the individuals moving between cells will be <em>reflected</em> into the landscape.</li>
+<li><code>sink</code>: cells at the borders of the landscape will be connected to a sink vertex: individuals that migrate past the boundaries of the landscape <em>escape</em> into the world and never come back.</li>
+<li><code>torus</code>: the 2D landscape becomes a 3D torus world, as vertices on opposite borders are linked to their symmetric vertex: individuals that cross the Northern (resp. Western) border reappear on the Southern (resp. Eastern) border.</li>
 </ul>
+<h3><a class="anchor" id="autotoc_md110"></a>
+Directionality</h3>
 <p>Finally, a last assumption we make about the population process that impacts the graph representation is the directionality of the process:</p>
 <ul>
-<li>isotropic migration means that the edge \(( u,v)\) and the edge \((v,u)\) are one and the same.</li>
-<li>anisotropic migration will distinguish between these two edges.</li>
+<li><code>isotropy</code>: the migration process is independent of the direction of movement. Moving from vertex \(u\) to \(v\) follows the same rules as moving from \(v\) to \(u\): the edge \(( u,v)\) is the same as \((v,u)\).</li>
+<li><code>anisotropy</code> migration will distinguish between \(( u,v)\) and \((v,u)\), doubling the number of edges in the graph.</li>
 </ul>
-<p>All these choices are independently represented in the code and can be extended (although that may require some efforts):</p>
+<h2><a class="anchor" id="autotoc_md111"></a>
+Example</h2>
 <p><b>Input</b></p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;quetzal/geography.hpp&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
@@ -203,8 +223,8 @@ Background</h2>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keyword">auto</span> land = landscape_type::from_files({{<span class="stringliteral">&quot;bio1&quot;</span>, file1}, {<span class="stringliteral">&quot;bio12&quot;</span>, file2}}, times);</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="comment">// Our graph will not store any useful information</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">using</span> <a class="code" href="structvertex__info.html">vertex_info</a> = geo::no_property;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">using</span> <a class="code" href="structedge__info.html">edge_info</a> = geo::no_property;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">using</span> <a class="code" href="structvertex__info.html">vertex_info</a> = <a class="code" href="namespacequetzal_1_1geography.html#a4f58e84393fe29b5af798ef6213a2be7">geo::no_property</a>;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">using</span> <a class="code" href="structedge__info.html">edge_info</a> = <a class="code" href="namespacequetzal_1_1geography.html#a4f58e84393fe29b5af798ef6213a2be7">geo::no_property</a>;</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="comment">// Few of the possible assumptions combinations</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
@@ -240,14 +260,15 @@ Background</h2>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    assert( e3 == graph3.num_edges() );</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;Graph 3 has &quot;</span> &lt;&lt; n3 &lt;&lt; <span class="stringliteral">&quot; vertices, &quot;</span> &lt;&lt; e3 &lt;&lt; <span class="stringliteral">&quot; edges.&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
-<div class="ttc" id="aclassquetzal_1_1geography_1_1connect__4__neighbors_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1connect__4__neighbors.html">quetzal::geography::connect_4_neighbors</a></div><div class="ttdef"><b>Definition:</b> vicinity.hpp:88</div></div>
-<div class="ttc" id="aclassquetzal_1_1geography_1_1connect__8__neighbors_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1connect__8__neighbors.html">quetzal::geography::connect_8_neighbors</a></div><div class="ttdef"><b>Definition:</b> vicinity.hpp:238</div></div>
+<div class="ttc" id="aclassquetzal_1_1geography_1_1connect__4__neighbors_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1connect__4__neighbors.html">quetzal::geography::connect_4_neighbors</a></div><div class="ttdef"><b>Definition:</b> vicinity.hpp:85</div></div>
+<div class="ttc" id="aclassquetzal_1_1geography_1_1connect__8__neighbors_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1connect__8__neighbors.html">quetzal::geography::connect_8_neighbors</a></div><div class="ttdef"><b>Definition:</b> vicinity.hpp:232</div></div>
 <div class="ttc" id="aclassquetzal_1_1geography_1_1landscape_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a></div><div class="ttdoc">Discrete spatio-temporal variations of a set of environmental variables.</div><div class="ttdef"><b>Definition:</b> landscape.hpp:42</div></div>
 <div class="ttc" id="aclassquetzal_1_1geography_1_1mirror_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1mirror.html">quetzal::geography::mirror</a></div><div class="ttdoc">Individuals can not escape the landscape's borders.</div><div class="ttdef"><b>Definition:</b> bound_policy.hpp:20</div></div>
 <div class="ttc" id="aclassquetzal_1_1geography_1_1sink_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1sink.html">quetzal::geography::sink</a></div><div class="ttdoc">Individuals can migrate out of the landscape to a sink vertex, but can not come back.</div><div class="ttdef"><b>Definition:</b> bound_policy.hpp:40</div></div>
 <div class="ttc" id="aclassquetzal_1_1geography_1_1torus_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1torus.html">quetzal::geography::torus</a></div><div class="ttdoc">The 2D landscape becomes a 3D torus connecting opposed borders.</div><div class="ttdef"><b>Definition:</b> bound_policy.hpp:65</div></div>
 <div class="ttc" id="anamespacequetzal_1_1geography_html"><div class="ttname"><a href="namespacequetzal_1_1geography.html">quetzal::geography</a></div><div class="ttdoc">Geospatial data formatting and processing.</div><div class="ttdef"><b>Definition:</b> coordinates.hpp:17</div></div>
 <div class="ttc" id="anamespacequetzal_1_1geography_html_a3494b2e821924f7c78c1bec784505778"><div class="ttname"><a href="namespacequetzal_1_1geography.html#a3494b2e821924f7c78c1bec784505778">quetzal::geography::anisotropy</a></div><div class="ttdeci">boost::directedS anisotropy</div><div class="ttdoc">Property of a process dependent of the direction of movement.</div><div class="ttdef"><b>Definition:</b> directionality.hpp:21</div></div>
+<div class="ttc" id="anamespacequetzal_1_1geography_html_a4f58e84393fe29b5af798ef6213a2be7"><div class="ttname"><a href="namespacequetzal_1_1geography.html#a4f58e84393fe29b5af798ef6213a2be7">quetzal::geography::no_property</a></div><div class="ttdeci">boost::no_property no_property</div><div class="ttdoc">Represents no information carried by vertices or edges of a graph.</div><div class="ttdef"><b>Definition:</b> concepts.hpp:57</div></div>
 <div class="ttc" id="anamespacequetzal_1_1geography_html_aefd1b77745ebec6627cd0b29ac101afd"><div class="ttname"><a href="namespacequetzal_1_1geography.html#aefd1b77745ebec6627cd0b29ac101afd">quetzal::geography::from_grid</a></div><div class="ttdeci">auto from_grid(SpatialGrid const &amp;grid, VertexProperty const &amp;v, EdgeProperty const &amp;e, Vicinity const &amp;vicinity, Directionality dir, Policy const &amp;bounding_policy)</div><div class="ttdoc">Spatial graph construction method.</div><div class="ttdef"><b>Definition:</b> from_grid.hpp:30</div></div>
 <div class="ttc" id="anamespacequetzal_1_1geography_html_af6da7867d1c7f8864a04f8b003a4fabd"><div class="ttname"><a href="namespacequetzal_1_1geography.html#af6da7867d1c7f8864a04f8b003a4fabd">quetzal::geography::isotropy</a></div><div class="ttdeci">boost::undirectedS isotropy</div><div class="ttdoc">Property of a process independent of the direction of movement.</div><div class="ttdef"><b>Definition:</b> directionality.hpp:18</div></div>
 <div class="ttc" id="astructedge__info_html"><div class="ttname"><a href="structedge__info.html">edge_info</a></div><div class="ttdef"><b>Definition:</b> newick_parser_2.cpp:12</div></div>

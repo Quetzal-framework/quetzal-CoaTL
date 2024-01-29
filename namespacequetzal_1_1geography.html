@@ -189,6 +189,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1torus.html">torus</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The 2D landscape becomes a 3D torus connecting opposed borders.  <a href="classquetzal_1_1geography_1_1torus.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structquetzal_1_1geography_1_1sparse.html">sparse</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tag for sparse graph representation.  <a href="structquetzal_1_1geography_1_1sparse.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structquetzal_1_1geography_1_1dense.html">dense</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tag for sparse graph representation.  <a href="structquetzal_1_1geography_1_1dense.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structquetzal_1_1geography_1_1connect__fully.html">connect_fully</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1connect__4__neighbors.html">connect_4_neighbors</a></td></tr>
@@ -212,6 +218,10 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:a4f58e84393fe29b5af798ef6213a2be7"><td class="memItemLeft" align="right" valign="top"><a id="a4f58e84393fe29b5af798ef6213a2be7"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#a4f58e84393fe29b5af798ef6213a2be7">no_property</a> = boost::no_property</td></tr>
+<tr class="memdesc:a4f58e84393fe29b5af798ef6213a2be7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents no information carried by vertices or edges of a graph. <br /></td></tr>
+<tr class="separator:a4f58e84393fe29b5af798ef6213a2be7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6da7867d1c7f8864a04f8b003a4fabd"><td class="memItemLeft" align="right" valign="top"><a id="af6da7867d1c7f8864a04f8b003a4fabd"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#af6da7867d1c7f8864a04f8b003a4fabd">isotropy</a> = boost::undirectedS</td></tr>
 <tr class="memdesc:af6da7867d1c7f8864a04f8b003a4fabd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Property of a process independent of the direction of movement. <br /></td></tr>
@@ -220,11 +230,8 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nam
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#a3494b2e821924f7c78c1bec784505778">anisotropy</a> = boost::directedS</td></tr>
 <tr class="memdesc:a3494b2e821924f7c78c1bec784505778"><td class="mdescLeft">&#160;</td><td class="mdescRight">Property of a process dependent of the direction of movement. <br /></td></tr>
 <tr class="separator:a3494b2e821924f7c78c1bec784505778"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f58e84393fe29b5af798ef6213a2be7"><td class="memItemLeft" align="right" valign="top"><a id="a4f58e84393fe29b5af798ef6213a2be7"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>no_property</b> = boost::no_property</td></tr>
-<tr class="separator:a4f58e84393fe29b5af798ef6213a2be7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba81aa3709baa6a11df0337d52244415"><td class="memItemLeft" align="right" valign="top"><a id="aba81aa3709baa6a11df0337d52244415"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>base_type</b> = <a class="el" href="classquetzal_1_1geography_1_1detail_1_1graph__common.html">detail::graph_common</a>&lt; self_type, VertexProperty, no_property, Representation, Directed &gt;</td></tr>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>base_type</b> = <a class="el" href="classquetzal_1_1geography_1_1detail_1_1graph__common.html">detail::graph_common</a>&lt; self_type, VertexProperty, <a class="el" href="namespacequetzal_1_1geography.html#a4f58e84393fe29b5af798ef6213a2be7">no_property</a>, Representation, Directed &gt;</td></tr>
 <tr class="separator:aba81aa3709baa6a11df0337d52244415"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61872e972979dfcb2f89598912e7ffa5"><td class="memItemLeft" align="right" valign="top"><a id="a61872e972979dfcb2f89598912e7ffa5"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#a61872e972979dfcb2f89598912e7ffa5">edge_descriptor</a> = typename <a class="el" href="classquetzal_1_1geography_1_1detail_1_1graph__common.html#ab49a428cbd67b81d959a2056761c2014">base_type::edge_descriptor</a></td></tr>
@@ -253,16 +260,16 @@ Functions</h2></td></tr>
 <tr class="memitem:aefd1b77745ebec6627cd0b29ac101afd"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#aefd1b77745ebec6627cd0b29ac101afd">from_grid</a> (SpatialGrid const &amp;grid, VertexProperty const &amp;v, EdgeProperty const &amp;e, Vicinity const &amp;vicinity, Directionality dir, Policy const &amp;bounding_policy)</td></tr>
 <tr class="memdesc:aefd1b77745ebec6627cd0b29ac101afd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spatial graph construction method.  <a href="namespacequetzal_1_1geography.html#aefd1b77745ebec6627cd0b29ac101afd">More...</a><br /></td></tr>
 <tr class="separator:aefd1b77745ebec6627cd0b29ac101afd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f05af9335923ac31a3470db53764568"><td class="memTemplParams" colspan="2">template&lt;class VertexProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </td></tr>
-<tr class="memitem:a2f05af9335923ac31a3470db53764568"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#a2f05af9335923ac31a3470db53764568">requires</a> (!std::is_same_v&lt; VertexProperty, no_property &gt;) class <a class="el" href="classquetzal_1_1geography_1_1graph.html">graph</a>&lt; VertexProperty</td></tr>
+<tr class="memitem:a2f05af9335923ac31a3470db53764568"><td class="memTemplParams" colspan="2">template&lt;class VertexProperty , connectedness Representation, directional Directed&gt; </td></tr>
+<tr class="memitem:a2f05af9335923ac31a3470db53764568"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#a2f05af9335923ac31a3470db53764568">requires</a> (!std::is_same_v&lt; VertexProperty, <a class="el" href="namespacequetzal_1_1geography.html#a4f58e84393fe29b5af798ef6213a2be7">no_property</a> &gt;) class <a class="el" href="classquetzal_1_1geography_1_1graph.html">graph</a>&lt; VertexProperty</td></tr>
 <tr class="memdesc:a2f05af9335923ac31a3470db53764568"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="anchor" id="SpatialGraphVertexPropertyNoProperty"></a>A graph class with information attached to vertices.  <a href="namespacequetzal_1_1geography.html#a2f05af9335923ac31a3470db53764568">More...</a><br /></td></tr>
 <tr class="separator:a2f05af9335923ac31a3470db53764568"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6405005a5098bb475c8bbb63a184eee1"><td class="memTemplParams" colspan="2">template&lt;class EdgeProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </td></tr>
-<tr class="memitem:a6405005a5098bb475c8bbb63a184eee1"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#a6405005a5098bb475c8bbb63a184eee1">requires</a> (!std::is_same_v&lt; EdgeProperty, no_property &gt;) class <a class="el" href="classquetzal_1_1geography_1_1graph.html">graph</a>&lt; no_property</td></tr>
+<tr class="memitem:a6405005a5098bb475c8bbb63a184eee1"><td class="memTemplParams" colspan="2">template&lt;class EdgeProperty , connectedness Representation, directional Directed&gt; </td></tr>
+<tr class="memitem:a6405005a5098bb475c8bbb63a184eee1"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#a6405005a5098bb475c8bbb63a184eee1">requires</a> (!std::is_same_v&lt; EdgeProperty, <a class="el" href="namespacequetzal_1_1geography.html#a4f58e84393fe29b5af798ef6213a2be7">no_property</a> &gt;) class <a class="el" href="classquetzal_1_1geography_1_1graph.html">graph</a>&lt; <a class="el" href="namespacequetzal_1_1geography.html#a4f58e84393fe29b5af798ef6213a2be7">no_property</a></td></tr>
 <tr class="memdesc:a6405005a5098bb475c8bbb63a184eee1"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="anchor" id="SpatialGraphNoPropertyEdgeProperty"></a>A graph class with information attached to edges.  <a href="namespacequetzal_1_1geography.html#a6405005a5098bb475c8bbb63a184eee1">More...</a><br /></td></tr>
 <tr class="separator:a6405005a5098bb475c8bbb63a184eee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4cc95aef34443b164f4252556da62f75"><td class="memTemplParams" colspan="2">template&lt;class VertexProperty , class EdgeProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </td></tr>
-<tr class="memitem:a4cc95aef34443b164f4252556da62f75"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#a4cc95aef34443b164f4252556da62f75">requires</a> (!std::is_same_v&lt; VertexProperty, no_property &gt; and !std::is_same_v&lt; EdgeProperty, no_property &gt;) class <a class="el" href="classquetzal_1_1geography_1_1graph.html">graph</a>&lt; VertexProperty</td></tr>
+<tr class="memitem:a4cc95aef34443b164f4252556da62f75"><td class="memTemplParams" colspan="2">template&lt;class VertexProperty , class EdgeProperty , connectedness Representation, directional Directed&gt; </td></tr>
+<tr class="memitem:a4cc95aef34443b164f4252556da62f75"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#a4cc95aef34443b164f4252556da62f75">requires</a> (!std::is_same_v&lt; VertexProperty, <a class="el" href="namespacequetzal_1_1geography.html#a4f58e84393fe29b5af798ef6213a2be7">no_property</a> &gt; and !std::is_same_v&lt; EdgeProperty, <a class="el" href="namespacequetzal_1_1geography.html#a4f58e84393fe29b5af798ef6213a2be7">no_property</a> &gt;) class <a class="el" href="classquetzal_1_1geography_1_1graph.html">graph</a>&lt; VertexProperty</td></tr>
 <tr class="memdesc:a4cc95aef34443b164f4252556da62f75"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="anchor" id="SpatialGraphVertexPropertyEdgeProperty"></a>A graph class with information attached to vertices.  <a href="namespacequetzal_1_1geography.html#a4cc95aef34443b164f4252556da62f75">More...</a><br /></td></tr>
 <tr class="separator:a4cc95aef34443b164f4252556da62f75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3e6c428433c62c3549e2117e4a27186"><td class="memTemplParams" colspan="2"><a id="ad3e6c428433c62c3549e2117e4a27186"></a>
@@ -307,15 +314,23 @@ Variables</h2></td></tr>
 <tr class="memitem:a689ed38bf7c9798639cdb0cfb3345694"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#a689ed38bf7c9798639cdb0cfb3345694">Coordinate</a></td></tr>
 <tr class="memdesc:a689ed38bf7c9798639cdb0cfb3345694"><td class="mdescLeft">&#160;</td><td class="mdescRight">Requires a type to define a lat and a lon member.  <a href="namespacequetzal_1_1geography.html#a689ed38bf7c9798639cdb0cfb3345694">More...</a><br /></td></tr>
 <tr class="separator:a689ed38bf7c9798639cdb0cfb3345694"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3236613bdfc5f5eb7beb668a4cb11db"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ac3236613bdfc5f5eb7beb668a4cb11db"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><b>two_dimensional</b></td></tr>
-<tr class="separator:ac3236613bdfc5f5eb7beb668a4cb11db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb1f52b610b5c763204bba0764de9200"><td class="memTemplParams" colspan="2"><a id="abb1f52b610b5c763204bba0764de9200"></a>
 template&lt;typename T &gt; </td></tr>
-<tr class="memitem:abb1f52b610b5c763204bba0764de9200"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><b>directional</b> = detail::is_any_of&lt;T, <a class="el" href="namespacequetzal_1_1geography.html#af6da7867d1c7f8864a04f8b003a4fabd">isotropy</a>, <a class="el" href="namespacequetzal_1_1geography.html#a3494b2e821924f7c78c1bec784505778">anisotropy</a>&gt;</td></tr>
+<tr class="memitem:abb1f52b610b5c763204bba0764de9200"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#abb1f52b610b5c763204bba0764de9200">directional</a> = detail::is_any_of&lt;T, <a class="el" href="namespacequetzal_1_1geography.html#af6da7867d1c7f8864a04f8b003a4fabd">isotropy</a>, <a class="el" href="namespacequetzal_1_1geography.html#a3494b2e821924f7c78c1bec784505778">anisotropy</a>&gt;</td></tr>
+<tr class="memdesc:abb1f52b610b5c763204bba0764de9200"><td class="mdescLeft">&#160;</td><td class="mdescRight">Concept to represent the directionality of edges in a graph. <br /></td></tr>
 <tr class="separator:abb1f52b610b5c763204bba0764de9200"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84a8d83928673908e236d565cc1e9502"><td class="memTemplParams" colspan="2"><a id="a84a8d83928673908e236d565cc1e9502"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a84a8d83928673908e236d565cc1e9502"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#a84a8d83928673908e236d565cc1e9502">connectedness</a> = detail::is_any_of&lt;T, <a class="el" href="structquetzal_1_1geography_1_1sparse.html">sparse</a>, <a class="el" href="structquetzal_1_1geography_1_1dense.html">dense</a>&gt;</td></tr>
+<tr class="memdesc:a84a8d83928673908e236d565cc1e9502"><td class="mdescLeft">&#160;</td><td class="mdescRight">Concept to represent the connectedness of a graph. <br /></td></tr>
+<tr class="separator:a84a8d83928673908e236d565cc1e9502"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3236613bdfc5f5eb7beb668a4cb11db"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ac3236613bdfc5f5eb7beb668a4cb11db"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#ac3236613bdfc5f5eb7beb668a4cb11db">two_dimensional</a></td></tr>
+<tr class="memdesc:ac3236613bdfc5f5eb7beb668a4cb11db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Concept to represent a 2D spatial grid.  <a href="namespacequetzal_1_1geography.html#ac3236613bdfc5f5eb7beb668a4cb11db">More...</a><br /></td></tr>
+<tr class="separator:ac3236613bdfc5f5eb7beb668a4cb11db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1eaf3470c14887d56dbd7a834ad6fba9"><td class="memTemplParams" colspan="2">template&lt;typename T , class G , class S &gt; </td></tr>
-<tr class="memitem:a1eaf3470c14887d56dbd7a834ad6fba9"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><b>bounding</b></td></tr>
+<tr class="memitem:a1eaf3470c14887d56dbd7a834ad6fba9"><td class="memTemplItemLeft" align="right" valign="top">concept&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacequetzal_1_1geography.html#a1eaf3470c14887d56dbd7a834ad6fba9">bounding</a></td></tr>
+<tr class="memdesc:a1eaf3470c14887d56dbd7a834ad6fba9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Concept to represent the bounding policy of a spatial graph.  <a href="namespacequetzal_1_1geography.html#a1eaf3470c14887d56dbd7a834ad6fba9">More...</a><br /></td></tr>
 <tr class="separator:a1eaf3470c14887d56dbd7a834ad6fba9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d6c61dad098928f2ee5600053c836b0"><td class="memItemLeft" align="right" valign="top"><a id="a5d6c61dad098928f2ee5600053c836b0"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Representation</b></td></tr>
@@ -631,12 +646,12 @@ template&lt;GridCoordinate C1, GridCoordinate C2&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class EdgeProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </div>
+template&lt;class EdgeProperty , connectedness Representation, directional Directed&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">quetzal::geography::requires </td>
           <td>(</td>
-          <td class="paramtype">!std::is_same_v&lt; EdgeProperty, no_property &gt;&#160;</td>
+          <td class="paramtype">!std::is_same_v&lt; EdgeProperty, <a class="el" href="namespacequetzal_1_1geography.html#a4f58e84393fe29b5af798ef6213a2be7">no_property</a> &gt;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -660,12 +675,12 @@ template&lt;class EdgeProperty , template&lt; typename, typename, typename, type
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class VertexProperty , class EdgeProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </div>
+template&lt;class VertexProperty , class EdgeProperty , connectedness Representation, directional Directed&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">quetzal::geography::requires </td>
           <td>(</td>
-          <td class="paramtype">!std::is_same_v&lt; VertexProperty, no_property &gt; and !std::is_same_v&lt; EdgeProperty, no_property &gt;&#160;</td>
+          <td class="paramtype">!std::is_same_v&lt; VertexProperty, <a class="el" href="namespacequetzal_1_1geography.html#a4f58e84393fe29b5af798ef6213a2be7">no_property</a> &gt; and !std::is_same_v&lt; EdgeProperty, <a class="el" href="namespacequetzal_1_1geography.html#a4f58e84393fe29b5af798ef6213a2be7">no_property</a> &gt;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -690,12 +705,12 @@ template&lt;class VertexProperty , class EdgeProperty , template&lt; typename, t
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class VertexProperty , template&lt; typename, typename, typename, typename, typename &gt; class Representation, class Directed &gt; </div>
+template&lt;class VertexProperty , connectedness Representation, directional Directed&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">quetzal::geography::requires </td>
           <td>(</td>
-          <td class="paramtype">!std::is_same_v&lt; VertexProperty, no_property &gt;&#160;</td>
+          <td class="paramtype">!std::is_same_v&lt; VertexProperty, <a class="el" href="namespacequetzal_1_1geography.html#a4f58e84393fe29b5af798ef6213a2be7">no_property</a> &gt;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -734,6 +749,8 @@ template&lt;typename T , class G , class S &gt; </div>
 <div class="line">                                          }</div>
 <div class="ttc" id="anamespacequetzal_1_1coalescence_html_a06357d81858f27f2ebb3a0d250a8969c"><div class="ttname"><a href="namespacequetzal_1_1coalescence.html#a06357d81858f27f2ebb3a0d250a8969c">quetzal::coalescence::requires</a></div><div class="ttdeci">requires(!std::is_same_v&lt; VertexProperty, no_property &gt;) class binary_tree&lt; VertexProperty</div><div class="ttdoc">A binary tree class with information attached to vertices.</div></div>
 </div><!-- fragment -->
+<p>Concept to represent the bounding policy of a spatial graph. </p>
+
 </div>
 </div>
 <a id="a689ed38bf7c9798639cdb0cfb3345694"></a>
@@ -817,6 +834,8 @@ template&lt;typename T &gt; </div>
 <div class="line">                              <a class="code" href="namespacequetzal_1_1coalescence.html#a06357d81858f27f2ebb3a0d250a8969c">requires</a> std::convertible_to&lt;decltype(a.height()), <span class="keywordtype">int</span>&gt;;</div>
 <div class="line">                          }</div>
 </div><!-- fragment -->
+<p>Concept to represent a 2D spatial grid. </p>
+
 </div>
 </div>
 </div><!-- contents -->
