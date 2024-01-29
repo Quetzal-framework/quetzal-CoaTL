@@ -29,7 +29,7 @@
   - @subpage Phylogenetic Trees
   - @subpage Phylogenetic Networks
   - @subpage spatial_graphs
-    - @subpage Construction from spatial grids
+    - @subpage spatial_graph_construction
     - @subpage Setting Vertex/Edge information at construction time
     - @subpage dispersal_kernels
     - @subpage Growth Expressions
