@@ -26,17 +26,14 @@
 ## Demographic Histories
 
 - @subpage demographic_histories_in_quetzal
-- @subpage Phylogenetic Trees
-- @subpage Phylogenetic Networks
-- @subpage spatial_graphs
-  - @subpage Construction from landscapes
-  - @subpage Construction from abstract grids
-  - @subpage SettingVertex/Edge information at construction
-  - @subpage dispersal_kernels
-
-- Examples
-  - @subpage Growth Expressions
-  - @subpage Memory Management
+  - @subpage Phylogenetic Trees
+  - @subpage Phylogenetic Networks
+  - @subpage spatial_graphs
+    - @subpage Construction from spatial grids
+    - @subpage Setting Vertex/Edge information at construction time
+    - @subpage dispersal_kernels
+    - @subpage Growth Expressions
+    - @subpage Memory Management
 
 ## Graphs
 
@@ -830,34 +827,47 @@ Another category of models puts an emphasis on the geographic structure of these
 @tableofcontents
 
 @note 
-The objective of this section is to define the modality of dispersal of a species across a discrete landscape. Because dispersal is so tightly related to graph connectivity and performance, this will require to:
-1. transform a `quetzal::geography::landscape` into a `quetzal::geography::graph` selecting the desired level of connectivity
-2. update the edges information of the graph to reflect the desired rate of movement.
+The objective of this section is to understand the concepts and assumptions required to define the modality of dispersal of a species across a landscape. Because dispersal is so tightly related to graph connectivity and performance, this will require to:
+1. transform a `quetzal::geography::landscape` into a `quetzal::geography::graph`.
+2. select the desired assumptions to control the level of connectivity in the graph.
+2. understand how assumptions define the number of edges in the resulting spatial graph.
 
 ## Background
 
 The challenge of replicating a demographic process within a discrete landscape can be framed as a process on a spatial graph. In this graph, the vertices represent the cells of the landscape grid, while the edges link the areas where migration occurs.
 
-The quantity of edges in this graph significantly influences both complexity and performance. For instance, in a landscape containing \f$n\f$ cells, considering migration between any two arbitrary locations would result in a complete graph with \f$\frac{n(n-1)}{2}\f$ edges, which could pose computational difficulties.
+The quantity of edges in this graph significantly influences both complexity and performance. For instance, in a landscape containing \f$n\f$ cells, considering migration between any two arbitrary locations would result in a complete graph with \f$\frac{n(n-1)}{2}\f$ edges, which could pose computational difficulties. A number of alternative assumptions can be made to control the computational feasibility.
 
-For this reason, constructing a spatial graph first requires to account for the modality of dispersal between the vertices (locations) of the graph. We distinguish at least 3 modalities:
+All these choices are independently represented in the code and can be extended (although that may require some efforts).
 
-* 4-neighbors: each cell of the landscape grid is connected only to its cardinal neighbors (N, E, S, W). 
-* 8-neighbors: each cell of the landscape grid is connected only to its cardinal and intercardinal (NE, SE, SW, NW) neighbors.
-* fully connected graph: each cell of the landscape grid is connected to all others: the rate of migration between two cells will be a function of the distance or path of least resistance.
+## Assumptions 
+
+### Vicinity
+
+Constructing a spatial graph first requires to account for the modality of dispersal between the vertices (locations) of the graph. That is, from one source vertex, define which vertices can be targeted: this is the concept of vicinity, or neighborhood.
+
+We distinguish at least 3 modalities:
+
+* `connect_4_neighbors`: each cell of the landscape grid is connected only to its cardinal neighbors (N, E, S, W). 
+* `connect_8_neighbors`: each cell of the landscape grid is connected only to its cardinal (N, E, S, W) and intercardinal (NE, SE, SW, NW) neighbors.
+* `connect_fully`: each cell of the landscape grid is connected to all others: the graph is complete.
+
+### Bounding policy
 
 Similarly, assumptions we make about the model's behavior at the bounds of the finite landscape influence the connectivity of the graph. We distinguish at least three bounding modalities:
 
-* mirror: cells at the borders of the landscape are connected to their neighbors, without any further modification. In this case the individuals moving between cells will be *reflected* into the landscape.
-* sink: cells at the borders of the landscape will be connected to a sink vertex: individuals that migrate past the boundaries of the landscape *escape* into the world and never come back.
-* torus: the 2D landscape becomes a 3D torus world, as vertices on opposite borders are linked to their symmetric vertex: individuals that cross the Northern (resp. Western) border reappear on the Southern (resp. Eastern) border.
+* `mirror`: cells at the borders of the landscape are connected to their neighbors, without any further modification. In this case the individuals moving between cells will be *reflected* into the landscape.
+* `sink`: cells at the borders of the landscape will be connected to a sink vertex: individuals that migrate past the boundaries of the landscape *escape* into the world and never come back.
+* `torus`: the 2D landscape becomes a 3D torus world, as vertices on opposite borders are linked to their symmetric vertex: individuals that cross the Northern (resp. Western) border reappear on the Southern (resp. Eastern) border.
+
+### Directionality
 
 Finally, a last assumption we make about the population process that impacts the graph representation is the directionality of the process: 
 
-* isotropic migration means that the edge \f$( u,v)\f$ and the edge \f$(v,u)\f$ are one and the same. 
-* anisotropic migration will distinguish between these two edges.
+* `isotropy`: the migration process is independent of the direction of movement. Moving from vertex \f$u\f$ to \f$v\f$ follows the same rules as moving from \f$v\f$ to \f$u\f$: the edge \f$( u,v)\f$ is the same as \f$(v,u)\f$.
+* `anisotropy` migration will distinguish between \f$( u,v)\f$ and \f$(v,u)\f$, doubling the number of edges in the graph.
 
-All these choices are independently represented in the code and can be extended (although that may require some efforts):
+## Example 
 
 **Input**
 
@@ -866,6 +876,70 @@ All these choices are independently represented in the code and can be extended 
 **Output**
 
 @include{lineno} geography_graph_1.txt
+
+---
+
+[//]: # (----------------------------------------------------------------------)
+@page spatial_graph_construction Construction
+@tableofcontents
+
+## Background
+
+Constructing a spatial graph from a spatial grid, also known as a raster, is a fundamental step in spatial analysis and modeling. Spatial graphs provide a powerful representation of relationships and connectivity between different locations within a geographic area. This process involves transforming the discrete and gridded structure of a spatial grid into a network of vertices and edges, where vertices represent spatial entities (such as cells or locations), and edges capture the spatial relationships and connections between these entities.
+
+There are different ways to build such graph.
+
+## Graph from raster
+
+**Input**
+
+@include{lineno} geography_graph_2.cpp
+
+**Output**
+
+@include{lineno} geography_graph_2.txt
+
+## Graph from landscape
+
+**Input**
+
+@include{lineno} geography_graph_3.cpp
+
+**Output**
+
+@include{lineno} geography_graph_3.txt
+
+## Graph from abstract grid
+
+**Input**
+
+@include{lineno} geography_graph_4.cpp
+
+**Output**
+
+@include{lineno} geography_graph_4.txt
+
+## From scratch
+
+### Sparse Graph
+
+**Input**
+
+@include{lineno} geography_graph_5.cpp
+
+**Output**
+
+@include{lineno} geography_graph_5.txt
+
+### Dense Graph
+
+**Input**
+
+@include{lineno} geography_graph_6.cpp
+
+**Output**
+
+@include{lineno} geography_graph_6.txt
 
 ---
 

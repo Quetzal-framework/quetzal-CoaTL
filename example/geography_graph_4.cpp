@@ -5,7 +5,7 @@ namespace geo = quetzal::geography;
 // User-defined concept of spatial grid
 struct MySpatialGrid
 {
-    // It is just required to define these two functions
+    // it is just required to define these two functions
     constexpr int width() const { return 300; }
     constexpr int height() const { return 100; }
 };

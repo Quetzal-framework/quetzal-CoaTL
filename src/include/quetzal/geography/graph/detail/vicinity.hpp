@@ -51,8 +51,7 @@ namespace detail
 
 struct connect_fully
 {
-    template <directional T, class VertexProperty, class EdgeProperty>
-    using graph_type = graph<VertexProperty, EdgeProperty, boost::adjacency_matrix, T>;
+    using connectedness = dense;
 
     template <class G, two_dimensional S, bounding<G, S> B>
     void connect(G &graph, S const &grid, B bound_policy) const
@@ -60,8 +59,6 @@ struct connect_fully
         using directed_category = typename G::directed_category;
         using vertex_property = typename G::vertex_property;
         using edge_property = typename G::edge_property;
-
-        static_assert(std::same_as<G, graph_type<directed_category, vertex_property, edge_property>>);
 
         int width = grid.width();
         int height = grid.height();
@@ -87,8 +84,7 @@ struct connect_fully
 class connect_4_neighbors
 {
   public:
-    template <directional T, class VertexProperty, class EdgeProperty>
-    using graph_type = graph<VertexProperty, EdgeProperty, boost::adjacency_list, T>;
+    using connectedness = sparse;
 
   private:
     template <typename G> void connect(auto s, auto t, G &graph, auto const &grid) const
@@ -175,8 +171,6 @@ class connect_4_neighbors
         using vertex_property = typename G::vertex_property;
         using edge_property = typename G::edge_property;
 
-        static_assert(std::same_as<G, graph_type<directed_category, vertex_property, edge_property>>);
-
         int width = grid.width();
         int height = grid.height();
         int num_land_vertices = width * height;
@@ -237,8 +231,7 @@ class connect_4_neighbors
 class connect_8_neighbors
 {
   public:
-    template <directional T, class VertexProperty, class EdgeProperty>
-    using graph_type = graph<VertexProperty, EdgeProperty, boost::adjacency_list, T>;
+    using connectedness = sparse;
 
   private:
     template <class G> void connect(auto s, auto t, G &graph, auto const &grid) const
@@ -246,8 +239,6 @@ class connect_8_neighbors
         using directed_category = typename G::directed_category;
         using vertex_property = typename G::vertex_property;
         using edge_property = typename G::edge_property;
-
-        static_assert(std::same_as<G, graph_type<directed_category, vertex_property, edge_property>>);
 
         int width = grid.width();
         int height = grid.height();
@@ -353,7 +344,6 @@ class connect_8_neighbors
         using directed_category = typename G::directed_category;
         using vertex_property = typename G::vertex_property;
         using edge_property = typename G::edge_property;
-        static_assert(std::same_as<G, graph_type<directed_category, vertex_property, edge_property>>);
 
         int width = grid.width();
         int height = grid.height();

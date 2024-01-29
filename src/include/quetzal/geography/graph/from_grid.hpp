@@ -30,7 +30,8 @@ template <two_dimensional SpatialGrid, class VertexProperty, class EdgeProperty,
 auto from_grid(SpatialGrid const &grid, VertexProperty const &v, EdgeProperty const &e, Vicinity const &vicinity,
                Directionality dir, Policy const &bounding_policy)
 {
-    using graph_type = typename Vicinity::graph_type<Directionality, VertexProperty, EdgeProperty>;
+    using graph_type = quetzal::geography::graph<VertexProperty, EdgeProperty, typename Vicinity::connectedness, Directionality>;
+    // using graph_type = typename Vicinity::graph_type<Directionality, VertexProperty, EdgeProperty>;
     // Graph size has to be static in dense graphs :/ 
     graph_type graph( grid.width() * grid.height() + bounding_policy.num_extra_vertices() ) ;
     vicinity.connect(graph, grid, bounding_policy);
