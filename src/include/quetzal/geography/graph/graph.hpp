@@ -13,8 +13,6 @@
 #include <boost/range/adaptor/transformed.hpp>
 #include <boost/range/iterator_range.hpp>
 
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/adjacency_matrix.hpp>
 #include <boost/graph/connected_components.hpp>
 #include <boost/graph/isomorphism.hpp>
 #include <boost/graph/random.hpp>
@@ -31,27 +29,18 @@
 
 namespace quetzal::geography
 {
-using no_property = boost::no_property;
 
 namespace detail
 {
-template <template <class...> class Lhs, template <class...> class Rhs> constexpr bool is_same_template = false;
-
-template <template <class...> class Lhs> constexpr bool is_same_template<Lhs, Lhs> = true;
 
 // Base class and common implementation
-template <class CRTP, class VertexProperty, class EdgeProperty,
-          template <class ...> class Representation, class Directed>
+template <class CRTP, class VertexProperty, class EdgeProperty, connectedness Representation, directional Directed>
 class graph_common
 {
 
   protected:
     /// @brief The type of graph hold by the graph class - disallow parallel edges
-    using base_type =
-        std::conditional_t<is_same_template<Representation, boost::adjacency_list>,
-                           Representation<boost::setS, boost::vecS, Directed, VertexProperty, EdgeProperty>,
-                           Representation<Directed, VertexProperty, EdgeProperty, no_property, std::allocator<bool>>>;
-
+    using base_type = typename Representation::rebind<Directed, VertexProperty, EdgeProperty>;
     base_type _graph;
 
   public:
@@ -64,10 +53,6 @@ class graph_common
     explicit graph_common(size_t n) : _graph(n)
     {
     }
-
-    /// @brief Vertex information
-    template <typename T, typename U, typename V, typename W, typename X>
-    using representation_type = Representation<T, U, V, W, X>;
 
     /// @brief Vertex information
     using vertex_property = VertexProperty;
@@ -272,8 +257,7 @@ class graph_common
 } // end namespace detail
 
 // Base for template partial specialization
-template <class VertexProperty, class EdgeProperty,
-          template <typename, typename, typename, typename, typename> class Representation, class Directed>
+template <class VertexProperty, class EdgeProperty, connectedness Representation, directional Directed>
 class graph
 {
 };
@@ -283,10 +267,9 @@ class graph
 /// @details This graph structure is bidirected and allows to model a forest of disconnected graphs and isolated
 /// vertices.
 /// @invariant Guarantees that if \f$(u,v)\f$ is an edge of the graph, then \f$(v,u)\f$ is also an edge.
-template <template <typename, typename, typename, typename, typename> class Representation, class Directed>
-class graph<no_property, no_property, Representation, Directed>
-    : public detail::graph_common<graph<no_property, no_property, Representation, Directed>, no_property, no_property,
-                                  Representation, Directed>
+template < connectedness Representation, directional Directed>
+class graph<no_property, no_property, Representation, Directed> : 
+public detail::graph_common<graph<no_property, no_property, Representation, Directed>, no_property, no_property, Representation, Directed>
 {
   private:
     using self_type = graph<no_property, no_property, Representation, Directed>;
@@ -315,8 +298,7 @@ class graph<no_property, no_property, Representation, Directed>
 ///          This graph structure is bidirected and allows to model a forest of disconnected graphs and isolated
 ///          vertices.
 /// @invariant Guarantees that if \f$(u,v)\f$ is an edge of the graph, then \f$(v,u)\f$ is also an edge.
-template <class VertexProperty, template <typename, typename, typename, typename, typename> class Representation,
-          class Directed>
+template <class VertexProperty, connectedness Representation, directional Directed>
     requires(!std::is_same_v<VertexProperty, no_property>)
 class graph<VertexProperty, no_property, Representation, Directed>
     : public detail::graph_common<graph<VertexProperty, no_property, Representation, Directed>, VertexProperty,
@@ -384,8 +366,7 @@ class graph<VertexProperty, no_property, Representation, Directed>
 ///          This graph structure is bidirected and allows to model a forest of disconnected graphs and isolated
 ///          vertices.
 /// @invariant Guarantees that if \f$(u,v)\f$ is an edge of the graph, then \f$(v,u)\f$ is also an edge.
-template <class EdgeProperty, template <typename, typename, typename, typename, typename> class Representation,
-          class Directed>
+template <class EdgeProperty, connectedness Representation, directional Directed>
     requires(!std::is_same_v<EdgeProperty, no_property>)
 class graph<no_property, EdgeProperty, Representation, Directed>
     : public detail::graph_common<graph<no_property, EdgeProperty, Representation, Directed>, no_property, EdgeProperty,
@@ -457,8 +438,7 @@ class graph<no_property, EdgeProperty, Representation, Directed>
 ///          This graph structure is bidirected and allows to model a forest of disconnected graphs and isolated
 ///          vertices.
 /// @invariant Guarantees that if \f$(u,v)\f$ is an edge of the graph, then \f$(v,u)\f$ is also an edge.
-template <class VertexProperty, class EdgeProperty,
-          template <typename, typename, typename, typename, typename> class Representation, class Directed>
+template <class VertexProperty, class EdgeProperty, connectedness Representation, directional Directed>
     requires(!std::is_same_v<VertexProperty, no_property> and !std::is_same_v<EdgeProperty, no_property>)
 class graph<VertexProperty, EdgeProperty, Representation, Directed>
     : public detail::graph_common<graph<VertexProperty, EdgeProperty, Representation, Directed>, VertexProperty,
