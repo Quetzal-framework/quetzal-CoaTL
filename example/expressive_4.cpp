@@ -22,7 +22,7 @@ int main()
     std::iota(times.begin(), times.end(), 2001);
 
     // Makes sure the rasters are aligned
-    auto landscape = landscape_type::from_files({{"suit", file1}, {"DEM", file2}}, times);
+    auto landscape = landscape_type::from_file({{"suit", file1}, {"DEM", file2}}, times);
 
     // lightweight functor returning empty optionals where NA
     auto s_view = landscape["suit"].to_view();

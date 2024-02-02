@@ -24,18 +24,18 @@
 namespace quetzal::geography
 {
 /// @brief Discrete spatio-temporal variations of a set of environmental variables.
-/// @details  Read and write multiple georeferenced raster datasets with multiple bands (layers).
+/// @details  Read and write multiple geo-referenced raster datasets with multiple bands (layers).
 ///           Multiple quetzal::geography::raster objects are assembled into a multivariate discrete
-///           quetzal::geography::landscape. This geospatial collection is constructed from raster files and gives
+///           quetzal::geography::landscape. This geo-spatial collection is constructed from raster files and gives
 ///           strong guarantees on grids consistency.
 /// @remark Working with multiple variables can lead to simulation problems if the rasters have even slightly different
-/// grid properties,
+///         grid properties,
 ///         like different resolutions, origins or extent. To prevent these problems from happening, a
 ///         `quetzal::geography::landscape` wraps multiple quetzal::geography::raster objects into one single coherent
 ///         object and checks that all rasters are aligned.
 /// @remark A quetzal::geography::landscape shares a large part of its spatial semantics with a
 /// quetzal::geography::raster.
-/// @tparam Key A key used to uniquely identifie a variable, e.g. std::string.
+/// @tparam Key A key used to uniquely identify a variable, e.g. std::string.
 /// @tparam Time Type used as time period for every band, e.g. std::string with `4.2-0.3 ka`
 /// @ingroup geography
 template <typename Key = std::string, typename Time = int> class landscape
@@ -132,7 +132,7 @@ template <typename Key = std::string, typename Time = int> class landscape
     /// @return A raster object
     /// @remark error will be thrown if the datasets do not have the exactly same geographical properties (origin,
     /// extent, resolution, number of layers).
-    static landscape from_files(const std::map<key_type, std::filesystem::path> &files,
+    inline static landscape from_file(const std::map<key_type, std::filesystem::path> &files,
                                 const std::vector<time_type> &times)
     {
         return landscape(files, times);
@@ -146,7 +146,7 @@ template <typename Key = std::string, typename Time = int> class landscape
     /// @param file the file name where to save
     template <typename Callable>
         requires std::invocable<Callable, location_descriptor, time_descriptor, std::optional<double>>
-    void to_geotiff(Callable f, time_descriptor start, time_descriptor end, const std::filesystem::path &file) const
+    inline void to_geotiff(Callable f, time_descriptor start, time_descriptor end, const std::filesystem::path &file) const
     {
         _variables.cbegin()->second.to_geotiff(f, start, end, file);
     }
@@ -154,7 +154,7 @@ template <typename Key = std::string, typename Time = int> class landscape
     /// @brief Export spatial points to a shapefile
     /// @param points the points to export
     /// @param file the path to write to
-    void to_shapefile(std::vector<latlon> points, const std::filesystem::path &file) const
+    inline void to_shapefile(std::vector<latlon> points, const std::filesystem::path &file) const
     {
         _variables.cbegin()->second.to_shapefile(points, file);
     }
@@ -162,7 +162,7 @@ template <typename Key = std::string, typename Time = int> class landscape
     /// @brief Export geolocalized counts as spatial-points to a shapefile
     /// @brief counts the number of points at every point
     /// @brief file the path to write to.
-    void to_shapefile(std::map<latlon, int> counts, const std::filesystem::path &file) const
+    inline void to_shapefile(std::map<latlon, int> counts, const std::filesystem::path &file) const
     {
         _variables.cbegin()->second.to_shapefile(counts, file);
     }
@@ -190,14 +190,14 @@ template <typename Key = std::string, typename Time = int> class landscape
 
     /// @brief Retrieves the number of variables (rasters)
     /// @return the number of variables
-    auto num_variables() const noexcept
+    inline auto num_variables() const noexcept
     {
         return _variables.size();
     }
 
     /// @brief Number of cells in the raster
     /// @return the number of variables
-    auto num_locations() const noexcept
+    inline auto num_locations() const noexcept
     {
         return this->width() * this->height();
     }
@@ -211,7 +211,7 @@ template <typename Key = std::string, typename Time = int> class landscape
     ///        If no such raster exists, an exception of type std::out_of_range is thrown.
     /// @param key the identifier of the variable to be retrieved
     /// @return the raster object of the specified variable.
-    const raster<time_type> &operator[](const key_type &key) const
+    inline const raster<time_type> &operator[](const key_type &key) const
     {
         return _variables.at(key);
     }
@@ -220,7 +220,7 @@ template <typename Key = std::string, typename Time = int> class landscape
     ///        If no such raster exists, an exception of type std::out_of_range is thrown.
     /// @param key the identifier of the variable to be retrieved
     /// @return the raster object of the specified variable.
-    raster<time_type> &operator[](const key_type &key)
+    inline raster<time_type> &operator[](const key_type &key)
     {
         return _variables.at(key);
     }
@@ -231,37 +231,37 @@ template <typename Key = std::string, typename Time = int> class landscape
     /// @{
 
     /// @brief Origin of the spatial grid
-    latlon origin() const noexcept
+    inline latlon origin() const noexcept
     {
         return _variables.cbegin()->second.origin();
     }
 
     /// @brief Resolution of the spatial grid
-    resolution<decimal_degree> get_resolution() const noexcept
+    inline resolution<decimal_degree> get_resolution() const noexcept
     {
         return _variables.cbegin()->second.get_resolution();
     }
 
     /// @brief Extent of the spatial grid
-    extent<decimal_degree> get_extent() const noexcept
+    inline extent<decimal_degree> get_extent() const noexcept
     {
         return _variables.cbegin()->second.get_extent();
     }
 
     /// @brief Width of the spatial grid
-    int width() const noexcept
+    inline int width() const noexcept
     {
         return _variables.cbegin()->second.width();
     }
 
     /// @brief Height of the spatial grid
-    int height() const noexcept
+    inline int height() const noexcept
     {
         return _variables.cbegin()->second.height();
     }
 
     /// @brief Depth of the spatial grid
-    int depth() const noexcept
+    inline int depth() const noexcept
     {
         return _variables.cbegin()->second.depth();
     }
@@ -272,33 +272,63 @@ template <typename Key = std::string, typename Time = int> class landscape
     /// @{
 
     /// @brief Location descriptors (unique identifiers) of the grid cells
-    auto locations() const noexcept
+    inline auto locations() const noexcept
     {
         return _variables.cbegin()->second.locations();
     }
 
     /// @brief Time descriptors (unique identifiers) of the dataset bands
-    auto times() const noexcept
+    inline auto times() const noexcept
     {
         return _variables.cbegin()->second.times();
     }
 
-    ///@brief checks if the raster contains a layer with specific time
-    bool contains(const latlon &x) const noexcept
+    ///@brief checks if the raster contains a coordinate
+    inline bool is_valid(location_descriptor x) const noexcept
+    {
+        return _variables.cbegin()->second.is_valid(x);
+    }
+
+    ///@brief checks if the raster contains a coordinate
+    inline bool contains(const latlon &x) const noexcept
     {
         return _variables.cbegin()->second.contains(x);
     }
 
-    ///@brief checks if the raster contains a layer with specific time
-    bool contains(const lonlat &x) const noexcept
+    ///@brief checks if the raster contains a coordinate
+    inline bool contains(const lonlat &x) const noexcept
     {
-        return _variables.cbegin()->second.contains(latlon(x.lat, x.lon));
+        return _variables.cbegin()->second.contains(x);
     }
 
-    ///@brief checks if the raster contains a layer with specific time
-    bool contains(const time_type &t) const noexcept
+    ///@brief checks if the raster contains a coordinate
+    inline bool is_valid(const colrow &x) const noexcept
     {
-        return _variables.cbegin()->second.contains(t);
+        return _variables.cbegin()->second.is_valid(x);
+    }
+
+    ///@brief checks if the raster contains a coordinate
+    inline bool is_valid(const rowcol &x) const noexcept
+    {
+        return _variables.cbegin()->second.is_valid(x);
+    }
+
+    ///@brief checks if the raster contains a coordinate
+    inline bool is_valid(time_descriptor t) const noexcept
+    {
+        return _variables.cbegin()->second.is_valid(t);
+    }
+
+    ///@brief checks if the raster temporal extent contains a time point
+    inline bool is_recorded(const time_type &t) const noexcept
+    {
+        return _variables.cbegin()->second.is_recorded(t);
+    }
+
+    ///@brief checks if the raster temporal extent contains a time point
+    inline bool is_within_span(const time_type &t) const noexcept
+    {
+        return _variables.cbegin()->second.is_within_span(t);
     }
 
     /// @}
@@ -307,66 +337,92 @@ template <typename Key = std::string, typename Time = int> class landscape
     /// @{
 
     /// @brief Location descriptor of the cell identified by its column/row.
-    /// @param x the latitude/longitude coordinate to evaluate.
-    /// @return An optional with the descriptor value if x is in the spatial extent, empty otherwise.
-    std::optional<location_descriptor> to_descriptor(const colrow &x) const noexcept
+    /// @param x the coordinate to evaluate.
+    /// @return The descriptor value.
+    /// @pre x is in spatial extent.
+    inline location_descriptor to_descriptor(const colrow &x) const noexcept
     {
+        assert( is_valid(x) );
         return _variables.cbegin()->second.to_descriptor(x);
     }
 
     /// @brief Location descriptor of the cell to which the given coordinate belongs.
-    /// @param x the latitude/longitude coordinate to evaluate.
-    /// @return An optional with the descriptor value if x is in the spatial extent, empty otherwise.
-    std::optional<location_descriptor> to_descriptor(const latlon &x) const noexcept
+    /// @param x the coordinate to evaluate.
+    /// @return The descriptor value.
+    /// @pre x is in spatial extent.
+    inline location_descriptor to_descriptor(const latlon &x) const noexcept
     {
+        assert( contains(x) );
         return _variables.cbegin()->second.to_descriptor(x);
     }
 
     /// @brief Column and row of the cell to which the given coordinate belongs.
-    /// @param x the latitude/longitude coordinate to evaluate.
-    /// @return An optional with a pair (column, row) if x is in the spatial extent, empty otherwise.
-    std::optional<colrow> to_colrow(const latlon &x) const noexcept
+    /// @param x the coordinate to evaluate.
+    /// @return A pair (column, row).
+    /// @pre x is in spatial extent.
+    colrow to_colrow(const latlon &x) const noexcept
     {
+        assert( contains(x) );
         return _variables.cbegin()->second.to_colrow(x);
     }
 
     /// @brief Row and column of the cell to which the given coordinate belongs.
-    /// @param x the latitude/longitude coordinate to evaluate.
-    /// @return An optional with a pair (row, column) if x is in the spatial extent, empty otherwise.
-    std::optional<rowcol> to_rowcol(const latlon &x) const noexcept
+    /// @param x the coordinate to evaluate.
+    /// @return A pair (row, column).
+    /// @pre x is in spatial extent.
+    inline rowcol to_rowcol(const latlon &x) const noexcept
     {
+        assert( contains(x) );
         return _variables.cbegin()->second.to_rowcol(x);
     }
 
     /// @brief Column and row of the cell to which the given descriptor belongs.
     /// @param x the location to evaluate.
-    /// @return An optional with a pair (column, row) if x is in the spatial extent, empty otherwise.
-    std::optional<colrow> to_colrow(location_descriptor x) const noexcept
+    /// @return A pair (column, row).
+    /// @pre x is in spatial extent.
+    inline colrow to_colrow(location_descriptor x) const noexcept
     {
+        assert( is_valid(x) );
         return _variables.cbegin()->second.to_colrow(x);
     }
 
     /// @brief Latitude and longitude of the cell to which the given coordinate belongs.
     /// @param x the location to evaluate.
-    /// @return An optional with a pair (lat, lon) if x is in the spatial extent, empty otherwise.
-    std::optional<latlon> to_latlon(location_descriptor x) const noexcept
+    /// @return A pair (lat, lon).
+    /// @pre x is in spatial extent.
+    inline latlon to_latlon(location_descriptor x) const noexcept
     {
+        assert( is_valid(x) );
         return _variables.cbegin()->second.to_latlon(x);
     }
 
+    /// @brief Longitude and latitude of the cell to which the given coordinate belongs.
+    /// @param x the location to evaluate.
+    /// @return A pair (lon, lat).
+    /// @pre x is in spatial extent
+    inline lonlat to_lonlat(location_descriptor x) const noexcept
+    {
+        assert( is_valid(x) );
+        return _variables.cbegin()->second.to_lonlat(x);
+    }
+    
     /// @brief Latitude and longitude of the cell identified by its column/row.
     /// @param x the location to evaluate.
-    /// @return A pair (latitude, longitude)
-    latlon to_latlon(const colrow &x) const noexcept
+    /// @return A pair (latitude, longitude).
+    /// @pre x is in spatial extent.
+    inline latlon to_latlon(const colrow &x) const noexcept
     {
+        assert( is_valid(x) );
         return _variables.cbegin()->second.to_latlon(x);
     }
 
     /// @brief Longitude and latitude of the deme identified by its column/row.
     /// @param x the location to evaluate.
-    /// @return A pair (latitude, longitude)
-    lonlat to_lonlat(const colrow &x) const noexcept
+    /// @return A pair (longitude, latitude)
+    /// @pre x is in spatial extent
+    inline lonlat to_lonlat(const colrow &x) const noexcept
     {
+        assert( is_valid(x) );
         return _variables.cbegin()->second.to_lonlat(x);
     }
 
@@ -374,7 +430,8 @@ template <typename Key = std::string, typename Time = int> class landscape
     /// @pre The landscape must contain the coordinate in its spatial extent.
     /// @param x The location to reproject
     /// @return The coordinate of the centroid of the cell it belongs.
-    latlon to_centroid(const latlon &x) const
+    /// @pre x is in spatial extent
+    inline latlon to_centroid(const latlon &x) const
     {
         assert(this->contains(x));
         return _variables.cbegin()->second.to_centroid(x);

@@ -30,8 +30,8 @@
   - @subpage Phylogenetic Networks
   - @subpage spatial_graphs
     - @subpage spatial_graph_construction
-    - @subpage Setting Vertex/Edge information at construction time
     - @subpage dispersal_kernels
+    - @subpage Setting Vertex/Edge information at construction time
     - @subpage Growth Expressions
     - @subpage Memory Management
 
@@ -891,6 +891,10 @@ There are different ways to build such graph.
 
 ## Graph from raster
 
+The provided code snippet contains the logic for constructing a spatial graph from a `quetzal::geography::raster`. 
+
+This involves identifying the cells of the raster to map `location_type` values to the vertices, and defining edges based on the desired connectivity.
+
 **Input**
 
 @include{lineno} geography_graph_2.cpp
@@ -900,6 +904,10 @@ There are different ways to build such graph.
 @include{lineno} geography_graph_2.txt
 
 ## Graph from landscape
+
+The provided code snippet contains the logic for constructing a spatial graph from a `quetzal::geography::landscape`. 
+
+This involves identifying the cells of the landscape to map `location_type` values to the vertices, and defining edges based on the desired connectivity.
 
 **Input**
 
@@ -911,6 +919,10 @@ There are different ways to build such graph.
 
 ## Graph from abstract grid
 
+The provided code snippet contains the logic for constructing a spatial graph from a user-defined abstract grid.
+
+This involves identifying the height and width of the space to define linearly-indexed vertices, and defining edges based on the desired connectivity.
+
 **Input**
 
 @include{lineno} geography_graph_4.cpp
@@ -920,6 +932,9 @@ There are different ways to build such graph.
 @include{lineno} geography_graph_4.txt
 
 ## From scratch
+
+The provided code snippet contains the logic for creating a sparse versus dense graph from scratch. This involves 
+dynamically adding vertices and edges based on user-defined conditions, resulting in a graph that represents the desired spatial relationships.
 
 ### Sparse Graph
 
@@ -944,7 +959,7 @@ There are different ways to build such graph.
 ---
 
 [//]: # (----------------------------------------------------------------------)
-@page dispersal_kernels Dispersal Kernels
+@page dispersal_kernels Distance-based dispersal Kernels
 @tableofcontents
 
 ## Distance-based kernel
@@ -969,5 +984,16 @@ Quetzal incorporates various kernel types available in the `quetzal::demography:
 
 ---
 
-## Resistance-based Dispersal
+[//]: # (----------------------------------------------------------------------)
+@page spatial_graph_information Embedding Vertex and/or Edge information
+@tableofcontents
 
+**Input**
+
+@include{lineno} geography_graph_7.cpp
+
+**Output**
+
+@include{lineno} geography_graph_7.txt
+
+---

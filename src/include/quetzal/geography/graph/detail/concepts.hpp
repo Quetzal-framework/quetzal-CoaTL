@@ -29,16 +29,16 @@ concept is_any_of = (std::same_as<T, U> || ...);
 template<typename T>
 struct edge_construction
 {
-    static inline constexpr void delegate(auto s, auto t, auto& graph)
+    static inline constexpr void delegate(auto s, auto t, auto& graph, auto const& grid)
     {
-        graph.add_edge(s, t, T(s,t));
+        graph.add_edge(s, t, T(s,t, grid));
     }
 };
 
 template<>
 struct edge_construction<boost::no_property>
 {
-    static inline constexpr void delegate(auto s, auto t, auto& graph)
+    static inline constexpr void delegate(auto s, auto t, auto& graph, [[maybe_unused]] auto const& grid)
     {
         graph.add_edge(s, t);
     }
