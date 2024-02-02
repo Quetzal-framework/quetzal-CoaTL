@@ -215,51 +215,63 @@ template <typename Time = int> class raster
     /// @{
 
     /// @brief Location descriptors (unique identifiers) of the grid cells
+    /// @return A range of unique identifiers for every cell
     inline auto locations() const noexcept
     {
         return ranges::views::iota(0, width() * height());
     }
 
     /// @brief Time descriptors (unique identifiers) of the dataset bands
+    /// @return A range of unique identifiers for every time point recorded
     inline auto times() const noexcept
     {
         // [0 ... depth -1 [
         return ranges::views::iota(0, depth());
     }
 
-    /// @brief Check if the raster contains a coordinate
+    /// @brief Check if a descriptor describes a valid location of the spatial grid.
+    /// @param x the descriptor to check
+    /// @return True if x is valid, false otherwise.
     inline bool is_valid(location_descriptor x) const noexcept
     {
         return ( x >= 0 and x < locations().size());
     }
 
-    /// @brief Check if the raster contains a coordinate
+    /// @brief Check if the coordinate describes a valid location of the spatial grid.
+    /// @param x the column/row to check.
+    /// @return True if x is valid, false otherwise.
     inline bool is_valid(const colrow &x) const noexcept
     {
         return x.col >= 0 and x.col < width() and x.row >= 0 and x.row < height() ;
     }
 
-    /// @brief Check if the raster contains a coordinate
+    /// @brief Check if the coordinate describes a valid location of the spatial grid.
+    /// @param x the row/column to check.
+    /// @return True if x is valid, false otherwise.
     inline bool is_valid(const rowcol &x) const noexcept
     {
         return x.col >= 0 and x.col < width() and x.row >= 0 and x.row < height() ;
     }
 
     /// @brief Check if the raster contains a coordinate
+    /// @param x the lat/lon to check.
+    /// @return True if x is valid, false otherwise.    
     inline bool contains(const latlon &x) const noexcept
     {
         return is_in_spatial_extent(x);
     }
 
     /// @brief Check if the raster contains a coordinate
+    /// @param x the lon/lat to check.
+    /// @return True if x is valid, false otherwise.
     inline bool contains(const lonlat &x) const noexcept
     {
         return is_in_spatial_extent(to_latlon(x));
     }
 
     /// @brief Check if the time descriptor is a valid index.
-    /// @param t A time descriptor identifying a layer of the raster.
-    /// @return True if the descriptor is a valid index, false otherwise.
+    /// @param t A time descriptor identifying a band of the raster dataset.
+    /// @return True if t is a valid index, false otherwise.
     inline bool is_valid(time_descriptor t) const noexcept
     {
         return t >= 0 and t < _times.size();
@@ -276,7 +288,7 @@ template <typename Time = int> class raster
     /// @brief Check if the exact time point falls between the first and last date of record.
     /// @param t An exact point in time
     /// @return True if the time point falls in the temporal range, false otherwise.
-    inline bool is_in_span(const time_type &t) const noexcept
+    inline bool is_in_interval(const time_type &t) const noexcept
     {
         return t >= _times.front() and t <= _times.back();
     }
