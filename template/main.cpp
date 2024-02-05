@@ -15,7 +15,7 @@ int main()
     std::iota(times.begin(), times.end(), 2001);
 
     // Initialize the landscape: for each spatial variable a string key and a file value, for all a time series.
-    auto landscape = quetzal::geography::landscape<>::from_files({{"suit", file1}, {"DEM", file2}}, times);
+    auto landscape = quetzal::geography::landscape<>::from_file({{"suit", file1}, {"DEM", file2}}, times);
     std::cout << landscape << std::endl;
 
     // Declares some type aliases to shorten notation

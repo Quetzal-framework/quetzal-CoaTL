@@ -15,7 +15,7 @@ int main()
 
     // Initialize the landscape: for each var a key and a file, for all a time series.
     using landscape_type = quetzal::geography::landscape<>;
-    auto env = quetzal::geography::landscape<>::from_files({{"bio1", file1}, {"bio12", file2}}, times);
+    auto env = quetzal::geography::landscape<>::from_file({{"bio1", file1}, {"bio12", file2}}, times);
     std::cout << env << std::endl;
 
     // We indeed recorded 2 variables: bio1 and bio12

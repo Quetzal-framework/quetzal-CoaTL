@@ -16,7 +16,7 @@ int main()
 
     // Initialize the landscape: for each var a key and a file, for all a time series.
     using landscape_type = geo::landscape<>;
-    auto land = landscape_type::from_files({{"bio1", file1}, {"bio12", file2}}, times);
+    auto land = landscape_type::from_file({{"bio1", file1}, {"bio12", file2}}, times);
 
     // Our graph will not store any useful information
     using vertex_info = geo::no_property;

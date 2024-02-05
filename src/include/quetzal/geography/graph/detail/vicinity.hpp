@@ -70,9 +70,9 @@ struct connect_fully
         {
             for (auto t = s + 1; t < num_land_vertices; ++t)
             {
-                detail::edge_construction<edge_property>::delegate(s, t, graph); // (s -> v) == (s <- v) if undirected
+                detail::edge_construction<edge_property>::delegate(s, t, graph, grid); // (s -> v) == (s <- v) if undirected
                 if constexpr (std::same_as<directed_category, anisotropy>)
-                    detail::edge_construction<edge_property>::delegate(t, s, graph); // (s -> v) != (s <- v) because directed
+                    detail::edge_construction<edge_property>::delegate(t, s, graph, grid); // (s -> v) != (s <- v) because directed
             }
         
             if( detail::is_on_border(s, width, height ) ) 
@@ -90,9 +90,9 @@ class connect_4_neighbors
     template <typename G> void connect(auto s, auto t, G &graph, auto const &grid) const
     {
         using edge_property = typename G::edge_property;
-        detail::edge_construction<edge_property>::delegate(s, t, graph);
+        detail::edge_construction<edge_property>::delegate(s, t, graph, grid);
         if constexpr (std::same_as<typename G::directed_category, anisotropy>)
-            detail::edge_construction<edge_property>::delegate(t, s, graph);
+            detail::edge_construction<edge_property>::delegate(t, s, graph, grid);
     }
 
     void connect_top_left_corner(auto s, auto &graph, auto const &grid, auto const &bound_policy) const
@@ -240,6 +240,7 @@ class connect_8_neighbors
         using vertex_property = typename G::vertex_property;
         using edge_property = typename G::edge_property;
 
+
         int width = grid.width();
         int height = grid.height();
         int num_land_vertices = width * height;
@@ -248,9 +249,9 @@ class connect_8_neighbors
         assert( t >= 0 );
         assert( t < num_land_vertices);
 
-        detail::edge_construction<edge_property>::delegate(s, t, graph);
+        detail::edge_construction<edge_property>::delegate(s, t, graph, grid);
         if constexpr (std::same_as<directed_category, anisotropy>)
-            detail::edge_construction<edge_property>::delegate(t, s, graph);
+            detail::edge_construction<edge_property>::delegate(t, s, graph, grid);
     }
 
     void connect_top_left_corner(auto s, auto &graph, auto const &grid, auto const &bound_policy) const

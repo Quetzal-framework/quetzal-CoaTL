@@ -38,11 +38,14 @@ template <typename Time = int> class raster
 {
 
   public:
-    /// @typedef Location unique identifier
-    using location_descriptor = int;
+    /// @typedef Time period for every band.
+    using time_type = Time;
 
     /// @typedef Time unique identifier
-    using time_descriptor = int;
+    using time_descriptor = std::vector<time_type>::size_type;
+
+    /// @typedef Location unique identifier
+    using location_descriptor = int;
 
     /// @typedef A Latitude/Longitude pair of value.
     using latlon = quetzal::geography::latlon;
@@ -55,9 +58,6 @@ template <typename Time = int> class raster
 
     /// @typedef A row/column pair of indices.
     using rowcol = quetzal::geography::rowcol;
-
-    /// @typedef Time period for every band.
-    using time_type = Time;
 
     /// @typedef decimal degree type
     using decimal_degree = double;
@@ -79,13 +79,13 @@ template <typename Time = int> class raster
     value_type _no_data;
 
     // Pixel size in x and y
-    auto compute_resolution(const std::vector<double> &gT) const
+    inline auto compute_resolution(const std::vector<double> &gT) const
     {
         return quetzal::geography::resolution<decimal_degree>(gT[5], gT[1]);
     }
 
     // Top left corner and bottom right corner geographic coordinates
-    auto compute_extent(const latlon &origin, const quetzal::geography::resolution<decimal_degree> &r) const
+    inline  auto compute_extent(const latlon &origin, const quetzal::geography::resolution<decimal_degree> &r) const
     {
         const auto [lat_max, lon_min] = origin;
         const auto lon_max = lon_min + width() * r.lon();
@@ -112,11 +112,9 @@ template <typename Time = int> class raster
 
     /// @brief Read the raster from an input file in the geotiff format
     /// @param file The file to read from
-    /// @param start The first time period to map to the first band
-    /// @param end The last time period to map to the last band
-    /// @param step The time increment between each band
+    /// @param times The time periods relative to each band.
     /// @return A raster object
-    static raster from_file(const std::filesystem::path &file, const std::vector<time_type> &times)
+    inline static raster from_file(const std::filesystem::path &file, const std::vector<time_type> &times)
     {
         return raster(file, times);
     }
@@ -130,7 +128,7 @@ template <typename Time = int> class raster
     /// @remark If the returned optional is empty, the raster NA value will be used.
     template <class Callable>
         requires(std::is_invocable_r_v<std::optional<value_type>, Callable, location_descriptor, time_type>)
-    void to_geotiff(Callable f, time_type start, time_type end, const std::filesystem::path &file) const
+    inline void to_geotiff(Callable f, time_type start, time_type end, const std::filesystem::path &file) const
     {
         export_to_geotiff(f, start, end, file);
     }
@@ -138,7 +136,7 @@ template <typename Time = int> class raster
     /// @brief Export spatial points to a shapefile
     /// @param points the points to export
     /// @param file the path to write to
-    void to_shapefile(std::vector<latlon> points, const std::filesystem::path &file) const
+    inline void to_shapefile(std::vector<latlon> points, const std::filesystem::path &file) const
     {
         points_to_shapefile(points, file);
     }
@@ -146,7 +144,7 @@ template <typename Time = int> class raster
     /// @brief Export geolocalized counts as spatial-points to a shapefile
     /// @brief counts the number of points at every point
     /// @brief file the path to write to.
-    void to_shapefile(std::map<latlon, int> counts, const std::filesystem::path &file) const
+    inline void to_shapefile(std::map<latlon, int> counts, const std::filesystem::path &file) const
     {
         counts_to_shapefile(counts, file);
     }
@@ -169,44 +167,44 @@ template <typename Time = int> class raster
     /// @{
 
     /// @brief Origin of the spatial grid
-    latlon origin() const noexcept
+    inline latlon origin() const noexcept
     {
         return _origin;
     }
 
     /// @brief Resolution of the spatial grid
     /// @note The vertical pixel size will be negative (south pointing)
-    geography::resolution<decimal_degree> get_resolution() const noexcept
+    inline geography::resolution<decimal_degree> get_resolution() const noexcept
     {
         return _resolution;
     }
 
     /// @brief Extent of the spatial grid
-    geography::extent<decimal_degree> get_extent() const noexcept
+    inline geography::extent<decimal_degree> get_extent() const noexcept
     {
         return _extent;
     }
 
     /// @brief Width of the spatial grid
-    int width() const noexcept
+    inline int width() const noexcept
     {
         return _width;
     }
 
     /// @brief Height of the spatial grid
-    int height() const noexcept
+    inline int height() const noexcept
     {
         return _height;
     }
 
     /// @brief Depth of the spatial grid
-    int depth() const noexcept
+    inline int depth() const noexcept
     {
         return _depth;
     }
 
     /// @brief NA value, as read in the first band of the dataset.
-    value_type NA() const noexcept
+    inline value_type NA() const noexcept
     {
         return _no_data;
     }
@@ -217,44 +215,94 @@ template <typename Time = int> class raster
     /// @{
 
     /// @brief Location descriptors (unique identifiers) of the grid cells
-    auto locations() const noexcept
+    /// @return A range of unique identifiers for every cell
+    inline auto locations() const noexcept
     {
         return ranges::views::iota(0, width() * height());
     }
 
     /// @brief Time descriptors (unique identifiers) of the dataset bands
-    auto times() const noexcept
+    /// @return A range of unique identifiers for every time point recorded
+    inline auto times() const noexcept
     {
         // [0 ... depth -1 [
         return ranges::views::iota(0, depth());
     }
 
-    ///@brief checks if the raster contains a layer with specific time
-    bool contains(const latlon &x) const noexcept
+    /// @brief Check if a descriptor describes a valid location of the spatial grid.
+    /// @param x the descriptor to check
+    /// @return True if x is valid, false otherwise.
+    inline bool is_valid(location_descriptor x) const noexcept
+    {
+        return ( x >= 0 and x < locations().size());
+    }
+
+    /// @brief Check if the coordinate describes a valid location of the spatial grid.
+    /// @param x the column/row to check.
+    /// @return True if x is valid, false otherwise.
+    inline bool is_valid(const colrow &x) const noexcept
+    {
+        return x.col >= 0 and x.col < width() and x.row >= 0 and x.row < height() ;
+    }
+
+    /// @brief Check if the coordinate describes a valid location of the spatial grid.
+    /// @param x the row/column to check.
+    /// @return True if x is valid, false otherwise.
+    inline bool is_valid(const rowcol &x) const noexcept
+    {
+        return x.col >= 0 and x.col < width() and x.row >= 0 and x.row < height() ;
+    }
+
+    /// @brief Check if the raster contains a coordinate
+    /// @param x the lat/lon to check.
+    /// @return True if x is valid, false otherwise.    
+    inline bool contains(const latlon &x) const noexcept
     {
         return is_in_spatial_extent(x);
     }
 
-    ///@brief checks if the raster contains a layer with specific time
-    bool contains(const lonlat &x) const noexcept
+    /// @brief Check if the raster contains a coordinate
+    /// @param x the lon/lat to check.
+    /// @return True if x is valid, false otherwise.
+    inline bool contains(const lonlat &x) const noexcept
     {
         return is_in_spatial_extent(to_latlon(x));
     }
 
-    ///@brief checks if the raster contains a layer with specific time
-    bool contains(const time_type &t) const noexcept
+    /// @brief Check if the time descriptor is a valid index.
+    /// @param t A time descriptor identifying a band of the raster dataset.
+    /// @return True if t is a valid index, false otherwise.
+    inline bool is_valid(time_descriptor t) const noexcept
     {
-        return is_in_temporal_extent(t);
+        return t >= 0 and t < _times.size();
+    }
+
+    /// @brief Search for the exact time in the list of time points recorded by the raster.
+    /// @param t An exact point in time
+    /// @return True if the time point is found, false otherwise.
+    inline bool is_recorded(const time_type &t) const noexcept
+    {
+        return std::find(_times.begin(), _times.end(), t) != _times.end();
+    }
+
+    /// @brief Check if the exact time point falls between the first and last date of record.
+    /// @param t An exact point in time
+    /// @return True if the time point falls in the temporal range, false otherwise.
+    inline bool is_in_interval(const time_type &t) const noexcept
+    {
+        return t >= _times.front() and t <= _times.back();
     }
 
     /// @brief Read the value at location x and time t
     /// @param x the location
     /// @param t the time
     /// @return An optional that is empty if the value read is equal to NA.
-    std::optional<value_type> at(location_descriptor x, time_descriptor t) const noexcept
+    /// @pre x is contained in the spatial extent
+    /// @pre t is contained in the temporal extent
+    inline std::optional<value_type> at(location_descriptor x, time_descriptor t) const noexcept
     {
-        assert(x >= 0 and x < locations().size());
-        assert(t >= 0 and t < times().size());
+        assert( is_valid(x) );
+        assert( is_valid(t) );
         const auto colrow = to_colrow(x);
         return read(colrow.col, colrow.row, t);
     }
@@ -264,7 +312,7 @@ template <typename Time = int> class raster
     ///        returning the value at location x and time t
     /// @remark This callable is cheap to copy, does not have ownership of the data,
     ///         and works well for mathematical composition using `quetzal::expressive`
-    auto to_view() const noexcept
+    inline auto to_view() const noexcept
     {
         return [this](location_descriptor x, time_descriptor t) { return this->at(x, t); };
     }
@@ -274,38 +322,32 @@ template <typename Time = int> class raster
     /// @{
 
     /// @brief Location descriptor of the cell identified by its column/row.
-    ///        If no such cell exists, an exception of type std::out_of_range is thrown.
     /// @param x the 1D coordinate to evaluate.
-    /// @return The descriptor value of x
-    location_descriptor to_descriptor(const colrow &x) const
+    /// @return The descriptor value of x.
+    /// @pre x is in spatial extent.
+    inline location_descriptor to_descriptor(const colrow &x) const noexcept
     {
-        if (x.col >= width() || x.col < 0 || x.row < 0 || x.row >= height())
-            throw std::out_of_range("colrow has invalid indices and can not be converted to a location descriptor");
+        assert( is_valid(x) );
         return x.col * width() + x.col;
     }
 
     ///  @brief Location descriptor of the cell to which the given coordinate belongs.
-    ///        If no such cell exists, an exception of type std::out_of_range is thrown.
     /// @param x the latitude/longitude coordinate to evaluate.
-    /// @return The descriptor value of x
-    location_descriptor to_descriptor(const latlon &x) const
+    /// @return The descriptor value of x.
+    /// @pre x is in the spatial extent.
+    inline location_descriptor to_descriptor(const latlon &x) const noexcept
     {
-        if (!contains(x))
-            throw std::out_of_range(
-                "latlon does not belong to spatial extent and can not be converted to a location descriptor");
-        return to_descriptor(to_colrow(x));
+        assert( contains(x) );
+        return to_descriptor( to_colrow(x) );
     }
 
     /// @brief Column and row of the cell to which the given coordinate belongs.
-    ///        If no such cell exists, an exception of type std::out_of_range is thrown.
     /// @param x the latitude/longitude coordinate to evaluate.
-    /// @return A pair (column, row)
-    colrow to_colrow(const latlon &x) const
+    /// @return A pair (column, row).
+    /// @pre x is in the spatial extent.
+    inline colrow to_colrow(const latlon &x) const noexcept
     {
-        if (!contains(x))
-            throw std::out_of_range(
-                "latlon does not belong to spatial extent and can not be converted to a col/row pair");
-
+        assert(contains(x));
         const auto [lat, lon] = x;
         const int col = (lon - _gT[0]) / _gT[1];
         const int row = (lat - _gT[3]) / _gT[5];
@@ -313,15 +355,12 @@ template <typename Time = int> class raster
     }
 
     /// @brief Row and column of the cell to which the given coordinate belongs.
-    ///        If no such cell exists, an exception of type std::out_of_range is thrown.
     /// @param x the latitude/longitude coordinate to evaluate.
-    /// @return A pair (row, column)
-    rowcol to_rowcol(const latlon &x) const noexcept
+    /// @return A pair (row, column).
+    /// @pre x is in the spatial extent.
+    inline rowcol to_rowcol(const latlon &x) const noexcept
     {
-        if (!contains(x))
-            throw std::out_of_range(
-                "latlon does not belong to spatial extent and can not be converted to a row/col pair.");
-
+        assert(contains(x));
         auto colrow = to_colrow(x);
         std::swap(colrow.col, colrow.row);
         return colrow;
@@ -329,9 +368,11 @@ template <typename Time = int> class raster
 
     /// @brief Column and row of the cell to which the given descriptor belongs.
     /// @param x the location to evaluate.
-    /// @return A pair (column, row)
-    colrow to_colrow(location_descriptor x) const noexcept
+    /// @return A pair (column, row).
+    /// @pre x is in the spatial extent.
+    inline colrow to_colrow(location_descriptor x) const noexcept
     {
+        assert(is_valid(x));
         const int col = x % width();
         const int row = x / width();
         assert(row < height());
@@ -340,26 +381,42 @@ template <typename Time = int> class raster
 
     /// @brief Column and row of the cell to which the given descriptor belongs.
     /// @param x the location to evaluate.
-    /// @return A pair (column, row)
-    rowcol to_rowcol(location_descriptor x) const noexcept
+    /// @return A pair (column, row).
+    /// @pre x is in the spatial extent.
+    inline rowcol to_rowcol(location_descriptor x) const noexcept
     {
+        assert(is_valid(x));
         auto c = to_colrow(x);
         return rowcol(c.row, c.col);
     }
 
     /// @brief Latitude and longitude of the cell to which the given coordinate belongs.
     /// @param x the location to evaluate.
-    /// @return An optional with a pair (lat, lon) if x is in the spatial extent, empty otherwise.
-    latlon to_latlon(location_descriptor x) const noexcept
+    /// @return A pair (lat, lon).
+    /// @pre x is in the spatial extent.
+    inline latlon to_latlon(location_descriptor x) const noexcept
     {
+        assert(is_valid(x));
         return to_latlon(to_colrow(x));
+    }
+
+    /// @brief Latitude and longitude of the cell to which the given coordinate belongs.
+    /// @param x the location to evaluate.
+    /// @return A pair (lon, lat).
+    /// @pre x is in the spatial extent
+    inline lonlat to_lonlat(location_descriptor x) const noexcept
+    {
+        assert(is_valid(x));
+        return to_lonlat(to_colrow(x));
     }
 
     /// @brief Latitude and longitude of the cell identified by its column/row.
     /// @param x the location to evaluate.
     /// @return A pair (latitude, longitude)
-    latlon to_latlon(const colrow &x) const noexcept
+    /// @pre x is in the spatial extent
+    inline latlon to_latlon(const colrow &x) const noexcept
     {
+        assert(is_valid(x));
         const auto [col, row] = x;
         const auto lon = _gT[1] * col + _gT[2] * row + _gT[1] * 0.5 + _gT[2] * 0.5 + _gT[0];
         const auto lat = _gT[4] * col + _gT[5] * row + _gT[4] * 0.5 + _gT[5] * 0.5 + _gT[3];
@@ -368,50 +425,31 @@ template <typename Time = int> class raster
 
     /// @brief Latitude and longitude of the cell identified by its row/column.
     /// @param x the location to evaluate.
-    /// @return A pair (latitude, longitude)
-    latlon to_latlon(const rowcol &x) const noexcept
+    /// @return A pair (latitude, longitude).
+    /// @pre x is in the spatial extent.
+    inline latlon to_latlon(const rowcol &x) const noexcept
     {
+        assert(is_valid(x));
         return to_latlon(colrow(x.col, x.row));
     }
 
     /// @brief Longitude and latitude of the deme identified by its column/row.
     /// @param x the location to evaluate.
-    /// @return A pair (latitude, longitude)
-    lonlat to_lonlat(const colrow &x) const noexcept
+    /// @return A pair (longitude, latitude).
+    /// @pre x is in the spatial extent.
+    inline lonlat to_lonlat(const colrow &x) const noexcept
     {
+        assert(is_valid(x));
         const auto [lat, lon] = to_latlon(x);
         return lonlat(lon, lat);
-    }
-
-    /// @brief Latlon to lonlat conversation
-    /// @param x the location to evaluate.
-    /// @return A pair (longitude, latitude)
-    lonlat to_lonlat(const latlon &x) const noexcept
-    {
-        return lonlat(x.lon, x.lat);
-    }
-
-    /// @brief Latlon to lonlat conversation
-    /// @param x the location to evaluate.
-    /// @return A pair (longitude, latitude)
-    latlon to_latlon(const lonlat &x) const noexcept
-    {
-        return latlon(x.lat, x.lon);
-    }
-
-    /// @brief Longitude and latitude of the deme identified by its column/row.
-    /// @param x the location to evaluate.
-    /// @return A pair (latitude, longitude)
-    lonlat to_lonlat(location_descriptor x) const noexcept
-    {
-        return to_lonlat(to_latlon(x));
     }
 
     /// @brief Reprojects a coordinate to the centroid of the cell it belongs.
     /// @pre The spatial extent of the raster must contain the coordinate.
     /// @param x The location to reproject
     /// @return The coordinate of the centroid of the cell it belongs.
-    latlon to_centroid(const latlon &x) const
+    /// @pre x is in the spatial extent
+    inline latlon to_centroid(const latlon &x) const
     {
         assert(this->contains(x) and 
                 "latlon does not belong to spatial extent and can not be reprojected to a cell centroid.");
@@ -422,14 +460,25 @@ template <typename Time = int> class raster
     /// @}
 
   private:
-    /// @brief Is time in the temporal extent
-    bool is_in_temporal_extent(time_type t) const noexcept
+
+    /// @brief Latlon to lonlat conversation
+    /// @param x the location to evaluate.
+    /// @return A pair (longitude, latitude)
+    inline lonlat to_lonlat(const latlon &x) const noexcept
     {
-        return t >= _times.front() && t <= _times.back();
+        return lonlat(x.lon, x.lat);
     }
 
+    /// @brief Latlon to lonlat conversation
+    /// @param x the location to evaluate.
+    /// @return A pair (latitude, longitude)
+    inline latlon to_latlon(const lonlat &x) const noexcept
+    {
+        return latlon(x.lat, x.lon);
+    }
+    
     /// @brief Read the NA in the first band
-    value_type nodata_first_band() const
+    inline value_type nodata_first_band() const
     {
         return _dataset.get().GetRasterBand(1)->GetNoDataValue();
     }
@@ -588,7 +637,7 @@ template <typename Time = int> class raster
         return answer;
     }
 
-    /// @brief checks if there is a 1 to 1 mapping from times to layer
+    /// @brief Check if there is a 1 to 1 mapping from times to layer
     void check_times_equals_depth()
     {
         if (_times.size() != depth())

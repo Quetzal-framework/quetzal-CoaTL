@@ -56,7 +56,7 @@ class sink
         int sink = num_land_vertices;
         assert( graph.num_vertices() == sink + 1 );
         if ( s < sink )
-            detail::edge_construction<edge_property>::delegate(s, sink, graph); // one-way ticket :(
+            detail::edge_construction<edge_property>::delegate(s, sink, graph, grid); // one-way ticket :(
     }
 };
 
@@ -100,7 +100,7 @@ class torus
         {
             symmetricIndex = s - width + 1;
         }
-        detail::edge_construction<edge_property>::delegate(s, symmetricIndex, graph);
+        detail::edge_construction<edge_property>::delegate(s, symmetricIndex, graph, grid);
     }
 };
 
