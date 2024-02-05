@@ -70,8 +70,8 @@ int main()
     assert(point_1 == point_2);
 
     // Defines a lambda expression for checking extent
-    auto check = [&bio1](auto x) {
-        std::cout << "Point " << x << " is " << (bio1.contains(x) ? " " : "not ") << "in bio1 extent" << std::endl;
+    auto check = [&](auto x) {
+        std::cout << "Point " << x << " is" << (bio1.contains(x) ? " " : " not ") << "in bio1 extent" << std::endl;
     };
 
     check(point_1);

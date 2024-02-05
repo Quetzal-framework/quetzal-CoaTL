@@ -30,4 +30,8 @@ int main()
 
     std::cout << "Graph has " << graph.num_vertices() << " vertices, " << graph.num_edges() << " edges." << std::endl;
 
+    for( auto const& e : graph.edges() ){
+        std::cout << graph.source(e) << " <-> " << graph.target(e) << " : " << graph[e].distance << std::endl;
+    }
+
 }

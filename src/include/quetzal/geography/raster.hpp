@@ -444,26 +444,6 @@ template <typename Time = int> class raster
         return lonlat(lon, lat);
     }
 
-    /// @brief Latlon to lonlat conversation
-    /// @param x the location to evaluate.
-    /// @return A pair (longitude, latitude)
-    /// @pre x is in the spatial extent
-    inline lonlat to_lonlat(const latlon &x) const noexcept
-    {
-        assert(contains(x));
-        return lonlat(x.lon, x.lat);
-    }
-
-    /// @brief Latlon to lonlat conversation
-    /// @param x the location to evaluate.
-    /// @return A pair (latitude, longitude)
-    /// @pre x is in the spatial extent
-    inline latlon to_latlon(const lonlat &x) const noexcept
-    {
-        assert(contains(x));
-        return latlon(x.lat, x.lon);
-    }
-
     /// @brief Reprojects a coordinate to the centroid of the cell it belongs.
     /// @pre The spatial extent of the raster must contain the coordinate.
     /// @param x The location to reproject
@@ -481,6 +461,22 @@ template <typename Time = int> class raster
 
   private:
 
+    /// @brief Latlon to lonlat conversation
+    /// @param x the location to evaluate.
+    /// @return A pair (longitude, latitude)
+    inline lonlat to_lonlat(const latlon &x) const noexcept
+    {
+        return lonlat(x.lon, x.lat);
+    }
+
+    /// @brief Latlon to lonlat conversation
+    /// @param x the location to evaluate.
+    /// @return A pair (latitude, longitude)
+    inline latlon to_latlon(const lonlat &x) const noexcept
+    {
+        return latlon(x.lat, x.lon);
+    }
+    
     /// @brief Read the NA in the first band
     inline value_type nodata_first_band() const
     {
