@@ -185,7 +185,7 @@ $(document).ready(function(){initNavTree('bound__policy_8hpp_source.html',''); i
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keywordtype">int</span> <a class="code" href="classquetzal_1_1geography_1_1sink.html">sink</a> = num_land_vertices;</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        assert( <a class="code" href="classquetzal_1_1geography_1_1graph.html">graph</a>.num_vertices() == <a class="code" href="classquetzal_1_1geography_1_1sink.html">sink</a> + 1 );</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keywordflow">if</span> ( s &lt; <a class="code" href="classquetzal_1_1geography_1_1sink.html">sink</a> )</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <a class="code" href="structquetzal_1_1geography_1_1detail_1_1edge__construction.html">detail::edge_construction&lt;edge_property&gt;::delegate</a>(s, <a class="code" href="classquetzal_1_1geography_1_1sink.html">sink</a>, <a class="code" href="classquetzal_1_1geography_1_1graph.html">graph</a>); <span class="comment">// one-way ticket :(</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <a class="code" href="structquetzal_1_1geography_1_1detail_1_1edge__construction.html">detail::edge_construction&lt;edge_property&gt;::delegate</a>(s, <a class="code" href="classquetzal_1_1geography_1_1sink.html">sink</a>, <a class="code" href="classquetzal_1_1geography_1_1graph.html">graph</a>, grid); <span class="comment">// one-way ticket :(</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    }</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;};</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
@@ -222,7 +222,7 @@ $(document).ready(function(){initNavTree('bound__policy_8hpp_source.html',''); i
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        {</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            symmetricIndex = s - width + 1;</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        }</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <a class="code" href="structquetzal_1_1geography_1_1detail_1_1edge__construction.html">detail::edge_construction&lt;edge_property&gt;::delegate</a>(s, symmetricIndex, <a class="code" href="classquetzal_1_1geography_1_1graph.html">graph</a>);</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <a class="code" href="structquetzal_1_1geography_1_1detail_1_1edge__construction.html">detail::edge_construction&lt;edge_property&gt;::delegate</a>(s, symmetricIndex, <a class="code" href="classquetzal_1_1geography_1_1graph.html">graph</a>, grid);</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    }</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;};</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>

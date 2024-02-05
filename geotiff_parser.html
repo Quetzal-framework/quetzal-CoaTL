@@ -254,8 +254,8 @@ Reading a single variable</h2>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    assert(point_1 == point_2);</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="comment">// Defines a lambda expression for checking extent</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">auto</span> check = [&amp;bio1](<span class="keyword">auto</span> x) {</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        std::cout &lt;&lt; <span class="stringliteral">&quot;Point &quot;</span> &lt;&lt; x &lt;&lt; <span class="stringliteral">&quot; is &quot;</span> &lt;&lt; (bio1.contains(x) ? <span class="stringliteral">&quot; &quot;</span> : <span class="stringliteral">&quot;not &quot;</span>) &lt;&lt; <span class="stringliteral">&quot;in bio1 extent&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">auto</span> check = [&amp;](<span class="keyword">auto</span> x) {</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        std::cout &lt;&lt; <span class="stringliteral">&quot;Point &quot;</span> &lt;&lt; x &lt;&lt; <span class="stringliteral">&quot; is&quot;</span> &lt;&lt; (bio1.contains(x) ? <span class="stringliteral">&quot; &quot;</span> : <span class="stringliteral">&quot; not &quot;</span>) &lt;&lt; <span class="stringliteral">&quot;in bio1 extent&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    };</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    check(point_1);</div>
@@ -301,7 +301,7 @@ Reading a single variable</h2>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    Lon max: 10</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;NA value: -1.7e+308</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;Point (Lat: 52 , Lon: -5) is  in bio1 extent</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;Point (Lat: 52 , Lon: -5) is in bio1 extent</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;Point (Lat: 99 , Lon: -99) is not in bio1 extent</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;(Lat: 52 , Lon: -5) is 4256.19 km away from (Lat: 99 , Lon: -99)</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;All equivalent:</div>
@@ -336,7 +336,7 @@ Reading multiple variables</h2>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="comment">// Initialize the landscape: for each var a key and a file, for all a time series.</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keyword">using</span> landscape_type = <a class="code" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape&lt;&gt;</a>;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keyword">auto</span> env = <a class="code" href="classquetzal_1_1geography_1_1landscape.html#a0fa9fa6c1e027352919bb35d2b40c61b">quetzal::geography::landscape&lt;&gt;::from_files</a>({{<span class="stringliteral">&quot;bio1&quot;</span>, file1}, {<span class="stringliteral">&quot;bio12&quot;</span>, file2}}, times);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keyword">auto</span> env = <a class="code" href="classquetzal_1_1geography_1_1landscape.html#a09ed51e07b330b450a57b6b5c0e55769">quetzal::geography::landscape&lt;&gt;::from_file</a>({{<span class="stringliteral">&quot;bio1&quot;</span>, file1}, {<span class="stringliteral">&quot;bio12&quot;</span>, file2}}, times);</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    std::cout &lt;&lt; env &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="comment">// We indeed recorded 2 variables: bio1 and bio12</span></div>
@@ -364,7 +364,7 @@ Reading multiple variables</h2>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    }</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;}</div>
 <div class="ttc" id="aclassquetzal_1_1geography_1_1landscape_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a></div><div class="ttdoc">Discrete spatio-temporal variations of a set of environmental variables.</div><div class="ttdef"><b>Definition:</b> landscape.hpp:42</div></div>
-<div class="ttc" id="aclassquetzal_1_1geography_1_1landscape_html_a0fa9fa6c1e027352919bb35d2b40c61b"><div class="ttname"><a href="classquetzal_1_1geography_1_1landscape.html#a0fa9fa6c1e027352919bb35d2b40c61b">quetzal::geography::landscape::from_files</a></div><div class="ttdeci">static landscape from_files(const std::map&lt; key_type, std::filesystem::path &gt; &amp;files, const std::vector&lt; time_type &gt; &amp;times)</div><div class="ttdoc">Read the rasters from a set of input geotiff files.</div><div class="ttdef"><b>Definition:</b> landscape.hpp:135</div></div>
+<div class="ttc" id="aclassquetzal_1_1geography_1_1landscape_html_a09ed51e07b330b450a57b6b5c0e55769"><div class="ttname"><a href="classquetzal_1_1geography_1_1landscape.html#a09ed51e07b330b450a57b6b5c0e55769">quetzal::geography::landscape::from_file</a></div><div class="ttdeci">static landscape from_file(const std::map&lt; key_type, std::filesystem::path &gt; &amp;files, const std::vector&lt; time_type &gt; &amp;times)</div><div class="ttdoc">Read the rasters from a set of input geotiff files.</div><div class="ttdef"><b>Definition:</b> landscape.hpp:135</div></div>
 </div><!-- fragment --><p><b>Output</b></p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;Landscape of 2 aligned rasters:</div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;bio1 bio12 </div>

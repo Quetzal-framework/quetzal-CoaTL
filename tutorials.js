@@ -33,7 +33,8 @@ var tutorials =
     [ "Defining a friction model for trans-oceanic dispersal events", "expressive_friction.html", null ],
     [ "Demographic Histories in Quetzal", "demographic_histories_in_quetzal.html", null ],
     [ "Spatial Graphs", "spatial_graphs.html", null ],
-    [ "Dispersal Kernels", "dispersal_kernels.html", null ],
+    [ "Construction", "spatial_graph_construction.html", null ],
+    [ "Distance-based dispersal Kernels", "dispersal_kernels.html", null ],
     [ "Graphs in Quetzal", "graphs_in_quetzal.html", null ],
     [ "Binary Trees", "coalescence_binary_tree.html", [
       [ "Introduction", "coalescence_binary_tree.html#autotoc_md77", null ],

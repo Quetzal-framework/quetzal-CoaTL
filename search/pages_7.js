@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['niche_20models_20in_20quetzal_1037',['Niche models in Quetzal',['../niche_in_quetzal.html',1,'tutorials']]]
+  ['k_2dary_20trees_1043',['K-ary Trees',['../coalescence_k_ary_tree.html',1,'tutorials']]]
 ];

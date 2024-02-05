@@ -51,7 +51,7 @@ var NAVTREE =
     ] ],
     [ "Include", "md_3_include.html", null ],
     [ "Tutorials", "tutorials.html", "tutorials" ],
-    [ "Construction", "spatial_graph_construction.html", null ],
+    [ "Embedding Vertex and/or Edge information", "spatial_graph_information.html", null ],
     [ "Developer's notes", "md_99_developers_notes.html", [
       [ "Conventions", "md_99_developers_notes.html#autotoc_md125", null ],
       [ "Build process", "md_99_developers_notes.html#autotoc_md126", null ],
@@ -98,11 +98,11 @@ var NAVTREEINDEX =
 "classquetzal_1_1coalescence_1_1container_1_1Network.html#a55ebf715f5584f9d0bfcf95d6c11545c",
 "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrum.html#a856ae4aff0c2adb1c49a063ca6bb31f7",
 "classquetzal_1_1geography_1_1detail_1_1graph__common.html#ad4ce8465d7680b99b2e7be465fb796a8",
-"classquetzal_1_1polymorphism_1_1fuzzy__transfer__distance_1_1Matrix.html#a866d1744cfa0ef4f4aa52e4cce070f1a",
-"functions_i.html",
-"namespacequetzal_1_1format_1_1newick.html#aea42d397ac7bb26c441284439983ad73",
-"structquetzal_1_1demography_1_1FlowHashMapImplementation_1_1key__type.html#a486c29379fcb0d5318729c0d79d13022",
-"structquetzal_1_1geography_1_1sparse.html#af55da4ba67813a03a6d6a1d86915814c"
+"classquetzal_1_1polymorphism_1_1fuzzy__transfer__distance_1_1Matrix.html#a389f2a649f221a51077d5350bff6cdcd",
+"functions_func_p.html",
+"namespacequetzal_1_1format_1_1newick.html#a4ad923ca93503327ef9d4eb4f02be74e",
+"structquetzal_1_1coalescence_1_1merger__policy_1_1BinaryMerger.html",
+"structquetzal_1_1geography_1_1latlon.html#ab17caa6a874f6f31eebdbeb41e4c8f71"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

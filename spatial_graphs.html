@@ -220,7 +220,7 @@ Example</h2>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="comment">// Initialize the landscape: for each var a key and a file, for all a time series.</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">using</span> landscape_type = <a class="code" href="classquetzal_1_1geography_1_1landscape.html">geo::landscape&lt;&gt;</a>;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keyword">auto</span> land = landscape_type::from_files({{<span class="stringliteral">&quot;bio1&quot;</span>, file1}, {<span class="stringliteral">&quot;bio12&quot;</span>, file2}}, times);</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keyword">auto</span> land = landscape_type::from_file({{<span class="stringliteral">&quot;bio1&quot;</span>, file1}, {<span class="stringliteral">&quot;bio12&quot;</span>, file2}}, times);</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="comment">// Our graph will not store any useful information</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">using</span> <a class="code" href="structvertex__info.html">vertex_info</a> = <a class="code" href="namespacequetzal_1_1geography.html#a4f58e84393fe29b5af798ef6213a2be7">geo::no_property</a>;</div>

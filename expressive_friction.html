@@ -178,7 +178,7 @@ $(document).ready(function(){initNavTree('expressive_friction.html',''); initRes
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    std::iota(times.begin(), times.end(), 2001);</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="comment">// Makes sure the rasters are aligned</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keyword">auto</span> landscape = landscape_type::from_files({{<span class="stringliteral">&quot;suit&quot;</span>, file1}, {<span class="stringliteral">&quot;DEM&quot;</span>, file2}}, times);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keyword">auto</span> landscape = landscape_type::from_file({{<span class="stringliteral">&quot;suit&quot;</span>, file1}, {<span class="stringliteral">&quot;DEM&quot;</span>, file2}}, times);</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="comment">// lightweight functor returning empty optionals where NA</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">auto</span> s_view = landscape[<span class="stringliteral">&quot;suit&quot;</span>].to_view();</div>

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['include_1033',['Include',['../md_3_include.html',1,'']]],
-  ['installation_20and_20usage_1034',['Installation and Usage',['../md_2_installation.html',1,'']]],
-  ['introduction_1035',['Introduction',['../md_1_introduction.html',1,'']]]
+  ['generating_20a_20newick_20string_1037',['Generating a Newick string',['../newick_generator.html',1,'tutorials']]],
+  ['generating_20an_20extended_20newick_20string_1038',['Generating an Extended Newick string',['../extended_newick_generator.html',1,'tutorials']]],
+  ['graphs_20in_20quetzal_1039',['Graphs in Quetzal',['../graphs_in_quetzal.html',1,'tutorials']]]
 ];

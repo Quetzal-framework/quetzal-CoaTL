@@ -158,12 +158,12 @@ $(document).ready(function(){initNavTree('classquetzal_1_1geography_1_1landscape
 class quetzal::geography::landscape&lt; Key, Time &gt;</h3>
 
 <p>Discrete spatio-temporal variations of a set of environmental variables. </p>
-<p>Read and write multiple georeferenced raster datasets with multiple bands (layers). Multiple <a class="el" href="classquetzal_1_1geography_1_1raster.html" title="Discrete spatio-temporal variations of an environmental variable.">quetzal::geography::raster</a> objects are assembled into a multivariate discrete <a class="el" href="classquetzal_1_1geography_1_1landscape.html" title="Discrete spatio-temporal variations of a set of environmental variables.">quetzal::geography::landscape</a>. This geospatial collection is constructed from raster files and gives strong guarantees on grids consistency. </p><dl class="section remark"><dt>Remarks</dt><dd>Working with multiple variables can lead to simulation problems if the rasters have even slightly different grid properties, like different resolutions, origins or extent. To prevent these problems from happening, a <code><a class="el" href="classquetzal_1_1geography_1_1landscape.html" title="Discrete spatio-temporal variations of a set of environmental variables.">quetzal::geography::landscape</a></code> wraps multiple <a class="el" href="classquetzal_1_1geography_1_1raster.html" title="Discrete spatio-temporal variations of an environmental variable.">quetzal::geography::raster</a> objects into one single coherent object and checks that all rasters are aligned. </dd>
+<p>Read and write multiple geo-referenced raster datasets with multiple bands (layers). Multiple <a class="el" href="classquetzal_1_1geography_1_1raster.html" title="Discrete spatio-temporal variations of an environmental variable.">quetzal::geography::raster</a> objects are assembled into a multivariate discrete <a class="el" href="classquetzal_1_1geography_1_1landscape.html" title="Discrete spatio-temporal variations of a set of environmental variables.">quetzal::geography::landscape</a>. This geo-spatial collection is constructed from raster files and gives strong guarantees on grids consistency. </p><dl class="section remark"><dt>Remarks</dt><dd>Working with multiple variables can lead to simulation problems if the rasters have even slightly different grid properties, like different resolutions, origins or extent. To prevent these problems from happening, a <code><a class="el" href="classquetzal_1_1geography_1_1landscape.html" title="Discrete spatio-temporal variations of a set of environmental variables.">quetzal::geography::landscape</a></code> wraps multiple <a class="el" href="classquetzal_1_1geography_1_1raster.html" title="Discrete spatio-temporal variations of an environmental variable.">quetzal::geography::raster</a> objects into one single coherent object and checks that all rasters are aligned. </dd>
 <dd>
 A <a class="el" href="classquetzal_1_1geography_1_1landscape.html" title="Discrete spatio-temporal variations of a set of environmental variables.">quetzal::geography::landscape</a> shares a large part of its spatial semantics with a <a class="el" href="classquetzal_1_1geography_1_1raster.html" title="Discrete spatio-temporal variations of an environmental variable.">quetzal::geography::raster</a>. </dd></dl>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">Key</td><td>A key used to uniquely identifie a variable, e.g. std::string. </td></tr>
+    <tr><td class="paramname">Key</td><td>A key used to uniquely identify a variable, e.g. std::string. </td></tr>
     <tr><td class="paramname">Time</td><td>Type used as time period for every band, e.g. std::string with <code>4.2-0.3 ka</code> </td></tr>
   </table>
   </dd>
@@ -241,45 +241,58 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 <tr class="memdesc:aa370bcb74a697431ae62627f46453667"><td class="mdescLeft">&#160;</td><td class="mdescRight">Depth of the spatial grid. <br /></td></tr>
 <tr class="separator:aa370bcb74a697431ae62627f46453667"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Look-up</div></td></tr>
-<tr class="memitem:ab94a23956f297f6074a69588a4d48002"><td class="memItemLeft" align="right" valign="top"><a id="ab94a23956f297f6074a69588a4d48002"></a>
-auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#ab94a23956f297f6074a69588a4d48002">locations</a> () const noexcept</td></tr>
-<tr class="memdesc:ab94a23956f297f6074a69588a4d48002"><td class="mdescLeft">&#160;</td><td class="mdescRight">Location descriptors (unique identifiers) of the grid cells. <br /></td></tr>
+<tr class="memitem:ab94a23956f297f6074a69588a4d48002"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#ab94a23956f297f6074a69588a4d48002">locations</a> () const noexcept</td></tr>
+<tr class="memdesc:ab94a23956f297f6074a69588a4d48002"><td class="mdescLeft">&#160;</td><td class="mdescRight">Location descriptors (unique identifiers) of the grid cells.  <a href="classquetzal_1_1geography_1_1landscape.html#ab94a23956f297f6074a69588a4d48002">More...</a><br /></td></tr>
 <tr class="separator:ab94a23956f297f6074a69588a4d48002"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3bd2fef74ff43831f98de5138522cc98"><td class="memItemLeft" align="right" valign="top"><a id="a3bd2fef74ff43831f98de5138522cc98"></a>
-auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#a3bd2fef74ff43831f98de5138522cc98">times</a> () const noexcept</td></tr>
-<tr class="memdesc:a3bd2fef74ff43831f98de5138522cc98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time descriptors (unique identifiers) of the dataset bands. <br /></td></tr>
+<tr class="memitem:a3bd2fef74ff43831f98de5138522cc98"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#a3bd2fef74ff43831f98de5138522cc98">times</a> () const noexcept</td></tr>
+<tr class="memdesc:a3bd2fef74ff43831f98de5138522cc98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time descriptors (unique identifiers) of the dataset bands.  <a href="classquetzal_1_1geography_1_1landscape.html#a3bd2fef74ff43831f98de5138522cc98">More...</a><br /></td></tr>
 <tr class="separator:a3bd2fef74ff43831f98de5138522cc98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3479445ee6eea58e4e6e530b17442e5"><td class="memItemLeft" align="right" valign="top"><a id="ab3479445ee6eea58e4e6e530b17442e5"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#ab3479445ee6eea58e4e6e530b17442e5">contains</a> (const latlon &amp;x) const noexcept</td></tr>
-<tr class="memdesc:ab3479445ee6eea58e4e6e530b17442e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">checks if the raster contains a layer with specific time <br /></td></tr>
+<tr class="memitem:a4e9ba2868e73dafa672d073ba567fcad"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#a4e9ba2868e73dafa672d073ba567fcad">is_valid</a> (location_descriptor x) const noexcept</td></tr>
+<tr class="memdesc:a4e9ba2868e73dafa672d073ba567fcad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a descriptor describes a valid location of the spatial grid.  <a href="classquetzal_1_1geography_1_1landscape.html#a4e9ba2868e73dafa672d073ba567fcad">More...</a><br /></td></tr>
+<tr class="separator:a4e9ba2868e73dafa672d073ba567fcad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad84e8b36bbb30ba9b56bd16363360255"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#ad84e8b36bbb30ba9b56bd16363360255">is_valid</a> (const colrow &amp;x) const noexcept</td></tr>
+<tr class="memdesc:ad84e8b36bbb30ba9b56bd16363360255"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the coordinate describes a valid location of the spatial grid.  <a href="classquetzal_1_1geography_1_1landscape.html#ad84e8b36bbb30ba9b56bd16363360255">More...</a><br /></td></tr>
+<tr class="separator:ad84e8b36bbb30ba9b56bd16363360255"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b14a6dbc4551b48fb3fee623ff53e17"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#a9b14a6dbc4551b48fb3fee623ff53e17">is_valid</a> (const rowcol &amp;x) const noexcept</td></tr>
+<tr class="memdesc:a9b14a6dbc4551b48fb3fee623ff53e17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the coordinate describes a valid location of the spatial grid.  <a href="classquetzal_1_1geography_1_1landscape.html#a9b14a6dbc4551b48fb3fee623ff53e17">More...</a><br /></td></tr>
+<tr class="separator:a9b14a6dbc4551b48fb3fee623ff53e17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3479445ee6eea58e4e6e530b17442e5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#ab3479445ee6eea58e4e6e530b17442e5">contains</a> (const latlon &amp;x) const noexcept</td></tr>
+<tr class="memdesc:ab3479445ee6eea58e4e6e530b17442e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the raster contains a coordinate.  <a href="classquetzal_1_1geography_1_1landscape.html#ab3479445ee6eea58e4e6e530b17442e5">More...</a><br /></td></tr>
 <tr class="separator:ab3479445ee6eea58e4e6e530b17442e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99a338c731efec06f0bcb2a91f3a2f8b"><td class="memItemLeft" align="right" valign="top"><a id="a99a338c731efec06f0bcb2a91f3a2f8b"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#a99a338c731efec06f0bcb2a91f3a2f8b">contains</a> (const lonlat &amp;x) const noexcept</td></tr>
-<tr class="memdesc:a99a338c731efec06f0bcb2a91f3a2f8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">checks if the raster contains a layer with specific time <br /></td></tr>
+<tr class="memitem:a99a338c731efec06f0bcb2a91f3a2f8b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#a99a338c731efec06f0bcb2a91f3a2f8b">contains</a> (const lonlat &amp;x) const noexcept</td></tr>
+<tr class="memdesc:a99a338c731efec06f0bcb2a91f3a2f8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the raster contains a coordinate.  <a href="classquetzal_1_1geography_1_1landscape.html#a99a338c731efec06f0bcb2a91f3a2f8b">More...</a><br /></td></tr>
 <tr class="separator:a99a338c731efec06f0bcb2a91f3a2f8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a857c9ae8d5a9cc2a2530d330a2a88bc9"><td class="memItemLeft" align="right" valign="top"><a id="a857c9ae8d5a9cc2a2530d330a2a88bc9"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#a857c9ae8d5a9cc2a2530d330a2a88bc9">contains</a> (const time_type &amp;t) const noexcept</td></tr>
-<tr class="memdesc:a857c9ae8d5a9cc2a2530d330a2a88bc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">checks if the raster contains a layer with specific time <br /></td></tr>
-<tr class="separator:a857c9ae8d5a9cc2a2530d330a2a88bc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2b87b19410addbecaf2aa11f1a917ab"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#af2b87b19410addbecaf2aa11f1a917ab">is_valid</a> (time_descriptor t) const noexcept</td></tr>
+<tr class="memdesc:af2b87b19410addbecaf2aa11f1a917ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the time descriptor is a valid index.  <a href="classquetzal_1_1geography_1_1landscape.html#af2b87b19410addbecaf2aa11f1a917ab">More...</a><br /></td></tr>
+<tr class="separator:af2b87b19410addbecaf2aa11f1a917ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cf6d262482544b1a38daee8e51e7668"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#a4cf6d262482544b1a38daee8e51e7668">is_recorded</a> (const time_type &amp;t) const noexcept</td></tr>
+<tr class="memdesc:a4cf6d262482544b1a38daee8e51e7668"><td class="mdescLeft">&#160;</td><td class="mdescRight">Search for the exact time in the list of time points recorded by the raster.  <a href="classquetzal_1_1geography_1_1landscape.html#a4cf6d262482544b1a38daee8e51e7668">More...</a><br /></td></tr>
+<tr class="separator:a4cf6d262482544b1a38daee8e51e7668"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7d2dd01c529000d13da2516a741e686"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#ae7d2dd01c529000d13da2516a741e686">is_in_interval</a> (const time_type &amp;t) const noexcept</td></tr>
+<tr class="memdesc:ae7d2dd01c529000d13da2516a741e686"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the exact time point falls between the first and last date of record.  <a href="classquetzal_1_1geography_1_1landscape.html#ae7d2dd01c529000d13da2516a741e686">More...</a><br /></td></tr>
+<tr class="separator:ae7d2dd01c529000d13da2516a741e686"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Coordinate systems</div></td></tr>
-<tr class="memitem:a5fbf21a34c75840221f349e2a5d88601"><td class="memItemLeft" align="right" valign="top">std::optional&lt; location_descriptor &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#a5fbf21a34c75840221f349e2a5d88601">to_descriptor</a> (const colrow &amp;x) const noexcept</td></tr>
-<tr class="memdesc:a5fbf21a34c75840221f349e2a5d88601"><td class="mdescLeft">&#160;</td><td class="mdescRight">Location descriptor of the cell identified by its column/row.  <a href="classquetzal_1_1geography_1_1landscape.html#a5fbf21a34c75840221f349e2a5d88601">More...</a><br /></td></tr>
-<tr class="separator:a5fbf21a34c75840221f349e2a5d88601"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83223b0b4e656f8155369af96650adf4"><td class="memItemLeft" align="right" valign="top">std::optional&lt; location_descriptor &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#a83223b0b4e656f8155369af96650adf4">to_descriptor</a> (const latlon &amp;x) const noexcept</td></tr>
-<tr class="memdesc:a83223b0b4e656f8155369af96650adf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Location descriptor of the cell to which the given coordinate belongs.  <a href="classquetzal_1_1geography_1_1landscape.html#a83223b0b4e656f8155369af96650adf4">More...</a><br /></td></tr>
-<tr class="separator:a83223b0b4e656f8155369af96650adf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0006c7e5e6f5613f6469d61ab173c08e"><td class="memItemLeft" align="right" valign="top">std::optional&lt; colrow &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#a0006c7e5e6f5613f6469d61ab173c08e">to_colrow</a> (const latlon &amp;x) const noexcept</td></tr>
-<tr class="memdesc:a0006c7e5e6f5613f6469d61ab173c08e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Column and row of the cell to which the given coordinate belongs.  <a href="classquetzal_1_1geography_1_1landscape.html#a0006c7e5e6f5613f6469d61ab173c08e">More...</a><br /></td></tr>
-<tr class="separator:a0006c7e5e6f5613f6469d61ab173c08e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a233a041e6db8110f76e93862dec5eded"><td class="memItemLeft" align="right" valign="top">std::optional&lt; rowcol &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#a233a041e6db8110f76e93862dec5eded">to_rowcol</a> (const latlon &amp;x) const noexcept</td></tr>
-<tr class="memdesc:a233a041e6db8110f76e93862dec5eded"><td class="mdescLeft">&#160;</td><td class="mdescRight">Row and column of the cell to which the given coordinate belongs.  <a href="classquetzal_1_1geography_1_1landscape.html#a233a041e6db8110f76e93862dec5eded">More...</a><br /></td></tr>
-<tr class="separator:a233a041e6db8110f76e93862dec5eded"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1787965739bbd9ca65a73ee96d37bb59"><td class="memItemLeft" align="right" valign="top">std::optional&lt; colrow &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#a1787965739bbd9ca65a73ee96d37bb59">to_colrow</a> (location_descriptor x) const noexcept</td></tr>
-<tr class="memdesc:a1787965739bbd9ca65a73ee96d37bb59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Column and row of the cell to which the given descriptor belongs.  <a href="classquetzal_1_1geography_1_1landscape.html#a1787965739bbd9ca65a73ee96d37bb59">More...</a><br /></td></tr>
-<tr class="separator:a1787965739bbd9ca65a73ee96d37bb59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45546d53199d7b547e496ae7d0884466"><td class="memItemLeft" align="right" valign="top">std::optional&lt; latlon &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#a45546d53199d7b547e496ae7d0884466">to_latlon</a> (location_descriptor x) const noexcept</td></tr>
-<tr class="memdesc:a45546d53199d7b547e496ae7d0884466"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latitude and longitude of the cell to which the given coordinate belongs.  <a href="classquetzal_1_1geography_1_1landscape.html#a45546d53199d7b547e496ae7d0884466">More...</a><br /></td></tr>
-<tr class="separator:a45546d53199d7b547e496ae7d0884466"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2ab5a400e7b1a1ba11a757f7bb1f840"><td class="memItemLeft" align="right" valign="top">location_descriptor&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#ab2ab5a400e7b1a1ba11a757f7bb1f840">to_descriptor</a> (const colrow &amp;x) const noexcept</td></tr>
+<tr class="memdesc:ab2ab5a400e7b1a1ba11a757f7bb1f840"><td class="mdescLeft">&#160;</td><td class="mdescRight">Location descriptor of the cell identified by its column/row.  <a href="classquetzal_1_1geography_1_1landscape.html#ab2ab5a400e7b1a1ba11a757f7bb1f840">More...</a><br /></td></tr>
+<tr class="separator:ab2ab5a400e7b1a1ba11a757f7bb1f840"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a912d0555798e06b6b950dbb106cefe4a"><td class="memItemLeft" align="right" valign="top">location_descriptor&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#a912d0555798e06b6b950dbb106cefe4a">to_descriptor</a> (const latlon &amp;x) const noexcept</td></tr>
+<tr class="memdesc:a912d0555798e06b6b950dbb106cefe4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Location descriptor of the cell to which the given coordinate belongs.  <a href="classquetzal_1_1geography_1_1landscape.html#a912d0555798e06b6b950dbb106cefe4a">More...</a><br /></td></tr>
+<tr class="separator:a912d0555798e06b6b950dbb106cefe4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1cd74dfa03785963eab0f6d645369bf"><td class="memItemLeft" align="right" valign="top">colrow&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#aa1cd74dfa03785963eab0f6d645369bf">to_colrow</a> (const latlon &amp;x) const noexcept</td></tr>
+<tr class="memdesc:aa1cd74dfa03785963eab0f6d645369bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Column and row of the cell to which the given coordinate belongs.  <a href="classquetzal_1_1geography_1_1landscape.html#aa1cd74dfa03785963eab0f6d645369bf">More...</a><br /></td></tr>
+<tr class="separator:aa1cd74dfa03785963eab0f6d645369bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef689aabe1ff696810af389d4927470a"><td class="memItemLeft" align="right" valign="top">rowcol&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#aef689aabe1ff696810af389d4927470a">to_rowcol</a> (const latlon &amp;x) const noexcept</td></tr>
+<tr class="memdesc:aef689aabe1ff696810af389d4927470a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Row and column of the cell to which the given coordinate belongs.  <a href="classquetzal_1_1geography_1_1landscape.html#aef689aabe1ff696810af389d4927470a">More...</a><br /></td></tr>
+<tr class="separator:aef689aabe1ff696810af389d4927470a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0901b86db4340b573d269f4317775c0c"><td class="memItemLeft" align="right" valign="top">colrow&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#a0901b86db4340b573d269f4317775c0c">to_colrow</a> (location_descriptor x) const noexcept</td></tr>
+<tr class="memdesc:a0901b86db4340b573d269f4317775c0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Column and row of the cell to which the given descriptor belongs.  <a href="classquetzal_1_1geography_1_1landscape.html#a0901b86db4340b573d269f4317775c0c">More...</a><br /></td></tr>
+<tr class="separator:a0901b86db4340b573d269f4317775c0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6006fcee91733c22b87d6e2d6e61108e"><td class="memItemLeft" align="right" valign="top">latlon&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#a6006fcee91733c22b87d6e2d6e61108e">to_latlon</a> (location_descriptor x) const noexcept</td></tr>
+<tr class="memdesc:a6006fcee91733c22b87d6e2d6e61108e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latitude and longitude of the cell to which the given coordinate belongs.  <a href="classquetzal_1_1geography_1_1landscape.html#a6006fcee91733c22b87d6e2d6e61108e">More...</a><br /></td></tr>
+<tr class="separator:a6006fcee91733c22b87d6e2d6e61108e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a346455d150bd4336b28cf20fb27aef77"><td class="memItemLeft" align="right" valign="top">lonlat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#a346455d150bd4336b28cf20fb27aef77">to_lonlat</a> (location_descriptor x) const noexcept</td></tr>
+<tr class="memdesc:a346455d150bd4336b28cf20fb27aef77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Longitude and latitude of the cell to which the given coordinate belongs.  <a href="classquetzal_1_1geography_1_1landscape.html#a346455d150bd4336b28cf20fb27aef77">More...</a><br /></td></tr>
+<tr class="separator:a346455d150bd4336b28cf20fb27aef77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae61d099b94ce1ee303d23570ed1da169"><td class="memItemLeft" align="right" valign="top">latlon&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#ae61d099b94ce1ee303d23570ed1da169">to_latlon</a> (const colrow &amp;x) const noexcept</td></tr>
 <tr class="memdesc:ae61d099b94ce1ee303d23570ed1da169"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latitude and longitude of the cell identified by its column/row.  <a href="classquetzal_1_1geography_1_1landscape.html#ae61d099b94ce1ee303d23570ed1da169">More...</a><br /></td></tr>
 <tr class="separator:ae61d099b94ce1ee303d23570ed1da169"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -291,9 +304,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a9dfd95704c08353e7ea05b3d5974680e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">Input/Output</h2></td></tr>
-<tr class="memitem:a0fa9fa6c1e027352919bb35d2b40c61b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classquetzal_1_1geography_1_1landscape.html">landscape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#a0fa9fa6c1e027352919bb35d2b40c61b">from_files</a> (const std::map&lt; key_type, std::filesystem::path &gt; &amp;files, const std::vector&lt; time_type &gt; &amp;<a class="el" href="classquetzal_1_1geography_1_1landscape.html#a3bd2fef74ff43831f98de5138522cc98">times</a>)</td></tr>
-<tr class="memdesc:a0fa9fa6c1e027352919bb35d2b40c61b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the rasters from a set of input geotiff files.  <a href="classquetzal_1_1geography_1_1landscape.html#a0fa9fa6c1e027352919bb35d2b40c61b">More...</a><br /></td></tr>
-<tr class="separator:a0fa9fa6c1e027352919bb35d2b40c61b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09ed51e07b330b450a57b6b5c0e55769"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classquetzal_1_1geography_1_1landscape.html">landscape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#a09ed51e07b330b450a57b6b5c0e55769">from_file</a> (const std::map&lt; key_type, std::filesystem::path &gt; &amp;files, const std::vector&lt; time_type &gt; &amp;<a class="el" href="classquetzal_1_1geography_1_1landscape.html#a3bd2fef74ff43831f98de5138522cc98">times</a>)</td></tr>
+<tr class="memdesc:a09ed51e07b330b450a57b6b5c0e55769"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the rasters from a set of input geotiff files.  <a href="classquetzal_1_1geography_1_1landscape.html#a09ed51e07b330b450a57b6b5c0e55769">More...</a><br /></td></tr>
+<tr class="separator:a09ed51e07b330b450a57b6b5c0e55769"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e2250dca4776f4cd5a6f57a653b651a"><td class="memTemplParams" colspan="2">template&lt;typename Callable &gt; </td></tr>
 <tr class="memitem:a6e2250dca4776f4cd5a6f57a653b651a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacequetzal_1_1geography.html#a2f05af9335923ac31a3470db53764568">requires</a> std::invocable&lt; Callable, location_descriptor, time_descriptor, std::optional&lt; double &gt; &gt; void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classquetzal_1_1geography_1_1landscape.html#a6e2250dca4776f4cd5a6f57a653b651a">to_geotiff</a> (Callable f, time_descriptor start, time_descriptor end, const std::filesystem::path &amp;file) const</td></tr>
 <tr class="memdesc:a6e2250dca4776f4cd5a6f57a653b651a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export a spatio-temporal raster to a Geotiff file.  <a href="classquetzal_1_1geography_1_1landscape.html#a6e2250dca4776f4cd5a6f57a653b651a">More...</a><br /></td></tr>
@@ -310,8 +323,8 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
 <tr class="separator:a0a99d533fdb83dd349f73e69dbe94395"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0fa9fa6c1e027352919bb35d2b40c61b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0fa9fa6c1e027352919bb35d2b40c61b">&#9670;&nbsp;</a></span>from_files()</h2>
+<a id="ab3479445ee6eea58e4e6e530b17442e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3479445ee6eea58e4e6e530b17442e5">&#9670;&nbsp;</a></span>contains() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -322,7 +335,81 @@ template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="classquetzal_1_1geography_1_1landscape.html">landscape</a> <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::from_files </td>
+          <td class="memname">bool <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::contains </td>
+          <td>(</td>
+          <td class="paramtype">const latlon &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if the raster contains a coordinate. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>the lat/lon to check. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if x is valid, false otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="a99a338c731efec06f0bcb2a91f3a2f8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99a338c731efec06f0bcb2a91f3a2f8b">&#9670;&nbsp;</a></span>contains() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::contains </td>
+          <td>(</td>
+          <td class="paramtype">const lonlat &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if the raster contains a coordinate. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>the lon/lat to check. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if x is valid, false otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="a09ed51e07b330b450a57b6b5c0e55769"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09ed51e07b330b450a57b6b5c0e55769">&#9670;&nbsp;</a></span>from_file()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classquetzal_1_1geography_1_1landscape.html">landscape</a> <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::from_file </td>
           <td>(</td>
           <td class="paramtype">const std::map&lt; key_type, std::filesystem::path &gt; &amp;&#160;</td>
           <td class="paramname"><em>files</em>, </td>
@@ -358,6 +445,258 @@ template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A raster object </dd></dl>
 <dl class="section remark"><dt>Remarks</dt><dd>error will be thrown if the datasets do not have the exactly same geographical properties (origin, extent, resolution, number of layers). </dd></dl>
+
+</div>
+</div>
+<a id="ae7d2dd01c529000d13da2516a741e686"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7d2dd01c529000d13da2516a741e686">&#9670;&nbsp;</a></span>is_in_interval()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::is_in_interval </td>
+          <td>(</td>
+          <td class="paramtype">const time_type &amp;&#160;</td>
+          <td class="paramname"><em>t</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if the exact time point falls between the first and last date of record. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t</td><td>An exact point in time </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the time point falls in the temporal range, false otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="a4cf6d262482544b1a38daee8e51e7668"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4cf6d262482544b1a38daee8e51e7668">&#9670;&nbsp;</a></span>is_recorded()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::is_recorded </td>
+          <td>(</td>
+          <td class="paramtype">const time_type &amp;&#160;</td>
+          <td class="paramname"><em>t</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Search for the exact time in the list of time points recorded by the raster. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t</td><td>An exact point in time </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the time point is found, false otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="ad84e8b36bbb30ba9b56bd16363360255"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad84e8b36bbb30ba9b56bd16363360255">&#9670;&nbsp;</a></span>is_valid() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::is_valid </td>
+          <td>(</td>
+          <td class="paramtype">const colrow &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if the coordinate describes a valid location of the spatial grid. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>the column/row to check. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if x is valid, false otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="a9b14a6dbc4551b48fb3fee623ff53e17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b14a6dbc4551b48fb3fee623ff53e17">&#9670;&nbsp;</a></span>is_valid() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::is_valid </td>
+          <td>(</td>
+          <td class="paramtype">const rowcol &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if the coordinate describes a valid location of the spatial grid. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>the row/column to check. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if x is valid, false otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="a4e9ba2868e73dafa672d073ba567fcad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e9ba2868e73dafa672d073ba567fcad">&#9670;&nbsp;</a></span>is_valid() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::is_valid </td>
+          <td>(</td>
+          <td class="paramtype">location_descriptor&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if a descriptor describes a valid location of the spatial grid. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>the descriptor to check </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if x is valid, false otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="af2b87b19410addbecaf2aa11f1a917ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2b87b19410addbecaf2aa11f1a917ab">&#9670;&nbsp;</a></span>is_valid() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::is_valid </td>
+          <td>(</td>
+          <td class="paramtype">time_descriptor&#160;</td>
+          <td class="paramname"><em>t</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if the time descriptor is a valid index. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t</td><td>A time descriptor identifying a layer of the raster. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the descriptor is a valid index, false otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="ab94a23956f297f6074a69588a4d48002"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab94a23956f297f6074a69588a4d48002">&#9670;&nbsp;</a></span>locations()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::locations </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Location descriptors (unique identifiers) of the grid cells. </p>
+<dl class="section return"><dt>Returns</dt><dd>A range of unique identifiers for every cell </dd></dl>
 
 </div>
 </div>
@@ -495,6 +834,36 @@ template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
 
 </div>
 </div>
+<a id="a3bd2fef74ff43831f98de5138522cc98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bd2fef74ff43831f98de5138522cc98">&#9670;&nbsp;</a></span>times()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::times </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Time descriptors (unique identifiers) of the dataset bands. </p>
+<dl class="section return"><dt>Returns</dt><dd>A range of unique identifiers for every time point recorded </dd></dl>
+
+</div>
+</div>
 <a id="a9dfd95704c08353e7ea05b3d5974680e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9dfd95704c08353e7ea05b3d5974680e">&#9670;&nbsp;</a></span>to_centroid()</h2>
 
@@ -530,11 +899,12 @@ template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The coordinate of the centroid of the cell it belongs. </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>x is in spatial extent </dd></dl>
 
 </div>
 </div>
-<a id="a0006c7e5e6f5613f6469d61ab173c08e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0006c7e5e6f5613f6469d61ab173c08e">&#9670;&nbsp;</a></span>to_colrow() <span class="overload">[1/2]</span></h2>
+<a id="aa1cd74dfa03785963eab0f6d645369bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1cd74dfa03785963eab0f6d645369bf">&#9670;&nbsp;</a></span>to_colrow() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -545,7 +915,7 @@ template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt;colrow&gt; <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::to_colrow </td>
+          <td class="memname">colrow <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::to_colrow </td>
           <td>(</td>
           <td class="paramtype">const latlon &amp;&#160;</td>
           <td class="paramname"><em>x</em></td><td>)</td>
@@ -562,16 +932,17 @@ template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
 <p>Column and row of the cell to which the given coordinate belongs. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">x</td><td>the latitude/longitude coordinate to evaluate. </td></tr>
+    <tr><td class="paramname">x</td><td>the coordinate to evaluate. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>An optional with a pair (column, row) if x is in the spatial extent, empty otherwise. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A pair (column, row). </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>x is in spatial extent. </dd></dl>
 
 </div>
 </div>
-<a id="a1787965739bbd9ca65a73ee96d37bb59"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1787965739bbd9ca65a73ee96d37bb59">&#9670;&nbsp;</a></span>to_colrow() <span class="overload">[2/2]</span></h2>
+<a id="a0901b86db4340b573d269f4317775c0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0901b86db4340b573d269f4317775c0c">&#9670;&nbsp;</a></span>to_colrow() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -582,7 +953,7 @@ template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt;colrow&gt; <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::to_colrow </td>
+          <td class="memname">colrow <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::to_colrow </td>
           <td>(</td>
           <td class="paramtype">location_descriptor&#160;</td>
           <td class="paramname"><em>x</em></td><td>)</td>
@@ -603,12 +974,13 @@ template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>An optional with a pair (column, row) if x is in the spatial extent, empty otherwise. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A pair (column, row). </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>x is in spatial extent. </dd></dl>
 
 </div>
 </div>
-<a id="a5fbf21a34c75840221f349e2a5d88601"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5fbf21a34c75840221f349e2a5d88601">&#9670;&nbsp;</a></span>to_descriptor() <span class="overload">[1/2]</span></h2>
+<a id="ab2ab5a400e7b1a1ba11a757f7bb1f840"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2ab5a400e7b1a1ba11a757f7bb1f840">&#9670;&nbsp;</a></span>to_descriptor() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -619,7 +991,7 @@ template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt;location_descriptor&gt; <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::to_descriptor </td>
+          <td class="memname">location_descriptor <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::to_descriptor </td>
           <td>(</td>
           <td class="paramtype">const colrow &amp;&#160;</td>
           <td class="paramname"><em>x</em></td><td>)</td>
@@ -636,16 +1008,17 @@ template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
 <p>Location descriptor of the cell identified by its column/row. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">x</td><td>the latitude/longitude coordinate to evaluate. </td></tr>
+    <tr><td class="paramname">x</td><td>the coordinate to evaluate. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>An optional with the descriptor value if x is in the spatial extent, empty otherwise. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The descriptor value. </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>x is in spatial extent. </dd></dl>
 
 </div>
 </div>
-<a id="a83223b0b4e656f8155369af96650adf4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a83223b0b4e656f8155369af96650adf4">&#9670;&nbsp;</a></span>to_descriptor() <span class="overload">[2/2]</span></h2>
+<a id="a912d0555798e06b6b950dbb106cefe4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a912d0555798e06b6b950dbb106cefe4a">&#9670;&nbsp;</a></span>to_descriptor() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -656,7 +1029,7 @@ template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt;location_descriptor&gt; <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::to_descriptor </td>
+          <td class="memname">location_descriptor <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::to_descriptor </td>
           <td>(</td>
           <td class="paramtype">const latlon &amp;&#160;</td>
           <td class="paramname"><em>x</em></td><td>)</td>
@@ -673,11 +1046,12 @@ template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
 <p>Location descriptor of the cell to which the given coordinate belongs. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">x</td><td>the latitude/longitude coordinate to evaluate. </td></tr>
+    <tr><td class="paramname">x</td><td>the coordinate to evaluate. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>An optional with the descriptor value if x is in the spatial extent, empty otherwise. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The descriptor value. </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>x is in spatial extent. </dd></dl>
 
 </div>
 </div>
@@ -777,12 +1151,13 @@ template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A pair (latitude, longitude) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A pair (latitude, longitude). </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>x is in spatial extent. </dd></dl>
 
 </div>
 </div>
-<a id="a45546d53199d7b547e496ae7d0884466"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a45546d53199d7b547e496ae7d0884466">&#9670;&nbsp;</a></span>to_latlon() <span class="overload">[2/2]</span></h2>
+<a id="a6006fcee91733c22b87d6e2d6e61108e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6006fcee91733c22b87d6e2d6e61108e">&#9670;&nbsp;</a></span>to_latlon() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -793,7 +1168,7 @@ template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt;latlon&gt; <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::to_latlon </td>
+          <td class="memname">latlon <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::to_latlon </td>
           <td>(</td>
           <td class="paramtype">location_descriptor&#160;</td>
           <td class="paramname"><em>x</em></td><td>)</td>
@@ -814,12 +1189,13 @@ template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>An optional with a pair (lat, lon) if x is in the spatial extent, empty otherwise. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A pair (lat, lon). </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>x is in spatial extent. </dd></dl>
 
 </div>
 </div>
 <a id="ab3d71385903ab2659e028a5058dbe550"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab3d71385903ab2659e028a5058dbe550">&#9670;&nbsp;</a></span>to_lonlat()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3d71385903ab2659e028a5058dbe550">&#9670;&nbsp;</a></span>to_lonlat() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -851,12 +1227,13 @@ template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A pair (latitude, longitude) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A pair (longitude, latitude) </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>x is in spatial extent </dd></dl>
 
 </div>
 </div>
-<a id="a233a041e6db8110f76e93862dec5eded"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a233a041e6db8110f76e93862dec5eded">&#9670;&nbsp;</a></span>to_rowcol()</h2>
+<a id="a346455d150bd4336b28cf20fb27aef77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a346455d150bd4336b28cf20fb27aef77">&#9670;&nbsp;</a></span>to_lonlat() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -867,7 +1244,45 @@ template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt;rowcol&gt; <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::to_rowcol </td>
+          <td class="memname">lonlat <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::to_lonlat </td>
+          <td>(</td>
+          <td class="paramtype">location_descriptor&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Longitude and latitude of the cell to which the given coordinate belongs. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>the location to evaluate. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A pair (lon, lat). </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>x is in spatial extent </dd></dl>
+
+</div>
+</div>
+<a id="aef689aabe1ff696810af389d4927470a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef689aabe1ff696810af389d4927470a">&#9670;&nbsp;</a></span>to_rowcol()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">rowcol <a class="el" href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a>&lt; Key, Time &gt;::to_rowcol </td>
           <td>(</td>
           <td class="paramtype">const latlon &amp;&#160;</td>
           <td class="paramname"><em>x</em></td><td>)</td>
@@ -884,11 +1299,12 @@ template&lt;typename Key  = std::string, typename Time  = int&gt; </div>
 <p>Row and column of the cell to which the given coordinate belongs. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">x</td><td>the latitude/longitude coordinate to evaluate. </td></tr>
+    <tr><td class="paramname">x</td><td>the coordinate to evaluate. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>An optional with a pair (row, column) if x is in the spatial extent, empty otherwise. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A pair (row, column). </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>x is in spatial extent. </dd></dl>
 
 </div>
 </div>

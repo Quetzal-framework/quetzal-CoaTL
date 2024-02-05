@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['writing_20spatial_20samples_20to_20shapefile_1045',['Writing spatial samples to shapefile',['../shapefile_generator.html',1,'tutorials']]],
-  ['writing_20spatial_20variables_20to_20rasters_1046',['Writing spatial variables to rasters',['../geotiff_generator.html',1,'tutorials']]]
+  ['the_20quetzal_20coalescence_20library_1050',['The Quetzal Coalescence Library',['../index.html',1,'']]],
+  ['tutorials_1051',['Tutorials',['../tutorials.html',1,'']]]
 ];

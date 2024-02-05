@@ -1,3 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structquetzal_1_1coalescence_1_1occupancy__spectrum_1_1memoize_1_1hash__parameters.html" title="To store pairs of distribution parameters &#160;and &#160;in a hashmap." alt="" coords="5,5,217,61"/>
+<area shape="rect" id="node1" href="$structquetzal_1_1coalescence_1_1occupancy__spectrum_1_1editor__policy_1_1truncate__tail.html" title="Edition consists in truncating the last nul elements of the spectrum to avoid useless iterations." alt="" coords="5,5,208,61"/>
 </map>

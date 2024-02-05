@@ -1,4 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classquetzal_1_1demography_1_1HistoryBase.html" title=" " alt="" coords="5,5,248,61"/>
-<area shape="rect" id="node2" href="$classquetzal_1_1demography_1_1History.html" title="Unspecialized class (CRTP design pattern)" alt="" coords="296,5,496,61"/>
+<area shape="rect" id="node1" href="$classquetzal_1_1demography_1_1HistoryBase.html" title=" " alt="" coords="5,5,185,76"/>
+<area shape="rect" id="node2" href="$classquetzal_1_1demography_1_1History_3_01Space_00_01demographic__policy_1_1mass__based_00_01Memory_01_4.html" title="Partial specialization where populations levels are assumed high enough to be considered as divisible..." alt="" coords="233,13,467,69"/>
 </map>

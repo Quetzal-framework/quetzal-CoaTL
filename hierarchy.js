@@ -172,8 +172,10 @@ var hierarchy =
     [ "quetzal::polymorphism::fuzzy_transfer_distance::Matrix< int >", "classquetzal_1_1polymorphism_1_1fuzzy__transfer__distance_1_1Matrix.html", null ],
     [ "quetzal::geography::mirror", "classquetzal_1_1geography_1_1mirror.html", null ],
     [ "quetzal::polymorphism::fuzzy_transfer_distance::Munkres< Data >", "classquetzal_1_1polymorphism_1_1fuzzy__transfer__distance_1_1Munkres.html", null ],
+    [ "MyEdgeInfo", "structMyEdgeInfo.html", null ],
     [ "MyNode", "structMyNode.html", null ],
     [ "MySpatialGrid", "structMySpatialGrid.html", null ],
+    [ "MyVertexInfo", "structMyVertexInfo.html", null ],
     [ "MyVisitor< Graph >", "structMyVisitor.html", null ],
     [ "named_unit", null, [
       [ "quetzal::units::generation", "structquetzal_1_1units_1_1generation.html", null ]
