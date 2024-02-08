@@ -26,11 +26,6 @@
 </script>
 <script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
-  <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
-<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
-<link href="doxygen-awesome-darkmode-toggle.js" rel="stylesheet" type="text/css"/>
-<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
-<link href="doxygen-awesome-fragment-copy-button.js" rel="stylesheet" type="text/css"/>
   <script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
   <script type="text/javascript">
     DoxygenAwesomeDarkModeToggle.init()
@@ -149,11 +144,11 @@ $(document).ready(function(){initNavTree('dispersal_kernels.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><ul><li class="level2"><a href="#autotoc_md121">Distance-based kernel</a></li>
+<ul><ul><li class="level2"><a href="#autotoc_md122">Distance-based kernel</a></li>
 </ul>
 </ul>
 </div>
-<div class="textblock"><h2><a class="anchor" id="autotoc_md121"></a>
+<div class="textblock"><h2><a class="anchor" id="autotoc_md122"></a>
 Distance-based kernel</h2>
 <p>A straightforward approach to determine the dispersal mode across a complete spatial graph involves correlating the geographic distance between two locations with the likelihood of dispersal between them. The objective of this section is to highlight this model choice by parametrizing a simple Dispersal Location Kernel (in the sense of <a href="nathan-et-al-2012.pdf" target="_blank"><b> Nathan et al. 2012</b></a>). Additionally, we will calculate essential metrics, such as the distance between two coordinates, the dispersal probability between them, and the average dispersal distance anticipated under this distribution.</p>
 <p>The dispersal location kernel represents the statistical pattern of dispersal distances within a population. In this context, it essentially serves as the probability density function (pdf) that outlines the distribution of locations after dispersal in relation to the original location. The expressions have been adjusted to incorporate a scale parameter, \(a\), which is consistent with a distance unit, and a shape parameter, \(b\), that dictates the curvature of the distribution curve, emphasizing the influence of long-distance events.</p>
@@ -176,7 +171,7 @@ Distance-based kernel</h2>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="comment">// Dispersal kernels operate on distances between geographic coordinates</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    constexpr <span class="keyword">auto</span> source = lonlat(2.25, 48.9176);</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    constexpr <span class="keyword">auto</span> target = lonlat(2.25, 48.95);</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    constexpr <span class="keyword">auto</span> distance = source.great_circle_distance_to(target) * km;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    constexpr <span class="keyword">auto</span> distance = source.great_circle_distance_to(target);</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="comment">// Used to parametrize the kernel</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    constexpr <span class="keyword">auto</span> param = gaussian&lt;&gt;::param_type{.a = 1000. * m};</div>
@@ -192,10 +187,10 @@ Distance-based kernel</h2>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}</div>
 <div class="ttc" id="anamespacequetzal_html"><div class="ttname"><a href="namespacequetzal.html">quetzal</a></div><div class="ttdoc">Simulation of coalescence-based models of molecular evolution.</div><div class="ttdef"><b>Definition:</b> merge.hpp:22</div></div>
 <div class="ttc" id="astructquetzal_1_1demography_1_1dispersal__kernel_1_1gaussian_html"><div class="ttname"><a href="structquetzal_1_1demography_1_1dispersal__kernel_1_1gaussian.html">quetzal::demography::dispersal_kernel::gaussian</a></div><div class="ttdoc">Gaussian dispersal location kernel (thin-tailed)</div><div class="ttdef"><b>Definition:</b> dispersal_kernel.hpp:36</div></div>
-<div class="ttc" id="astructquetzal_1_1geography_1_1lonlat_html"><div class="ttname"><a href="structquetzal_1_1geography_1_1lonlat.html">quetzal::geography::lonlat</a></div><div class="ttdoc">Geographic coordinates.</div><div class="ttdef"><b>Definition:</b> coordinates.hpp:216</div></div>
+<div class="ttc" id="astructquetzal_1_1geography_1_1lonlat_html"><div class="ttname"><a href="structquetzal_1_1geography_1_1lonlat.html">quetzal::geography::lonlat</a></div><div class="ttdoc">Geographic coordinates.</div><div class="ttdef"><b>Definition:</b> coordinates.hpp:219</div></div>
 </div><!-- fragment --><p><b>Output</b></p>
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;Dispersal from (Lat: 48.9176 , Lon: 2.25) to (Lat: 48.95 , Lon: 2.25) :</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;distance is 3.60272 km</div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;Dispersal from (Lat: 48.9176, Lon: 2.25) to (Lat: 48.95, Lon: 2.25) :</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;distance is 3602.72 m</div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;probability is 7.34343e-13 1/m²</div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;mean dispersal distance is 886.227 m</div>
 </div><!-- fragment --><hr  />

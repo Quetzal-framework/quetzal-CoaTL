@@ -1,5 +1,5 @@
 var structMyVertexInfo =
 [
-    [ "label", "structMyVertexInfo.html#af599c4f7a8f0b37ebadb7f2ef0a7723d", null ],
-    [ "pop_data_chunk", "structMyVertexInfo.html#a932752cccc0e0043436a9ce9671dd2b5", null ]
+    [ "population_data_chunk", "structMyVertexInfo.html#ac7d0c7c06ea90bf7a821c1af4d997dd2", null ],
+    [ "population_label", "structMyVertexInfo.html#a3dd24af6b490cbba324d5f34765b95f9", null ]
 ];

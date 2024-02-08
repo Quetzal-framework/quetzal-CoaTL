@@ -42,7 +42,7 @@ var namespaceboost =
       [ "Sparse Graph", "spatial_graph_construction.html#autotoc_md118", null ],
       [ "Dense Graph", "spatial_graph_construction.html#autotoc_md119", null ]
     ] ],
-    [ "Distance-based kernel", "dispersal_kernels.html#autotoc_md121", null ],
+    [ "Distance-based kernel", "dispersal_kernels.html#autotoc_md122", null ],
     [ "Invariants Guarantee", "graphs_in_quetzal.html#autotoc_md72", null ],
     [ "Edge and Vertices descriptors", "graphs_in_quetzal.html#autotoc_md73", null ],
     [ "Edge and Vertices Information (Property Classes)", "graphs_in_quetzal.html#autotoc_md74", null ],
