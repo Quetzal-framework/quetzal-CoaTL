@@ -13,6 +13,7 @@
 
 #include <filesystem>
 #include <iostream>
+#include <mp-units/ostream.h>
 
 namespace utf = boost::unit_test;
 
@@ -49,15 +50,17 @@ BOOST_AUTO_TEST_CASE(resolution)
 
 BOOST_AUTO_TEST_CASE(coordinates)
 {
+    using namespace mp_units;
+    using namespace mp_units::si::unit_symbols;
     using coord_type = quetzal::geography::latlon;
     coord_type paris(48.856614, 2.3522219000000177);
     coord_type moscow(55.7522200, 37.6155600);
     bool b = paris < moscow;
     BOOST_TEST(b);
-    coord_type::km computed = paris.great_circle_distance_to(moscow);
-    coord_type::km expected = 2486.22;
-    coord_type::km EPSILON = 1.; // a 1-km error is acceptable.
-    coord_type::km diff = expected - computed;
+    auto computed = paris.great_circle_distance_to(moscow);
+    auto expected = 2486.22 * km ;
+    auto EPSILON = 1.0 * km; // a 1-km error is acceptable.
+    auto diff = expected - computed;
     BOOST_TEST(diff < EPSILON);
     BOOST_TEST(-diff < EPSILON);
 }

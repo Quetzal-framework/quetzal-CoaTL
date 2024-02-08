@@ -1,5 +1,4 @@
 #include "quetzal/quetzal.hpp"
-#include <mp-units/ostream.h>
 
 #include <cassert>
 #include <filesystem>
@@ -41,7 +40,7 @@ int main()
     // Transform the edges of the graph to a vector of probability to disperse from source to target
     auto probabilities = graph.edges()
     	| std::views::transform( [&](auto const& e){ return sphere_distance( graph.source( e ), graph.target( e ) );} )
-    	| std::views::transform( [&](auto distance){ return kernel::pdf( distance*km, { .a=200.*km , .b=5.5 } ) ;} );
+    	| std::views::transform( [&](auto distance){ return kernel::pdf( distance, { .a=200.*km , .b=5.5 } ) ;} );
 
     // Print the result
     for (auto const& i : probabilities)

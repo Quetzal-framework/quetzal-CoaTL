@@ -14,7 +14,7 @@ int main()
     // Dispersal kernels operate on distances between geographic coordinates
     constexpr auto source = lonlat(2.25, 48.9176);
     constexpr auto target = lonlat(2.25, 48.95);
-    constexpr auto distance = source.great_circle_distance_to(target) * km;
+    constexpr auto distance = source.great_circle_distance_to(target);
 
     // Used to parametrize the kernel
     constexpr auto param = gaussian<>::param_type{.a = 1000. * m};
