@@ -31,7 +31,7 @@
   - @subpage spatial_graphs
     - @subpage spatial_graph_construction
     - @subpage dispersal_kernels
-    - @subpage Setting Vertex/Edge information at construction time
+    - @subpage spatial_graphs_information
     - @subpage Growth Expressions
     - @subpage Memory Management
 
@@ -959,6 +959,26 @@ dynamically adding vertices and edges based on user-defined conditions, resultin
 ---
 
 [//]: # (----------------------------------------------------------------------)
+@page spatial_graphs_information Embedding information along Vertices and Edges
+@tableofcontents
+
+The focal point of the provided code snippet revolves around the process of constructing a spatial graph from raster data. This spatial graph serves as a powerful tool for visualizing and analyzing spatial relationships and patterns present within the underlying geographic data.
+
+In addition to forming the basic structure of vertices and edges, the code snippet emphasizes the integration of supplementary information. By utilizing custom structures, developers can enrich vertices and edges with additional details specific to their application domain. For instance, vertices can be decorated with labels or population data, while edges can incorporate distance metrics or other spatial attributes.
+
+This approach enables the creation of spatial graphs that not only capture the topological relationships between locations but also incorporate contextual information essential for comprehensive spatial analysis and modeling. 
+
+**Input**
+
+@include{lineno} geography_graph_7.cpp
+
+**Output**
+
+@include{lineno} geography_graph_7.txt
+
+---
+
+[//]: # (----------------------------------------------------------------------)
 @page dispersal_kernels Distance-based dispersal Kernels
 @tableofcontents
 
@@ -984,16 +1004,3 @@ Quetzal incorporates various kernel types available in the `quetzal::demography:
 
 ---
 
-[//]: # (----------------------------------------------------------------------)
-@page spatial_graph_information Embedding Vertex and/or Edge information
-@tableofcontents
-
-**Input**
-
-@include{lineno} geography_graph_7.cpp
-
-**Output**
-
-@include{lineno} geography_graph_7.txt
-
----

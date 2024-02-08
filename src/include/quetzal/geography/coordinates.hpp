@@ -12,9 +12,16 @@
 #include <cmath> // trigonometry
 #include <ostream>
 #include <tuple>
+#include <numbers>
+
+#include <mp-units/systems/isq/isq.h> // QuantityOf<isq::length>
+#include <mp-units/systems/si/si.h>
+#include <mp-units/ostream.h>
 
 namespace quetzal::geography
 {
+
+using std::numbers::pi;
 
 class latlon;
 class lonlat;
@@ -44,7 +51,7 @@ template <GridCoordinate C1, GridCoordinate C2> auto operator<=>(const C1 &c1, c
 /// @brief GridCoordinates are streamable
 template <GridCoordinate C> std::ostream &operator<<(std::ostream &stream, const C &c)
 {
-    stream << "(Column: " << c.col << " , Row: " << c.row << ")";
+    stream << "(Column: " << c.col << ", Row: " << c.row << ")";
     return stream;
 }
 
@@ -113,7 +120,7 @@ template <Coordinate C1, Coordinate C2> auto operator<=>(const C1 &c1, const C2 
 /// @brief Coordinates are streamable
 template <Coordinate C> std::ostream &operator<<(std::ostream &stream, const C &c)
 {
-    stream << "(Lat: " << c.lat << " , Lon: " << c.lon << ")";
+    stream << "(Lat: " << c.lat << ", Lon: " << c.lon << ")";
     return stream;
 }
 
@@ -130,15 +137,13 @@ void check(double lat, double lon)
 /// @brief Converts decimal degrees to radians
 constexpr double deg2rad(double deg) noexcept
 {
-    const double pi = 3.14159265358979323846;
-    return (deg * pi / 180);
+    return (deg * pi / 180.0);
 }
 
 /// @brief Converts radians to decimal degrees
 constexpr double rad2deg(double rad) noexcept
 {
-    const double pi = 3.14159265358979323846;
-    return (rad * 180 / pi);
+    return (rad * 180.0 / pi);
 }
 
 /// @brief Returns the distance between two points on the Earth in kilometers
@@ -176,9 +181,6 @@ struct latlon
     /// @typedef Latitude and Longitude value type
     using decimal_degree = double;
 
-    /// @typedef The great circle distance value type
-    using km = double;
-
     /// @brief Latitude
     decimal_degree lat;
 
@@ -199,14 +201,15 @@ struct latlon
     /// @param other the other coordinate
     /// @return the distance in kilometers
     /// @invariant The returned distance is not negative.
-    template <class T> constexpr km great_circle_distance_to(const T &other) const noexcept
+    template <class T> constexpr 
+    mp_units::quantity<mp_units::si::metre> great_circle_distance_to(const T &other) const noexcept
     {
-        const km d = details::distanceEarth(this->lat, this->lon, other.lat, other.lon);
+        const double d = details::distanceEarth(this->lat, this->lon, other.lat, other.lon);
         assert(d >= 0.);
-        return d;
+        return d * 1000.0 * mp_units::si::metre;
     }
+};
 
-}; // end struct latlon
 static_assert(Coordinate<latlon>);
 
 /// @brief Geographic coordinates.
@@ -216,9 +219,6 @@ struct lonlat
 {
     /// @typedef Latitude and Longitude value type
     using decimal_degree = double;
-
-    /// @typedef The great circle distance value type
-    using km = double;
 
     /// @brief Longitude
     decimal_degree lon;
@@ -240,11 +240,13 @@ struct lonlat
     /// @param other the other coordinate
     /// @return the distance in kilometers
     /// @invariant The returned distance is not negative.
-    template <class T> constexpr km great_circle_distance_to(const T &other) const noexcept
+    template <class T> 
+    constexpr 
+    mp_units::quantity<mp_units::si::metre> great_circle_distance_to(const T &other) const noexcept
     {
-        const km d = details::distanceEarth(this->lat, this->lon, other.lat, other.lon);
-        assert(d >= 0.);
-        return d;
+        const double d = details::distanceEarth(this->lat, this->lon, other.lat, other.lon);
+        assert(d >= 0.0);
+        return d * 1000.0 * mp_units::si::metre;
     }
 
 }; // end struct latlon
