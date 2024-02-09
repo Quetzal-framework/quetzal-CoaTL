@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['use_949',['use',['../namespacequetzal_1_1expressive.html#acdec2cd4ec959709f7a1891702c4d5dd',1,'quetzal::expressive']]]
+  ['use_946',['use',['../namespacequetzal_1_1expressive.html#acdec2cd4ec959709f7a1891702c4d5dd',1,'quetzal::expressive']]]
 ];

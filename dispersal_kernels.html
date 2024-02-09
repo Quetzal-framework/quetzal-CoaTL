@@ -149,18 +149,18 @@ $(document).ready(function(){initNavTree('dispersal_kernels.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><ul><li class="level2"><a href="#autotoc_md130">Distance-Based Kernels</a><ul><li class="level3"><a href="#autotoc_md131">Basics</a></li>
-<li class="level3"><a href="#autotoc_md133">Using Kernels with Spatial Graphs</a></li>
+<ul><ul><li class="level2"><a href="#autotoc_md134">Distance-Based Kernels</a><ul><li class="level3"><a href="#autotoc_md135">Basics</a></li>
+<li class="level3"><a href="#autotoc_md137">Using Kernels with Spatial Graphs</a></li>
 </ul>
 </li>
-<li class="level2"><a href="#autotoc_md134">@include{lineno} geography_dispersal_kernel_2.txt</a></li>
+<li class="level2"><a href="#autotoc_md138">@include{lineno} geography_dispersal_kernel_2.txt</a></li>
 </ul>
 </ul>
 </div>
-<div class="textblock"><h2><a class="anchor" id="autotoc_md130"></a>
+<div class="textblock"><h2><a class="anchor" id="autotoc_md134"></a>
 Distance-Based Kernels</h2>
 <p>A straightforward approach to determine the dispersal mode across a complete spatial graph involves correlating the geographic distance between two locations with the likelihood of dispersal between them. The objective of this section is to highlight this model choice by parametrizing a simple Dispersal Location Kernel (in the sense of <a href="nathan-et-al-2012.pdf" target="_blank"><b> Nathan et al. 2012</b></a>). Additionally, we will calculate essential metrics, such as the distance between two coordinates, the dispersal probability between them, and the average dispersal distance anticipated under this distribution.</p>
-<h3><a class="anchor" id="autotoc_md131"></a>
+<h3><a class="anchor" id="autotoc_md135"></a>
 Basics</h3>
 <p>The dispersal location kernel represents the statistical pattern of dispersal distances within a population. In this context, it essentially serves as the probability density function (pdf) that outlines the distribution of locations after dispersal in relation to the original location. The expressions have been adjusted to incorporate a scale parameter, \(a\), which is consistent with a distance unit, and a shape parameter, \(b\), that dictates the curvature of the distribution curve, emphasizing the influence of long-distance events.</p>
 <p>For a source \((x_0,y_0)\), the dispersal location kernel denoted as \(k_L(r)\) provides the density of the probability of the dispersal end point in the 2D space. In this case, \(k_L(r)dA\) is the probability of a dispersal end point to be within a small 2D area \(dA\) around the location \((x,y)\). Since a probability is unitless and \(dA\) is an area, \(k_L(r)\) is expressed in per unit area in a 2D space.</p>
@@ -205,7 +205,7 @@ Basics</h3>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;probability is 7.34343e-13 1/m²</div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;mean dispersal distance is 886.227 m</div>
 </div><!-- fragment --><hr  />
-<h3><a class="anchor" id="autotoc_md133"></a>
+<h3><a class="anchor" id="autotoc_md137"></a>
 Using Kernels with Spatial Graphs</h3>
 <p>Users can create a spatial graph from landscape data, customizing assumptions about connectivity and topology. By defining a dispersal kernel and calculating dispersal probabilities for each edge based on distance metrics, users can uncover insights into potential dispersal patterns within the spatial graph. This approach offers a powerful means for exploring and understanding spatial dynamics and connectivity, facilitating deeper analysis of ecological or geographic phenomena.</p>
 <p><b>Input</b></p>
@@ -269,7 +269,7 @@ Using Kernels with Spatial Graphs</h3>
 <div class="ttc" id="astructquetzal_1_1geography_1_1connect__fully_html"><div class="ttname"><a href="structquetzal_1_1geography_1_1connect__fully.html">quetzal::geography::connect_fully</a></div><div class="ttdef"><b>Definition:</b> vicinity.hpp:53</div></div>
 <div class="ttc" id="astructvertex__info_html"><div class="ttname"><a href="structvertex__info.html">vertex_info</a></div><div class="ttdef"><b>Definition:</b> coalescence_binary_tree_2.cpp:5</div></div>
 </div><!-- fragment --><p><b>Output</b></p>
-<h2><a class="anchor" id="autotoc_md134"></a>
+<h2><a class="anchor" id="autotoc_md138"></a>
 @include{lineno} geography_dispersal_kernel_2.txt</h2>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

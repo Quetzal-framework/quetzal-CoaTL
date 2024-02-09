@@ -149,13 +149,13 @@ $(document).ready(function(){initNavTree('spatial_graphs.html',''); initResizabl
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><ul><li class="level2"><a href="#autotoc_md106">Background</a></li>
-<li class="level2"><a href="#autotoc_md107">Assumptions</a><ul><li class="level3"><a href="#autotoc_md108">Vicinity</a></li>
-<li class="level3"><a href="#autotoc_md109">Bounding policy</a></li>
-<li class="level3"><a href="#autotoc_md110">Directionality</a></li>
+<ul><ul><li class="level2"><a href="#autotoc_md97">Background</a></li>
+<li class="level2"><a href="#autotoc_md98">Assumptions</a><ul><li class="level3"><a href="#autotoc_md99">Vicinity</a></li>
+<li class="level3"><a href="#autotoc_md100">Bounding policy</a></li>
+<li class="level3"><a href="#autotoc_md101">Directionality</a></li>
 </ul>
 </li>
-<li class="level2"><a href="#autotoc_md111">Example</a></li>
+<li class="level2"><a href="#autotoc_md102">Example</a></li>
 </ul>
 </ul>
 </div>
@@ -167,14 +167,14 @@ $(document).ready(function(){initNavTree('spatial_graphs.html',''); initResizabl
 <li>understand how assumptions define the number of edges in the resulting spatial graph.</li>
 </ol>
 </dd></dl>
-<h2><a class="anchor" id="autotoc_md106"></a>
+<h2><a class="anchor" id="autotoc_md97"></a>
 Background</h2>
 <p>The challenge of replicating a demographic process within a discrete landscape can be framed as a process on a spatial graph. In this graph, the vertices represent the cells of the landscape grid, while the edges link the areas where migration occurs.</p>
 <p>The quantity of edges in this graph significantly influences both complexity and performance. For instance, in a landscape containing \(n\) cells, considering migration between any two arbitrary locations would result in a complete graph with \(\frac{n(n-1)}{2}\) edges, which could pose computational difficulties. A number of alternative assumptions can be made to control the computational feasibility.</p>
 <p>All these choices are independently represented in the code and can be extended (although that may require some efforts).</p>
-<h2><a class="anchor" id="autotoc_md107"></a>
+<h2><a class="anchor" id="autotoc_md98"></a>
 Assumptions</h2>
-<h3><a class="anchor" id="autotoc_md108"></a>
+<h3><a class="anchor" id="autotoc_md99"></a>
 Vicinity</h3>
 <p>Constructing a spatial graph first requires to account for the modality of dispersal between the vertices (locations) of the graph. That is, from one source vertex, define which vertices can be targeted: this is the concept of vicinity, or neighborhood.</p>
 <p>We distinguish at least 3 modalities:</p>
@@ -183,7 +183,7 @@ Vicinity</h3>
 <li><code>connect_8_neighbors</code>: each cell of the landscape grid is connected only to its cardinal (N, E, S, W) and intercardinal (NE, SE, SW, NW) neighbors.</li>
 <li><code>connect_fully</code>: each cell of the landscape grid is connected to all others: the graph is complete.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md109"></a>
+<h3><a class="anchor" id="autotoc_md100"></a>
 Bounding policy</h3>
 <p>Similarly, assumptions we make about the model's behavior at the bounds of the finite landscape influence the connectivity of the graph. We distinguish at least three bounding modalities:</p>
 <ul>
@@ -191,14 +191,14 @@ Bounding policy</h3>
 <li><code>sink</code>: cells at the borders of the landscape will be connected to a sink vertex: individuals that migrate past the boundaries of the landscape <em>escape</em> into the world and never come back.</li>
 <li><code>torus</code>: the 2D landscape becomes a 3D torus world, as vertices on opposite borders are linked to their symmetric vertex: individuals that cross the Northern (resp. Western) border reappear on the Southern (resp. Eastern) border.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md110"></a>
+<h3><a class="anchor" id="autotoc_md101"></a>
 Directionality</h3>
 <p>Finally, a last assumption we make about the population process that impacts the graph representation is the directionality of the process:</p>
 <ul>
 <li><code>isotropy</code>: the migration process is independent of the direction of movement. Moving from vertex \(u\) to \(v\) follows the same rules as moving from \(v\) to \(u\): the edge \(( u,v)\) is the same as \((v,u)\).</li>
 <li><code>anisotropy</code> migration will distinguish between \(( u,v)\) and \((v,u)\), doubling the number of edges in the graph.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md111"></a>
+<h2><a class="anchor" id="autotoc_md102"></a>
 Example</h2>
 <p><b>Input</b></p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;quetzal/geography.hpp&quot;</span></div>

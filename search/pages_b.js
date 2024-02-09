@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['reading_20spatial_20variables_20from_20rasters_1049',['Reading spatial variables from rasters',['../geotiff_parser.html',1,'tutorials']]]
+  ['spatial_20graphs_1044',['Spatial Graphs',['../spatial_graphs.html',1,'tutorials']]],
+  ['spatial_20interactions_1045',['Spatial Interactions',['../dispersal_kernels.html',1,'']]]
 ];
