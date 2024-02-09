@@ -30,9 +30,9 @@
   - @subpage Phylogenetic Networks
   - @subpage spatial_graphs
     - @subpage spatial_graph_construction
-    - @subpage dispersal_kernels
-    - @subpage spatial_graphs_information
-    - @subpage Growth Expressions
+    - @subpage spatial_graph_information
+    - @subpage spatial_graph_local_process
+    - @subpage spatial_graph_dispersal_kernels
     - @subpage Memory Management
 
 ## Graphs
@@ -959,7 +959,7 @@ dynamically adding vertices and edges based on user-defined conditions, resultin
 ---
 
 [//]: # (----------------------------------------------------------------------)
-@page spatial_graphs_information Embedding information along Vertices and Edges
+@page spatial_graph_information Embedding information along Vertices and Edges
 @tableofcontents
 
 The focal point of the provided code snippet revolves around the process of constructing a spatial graph from raster data. This spatial graph serves as a powerful tool for visualizing and analyzing spatial relationships and patterns present within the underlying geographic data.
@@ -979,12 +979,54 @@ This approach enables the creation of spatial graphs that not only capture the t
 ---
 
 [//]: # (----------------------------------------------------------------------)
-@page dispersal_kernels Distance-based dispersal Kernels
+@page spatial_graph_local_process Local processes
 @tableofcontents
 
-## Distance-based kernel
+Local processes on a spatial graph encompass the dynamic phenomena occurring within localized regions defined by the vertices of the graph.
+These processes can entail interactions, transformations, and behaviors that unfold at a granular level, influencing the spatial dynamics and characteristics of the graph. Understanding local processes is vital for comprehending how spatial relationships evolve, how information or resources propagate through the graph, and how localized phenomena contribute to broader spatial patterns and trends.
+
+In the realm of ecology and evolution, these local processes encompass the intricate dynamics unfolding within specific ecological niches or habitats delineated by the vertices of the graph. These processes encapsulate ecological interactions, evolutionary adaptations, and population dynamics occurring at localized scales, shaping the distribution, abundance, and genetic diversity of species within the spatial landscape.
+
+Formalizing these local processes is crucial for understanding ecological community assembly, species responses to environmental changes, and the emergence of biodiversity patterns in spatially diverse landscapes. By investigating local ecological and evolutionary dynamics, researchers can uncover the mechanisms underlying species interactions, habitat fragmentation, and speciation events, thus deepening our understanding of ecosystem functioning and resilience in the face of environmental perturbations. 
+
+Local population growth models, integral to ecological and evolutionary studies, allow researchers to simulate and comprehend population dynamics within specific geographic areas or habitats. These models consider environmental conditions, species interactions, and demographic processes to forecast changes in population size and composition over time.
+
+
+This page provides examples of how to combine **Quetzal** components to construct the local simulation process corresponding to your hypotheses.
+
+## Deterministic Models
+
+Deterministic models describe population growth based on precise mathematical equations that govern population dynamics. These models typically assume constant parameters and predictable relationships between population variables, such as birth rates, death rates, and carrying capacity. While deterministic models provide valuable insights into long-term population trends, they may oversimplify real-world complexities and fail to account for stochastic fluctuations or environmental variability.
+
+---
+
+## Stochastic Models
+
+Stochastic models introduce randomness and variability into population growth processes, acknowledging the inherent uncertainty in ecological systems. These models incorporate probabilistic elements, such as random fluctuations in birth and death rates, environmental variability, and demographic stochasticity. Stochastic models are particularly useful for capturing the effects of environmental variability and demographic stochasticity on population dynamics, allowing researchers to assess the likelihood of rare events and population extinctions.
+
+---
+
+## Environmental Niche Models
+
+Environmental niche models focus on how environmental factors influence the distribution and abundance of species within specific habitats. These models integrate ecological niche theory and environmental data to predict species' occurrence probabilities and population densities across spatial gradients. By quantifying the relationships between environmental variables (e.g., temperature, precipitation, habitat quality) and species' ecological requirements, environmental niche models help elucidate how environmental factors shape local population growth and species distributions.
+
+---
+
+## Species Competition Models
+
+Species competition models explore how interspecific interactions, such as competition for resources or interactions with predators, influence population dynamics and species coexistence within local communities. These models typically incorporate competition coefficients, representing the strength of interspecific interactions, into population equations to simulate the effects of species interactions on population growth rates and carrying capacities. Species competition models provide insights into the mechanisms driving species coexistence, competitive exclusion, and community dynamics within ecological communities.
+
+---
+
+[//]: # (----------------------------------------------------------------------)
+@page dispersal_kernels Spatial Interactions
+@tableofcontents
+
+## Distance-Based Kernels
 
 A straightforward approach to determine the dispersal mode across a complete spatial graph involves correlating the geographic distance between two locations with the likelihood of dispersal between them. The objective of this section is to highlight this model choice by parametrizing a simple Dispersal Location Kernel (in the sense of <a href="nathan-et-al-2012.pdf" target="_blank"><b> Nathan et al. 2012</b></a>). Additionally, we will calculate essential metrics, such as the distance between two coordinates, the dispersal probability between them, and the average dispersal distance anticipated under this distribution.
+
+### Basics
 
 The dispersal location kernel represents the statistical pattern of dispersal distances within a population. In this context, it essentially serves as the probability density function (pdf) that outlines the distribution of locations after dispersal in relation to the original location. The expressions have been adjusted to incorporate a scale parameter, 
 \f$a\f$, which is consistent with a distance unit, and a shape parameter, 
@@ -996,11 +1038,24 @@ Quetzal incorporates various kernel types available in the `quetzal::demography:
 
 **Input**
 
-@include{lineno} demography_dispersal_kernel.cpp
+@include{lineno} geography_dispersal_kernel_1.cpp
 
 **Output**
 
-@include{lineno} demography_dispersal_kernel.txt
+@include{lineno} geography_dispersal_kernel_1.txt
 
+---
+
+### Using Kernels with Spatial Graphs
+
+Users can create a spatial graph from landscape data, customizing assumptions about connectivity and topology. By defining a dispersal kernel and calculating dispersal probabilities for each edge based on distance metrics, users can uncover insights into potential dispersal patterns within the spatial graph. This approach offers a powerful means for exploring and understanding spatial dynamics and connectivity, facilitating deeper analysis of ecological or geographic phenomena.
+
+**Input**
+
+@include{lineno} geography_dispersal_kernel_2.cpp
+
+**Output**
+
+@include{lineno} geography_dispersal_kernel_2.txt
 ---
 
