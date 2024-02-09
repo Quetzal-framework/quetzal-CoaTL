@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['the_20quetzal_20coalescence_20library_1050',['The Quetzal Coalescence Library',['../index.html',1,'']]],
-  ['tutorials_1051',['Tutorials',['../tutorials.html',1,'']]]
+  ['spatial_20graphs_1050',['Spatial Graphs',['../spatial_graphs.html',1,'tutorials']]],
+  ['spatial_20interactions_1051',['Spatial Interactions',['../dispersal_kernels.html',1,'']]]
 ];

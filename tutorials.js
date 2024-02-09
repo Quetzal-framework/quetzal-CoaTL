@@ -34,8 +34,8 @@ var tutorials =
     [ "Demographic Histories in Quetzal", "demographic_histories_in_quetzal.html", null ],
     [ "Spatial Graphs", "spatial_graphs.html", null ],
     [ "Construction", "spatial_graph_construction.html", null ],
-    [ "Distance-based dispersal Kernels", "dispersal_kernels.html", null ],
-    [ "Embedding information along Vertices and Edges", "spatial_graphs_information.html", null ],
+    [ "Embedding information along Vertices and Edges", "spatial_graph_information.html", null ],
+    [ "Local processes", "spatial_graph_local_process.html", null ],
     [ "Graphs in Quetzal", "graphs_in_quetzal.html", null ],
     [ "Binary Trees", "coalescence_binary_tree.html", [
       [ "Introduction", "coalescence_binary_tree.html#autotoc_md77", null ],
