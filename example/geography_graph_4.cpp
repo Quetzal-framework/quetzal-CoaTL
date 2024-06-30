@@ -6,8 +6,8 @@ namespace geo = quetzal::geography;
 struct MySpatialGrid
 {
     // it is just required to define these two functions
-    constexpr int width() const { return 30; }
-    constexpr int height() const { return 10; }
+    constexpr int width() const { return 300; }
+    constexpr int height() const { return 100; }
 };
 
 int main()

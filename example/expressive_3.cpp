@@ -29,20 +29,20 @@ int main()
     auto e_view = landscape["DEM"].to_view();
 
     // We need to make choices here concerning how NA are handled
-    auto suit = expressive::use([&](location_type x, time_type t) { return s_view(x, t).value_or(0.0); });
-    auto elev = expressive::use([&](location_type x, time_type t) { return e_view(x, t).value_or(0.0); });
+    auto suit = expressive::use([s_view](location_type x, time_type t) { return s_view(x, t).value_or(0.0); });
+    auto elev = expressive::use([e_view](location_type x, time_type t) { return e_view(x, t).value_or(0.0); });
 
     std::random_device rd;  // a seed source for the random number engine
     std::mt19937 gen(rd()); // mersenne_twister_engine seeded with rd()
 
     // 1) hostile environment above an isoline: particularly useful if 123.0 is a randomly sampled parameter to be
     // estimated
-    auto isoline_suitability = [&](location_type x, time_type t) {
+    auto isoline_suitability = [suit, elev](location_type x, time_type t) {
         return (elev(x, t) >= 123.0) ? 0.0 : suit(x, t);
     };
 
     // 2) small-scale suitable ice-free shelters randomly popping above the snow cover at high-altitude
-    auto nunatak_suitability = [&](location_type x, time_type t) {
+    auto nunatak_suitability = [suit, elev, &gen](location_type x, time_type t) {
         std::bernoulli_distribution d(0.1); // give "false" 9/10 of the time
         bool is_nunatak = d(gen);
         return (elev(x, t) >= 123.0) ? static_cast<double>(is_nunatak) * suit(x, t) : suit(x, t);
