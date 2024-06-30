@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=9" />
   <meta name="generator" content="Doxygen 1.9.1" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Quetzal-CoaTL: Local Parameters and Ecological Niche Modeling</title>
+  <title>Quetzal-CoaTL: Local Parameters</title>
   <link href="tabs.css" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="jquery.js"></script>
   <script type="text/javascript" src="dynsections.js"></script>
@@ -145,7 +145,7 @@ $(document).ready(function(){initNavTree('spatial_graph_local_parameters.html','
 
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Local Parameters and Ecological Niche Modeling </div>  </div>
+<div class="title">Local Parameters </div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
@@ -259,7 +259,7 @@ Preparing a suitability landscape for the simulation</h1>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="comment">// We need to make choices here concerning how NA are handled</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keyword">auto</span> f1 = raster.to_view(); <span class="comment">// lightweight functor returning empty optionals for NA</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">auto</span> f2 = [f1](location_type x, time_type t) {</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">auto</span> f2 = [&amp;](location_type x, time_type t) {</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keywordflow">return</span> f1(x, t).value_or(0.0);</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    };                             <span class="comment">// remap empty optionals (NA) to 0.0 suitability value</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">auto</span> f3 = <a class="code" href="namespacequetzal_1_1expressive.html#acdec2cd4ec959709f7a1891702c4d5dd">expressive::use</a>(f2); <span class="comment">// f3 has now access to math operators</span></div>
@@ -320,20 +320,20 @@ Why separating Elevation from Suitability ?</h2>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keyword">auto</span> e_view = landscape[<span class="stringliteral">&quot;DEM&quot;</span>].to_view();</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="comment">// We need to make choices here concerning how NA are handled</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">auto</span> suit = <a class="code" href="namespacequetzal_1_1expressive.html#acdec2cd4ec959709f7a1891702c4d5dd">expressive::use</a>([s_view](location_type x, time_type t) { <span class="keywordflow">return</span> s_view(x, t).value_or(0.0); });</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">auto</span> elev = <a class="code" href="namespacequetzal_1_1expressive.html#acdec2cd4ec959709f7a1891702c4d5dd">expressive::use</a>([e_view](location_type x, time_type t) { <span class="keywordflow">return</span> e_view(x, t).value_or(0.0); });</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">auto</span> suit = <a class="code" href="namespacequetzal_1_1expressive.html#acdec2cd4ec959709f7a1891702c4d5dd">expressive::use</a>([&amp;](location_type x, time_type t) { <span class="keywordflow">return</span> s_view(x, t).value_or(0.0); });</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">auto</span> elev = <a class="code" href="namespacequetzal_1_1expressive.html#acdec2cd4ec959709f7a1891702c4d5dd">expressive::use</a>([&amp;](location_type x, time_type t) { <span class="keywordflow">return</span> e_view(x, t).value_or(0.0); });</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    std::random_device rd;  <span class="comment">// a seed source for the random number engine</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    std::mt19937 gen(rd()); <span class="comment">// mersenne_twister_engine seeded with rd()</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="comment">// 1) hostile environment above an isoline: particularly useful if 123.0 is a randomly sampled parameter to be</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="comment">// estimated</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">auto</span> isoline_suitability = [suit, elev](location_type x, time_type t) {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">auto</span> isoline_suitability = [&amp;](location_type x, time_type t) {</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keywordflow">return</span> (elev(x, t) &gt;= 123.0) ? 0.0 : suit(x, t);</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    };</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="comment">// 2) small-scale suitable ice-free shelters randomly popping above the snow cover at high-altitude</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">auto</span> nunatak_suitability = [suit, elev, &amp;gen](location_type x, time_type t) {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">auto</span> nunatak_suitability = [&amp;](location_type x, time_type t) {</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        std::bernoulli_distribution d(0.1); <span class="comment">// give &quot;false&quot; 9/10 of the time</span></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordtype">bool</span> is_nunatak = d(gen);</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordflow">return</span> (elev(x, t) &gt;= 123.0) ? <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(is_nunatak) * suit(x, t) : suit(x, t);</div>
@@ -392,13 +392,13 @@ Defining a friction model for trans-oceanic dispersal events</h1>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keyword">auto</span> e_view = landscape[<span class="stringliteral">&quot;DEM&quot;</span>].to_view();</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="comment">// We need to make choices here concerning how NA are handled</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">auto</span> suit = <a class="code" href="namespacequetzal_1_1expressive.html#acdec2cd4ec959709f7a1891702c4d5dd">expressive::use</a>([s_view](location_type x, time_type t) { <span class="keywordflow">return</span> s_view(x, t).value_or(0.0); });</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">auto</span> elev = <a class="code" href="namespacequetzal_1_1expressive.html#acdec2cd4ec959709f7a1891702c4d5dd">expressive::use</a>([s_view](location_type x, time_type t) { <span class="keywordflow">return</span> s_view(x, t).value_or(0.0); });</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">auto</span> suit = <a class="code" href="namespacequetzal_1_1expressive.html#acdec2cd4ec959709f7a1891702c4d5dd">expressive::use</a>([&amp;](location_type x, time_type t) { <span class="keywordflow">return</span> s_view(x, t).value_or(0.0); });</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">auto</span> elev = <a class="code" href="namespacequetzal_1_1expressive.html#acdec2cd4ec959709f7a1891702c4d5dd">expressive::use</a>([&amp;](location_type x, time_type t) { <span class="keywordflow">return</span> s_view(x, t).value_or(0.0); });</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    std::random_device rd;  <span class="comment">// a seed source for the random number engine</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    std::mt19937 gen(rd()); <span class="comment">// mersenne_twister_engine seeded with rd()</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">auto</span> rafting_capacity = [suit, elev, &amp;gen](location_type x, time_type t) {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">auto</span> rafting_capacity = [&amp;](location_type x, time_type t) {</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        std::bernoulli_distribution d(0.1);          <span class="comment">// give &quot;false&quot; 9/10 of the time</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keywordflow">if</span> (suit(x, t) == 0.0 and elev(x, t) == 0.0) <span class="comment">// ocean cell case</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(d(gen)) * 2;  <span class="comment">// will (rarely) allow 2 individuals to survive in the ocean cell</span></div>
@@ -408,7 +408,7 @@ Defining a friction model for trans-oceanic dispersal events</h1>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="keywordflow">return</span> 100. * suit(x, 0);                    <span class="comment">// simple rescaling by the max number of individuals in a cell</span></div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    };</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keyword">auto</span> rafting_friction = [suit, elev](location_type x, time_type t) {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keyword">auto</span> rafting_friction = [&amp;](location_type x, time_type t) {</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keywordflow">if</span> (suit(x, t) == 0.0 and elev(x, t) == 0.0)     <span class="comment">// ocean cell case</span></div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keywordflow">return</span> 0.0;                                  <span class="comment">// the raft should move freely</span></div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (suit(x, 0) == 0.0 and elev(x, t) &gt; 0.0) <span class="comment">// hostile continental cell case</span></div>

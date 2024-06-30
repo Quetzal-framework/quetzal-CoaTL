@@ -148,7 +148,7 @@ $(document).ready(function(){initNavTree('md_99_developers_notes.html',''); init
 <div class="title">Developer's notes </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md140"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md142"></a>
 Conventions</h1>
 <p>Like the C++ Standard Library and Boost and numerous other libraries, Quetzal follows thede guidelines:</p>
 <ul>
@@ -157,7 +157,7 @@ Conventions</h1>
 <li>All other names use snake case: <code>unordered_map</code>.</li>
 <li>Private data have a <code>_</code> prefix to distinguish it from public data.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md141"></a>
+<h1><a class="anchor" id="autotoc_md143"></a>
 Build process</h1>
 <div class="fragment"><div class="line">conan install conanfile.py --install-folder=build -pr:b=conan/profiles/macos-armv8-appleclang13 -pr:h=conan/profiles/macos-armv8-appleclang13</div>
 <div class="line">cd build</div>
@@ -165,12 +165,12 @@ Build process</h1>
 <div class="line">cmake --build .</div>
 <div class="line">ctest</div>
 <div class="line">make docs</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md142"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md144"></a>
 Packaging</h1>
 <div class="fragment"><div class="line">conan remote add becheler-conan https://arnaudbecheler.jfrog.io/artifactory/api/conan/becheler-conan</div>
 <div class="line">conan create . test/demo -pr:b=conan/profiles/clang_13 -pr:h=conan/profiles/clang_13</div>
 <div class="line">conan upload quetzal-CoaTL/0.1@demo/testing --all -r=becheler-conan</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md143"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md145"></a>
 Documentation</h1>
 <p>If you refresh the doxygen-awesome package, make sure to add this snippet in the <code>header.html</code> before closing <code>&lt;/head&gt;</code>: </p><div class="fragment"><div class="line">&lt;a href=&quot;https://github.com/Quetzal-framework/quetzal-CoaTL&quot; class=&quot;github-corner&quot; aria-label=&quot;View source on GitHub&quot;&gt;</div>
 <div class="line">  &lt;svg width=&quot;80&quot; height=&quot;80&quot; viewBox=&quot;0 0 250 250&quot; style=&quot;fill:#70B7FD; color:#151513; position: absolute; top: 0; border: 0; right: 0;&quot; aria-hidden=&quot;true&quot;&gt;</div>

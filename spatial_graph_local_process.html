@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=9" />
   <meta name="generator" content="Doxygen 1.9.1" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Quetzal-CoaTL: Local processes</title>
+  <title>Quetzal-CoaTL: Local autoregressive processes</title>
   <link href="tabs.css" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="jquery.js"></script>
   <script type="text/javascript" src="dynsections.js"></script>
@@ -145,41 +145,68 @@ $(document).ready(function(){initNavTree('spatial_graph_local_process.html','');
 
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Local processes </div>  </div>
+<div class="title">Local autoregressive processes </div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
 <ul><ul><li class="level2"><a href="#autotoc_md125">Background</a></li>
-<li class="level2"><a href="#autotoc_md126">Deterministic Models</a></li>
-<li class="level2"><a href="#autotoc_md128">Stochastic Models</a></li>
-<li class="level2"><a href="#autotoc_md130">Environmental Niche Models</a></li>
-<li class="level2"><a href="#autotoc_md132">Species Competition Models</a></li>
+<li class="level2"><a href="#autotoc_md126">Autoregressive Models</a></li>
+<li class="level2"><a href="#autotoc_md128">Deterministic Models</a></li>
+<li class="level2"><a href="#autotoc_md130">Stochastic Models</a></li>
+<li class="level2"><a href="#autotoc_md132">Environmental Niche Models</a></li>
+<li class="level2"><a href="#autotoc_md134">Species Competition Models</a></li>
 </ul>
 </ul>
 </div>
 <div class="textblock"><h2><a class="anchor" id="autotoc_md125"></a>
 Background</h2>
-<p>Local processes on a spatial graph encompass the dynamic phenomena occurring within localized regions defined by the vertices of the graph. These processes can entail interactions, transformations, and behaviors that unfold at a granular level, influencing the spatial dynamics and characteristics of the graph. Understanding local processes is vital for comprehending how spatial relationships evolve, how information or resources propagate through the graph, and how localized phenomena contribute to broader spatial patterns and trends.</p>
+<p>While local parameters describe a static relationship to the environment, local processes on a spatial graph are dynamic in nature. They encompass the dynamic phenomena occurring within localized regions defined by the vertices of the graph, including interactions, transformations, and behaviors unfolding at a granular level. Understanding these processes is vital for comprehending how spatial relationships evolve, how information or resources propagate through the graph, and how localized phenomena contribute to broader spatial patterns and their temporal trends.</p>
 <p>In the realm of ecology and evolution, these local processes encompass the intricate dynamics unfolding within specific ecological niches or habitats delineated by the vertices of the graph. These processes encapsulate ecological interactions, evolutionary adaptations, and population dynamics occurring at localized scales, shaping the distribution, abundance, and genetic diversity of species within the spatial landscape.</p>
 <p>Formalizing these local processes is crucial for understanding ecological community assembly, species responses to environmental changes, and the emergence of biodiversity patterns in spatially diverse landscapes. By investigating local ecological and evolutionary dynamics, researchers can uncover the mechanisms underlying species interactions, habitat fragmentation, and speciation events, thus deepening our understanding of ecosystem functioning and resilience in the face of environmental perturbations.</p>
 <p>Local population growth models, integral to ecological and evolutionary studies, allow researchers to simulate and comprehend population dynamics within specific geographic areas or habitats. These models consider environmental conditions, species interactions, and demographic processes to forecast changes in population size and composition over time.</p>
 <p>This page provides examples of how to combine <b>Quetzal</b> components to construct the local simulation process corresponding to your hypotheses.</p>
 <h2><a class="anchor" id="autotoc_md126"></a>
-Deterministic Models</h2>
-<p>Deterministic models describe population growth based on precise mathematical equations that govern population dynamics. These models typically assume constant parameters and predictable relationships between population variables, such as birth rates, death rates, and carrying capacity. While deterministic models provide valuable insights into long-term population trends, they may oversimplify real-world complexities and fail to account for stochastic fluctuations or environmental variability.</p>
+Autoregressive Models</h2>
+<p>A process in which the value at time \( t \) depends on its value at time \( t−1 \) (like population growth over time) is commonly referred to as an autoregressive process or a first-order autoregressive process ( \(AR(1)\)). These are widely used in time series analysis and modeling to capture temporal dependencies and patterns in data.</p>
+<p>In mathematical terms, it can be represented as:</p>
+<p class="formulaDsp">
+\[ X_t =​ \phi X_{t-1} + \epsilon_t \]
+</p>
+<p>where:</p>
+<ul>
+<li>\( X_t \) is the value of the process at time \( t \)</li>
+<li>\( X_{t-1} \) is the value of the process at time \( t-1 \)</li>
+<li>\( \phi \) is the autoregressive parameter,</li>
+<li>\( \epsilon_t \) is a random error term.</li>
+</ul>
+<p>Users can represent first-order (or even p-order) autoregressive processes using <b>Quetzal</b> components. Although flexible, the general approach will be to represent time series as <code>std::vector</code> structures embedded in each vertex or edges they relate to, where a quantity \(q\) a time \(t\) at vertex \(x\) is described by <code>graph[x][q][t]</code>.</p>
 <hr  />
 <h2><a class="anchor" id="autotoc_md128"></a>
+Deterministic Models</h2>
+<p>Deterministic models describe population growth based on precise mathematical equations that govern population dynamics. These models typically assume constant parameters and predictable relationships between population variables, such as birth rates, death rates, and carrying capacity. While deterministic models provide valuable insights into long-term population trends, they may oversimplify real-world complexities and fail to account for stochastic fluctuations or environmental variability.</p>
+<p>In this example, we store a time-series vector at each vertex of the graph to monitor the population dynamics. After initializing one vertex with a non-zero value, we iterate through time to update the series. It's important to note that, since we defined no migration along the graph's edges, all time-series except one remain at zero.</p>
+<p><b>Input</b></p>
+<div class="fragment"></div><!-- fragment --><p><b>Output</b></p>
+<div class="fragment"></div><!-- fragment --><hr  />
+<h2><a class="anchor" id="autotoc_md130"></a>
 Stochastic Models</h2>
 <p>Stochastic models introduce randomness and variability into population growth processes, acknowledging the inherent uncertainty in ecological systems. These models incorporate probabilistic elements, such as random fluctuations in birth and death rates, environmental variability, and demographic stochasticity. Stochastic models are particularly useful for capturing the effects of environmental variability and demographic stochasticity on population dynamics, allowing researchers to assess the likelihood of rare events and population extinctions.</p>
-<hr  />
-<h2><a class="anchor" id="autotoc_md130"></a>
+<p>We build up on the previous example by adding some stochasticity in the process. We store a time-series vector at each vertex of the graph to monitor the population dynamics. After initializing one vertex with a non-zero value, we iterate through time to update the series. It's important to note that, since we defined no migration along the graph's edges, some time-series remain at zero.</p>
+<p><b>Input</b></p>
+<div class="fragment"></div><!-- fragment --><p><b>Output</b></p>
+<div class="fragment"></div><!-- fragment --><hr  />
+<h2><a class="anchor" id="autotoc_md132"></a>
 Environmental Niche Models</h2>
 <p>Environmental niche models focus on how environmental factors influence the distribution and abundance of species within specific habitats. These models integrate ecological niche theory and environmental data to predict species' occurrence probabilities and population densities across spatial gradients. By quantifying the relationships between environmental variables (e.g., temperature, precipitation, habitat quality) and species' ecological requirements, environmental niche models help elucidate how environmental factors shape local population growth and species distributions.</p>
-<hr  />
-<h2><a class="anchor" id="autotoc_md132"></a>
+<p><b>Input</b></p>
+<div class="fragment"></div><!-- fragment --><p><b>Output</b></p>
+<div class="fragment"></div><!-- fragment --><hr  />
+<h2><a class="anchor" id="autotoc_md134"></a>
 Species Competition Models</h2>
 <p>Species competition models explore how interspecific interactions, such as competition for resources or interactions with predators, influence population dynamics and species coexistence within local communities. These models typically incorporate competition coefficients, representing the strength of interspecific interactions, into population equations to simulate the effects of species interactions on population growth rates and carrying capacities. Species competition models provide insights into the mechanisms driving species coexistence, competitive exclusion, and community dynamics within ecological communities.</p>
-<hr  />
+<p><b>Input</b></p>
+<div class="fragment"></div><!-- fragment --><p><b>Output</b></p>
+<div class="fragment"></div><!-- fragment --><hr  />
  </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

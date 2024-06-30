@@ -26,7 +26,7 @@ var tutorials =
     [ "Spatial Graphs", "spatial_graphs.html", null ],
     [ "Construction", "spatial_graph_construction.html", null ],
     [ "Embedding information along Vertices and Edges", "spatial_graph_information.html", null ],
-    [ "Local Parameters and Ecological Niche Modeling", "spatial_graph_local_parameters.html", [
+    [ "Local Parameters", "spatial_graph_local_parameters.html", [
       [ "Environmental Niche Models", "spatial_graph_local_parameters.html#autotoc_md113", [
         [ "Objectives", "newick_generator.html#autotoc_md52", null ],
         [ "From a Quetzal binary tree", "newick_generator.html#autotoc_md54", [
@@ -79,7 +79,7 @@ var tutorials =
       ] ],
       [ "Defining a friction model for trans-oceanic dispersal events", "spatial_graph_local_parameters.html#autotoc_md123", null ]
     ] ],
-    [ "Local processes", "spatial_graph_local_process.html", null ],
+    [ "Local autoregressive processes", "spatial_graph_local_process.html", null ],
     [ "Graphs in Quetzal", "graphs_in_quetzal.html", null ],
     [ "Binary Trees", "coalescence_binary_tree.html", [
       [ "Introduction", "coalescence_binary_tree.html#autotoc_md76", null ],
