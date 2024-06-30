@@ -841,7 +841,7 @@ This approach enables the creation of spatial graphs that not only capture the t
 ---
 
 [//]: # (----------------------------------------------------------------------)
-@page spatial_graph_local_parameters Local Parameters and Ecological Niche Modeling
+@page spatial_graph_local_parameters Local Parameters
 @tableofcontents
 
 # Environmental Niche Models
@@ -971,13 +971,12 @@ The general idea is to define lambda expressions that embed stochastic aspects o
 ---
 
 [//]: # (----------------------------------------------------------------------)
-@page spatial_graph_local_process Local processes
+@page spatial_graph_local_process Local autoregressive processes
 @tableofcontents
 
 ## Background 
 
-Local processes on a spatial graph encompass the dynamic phenomena occurring within localized regions defined by the vertices of the graph.
-These processes can entail interactions, transformations, and behaviors that unfold at a granular level, influencing the spatial dynamics and characteristics of the graph. Understanding local processes is vital for comprehending how spatial relationships evolve, how information or resources propagate through the graph, and how localized phenomena contribute to broader spatial patterns and trends.
+While local parameters describe a static relationship to the environment, local processes on a spatial graph are dynamic in nature. They encompass the dynamic phenomena occurring within localized regions defined by the vertices of the graph, including interactions, transformations, and behaviors unfolding at a granular level. Understanding these processes is vital for comprehending how spatial relationships evolve, how information or resources propagate through the graph, and how localized phenomena contribute to broader spatial patterns and their temporal trends.
 
 In the realm of ecology and evolution, these local processes encompass the intricate dynamics unfolding within specific ecological niches or habitats delineated by the vertices of the graph. These processes encapsulate ecological interactions, evolutionary adaptations, and population dynamics occurring at localized scales, shaping the distribution, abundance, and genetic diversity of species within the spatial landscape.
 
@@ -987,9 +986,42 @@ Local population growth models, integral to ecological and evolutionary studies,
 
 This page provides examples of how to combine **Quetzal** components to construct the local simulation process corresponding to your hypotheses.
 
+## Autoregressive Models
+
+A process in which the value at time \f$ t \f$ depends on its value at time \f$ t−1 \f$ (like population growth over time)
+is commonly referred to as an autoregressive process or a first-order autoregressive process (\f$AR(1)\f$). 
+These are widely used in time series analysis and modeling to capture temporal dependencies and patterns in data.
+
+In mathematical terms, it can be represented as:
+
+\f[
+  X_t =​ \phi X_{t-1} + \epsilon_t
+\f]
+
+where:
+
+- \f$ X_t \f$  is the value of the process at time \f$ t \f$
+- \f$ X_{t-1} \f$  is the value of the process at time \f$ t-1 \f$
+- \f$ \phi \f$ is the autoregressive parameter,
+- \f$ \epsilon_t \f$ is a random error term.
+
+Users can represent first-order (or even p-order) autoregressive processes using **Quetzal** components. Although flexible, the general approach will be to represent time series as `std::vector` structures embedded in each vertex or edges they relate to, where a quantity \f$q\f$ a time \f$t\f$ at vertex \f$x\f$ is described by `graph[x][q][t]`.
+
+---
+
 ## Deterministic Models
 
 Deterministic models describe population growth based on precise mathematical equations that govern population dynamics. These models typically assume constant parameters and predictable relationships between population variables, such as birth rates, death rates, and carrying capacity. While deterministic models provide valuable insights into long-term population trends, they may oversimplify real-world complexities and fail to account for stochastic fluctuations or environmental variability.
+
+In this example, we store a time-series vector at each vertex of the graph to monitor the population dynamics. After initializing one vertex with a non-zero value, we iterate through time to update the series. It's important to note that, since we defined no migration along the graph's edges, all time-series except one remain at zero.
+
+**Input**
+
+@include{lineno} geography_graph_local_process_1.cpp
+
+**Output**
+
+@include{lineno} geography_graph_local_process_1.txt
 
 ---
 
@@ -997,17 +1029,43 @@ Deterministic models describe population growth based on precise mathematical eq
 
 Stochastic models introduce randomness and variability into population growth processes, acknowledging the inherent uncertainty in ecological systems. These models incorporate probabilistic elements, such as random fluctuations in birth and death rates, environmental variability, and demographic stochasticity. Stochastic models are particularly useful for capturing the effects of environmental variability and demographic stochasticity on population dynamics, allowing researchers to assess the likelihood of rare events and population extinctions.
 
+We build up on the previous example by adding some stochasticity in the process. We store a time-series vector at each vertex of the graph to monitor the population dynamics. After initializing one vertex with a non-zero value, we iterate through time to update the series. It's important to note that, since we defined no migration along the graph's edges, some time-series remain at zero.
+
+**Input**
+
+@include{lineno} geography_graph_local_process_2.cpp
+
+**Output**
+
+@include{lineno} geography_graph_local_process_2.txt
+
 ---
 
 ## Environmental Niche Models
 
 Environmental niche models focus on how environmental factors influence the distribution and abundance of species within specific habitats. These models integrate ecological niche theory and environmental data to predict species' occurrence probabilities and population densities across spatial gradients. By quantifying the relationships between environmental variables (e.g., temperature, precipitation, habitat quality) and species' ecological requirements, environmental niche models help elucidate how environmental factors shape local population growth and species distributions.
 
+**Input**
+
+@include{lineno} geography_graph_local_process_3.cpp
+
+**Output**
+
+@include{lineno} geography_graph_local_process_3.txt
+
 ---
 
 ## Species Competition Models
 
 Species competition models explore how interspecific interactions, such as competition for resources or interactions with predators, influence population dynamics and species coexistence within local communities. These models typically incorporate competition coefficients, representing the strength of interspecific interactions, into population equations to simulate the effects of species interactions on population growth rates and carrying capacities. Species competition models provide insights into the mechanisms driving species coexistence, competitive exclusion, and community dynamics within ecological communities.
+
+**Input**
+
+@include{lineno} geography_graph_local_process_4.cpp
+
+**Output**
+
+@include{lineno} geography_graph_local_process_4.txt
 
 ---
 
