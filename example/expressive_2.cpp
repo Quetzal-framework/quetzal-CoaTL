@@ -24,7 +24,7 @@ int main()
 
     // We need to make choices here concerning how NA are handled
     auto f1 = raster.to_view(); // lightweight functor returning empty optionals for NA
-    auto f2 = [f1](location_type x, time_type t) {
+    auto f2 = [&](location_type x, time_type t) {
         return f1(x, t).value_or(0.0);
     };                             // remap empty optionals (NA) to 0.0 suitability value
     auto f3 = expressive::use(f2); // f3 has now access to math operators
