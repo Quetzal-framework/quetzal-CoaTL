@@ -22,7 +22,7 @@ namespace quetzal::geography
 /// @param v An example of information to be stored on vertices
 /// @param e An example of information to be stored on edges
 /// @param vicinity A policy class giving the connectivity method to be applied
-/// @param directionality A policy class giving the directionality (isotropy or anistropy)
+/// @param directionality A policy class giving the directionality (isotropy or anisotropy)
 /// @param bound A BoundPolicy
 /// @return A graph with the desired level of connectivity
 template <two_dimensional SpatialGrid, class VertexProperty, class EdgeProperty, class Vicinity,
@@ -31,10 +31,21 @@ auto from_grid(SpatialGrid const &grid, VertexProperty const &v, EdgeProperty co
                Directionality dir, Policy const &bounding_policy)
 {
     using graph_type = quetzal::geography::graph<VertexProperty, EdgeProperty, typename Vicinity::connectedness, Directionality>;
-    // using graph_type = typename Vicinity::graph_type<Directionality, VertexProperty, EdgeProperty>;
-    // Graph size has to be static in dense graphs :/ 
     graph_type graph( grid.width() * grid.height() + bounding_policy.num_extra_vertices() ) ;
     vicinity.connect(graph, grid, bounding_policy);
+
+    if constexpr ( ! std::is_same_v<VertexProperty, no_property>) {
+        for( auto vertex : graph.vertices() ){
+            graph[vertex] = v;
+        }
+    }
+
+    if constexpr ( ! std::is_same_v<EdgeProperty, no_property>) {
+        for(auto edge : graph.edges()){
+            graph[edge] = e;
+        }
+    }
+
     return graph;
 }
 
