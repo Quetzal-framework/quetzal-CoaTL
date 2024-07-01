@@ -15,18 +15,25 @@
   - @subpage geotiff_generator
   - @subpage shapefile_generator
 
+## Linking landscapes to local demographic parameters
+
+- @subpage niche_in_quetzal
+- Examples 
+  - @subpage expressive_suitability_raster
+  - @subpage expressive_suitability_DEM_landscape
+  - @subpage expressive_friction
+
 ## Demographic Histories
 
 - @subpage demographic_histories_in_quetzal
-- @subpage Phylogenetic Trees
-- @subpage Phylogenetic Networks
-- @subpage spatial_graphs
-  - @subpage spatial_graph_construction
-  - @subpage spatial_graph_information
-  - @subpage spatial_graph_local_parameters
-  - @subpage spatial_graph_local_process
-  - @subpage spatial_graph_dispersal_kernels
-  - @subpage Memory Management
+  - @subpage Phylogenetic Trees
+  - @subpage Phylogenetic Networks
+  - @subpage spatial_graphs
+    - @subpage spatial_graph_construction
+    - @subpage dispersal_kernels
+    - @subpage spatial_graphs_information
+    - @subpage Growth Expressions
+    - @subpage Memory Management
 
 ## Graphs
 
@@ -650,6 +657,137 @@ One way to achieve this is by exporting the samples as a shapefile and employing
 
 
 [//]: # (----------------------------------------------------------------------)
+@page niche_in_quetzal Niche models in Quetzal
+@tableofcontents
+
+# Niche models as mathematical expressions
+
+In the field of ecology, the **niche** refers to the compatibility between a species and a specific environmental condition. It explains how an organism or a population adapts to the availability of resources and competition. 
+
+For instance, when resources are plentiful and the presence of predators, parasites, and pathogens is low, the organism or population tends to grow. In locations and times of resources scarcity and high predation, the populations tend to shrink.
+
+The composition and significance of environmental variables that constitute the dimensions of a niche can vary among species, and the importance of specific environmental factors for a species may change depending on geographical and ecological contexts.
+
+@note
+In the broader context of this library, the niche model lacks a specific definition as it relies on the preferences and requirements of individual users. What we can understand is that it involves some combination of spatial and temporal factors that are closely intertwined with the demographic process.
+This justifies the need for a highly adaptable approach for representing the concept of niche, as it is bound to vary depending on the specific species, population, or geographic area under study. 
+
+Given this understanding, the primary goal of **Quetzal** is to provide users with `quetzal::expressive`, a user-friendly means to effectively combine geospatial and temporal elements. This enables users to establish meaningful mathematical connections between a diverse and heterogeneous landscape and the underlying demographic processes, based on their own perspectives and preferences. Generally speaking, users will want to use `quetzal::expressive` to mathematically compose spatio-temporal expressions with a signature `double (location_type, time_type)` until they reach a satisfying definition of the local demographic parameter of interest.
+
+# Mathematical composition in C++ 
+
+Mathematical composition in C++ is not trivial as unlike languages, C++ does not understand mathematical expressions and their composition. In this strongly-typed language, you can not simply multiply the integer `42` and the function \f$ f(x,y) = x^y \f$ and expect it to work. Indeed, if you try to rescale a lambda function, e.g.:
+```cpp
+int a = 42;
+auto f = [](auto x, auto y){return std::pow(x,y); };
+my_expression = a * f; // error
+``` 
+it will not compile. As the compiler does not know natively what the rules are to multiply a number with whatever type `f` is, it will (verbosely) insult you saying the [`operator*()`](https://en.cppreference.com/w/cpp/language/operators) is not defined for the type `int` and an anonymous type (the lambda function). 
+
+# Mathematical composition with quetzal::expressive
+
+You need a library to tell the compiler what to do. This is where `quetzal::expressive` comes handy: it allows you to add, substract, multiply, or compose mathematical expressions by giving them a uniform interface.
+
+In the context of demographic models, `my_expression` in the example below could represent for example `r(x,t)` the growth rate at location `x` at time `t`. Being able to compose several smaller expressions into bigger expressions gives much freedom to users who can for example define `r` in one part on the program and compose it at a later time with a different expression *e.g.* `k(x,t)` the carrying capacity at location `x` at time `t`. By treating these local demographic parameters as independent expressions that can be mixed and matched, `quetzal::expressive` allows great freedom in the implementation details of a spatio-temporal process.
+
+**Input**
+
+@include{lineno} expressive_1.cpp
+
+**Output**
+
+@include{lineno} expressive_1.txt
+
+---
+
+[//]: # (----------------------------------------------------------------------)
+@page expressive_suitability_raster Preparing a suitability landscape for the simulation
+
+@note 
+The objective of this section is to load a suitability map with `quetzal::geography::raster` and prepare its integration into the simulation framework with `quetzal::expressive`.
+
+In the context of ecological niche modeling (ENM), suitability refers to the degree of appropriateness or favorability of a particular environmental condition for a species to thrive and persist. ENM is a technique used in ecology to predict the distribution of species across landscapes based on their known occurrences and environmental variables.
+
+Suitability can be thought of as a spectrum, ranging from conditions that are highly suitable for a species' survival and reproduction to conditions that are unsuitable or even detrimental. ENM attempts to map this spectrum across geographical space by analyzing the relationships between species occurrences and various environmental factors, such as temperature, precipitation, elevation, soil type, and vegetation cover.
+
+It's important to note that suitability does not solely depend on a single environmental variable. Instead, it's a complex interplay of multiple factors that determine whether a species can survive, reproduce, and establish a viable population in a given area.
+Suitability GIS maps derived from previous analysis steps (see e.g. the niche models in **Quetzal-crumbs** python package) can then be integrated into the coalescence simulation framework.
+
+The following example code 
+- loads a suitability map using `quetzal::geography::raster` 
+- prepares its integration into the simulation framework using `quetzal::expressive` 
+- it gives to the suitability the semantic of a function of space and time `f(x,t)`
+- it gives it access to mathematical operators with `quetzal::expressive::use`
+- then it builds upon it to define an (arbitrary) expression of e.g. the growth rate (but it could be friction, or carrying capacity...)
+
+**Input**
+
+@include{lineno} expressive_2.cpp
+
+**Output**
+
+@include{lineno} expressive_2.txt
+
+---
+
+[//]: # (----------------------------------------------------------------------)
+@page expressive_suitability_DEM_landscape Adjusting a suitability map using a Digital Elevation Model
+
+@note 
+The objective of this section is to load both a suitability map and a Digital Elevation Model (DEM) with `quetzal::geography::landscape` and prepare their integration into the simulation framework with `quetzal::expressive`
+by dynamically modulating the suitability value as a function of the local elevation.
+
+## Why separating Elevation from Suitability ?
+
+It is a common approach to pack a wealth of information into a sole raster file. For instance, this can involve using a single friction file and designating ocean cells with NA values, and obstacles for dispersal with values of 1. Another 
+way is to try to inject elevational data into the suitability map during the Ecological Niche Modeling step.
+
+While these approaches are feasible and occasionally advantageous, they do not consistently represent the optimal or most adaptable solution.
+
+In a broader sense, it's advisable to consider each Geographic Information System (GIS) input file as a means of representing a distinct attribute of the landscape such as suitability, friction, or elevation, utilizing `quetzal::geography::landscape` to read and align these input files then utilizing `quetzal::expressive` to adjust or combine these quantities according to the user's modeling intentions.
+
+As an illustration we will show in this example how to adjust the stochasticity of a suitability-driven process as a function of the 
+elevation model. This case and its variations can be applicable in various contexts:
+
+- Conveniently enforcing a threshold value beyond which the suitability undergoes a significant change (*e.g.*, becoming 0). This approach is valuable for examining sky-island systems or for easily estimating an isoline by dynamically adjusting the cutoff parameter value at runtime, as opposed to altering input files for every simulation run.
+- Depicting the likelihood of a propagule reaching a nunatak, that is a small-scale suitable shelter protruding from the snow sheet (or ice cap). Typically nunataks are the only places where plants can survive in these environments.
+
+**Input**
+
+@include{lineno} expressive_3.cpp
+
+**Output**
+
+@include{lineno} expressive_3.txt
+
+---
+
+[//]: # (----------------------------------------------------------------------)
+@page expressive_friction Defining a friction model for trans-oceanic dispersal events
+
+@note 
+The objective of this section is to load both a suitability map and a Digital Elevation Model (DEM) with `quetzal::geography::landscape` and prepare their integration into the simulation framework with `quetzal::expressive`
+and account for trans-oceanic dispersal events by dynamically defining the friction and the carrying capacity of a cell as functions of the suitability and elevation value.
+
+Drafting events, in the context of biological dispersal, refer to a phenomenon where organisms are carried across large distances by clinging to or being transported by other organisms, objects, or air currents. This can be thought of as a form of passive dispersal where an organism takes advantage of external forces to move beyond its usual range.
+
+The term "drafting" is borrowed from concepts in physics. In biology, this concept is applied to scenarios where organisms, often small and lightweight, catch a ride on other organisms (like birds, insects, or larger animals), objects (like debris), or wind currents. Drafting events can play a significant role in the dispersal of organisms, especially those with limited mobility. 
+
+These drafting events provide an opportunity for organisms to reach new areas that they might not be able to access through their own locomotion. It's an interesting ecological phenomenon that highlights the intricate ways in which different species interact and influence each other's distribution and survival.
+
+The general idea is to define lambda expressions that embed stochastic aspects of the model, while preserving the callable interface `(space, time) -> double`.
+
+**Input**
+
+@include{lineno} expressive_4.cpp
+
+**Output**
+
+@include{lineno} expressive_4.txt
+
+---
+
+[//]: # (----------------------------------------------------------------------)
 @page demographic_histories_in_quetzal Demographic Histories in Quetzal
 
 ## Background 
@@ -821,7 +959,7 @@ dynamically adding vertices and edges based on user-defined conditions, resultin
 ---
 
 [//]: # (----------------------------------------------------------------------)
-@page spatial_graph_information Embedding information along Vertices and Edges
+@page spatial_graphs_information Embedding information along Vertices and Edges
 @tableofcontents
 
 The focal point of the provided code snippet revolves around the process of constructing a spatial graph from raster data. This spatial graph serves as a powerful tool for visualizing and analyzing spatial relationships and patterns present within the underlying geographic data.
@@ -841,243 +979,12 @@ This approach enables the creation of spatial graphs that not only capture the t
 ---
 
 [//]: # (----------------------------------------------------------------------)
-@page spatial_graph_local_parameters Local Parameters
+@page dispersal_kernels Distance-based dispersal Kernels
 @tableofcontents
 
-# Environmental Niche Models
-
-## Niche models as mathematical expressions
-
-In the field of ecology, the **niche** refers to the compatibility between a species and a specific environmental condition. It explains how an organism or a population adapts to the availability of resources and competition. 
-
-For instance, when resources are plentiful and the presence of predators, parasites, and pathogens is low, the organism or population tends to grow. In locations and times of resources scarcity and high predation, the populations tend to shrink.
-
-The composition and significance of environmental variables that constitute the dimensions of a niche can vary among species, and the importance of specific environmental factors for a species may change depending on geographical and ecological contexts.
-
-@note
-In the broader context of this library, the niche model lacks a specific definition as it relies on the preferences and requirements of individual users. What we can understand is that it involves some combination of spatial and temporal factors that are closely intertwined with the demographic process.
-This justifies the need for a highly adaptable approach for representing the concept of niche, as it is bound to vary depending on the specific species, population, or geographic area under study. 
-
-Given this understanding, the primary goal of **Quetzal** is to provide users with `quetzal::expressive`, a user-friendly means to effectively combine geospatial and temporal elements. This enables users to establish meaningful mathematical connections between a diverse and heterogeneous landscape and the underlying demographic processes, based on their own perspectives and preferences. Generally speaking, users will want to use `quetzal::expressive` to mathematically compose spatio-temporal expressions with a signature `double (location_type, time_type)` until they reach a satisfying definition of the local demographic parameter of interest.
-
-## Mathematical composition in C++ 
-
-Mathematical composition in C++ is not trivial as unlike languages, C++ does not understand mathematical expressions and their composition. In this strongly-typed language, you can not simply multiply the integer `42` and the function \f$ f(x,y) = x^y \f$ and expect it to work. Indeed, if you try to rescale a lambda function, e.g.:
-```cpp
-int a = 42;
-auto f = [](auto x, auto y){return std::pow(x,y); };
-my_expression = a * f; // error
-``` 
-it will not compile. As the compiler does not know natively what the rules are to multiply a number with whatever type `f` is, it will (verbosely) insult you saying the [`operator*()`](https://en.cppreference.com/w/cpp/language/operators) is not defined for the type `int` and an anonymous type (the lambda function). 
-
-## Mathematical composition with quetzal::expressive
-
-You need a library to tell the compiler what to do. This is where `quetzal::expressive` comes handy: it allows you to add, substract, multiply, or compose mathematical expressions by giving them a uniform interface.
-
-In the context of demographic models, `my_expression` in the example below could represent for example `r(x,t)` the growth rate at location `x` at time `t`. Being able to compose several smaller expressions into bigger expressions gives much freedom to users who can for example define `r` in one part on the program and compose it at a later time with a different expression *e.g.* `k(x,t)` the carrying capacity at location `x` at time `t`. By treating these local demographic parameters as independent expressions that can be mixed and matched, `quetzal::expressive` allows great freedom in the implementation details of a spatio-temporal process.
-
-**Input**
-
-@include{lineno} expressive_1.cpp
-
-**Output**
-
-@include{lineno} expressive_1.txt
-
----
-
-# Preparing a suitability landscape for the simulation
-
-@note 
-The objective of this section is to load a suitability map with `quetzal::geography::raster` and prepare its integration into the simulation framework with `quetzal::expressive`.
-
-In the context of ecological niche modeling (ENM), suitability refers to the degree of appropriateness or favorability of a particular environmental condition for a species to thrive and persist. ENM is a technique used in ecology to predict the distribution of species across landscapes based on their known occurrences and environmental variables.
-
-Suitability can be thought of as a spectrum, ranging from conditions that are highly suitable for a species' survival and reproduction to conditions that are unsuitable or even detrimental. ENM attempts to map this spectrum across geographical space by analyzing the relationships between species occurrences and various environmental factors, such as temperature, precipitation, elevation, soil type, and vegetation cover.
-
-It's important to note that suitability does not solely depend on a single environmental variable. Instead, it's a complex interplay of multiple factors that determine whether a species can survive, reproduce, and establish a viable population in a given area.
-Suitability GIS maps derived from previous analysis steps (see e.g. the niche models in **Quetzal-crumbs** python package) can then be integrated into the coalescence simulation framework.
-
-The following example code 
-- loads a suitability map using `quetzal::geography::raster` 
-- prepares its integration into the simulation framework using `quetzal::expressive` 
-- it gives to the suitability the semantic of a function of space and time `f(x,t)`
-- it gives it access to mathematical operators with `quetzal::expressive::use`
-- then it builds upon it to define an (arbitrary) expression of e.g. the growth rate (but it could be friction, or carrying capacity...)
-
-**Input**
-
-@include{lineno} expressive_2.cpp
-
-**Output**
-
-@include{lineno} expressive_2.txt
-
----
-
-# Adjusting a suitability map using a Digital Elevation Model
-
-@note 
-The objective of this section is to load both a suitability map and a Digital Elevation Model (DEM) with `quetzal::geography::landscape` and prepare their integration into the simulation framework with `quetzal::expressive`
-by dynamically modulating the suitability value as a function of the local elevation.
-
-## Why separating Elevation from Suitability ?
-
-It is a common approach to pack a wealth of information into a sole raster file. For instance, this can involve using a single friction file and designating ocean cells with NA values, and obstacles for dispersal with values of 1. Another 
-way is to try to inject elevational data into the suitability map during the Ecological Niche Modeling step.
-
-While these approaches are feasible and occasionally advantageous, they do not consistently represent the optimal or most adaptable solution.
-
-In a broader sense, it's advisable to consider each Geographic Information System (GIS) input file as a means of representing a distinct attribute of the landscape such as suitability, friction, or elevation, utilizing `quetzal::geography::landscape` to read and align these input files then utilizing `quetzal::expressive` to adjust or combine these quantities according to the user's modeling intentions.
-
-As an illustration we will show in this example how to adjust the stochasticity of a suitability-driven process as a function of the 
-elevation model. This case and its variations can be applicable in various contexts:
-
-- Conveniently enforcing a threshold value beyond which the suitability undergoes a significant change (*e.g.*, becoming 0). This approach is valuable for examining sky-island systems or for easily estimating an isoline by dynamically adjusting the cutoff parameter value at runtime, as opposed to altering input files for every simulation run.
-- Depicting the likelihood of a propagule reaching a nunatak, that is a small-scale suitable shelter protruding from the snow sheet (or ice cap). Typically nunataks are the only places where plants can survive in these environments.
-
-**Input**
-
-@include{lineno} expressive_3.cpp
-
-**Output**
-
-@include{lineno} expressive_3.txt
-
----
-
-# Defining a friction model for trans-oceanic dispersal events
-
-@note 
-The objective of this section is to load both a suitability map and a Digital Elevation Model (DEM) with `quetzal::geography::landscape` and prepare their integration into the simulation framework with `quetzal::expressive`
-and account for trans-oceanic dispersal events by dynamically defining the friction and the carrying capacity of a cell as functions of the suitability and elevation value.
-
-Drafting events, in the context of biological dispersal, refer to a phenomenon where organisms are carried across large distances by clinging to or being transported by other organisms, objects, or air currents. This can be thought of as a form of passive dispersal where an organism takes advantage of external forces to move beyond its usual range.
-
-The term "drafting" is borrowed from concepts in physics. In biology, this concept is applied to scenarios where organisms, often small and lightweight, catch a ride on other organisms (like birds, insects, or larger animals), objects (like debris), or wind currents. Drafting events can play a significant role in the dispersal of organisms, especially those with limited mobility. 
-
-These drafting events provide an opportunity for organisms to reach new areas that they might not be able to access through their own locomotion. It's an interesting ecological phenomenon that highlights the intricate ways in which different species interact and influence each other's distribution and survival.
-
-The general idea is to define lambda expressions that embed stochastic aspects of the model, while preserving the callable interface `(space, time) -> double`.
-
-**Input**
-
-@include{lineno} expressive_4.cpp
-
-**Output**
-
-@include{lineno} expressive_4.txt
-
----
-
-[//]: # (----------------------------------------------------------------------)
-@page spatial_graph_local_process Local autoregressive processes
-@tableofcontents
-
-## Background 
-
-While local parameters describe a static relationship to the environment, local processes on a spatial graph are dynamic in nature. They encompass the dynamic phenomena occurring within localized regions defined by the vertices of the graph, including interactions, transformations, and behaviors unfolding at a granular level. Understanding these processes is vital for comprehending how spatial relationships evolve, how information or resources propagate through the graph, and how localized phenomena contribute to broader spatial patterns and their temporal trends.
-
-In the realm of ecology and evolution, these local processes encompass the intricate dynamics unfolding within specific ecological niches or habitats delineated by the vertices of the graph. These processes encapsulate ecological interactions, evolutionary adaptations, and population dynamics occurring at localized scales, shaping the distribution, abundance, and genetic diversity of species within the spatial landscape.
-
-Formalizing these local processes is crucial for understanding ecological community assembly, species responses to environmental changes, and the emergence of biodiversity patterns in spatially diverse landscapes. By investigating local ecological and evolutionary dynamics, researchers can uncover the mechanisms underlying species interactions, habitat fragmentation, and speciation events, thus deepening our understanding of ecosystem functioning and resilience in the face of environmental perturbations. 
-
-Local population growth models, integral to ecological and evolutionary studies, allow researchers to simulate and comprehend population dynamics within specific geographic areas or habitats. These models consider environmental conditions, species interactions, and demographic processes to forecast changes in population size and composition over time.
-
-This page provides examples of how to combine **Quetzal** components to construct the local simulation process corresponding to your hypotheses.
-
-## Autoregressive Models
-
-A process in which the value at time \f$ t \f$ depends on its value at time \f$ t−1 \f$ (like population growth over time)
-is commonly referred to as an autoregressive process or a first-order autoregressive process (\f$AR(1)\f$). 
-These are widely used in time series analysis and modeling to capture temporal dependencies and patterns in data.
-
-In mathematical terms, it can be represented as:
-
-\f[
-  X_t =​ \phi X_{t-1} + \epsilon_t
-\f]
-
-where:
-
-- \f$ X_t \f$  is the value of the process at time \f$ t \f$
-- \f$ X_{t-1} \f$  is the value of the process at time \f$ t-1 \f$
-- \f$ \phi \f$ is the autoregressive parameter,
-- \f$ \epsilon_t \f$ is a random error term.
-
-Users can represent first-order (or even p-order) autoregressive processes using **Quetzal** components. Although flexible, the general approach will be to represent time series as `std::vector` structures embedded in each vertex or edges they relate to, where a quantity \f$q\f$ a time \f$t\f$ at vertex \f$x\f$ is described by `graph[x][q][t]`.
-
----
-
-## Deterministic Models
-
-Deterministic models describe population growth based on precise mathematical equations that govern population dynamics. These models typically assume constant parameters and predictable relationships between population variables, such as birth rates, death rates, and carrying capacity. While deterministic models provide valuable insights into long-term population trends, they may oversimplify real-world complexities and fail to account for stochastic fluctuations or environmental variability.
-
-In this example, we store a time-series vector at each vertex of the graph to monitor the population dynamics. After initializing one vertex with a non-zero value, we iterate through time to update the series. It's important to note that, since we defined no migration along the graph's edges, all time-series except one remain at zero.
-
-**Input**
-
-@include{lineno} geography_graph_local_process_1.cpp
-
-**Output**
-
-@include{lineno} geography_graph_local_process_1.txt
-
----
-
-## Stochastic Models
-
-Stochastic models introduce randomness and variability into population growth processes, acknowledging the inherent uncertainty in ecological systems. These models incorporate probabilistic elements, such as random fluctuations in birth and death rates, environmental variability, and demographic stochasticity. Stochastic models are particularly useful for capturing the effects of environmental variability and demographic stochasticity on population dynamics, allowing researchers to assess the likelihood of rare events and population extinctions.
-
-We build up on the previous example by adding some stochasticity in the process. We store a time-series vector at each vertex of the graph to monitor the population dynamics. After initializing one vertex with a non-zero value, we iterate through time to update the series. It's important to note that, since we defined no migration along the graph's edges, some time-series remain at zero.
-
-**Input**
-
-@include{lineno} geography_graph_local_process_2.cpp
-
-**Output**
-
-@include{lineno} geography_graph_local_process_2.txt
-
----
-
-## Environmental Niche Models
-
-Environmental niche models focus on how environmental factors influence the distribution and abundance of species within specific habitats. These models integrate ecological niche theory and environmental data to predict species' occurrence probabilities and population densities across spatial gradients. By quantifying the relationships between environmental variables (e.g., temperature, precipitation, habitat quality) and species' ecological requirements, environmental niche models help elucidate how environmental factors shape local population growth and species distributions.
-
-**Input**
-
-@include{lineno} geography_graph_local_process_3.cpp
-
-**Output**
-
-@include{lineno} geography_graph_local_process_3.txt
-
----
-
-## Species Competition Models
-
-Species competition models explore how interspecific interactions, such as competition for resources or interactions with predators, influence population dynamics and species coexistence within local communities. These models typically incorporate competition coefficients, representing the strength of interspecific interactions, into population equations to simulate the effects of species interactions on population growth rates and carrying capacities. Species competition models provide insights into the mechanisms driving species coexistence, competitive exclusion, and community dynamics within ecological communities.
-
-**Input**
-
-@include{lineno} geography_graph_local_process_4.cpp
-
-**Output**
-
-@include{lineno} geography_graph_local_process_4.txt
-
----
-
-[//]: # (----------------------------------------------------------------------)
-@page dispersal_kernels Spatial Interactions
-@tableofcontents
-
-## Distance-Based Kernels
+## Distance-based kernel
 
 A straightforward approach to determine the dispersal mode across a complete spatial graph involves correlating the geographic distance between two locations with the likelihood of dispersal between them. The objective of this section is to highlight this model choice by parametrizing a simple Dispersal Location Kernel (in the sense of <a href="nathan-et-al-2012.pdf" target="_blank"><b> Nathan et al. 2012</b></a>). Additionally, we will calculate essential metrics, such as the distance between two coordinates, the dispersal probability between them, and the average dispersal distance anticipated under this distribution.
-
-### Basics
 
 The dispersal location kernel represents the statistical pattern of dispersal distances within a population. In this context, it essentially serves as the probability density function (pdf) that outlines the distribution of locations after dispersal in relation to the original location. The expressions have been adjusted to incorporate a scale parameter, 
 \f$a\f$, which is consistent with a distance unit, and a shape parameter, 
@@ -1089,24 +996,11 @@ Quetzal incorporates various kernel types available in the `quetzal::demography:
 
 **Input**
 
-@include{lineno} geography_dispersal_kernel_1.cpp
+@include{lineno} demography_dispersal_kernel.cpp
 
 **Output**
 
-@include{lineno} geography_dispersal_kernel_1.txt
+@include{lineno} demography_dispersal_kernel.txt
 
----
-
-### Using Kernels with Spatial Graphs
-
-Users can create a spatial graph from landscape data, customizing assumptions about connectivity and topology. By defining a dispersal kernel and calculating dispersal probabilities for each edge based on distance metrics, users can uncover insights into potential dispersal patterns within the spatial graph. This approach offers a powerful means for exploring and understanding spatial dynamics and connectivity, facilitating deeper analysis of ecological or geographic phenomena.
-
-**Input**
-
-@include{lineno} geography_dispersal_kernel_2.cpp
-
-**Output**
-
-@include{lineno} geography_dispersal_kernel_2.txt
 ---
 
