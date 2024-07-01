@@ -149,17 +149,17 @@ $(document).ready(function(){initNavTree('geotiff_parser.html',''); initResizabl
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><ul><li class="level2"><a href="#autotoc_md80">Reading a single variable</a></li>
-<li class="level2"><a href="#autotoc_md82">Reading multiple variables</a></li>
-<li class="level2"><a href="#autotoc_md84">Next steps</a><ul><li class="level3"><a href="#autotoc_md86">Demes on a regular spatial grid</a></li>
-<li class="level3"><a href="#autotoc_md88">Demes on a variable spatial graph</a></li>
-<li class="level3"><a href="#autotoc_md90">Inform local processes</a></li>
+<ul><ul><li class="level2"><a href="#autotoc_md81">Reading a single variable</a></li>
+<li class="level2"><a href="#autotoc_md83">Reading multiple variables</a></li>
+<li class="level2"><a href="#autotoc_md85">Next steps</a><ul><li class="level3"><a href="#autotoc_md87">Demes on a regular spatial grid</a></li>
+<li class="level3"><a href="#autotoc_md89">Demes on a variable spatial graph</a></li>
+<li class="level3"><a href="#autotoc_md91">Inform local processes</a></li>
 </ul>
 </li>
 </ul>
 </ul>
 </div>
-<div class="textblock"><h2><a class="anchor" id="autotoc_md80"></a>
+<div class="textblock"><h2><a class="anchor" id="autotoc_md81"></a>
 Reading a single variable</h2>
 <p>Landscapes, along with their spatial and temporal heterogeneity, play a significant role in shaping the dynamics of populations and lineages. In computational models, these landscapes are often represented as geospatial grids or rasters.</p>
 <p>In most analyses, it is common for users to establish connections between local growth processes and a habitability raster obtained from Ecological Niche Models. Additionally, they may associate dispersal or connectivity with a Digital Elevation Model.</p>
@@ -313,7 +313,7 @@ Reading a single variable</h2>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;bio1(0,0) is defined.</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;104.602</div>
 </div><!-- fragment --><hr  />
-<h2><a class="anchor" id="autotoc_md82"></a>
+<h2><a class="anchor" id="autotoc_md83"></a>
 Reading multiple variables</h2>
 <p>Aligning rasters refers to a spatial data representation technique used in Geographic Information Systems (GIS). In this context, raster data layers are aligned and registered to a common coordinate system and grid structure. This ensures that the cells or pixels in the raster layers are spatially aligned and correspond to the same geographic locations.</p>
 <p>Alignment is achieved in <code><a class="el" href="classquetzal_1_1geography_1_1raster.html" title="Discrete spatio-temporal variations of an environmental variable.">quetzal::geography::raster</a></code> objects by defining a consistent grid structure, such as a uniform cell size and orientation, for all raster layers.</p>
@@ -381,11 +381,11 @@ Reading multiple variables</h2>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    Lon min: -5</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    Lon max: 10</div>
 </div><!-- fragment --><hr  />
-<h2><a class="anchor" id="autotoc_md84"></a>
+<h2><a class="anchor" id="autotoc_md85"></a>
 Next steps</h2>
 <p>Geospatial datasets play a crucial role in coalescence by providing valuable information about the demographic process. Once a raster is successfully parsed, users typically have three primary objectives they may want to pursue:</p>
 <hr  />
-<h3><a class="anchor" id="autotoc_md86"></a>
+<h3><a class="anchor" id="autotoc_md87"></a>
 Demes on a regular spatial grid</h3>
 <p>The rasters grid structure can be employed to construct a spatial graph of demes that is fully connected and utilized for simulating the demographic process. This is pertinent when looking at very larged continuous land masses. In this context:</p>
 <ul>
@@ -393,12 +393,12 @@ Demes on a regular spatial grid</h3>
 <li>Edges represent the distances between demes, and their connectivity can be modified using dispersal kernels.</li>
 </ul>
 <hr  />
-<h3><a class="anchor" id="autotoc_md88"></a>
+<h3><a class="anchor" id="autotoc_md89"></a>
 Demes on a variable spatial graph</h3>
 <p>In archipelagos or clusters of loosely connected islands, the fluctuations in sea levels have a notable impact on the dynamics of species. These variations cause the intermittent connection and separation of land masses and their corresponding populations. Similarly, climatic shifts in sky-island complexes can have similar effects. As a result, the assumption of a completely interconnected graph representing population units (demes) is no longer applicable in these situations.</p>
 <p>To address this, Digital Elevation Models (DEMs) can be utilized to establish a relationship between the dynamics of sea levels and species. In these cases, the connectivity of the graph at any given time is determined by the current elevation, and changes in elevation directly impact the level of connectivity between different areas.</p>
 <hr  />
-<h3><a class="anchor" id="autotoc_md90"></a>
+<h3><a class="anchor" id="autotoc_md91"></a>
 Inform local processes</h3>
 <p>Ecological Niche Models (ENMs) play a crucial role in predicting how populations might respond to changes in climate, both in the past and the future.</p>
 <p>Typically, these models produce raster outputs that represent estimates of suitability. These suitability values are then utilized to determine growth rates and carrying capacity.</p>

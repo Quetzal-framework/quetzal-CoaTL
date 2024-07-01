@@ -149,22 +149,22 @@ $(document).ready(function(){initNavTree('spatial_graph_construction.html',''); 
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><ul><li class="level2"><a href="#autotoc_md104">Background</a></li>
-<li class="level2"><a href="#autotoc_md105">Graph from raster</a></li>
-<li class="level2"><a href="#autotoc_md106">Graph from landscape</a></li>
-<li class="level2"><a href="#autotoc_md107">Graph from abstract grid</a></li>
-<li class="level2"><a href="#autotoc_md108">From scratch</a><ul><li class="level3"><a href="#autotoc_md109">Sparse Graph</a></li>
-<li class="level3"><a href="#autotoc_md110">Dense Graph</a></li>
+<ul><ul><li class="level2"><a href="#autotoc_md113">Background</a></li>
+<li class="level2"><a href="#autotoc_md114">Graph from raster</a></li>
+<li class="level2"><a href="#autotoc_md115">Graph from landscape</a></li>
+<li class="level2"><a href="#autotoc_md116">Graph from abstract grid</a></li>
+<li class="level2"><a href="#autotoc_md117">From scratch</a><ul><li class="level3"><a href="#autotoc_md118">Sparse Graph</a></li>
+<li class="level3"><a href="#autotoc_md119">Dense Graph</a></li>
 </ul>
 </li>
 </ul>
 </ul>
 </div>
-<div class="textblock"><h2><a class="anchor" id="autotoc_md104"></a>
+<div class="textblock"><h2><a class="anchor" id="autotoc_md113"></a>
 Background</h2>
 <p>Constructing a spatial graph from a spatial grid, also known as a raster, is a fundamental step in spatial analysis and modeling. Spatial graphs provide a powerful representation of relationships and connectivity between different locations within a geographic area. This process involves transforming the discrete and gridded structure of a spatial grid into a network of vertices and edges, where vertices represent spatial entities (such as cells or locations), and edges capture the spatial relationships and connections between these entities.</p>
 <p>There are different ways to build such graph.</p>
-<h2><a class="anchor" id="autotoc_md105"></a>
+<h2><a class="anchor" id="autotoc_md114"></a>
 Graph from raster</h2>
 <p>The provided code snippet contains the logic for constructing a spatial graph from a <code><a class="el" href="classquetzal_1_1geography_1_1raster.html" title="Discrete spatio-temporal variations of an environmental variable.">quetzal::geography::raster</a></code>.</p>
 <p>This involves identifying the cells of the raster to map <code>location_type</code> values to the vertices, and defining edges based on the desired connectivity.</p>
@@ -208,7 +208,7 @@ Graph from raster</h2>
 <div class="ttc" id="astructvertex__info_html"><div class="ttname"><a href="structvertex__info.html">vertex_info</a></div><div class="ttdef"><b>Definition:</b> coalescence_binary_tree_2.cpp:5</div></div>
 </div><!-- fragment --><p><b>Output</b></p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;Graph has 9 vertices, 36 edges.</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md106"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md115"></a>
 Graph from landscape</h2>
 <p>The provided code snippet contains the logic for constructing a spatial graph from a <code><a class="el" href="classquetzal_1_1geography_1_1landscape.html" title="Discrete spatio-temporal variations of a set of environmental variables.">quetzal::geography::landscape</a></code>.</p>
 <p>This involves identifying the cells of the landscape to map <code>location_type</code> values to the vertices, and defining edges based on the desired connectivity.</p>
@@ -245,7 +245,7 @@ Graph from landscape</h2>
 <div class="ttc" id="aclassquetzal_1_1geography_1_1landscape_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1landscape.html">quetzal::geography::landscape</a></div><div class="ttdoc">Discrete spatio-temporal variations of a set of environmental variables.</div><div class="ttdef"><b>Definition:</b> landscape.hpp:42</div></div>
 </div><!-- fragment --><p><b>Output</b></p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;Graph has 9 vertices, 36 edges.</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md107"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md116"></a>
 Graph from abstract grid</h2>
 <p>The provided code snippet contains the logic for constructing a spatial graph from a user-defined abstract grid.</p>
 <p>This involves identifying the height and width of the space to define linearly-indexed vertices, and defining edges based on the desired connectivity.</p>
@@ -258,8 +258,8 @@ Graph from abstract grid</h2>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">struct </span><a class="code" href="structMySpatialGrid.html">MySpatialGrid</a></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;{</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    <span class="comment">// it is just required to define these two functions</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    constexpr <span class="keywordtype">int</span> width()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> 30; }</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    constexpr <span class="keywordtype">int</span> height()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> 10; }</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    constexpr <span class="keywordtype">int</span> width()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> 300; }</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    constexpr <span class="keywordtype">int</span> height()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> 100; }</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;};</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keywordtype">int</span> main()</div>
@@ -279,11 +279,11 @@ Graph from abstract grid</h2>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;}</div>
 <div class="ttc" id="astructMySpatialGrid_html"><div class="ttname"><a href="structMySpatialGrid.html">MySpatialGrid</a></div><div class="ttdef"><b>Definition:</b> geography_graph_4.cpp:7</div></div>
 </div><!-- fragment --><p><b>Output</b></p>
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;Graph has 300 vertices, 44850 edges.</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md108"></a>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;Graph has 30000 vertices, 449985000 edges.</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md117"></a>
 From scratch</h2>
 <p>The provided code snippet contains the logic for creating a sparse versus dense graph from scratch. This involves dynamically adding vertices and edges based on user-defined conditions, resulting in a graph that represents the desired spatial relationships.</p>
-<h3><a class="anchor" id="autotoc_md109"></a>
+<h3><a class="anchor" id="autotoc_md118"></a>
 Sparse Graph</h3>
 <p><b>Input</b></p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;quetzal/geography.hpp&quot;</span></div>
@@ -309,7 +309,7 @@ Sparse Graph</h3>
 <div class="ttc" id="aclassquetzal_1_1geography_1_1graph_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1graph.html">quetzal::geography::graph</a></div><div class="ttdef"><b>Definition:</b> graph.hpp:262</div></div>
 </div><!-- fragment --><p><b>Output</b></p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;Graph has 100 vertices, 3 edges.</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md110"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md119"></a>
 Dense Graph</h3>
 <p><b>Input</b></p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;quetzal/geography.hpp&quot;</span></div>
