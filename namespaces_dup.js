@@ -1,5 +1,21 @@
 var namespaces_dup =
 [
+    [ "Distance-Based Kernels", "dispersal_kernels.html#autotoc_md136", [
+      [ "Background", "spatial_graph_local_process.html#autotoc_md125", null ],
+      [ "Autoregressive Models", "spatial_graph_local_process.html#autotoc_md126", null ],
+      [ "Deterministic Models", "spatial_graph_local_process.html#autotoc_md128", null ],
+      [ "Stochastic Models", "spatial_graph_local_process.html#autotoc_md130", null ],
+      [ "Environmental Niche Models", "spatial_graph_local_process.html#autotoc_md132", null ],
+      [ "Species Competition Models", "spatial_graph_local_process.html#autotoc_md134", null ],
+      [ "Invariants Guarantee", "graphs_in_quetzal.html#autotoc_md71", null ],
+      [ "Edge and Vertices descriptors", "graphs_in_quetzal.html#autotoc_md72", null ],
+      [ "Edge and Vertices Information (Property Classes)", "graphs_in_quetzal.html#autotoc_md73", null ],
+      [ "Depth First Search (DFS)  Algorithms", "graphs_in_quetzal.html#autotoc_md74", null ],
+      [ "DFS on trees", "graphs_in_quetzal.html#autotoc_md75", null ],
+      [ "Basics", "dispersal_kernels.html#autotoc_md137", null ],
+      [ "Using Kernels with Spatial Graphs", "dispersal_kernels.html#autotoc_md139", null ]
+    ] ],
+    [ "@include{lineno} geography_dispersal_kernel_2.txt", "dispersal_kernels.html#autotoc_md140", null ],
     [ "boost", "namespaceboost.html", "namespaceboost" ],
     [ "meta", null, [
       [ "all", "expressive_2expressive_8hpp.html#a486156f206bf5db3fcd7e96873361c6a", null ],

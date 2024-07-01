@@ -149,23 +149,23 @@ $(document).ready(function(){initNavTree('newick_generator.html',''); initResiza
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><ul><li class="level2"><a href="#autotoc_md53">Objectives</a></li>
-<li class="level2"><a href="#autotoc_md55">From a Quetzal binary tree</a><ul><li class="level3"><a href="#autotoc_md57">No property</a></li>
-<li class="level3"><a href="#autotoc_md59">Custom properties</a></li>
+<ul><ul><li class="level2"><a href="#autotoc_md52">Objectives</a></li>
+<li class="level2"><a href="#autotoc_md54">From a Quetzal binary tree</a><ul><li class="level3"><a href="#autotoc_md56">No property</a></li>
+<li class="level3"><a href="#autotoc_md58">Custom properties</a></li>
 </ul>
 </li>
-<li class="level2"><a href="#autotoc_md61">From a Quetzal k-ary tree</a><ul><li class="level3"><a href="#autotoc_md63">No property</a></li>
-<li class="level3"><a href="#autotoc_md65">Custom properties</a></li>
+<li class="level2"><a href="#autotoc_md60">From a Quetzal k-ary tree</a><ul><li class="level3"><a href="#autotoc_md62">No property</a></li>
+<li class="level3"><a href="#autotoc_md64">Custom properties</a></li>
 </ul>
 </li>
-<li class="level2"><a href="#autotoc_md67">Interfacing legacy code</a><ul><li class="level3"><a href="#autotoc_md69">No property</a></li>
-<li class="level3"><a href="#autotoc_md71">Custom properties</a></li>
+<li class="level2"><a href="#autotoc_md66">Interfacing legacy code</a><ul><li class="level3"><a href="#autotoc_md68">No property</a></li>
+<li class="level3"><a href="#autotoc_md70">Custom properties</a></li>
 </ul>
 </li>
 </ul>
 </ul>
 </div>
-<div class="textblock"><h2><a class="anchor" id="autotoc_md53"></a>
+<div class="textblock"><h2><a class="anchor" id="autotoc_md52"></a>
 Objectives</h2>
 <p>In this tutorial section you will learn how to:</p><ul>
 <li>Use the <code>quetzal::format::newick::generate_from</code> function to generate a Newick string<ul>
@@ -177,10 +177,10 @@ Objectives</h2>
 <li>Customize the behavior of the generator based on the type of information (properties) you wish to format.</li>
 </ul>
 <hr  />
-<h2><a class="anchor" id="autotoc_md55"></a>
+<h2><a class="anchor" id="autotoc_md54"></a>
 From a Quetzal binary tree</h2>
 <hr  />
-<h3><a class="anchor" id="autotoc_md57"></a>
+<h3><a class="anchor" id="autotoc_md56"></a>
 No property</h3>
 <p>When a Newick string is generated from a tree that has no vertex nor edge information/properties attached to it, it is then assumed the only interest is the tree topology: as there is no clear way to populate the labels or branch length data fields in the Newick string, those are left empty.</p>
 <p><b>Input</b></p>
@@ -217,11 +217,11 @@ No property</h3>
 <div class="ttc" id="astructquetzal_1_1format_1_1newick_1_1TreeAlign_html"><div class="ttname"><a href="structquetzal_1_1format_1_1newick_1_1TreeAlign.html">quetzal::format::newick::TreeAlign</a></div><div class="ttdoc">Set a root node branch length to zero. Remove all nested comments.</div><div class="ttdef"><b>Definition:</b> from_network.hpp:180</div></div>
 </div><!-- fragment --><p>Since there are no comments stored in the labels of the generated random tree, the output of the different flavors are here quite similar:</p>
 <p><b>Output</b></p>
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;(,(,((,),))):0.0;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;(,(,((,),)));</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;(,(,((,),)));</div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;((,),((,),)):0.0;</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;((,),((,),));</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;((,),((,),));</div>
 </div><!-- fragment --><hr  />
-<h3><a class="anchor" id="autotoc_md59"></a>
+<h3><a class="anchor" id="autotoc_md58"></a>
 Custom properties</h3>
 <p>When a Newick string is generated from a tree that has some information attached to its vertices and edges through a property class, the formatter can acccess this information as long as the property class defined a <code>std::string label() const</code> method.</p>
 <p><b>Input</b></p>
@@ -280,13 +280,13 @@ Custom properties</h3>
 <div class="ttc" id="astructedge__info_html"><div class="ttname"><a href="structedge__info.html">edge_info</a></div><div class="ttdef"><b>Definition:</b> newick_parser_2.cpp:12</div></div>
 <div class="ttc" id="astructvertex__info_html"><div class="ttname"><a href="structvertex__info.html">vertex_info</a></div><div class="ttdef"><b>Definition:</b> coalescence_binary_tree_2.cpp:5</div></div>
 </div><!-- fragment --><p><b>Output</b></p>
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;((W:2,I:4)T:7,(R:5,(P:1,G:0)R:4)T:0)B:0.0;</div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;((W:1,U:3)R:7,(H:8,(U:6,I:0)M:2)S:8)O:0.0;</div>
 </div><!-- fragment --><hr  />
-<h2><a class="anchor" id="autotoc_md61"></a>
+<h2><a class="anchor" id="autotoc_md60"></a>
 From a Quetzal k-ary tree</h2>
 <p>Extending the string generation to a k-ary tree is straightforward: instead of passing a <code><a class="el" href="classquetzal_1_1coalescence_1_1binary__tree.html">quetzal::coalescence::binary_tree</a></code> object, just pass a <code><a class="el" href="classquetzal_1_1coalescence_1_1k__ary__tree.html">quetzal::coalescence::k_ary_tree</a></code> to the <code>quetzal::format::newick::generate_from</code> function.</p>
 <hr  />
-<h3><a class="anchor" id="autotoc_md63"></a>
+<h3><a class="anchor" id="autotoc_md62"></a>
 No property</h3>
 <p>No vertex nor edge properties are embedded: the vertices labels and branch length data fields of the Newick string are left empty.</p>
 <p><b>Input</b></p>
@@ -320,11 +320,11 @@ No property</h3>
 <div class="ttc" id="anamespacequetzal_1_1coalescence_html_a0db3e22d1bbb2f5554754792baa77efb"><div class="ttname"><a href="namespacequetzal_1_1coalescence.html#a0db3e22d1bbb2f5554754792baa77efb">quetzal::coalescence::get_random_k_ary_tree</a></div><div class="ttdeci">std::pair&lt; quetzal::coalescence::k_ary_tree&lt; Vertex, Edge &gt;, typename quetzal::coalescence::k_ary_tree&lt; Vertex, Edge &gt;::vertex_descriptor &gt; get_random_k_ary_tree(int n_leaves, Generator &amp;rng)</div><div class="ttdoc">Generate a random k-ary tree.</div><div class="ttdef"><b>Definition:</b> k_ary_tree.hpp:761</div></div>
 </div><!-- fragment --><p>Since there are no comments stored in the labels of the generated random tree, the output of the different flavors are here quite similar:</p>
 <p><b>Output</b></p>
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;(,(,(,(,)))):0.0;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;(,(,(,(,))));</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;(,(,(,(,))));</div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;(,((,),(,))):0.0;</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;(,((,),(,)));</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;(,((,),(,)));</div>
 </div><!-- fragment --><hr  />
-<h3><a class="anchor" id="autotoc_md65"></a>
+<h3><a class="anchor" id="autotoc_md64"></a>
 Custom properties</h3>
 <p>The Newick string is generated from a tree that embeds some information attached to its vertices and edges through a property class, the formatter can acccess this information as long as the property class defined a <code>std::string label() const</code> method.</p>
 <p><b>Input</b></p>
@@ -385,9 +385,9 @@ Custom properties</h3>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;2</div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;2</div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;2</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;((T:7,(N:2,E:5)Y:9)J:0,(W:1,A:6)I:6)E;</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;((L:9,W:6)R:1,(V:9,(J:5,P:5)V:0)L:7)N;</div>
 </div><!-- fragment --><hr  />
-<h2><a class="anchor" id="autotoc_md67"></a>
+<h2><a class="anchor" id="autotoc_md66"></a>
 Interfacing legacy code</h2>
 <p>If your existing code heavily dependson your own class to describe a tree graph, then refactoring your whole project to switch to <b>Quetzal</b> trees may be too costly.</p>
 <p>In this case, you can connect the <code><a class="el" href="classquetzal_1_1format_1_1newick_1_1generator.html" title="Generate the Newick formula from an external (custom) tree class.">quetzal::format::newick::generator</a></code> class to your own legacy code.</p>
@@ -398,7 +398,7 @@ Interfacing legacy code</h2>
 </ol>
 </dd></dl>
 <hr  />
-<h3><a class="anchor" id="autotoc_md69"></a>
+<h3><a class="anchor" id="autotoc_md68"></a>
 No property</h3>
 <p><b>Quetzal</b> implements a <code><a class="el" href="classquetzal_1_1format_1_1newick_1_1generator.html" title="Generate the Newick formula from an external (custom) tree class.">quetzal::format::newick::generator</a></code> that consumes a tree graph and produces a newick string.</p>
 <p>This generator is not aware of your class. Instead, it requires you to defined 4 functors that embed all the information there is to know about a vertex \(v\):</p><ul>
@@ -482,7 +482,7 @@ No property</h3>
 </div><!-- fragment --><p><b>Output</b></p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;(,(,));</div>
 </div><!-- fragment --><hr  />
-<h3><a class="anchor" id="autotoc_md71"></a>
+<h3><a class="anchor" id="autotoc_md70"></a>
 Custom properties</h3>
 <p>Once you understand the previous example with no property, then generating a Newick string from one of your legacy tree class object with added vertices and/or edge labels is pretty straightforward.</p>
 <p>You only need to modify three things:</p><ul>
