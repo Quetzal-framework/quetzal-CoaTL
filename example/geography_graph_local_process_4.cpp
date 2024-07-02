@@ -17,9 +17,10 @@ struct vertex_info {
 // Overload the << operator for the vertex_info struct
 std::ostream& operator<<(std::ostream& os, const vertex_info& vertex) {
     auto format = [&](const auto & v, const auto& name){
-        os << name << " : ";
+        os << "\t" << name << " : ";
         for(const auto& val : v)
             os << val << " ";
+        os << "\n";
     };
     format(vertex.P1, "P1");
     format(vertex.P2, "P2");
@@ -42,10 +43,10 @@ int main()
     using edge_info = geo::no_property;
     auto graph = geo::from_grid(land, vertex_info(times.size()), edge_info(), geo::connect_fully(), geo::isotropy(), geo::mirror());
 
-    // Let's initialize only one vertex for demonstration
-    graph[0].P1[0] = 100;
-    graph[0].P2[0] = 100;
-    graph[0].P3[0] = 100;
+    // Let's initialize population sizes for a single vertex for demonstration
+    graph[0].P1[0] = 200;
+    graph[0].P2[0] = 1;
+    graph[0].P3[0] = 1;
 
     // Declare a random number generator
     std::mt19937 rng{std::random_device{}()};
@@ -75,16 +76,16 @@ int main()
             auto P1 = graph[x].P1[t-1];
             auto P2 = graph[x].P2[t-1];
             auto P3 = graph[x].P3[t-1];
-            graph[x].P1[t] = P1 + r1 * P1 * (1 - P1 / K1) - a12 * P1 * P2 - a13 * P1 * P3;
-            graph[x].P2[t] = P2 + r2 * P2 * (1 - P2 / K2) + b21 * P1 * P2 - c23 * P2 * P3;
-            graph[x].P3[t] = P3 + r3 * P3 * (1 - P3 / K3) + b31 * P1 * P3 - c32 * P2 * P3;
+            graph[x].P1[t] = std::max(P1 + r1 * P1 * (1 - P1 / K1) - a12 * P1 * P2 - a13 * P1 * P3, 0.);
+            graph[x].P2[t] = std::max(P2 + r2 * P2 * (1 - P2 / K2) + b21 * P1 * P2 - c23 * P2 * P3, 0.);
+            graph[x].P3[t] = std::max(P3 + r3 * P3 * (1 - P3 / K3) + b31 * P1 * P3 - c32 * P2 * P3, 0.);
         }
     }
 
     // Post treatment
     std::cout <<  "Time series:\n"; 
     for(auto x : graph.vertices()){
-         std::cout << "at vertex " << x << " : ";
+         std::cout << "at vertex " << x << " : \n";
          std::cout << graph[x] << std::endl;
     }
 }
