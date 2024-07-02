@@ -1029,7 +1029,7 @@ In this example, we store a time-series vector at each vertex of the graph to mo
 
 Stochastic models introduce randomness and variability into population growth processes, acknowledging the inherent uncertainty in ecological systems. These models incorporate probabilistic elements, such as random fluctuations in birth and death rates, environmental variability, and demographic stochasticity. Stochastic models are particularly useful for capturing the effects of environmental variability and demographic stochasticity on population dynamics, allowing researchers to assess the likelihood of rare events and population extinctions.
 
-We build up on the previous example by adding some stochasticity in the process. We store a time-series vector at each vertex of the graph to monitor the population dynamics. After initializing one vertex with a non-zero value, we iterate through time to update the series. It's important to note that, since we defined no migration along the graph's edges, some time-series remain at zero.
+We build up on the previous example by adding some stochasticity in the process. We store a time-series vector at each vertex of the graph to monitor the population dynamics. After initializing some vertices with a non-zero value, we iterate through time to update the series. It's important to note that, since we defined no migration along the graph's edges, some time-series remain at zero.
 
 **Input**
 
@@ -1045,7 +1045,9 @@ We build up on the previous example by adding some stochasticity in the process.
 
 Environmental niche models focus on how environmental factors influence the distribution and abundance of species within specific habitats. These models integrate ecological niche theory and environmental data to predict species' occurrence probabilities and population densities across spatial gradients. By quantifying the relationships between environmental variables (e.g., temperature, precipitation, habitat quality) and species' ecological requirements, environmental niche models help elucidate how environmental factors shape local population growth and species distributions.
 
-In this example, we store a time-series vector at each vertex of the graph to monitor the population dynamics. After initializing one vertex with a non-zero value, we iterate through time to update the series conditionally to the local contemporary environmental data. It's important to note that, since we defined no migration along the graph's edges, all time-series except one remain at zero.
+In this example, we store a time-series vector at each vertex of the graph to monitor the population dynamics. After initializing some vertices with a non-zero value, we iterate through time to update the series conditionally to the local contemporary environmental data. It's important to note that, since we defined no migration along the graph's edges, some time-series remain at zero.
+
+Since the data structures embedded in the vertices (and edges) of the graph are arbitrary, we could also store the local \f$K\f$ and \f$r\f$ time series alongside the population size. This can be achieved by defining a simple `vertex_info` class that contains three `std::vector` members. We will apply this idea in the following example for simulating a three-species competition model.
 
 **Input**
 
@@ -1060,6 +1062,31 @@ In this example, we store a time-series vector at each vertex of the graph to mo
 ## Species Competition Models
 
 Species competition models explore how interspecific interactions, such as competition for resources or interactions with predators, influence population dynamics and species coexistence within local communities. These models typically incorporate competition coefficients, representing the strength of interspecific interactions, into population equations to simulate the effects of species interactions on population growth rates and carrying capacities. Species competition models provide insights into the mechanisms driving species coexistence, competitive exclusion, and community dynamics within ecological communities.
+
+A discrete-time model for a three-species predator-prey competition can be complex, but here's a basic version using a system of difference equations. Let's denote the populations of the three species at time \f$t\f$ as 
+\f$𝑃_1(t)\f$, \f$P_2(t)\f$ and \f$P_3(t)\f$. Assume that \f$P_1\f$ is a prey species, \f$P_2\f$ is a predator of \f$P_1\f$ and \f$P_3\f$ is a competing species that preys on \f$P_1\f$ and competes with \f$P_2\f$.
+
+\[
+P_1(t+1) = P_1(t) + r_1 P_1(t) \left(1 - \frac{P_1(t)}{K_1}\right) - a_{12} P_1(t) P_2(t) - a_{13} P_1(t) P_3(t)
+\]
+
+\[
+P_2(t+1) = P_2(t) + r_2 P_2(t) \left(1 - \frac{P_2(t)}{K_2}\right) + b_{21} P_1(t) P_2(t) - c_{23} P_2(t) P_3(t)
+\]
+
+\[
+P_3(t+1) = P_3(t) + r_3 P_3(t) \left(1 - \frac{P_3(t)}{K_3}\right) + b_{31} P_1(t) P_3(t) - c_{32} P_2(t) P_3(t)
+\]
+
+Where:
+- \( r_1, r_2, r_3 \) are the intrinsic growth rates of species 1, 2, and 3, respectively.
+- \( K_1, K_2, K_3 \) are the carrying capacities for species 1, 2, and 3, respectively.
+- \( a_{12} \) is the predation rate of species 2 on species 1.
+- \( a_{13} \) is the predation rate of species 3 on species 1.
+- \( b_{21} \) is the benefit species 2 gets from preying on species 1.
+- \( c_{23} \) is the competition rate between species 2 and 3.
+- \( b_{31} \) is the benefit species 3 gets from preying on species 1.
+- \( c_{32} \) is the competition rate between species 3 and 2.
 
 **Input**
 
