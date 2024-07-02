@@ -262,7 +262,7 @@ Custom properties</h3>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;};</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">// Make your custom vertex streamable for the visitor</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">auto</span> &amp;<a class="code" href="namespacequetzal_1_1demography.html#a1d9919bc738eed56d179b9801fa69ecb">operator&lt;&lt;</a>(std::ostream &amp;os, <a class="code" href="structvertex__info.html">vertex_info</a> <span class="keyword">const</span> &amp;v)</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">auto</span> &amp;operator&lt;&lt;(std::ostream &amp;os, <a class="code" href="structvertex__info.html">vertex_info</a> <span class="keyword">const</span> &amp;v)</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;{</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordflow">return</span> os &lt;&lt; quoted(v.name);</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;}</div>
@@ -309,7 +309,6 @@ Custom properties</h3>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}</div>
-<div class="ttc" id="anamespacequetzal_1_1demography_html_a1d9919bc738eed56d179b9801fa69ecb"><div class="ttname"><a href="namespacequetzal_1_1demography.html#a1d9919bc738eed56d179b9801fa69ecb">quetzal::demography::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;stream, const FlowHashMapImplementation&lt; Space, Time, Value &gt; &amp;flows)</div><div class="ttdoc">Stream operator.</div><div class="ttdef"><b>Definition:</b> FlowHashMapImplementation.hpp:190</div></div>
 <div class="ttc" id="astructMyVisitor_html"><div class="ttname"><a href="structMyVisitor.html">MyVisitor</a></div><div class="ttdef"><b>Definition:</b> newick_parser_2.cpp:24</div></div>
 <div class="ttc" id="astructedge__info_html"><div class="ttname"><a href="structedge__info.html">edge_info</a></div><div class="ttdef"><b>Definition:</b> newick_parser_2.cpp:12</div></div>
 <div class="ttc" id="astructvertex__info_html"><div class="ttname"><a href="structvertex__info.html">vertex_info</a></div><div class="ttdef"><b>Definition:</b> coalescence_binary_tree_2.cpp:5</div></div>
