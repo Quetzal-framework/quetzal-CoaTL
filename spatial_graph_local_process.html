@@ -305,9 +305,9 @@ Stochastic Models</h2>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}</div>
 </div><!-- fragment --><p><b>Output</b></p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;Time series:</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;at vertex 0 : 1 1 2 5 8 8 12 19 22 28 </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;at vertex 1 : 1 1 1 2 2 4 5 8 14 20 </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;at vertex 2 : 1 1 1 2 4 6 12 24 46 65 </div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;at vertex 0 : 1 1 3 3 4 6 11 14 28 52 </div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;at vertex 1 : 1 1 2 3 3 5 7 11 12 25 </div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;at vertex 2 : 1 1 2 2 4 7 9 13 25 37 </div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;at vertex 3 : 0 0 0 0 0 0 0 0 0 0 </div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;at vertex 4 : 0 0 0 0 0 0 0 0 0 0 </div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;at vertex 5 : 0 0 0 0 0 0 0 0 0 0 </div>
@@ -375,9 +375,9 @@ Environmental Niche Models</h2>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div>
 </div><!-- fragment --><p><b>Output</b></p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;Time series:</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;at vertex 0 : 1 4 18 48 246 503 794 1262 1064 1728 </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;at vertex 1 : 1 4 26 80 214 471 1072 1193 1128 1436 </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;at vertex 2 : 1 3 15 45 131 441 1596 0 0 0 </div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;at vertex 0 : 1 3 20 97 532 1643 0 0 0 0 </div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;at vertex 1 : 1 3 10 62 300 1209 1025 1326 1056 1670 </div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;at vertex 2 : 1 4 13 38 185 454 1493 0 0 0 </div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;at vertex 3 : 0 0 0 0 0 0 0 0 0 0 </div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;at vertex 4 : 0 0 0 0 0 0 0 0 0 0 </div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;at vertex 5 : 0 0 0 0 0 0 0 0 0 0 </div>
@@ -422,88 +422,125 @@ Species Competition Models</h2>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">// Overload the &lt;&lt; operator for the vertex_info struct</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;std::ostream&amp; operator&lt;&lt;(std::ostream&amp; os, <span class="keyword">const</span> <a class="code" href="structvertex__info.html">vertex_info</a>&amp; vertex) {</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">auto</span> format = [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span> &amp; v, <span class="keyword">const</span> <span class="keyword">auto</span>&amp; name){</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        os &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot; : &quot;</span>;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        os &lt;&lt; <span class="stringliteral">&quot;\t&quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot; : &quot;</span>;</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span>&amp; val : v)</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;            os &lt;&lt; val &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    };</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    format(vertex.P1, <span class="stringliteral">&quot;P1&quot;</span>);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    format(vertex.P2, <span class="stringliteral">&quot;P2&quot;</span>);</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    format(vertex.P3, <span class="stringliteral">&quot;P3&quot;</span>);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keywordflow">return</span> os;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;}</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keywordtype">int</span> main()</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">auto</span> file = std::filesystem::current_path() / <span class="stringliteral">&quot;data/bio1.tif&quot;</span>;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="comment">// The raster have 10 bands that we will assign to 2001 ... 2010.</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    std::vector&lt;int&gt; times(10);</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    std::iota(times.begin(), times.end(), 2001);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="comment">// Landscape construction injecting times information</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">auto</span> land = <a class="code" href="classquetzal_1_1geography_1_1raster.html#a0ff840b704392f9ef3e63d4b74a83385">geo::raster&lt;&gt;::from_file</a>(file, times);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="comment">// Graph construction with vertex and edge info</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">using</span> <a class="code" href="structedge__info.html">edge_info</a> = <a class="code" href="namespacequetzal_1_1geography.html#a4f58e84393fe29b5af798ef6213a2be7">geo::no_property</a>;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">auto</span> <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a> = <a class="code" href="namespacequetzal_1_1geography.html#aefd1b77745ebec6627cd0b29ac101afd">geo::from_grid</a>(land, <a class="code" href="structvertex__info.html">vertex_info</a>(times.size()), <a class="code" href="structedge__info.html">edge_info</a>(), <a class="code" href="structquetzal_1_1geography_1_1connect__fully.html">geo::connect_fully</a>(), <a class="code" href="namespacequetzal_1_1geography.html#af6da7867d1c7f8864a04f8b003a4fabd">geo::isotropy</a>(), <a class="code" href="classquetzal_1_1geography_1_1mirror.html">geo::mirror</a>());</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="comment">// Let&#39;s initialize only one vertex for demonstration</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a>[0].P1[0] = 100;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a>[0].P2[0] = 100;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a>[0].P3[0] = 100;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="comment">// Declare a random number generator</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    std::mt19937 rng{std::random_device{}()};</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">auto</span> random_double = [&amp;](<span class="keywordtype">double</span> min, <span class="keywordtype">double</span> max){ <span class="keywordflow">return</span> std::uniform_real_distribution&lt;double&gt;(min, max)(rng);};</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">double</span> r1 = random_double(0.0, 1.0);  <span class="comment">// Intrinsic growth rate for species 1</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">double</span> r2 = random_double(0.0, 1.0);  <span class="comment">// Intrinsic growth rate for species 2</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">double</span> r3 = random_double(0.0, 1.0);  <span class="comment">// Intrinsic growth rate for species 3</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">double</span> K1 = random_double(50.0, 100.0);  <span class="comment">// Carrying capacity for species 1</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">double</span> K2 = random_double(50.0, 100.0);  <span class="comment">// Carrying capacity for species 2</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">double</span> K3 = random_double(50.0, 100.0);  <span class="comment">// Carrying capacity for species 3</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">double</span> a12 = random_double(0.0, 0.1);  <span class="comment">// Predation rate of species 2 on species 1</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">double</span> a13 = random_double(0.0, 0.1);  <span class="comment">// Predation rate of species 3 on species 1</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordtype">double</span> b21 = random_double(0.0, 0.1);  <span class="comment">// Benefit species 2 gets from preying on species 1</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">double</span> c23 = random_double(0.0, 0.1);  <span class="comment">// Competition rate between species 2 and 3</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">double</span> b31 = random_double(0.0, 0.1);  <span class="comment">// Benefit species 3 gets from preying on species 1</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">double</span> c32 = random_double(0.0, 0.1);  <span class="comment">// Competition rate between species 3 and 2</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="comment">// Part of what could happen in a demographic simulator:</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> t = 1; t &lt; times.size(); ++t){</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordflow">for</span>( <span class="keyword">auto</span> x : <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a>.vertices() ){</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <span class="keyword">auto</span> P1 = <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a>[x].P1[t-1];</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keyword">auto</span> P2 = <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a>[x].P2[t-1];</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keyword">auto</span> P3 = <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a>[x].P3[t-1];</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a>[x].P1[t] = P1 + r1 * P1 * (1 - P1 / K1) - a12 * P1 * P2 - a13 * P1 * P3;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a>[x].P2[t] = P2 + r2 * P2 * (1 - P2 / K2) + b21 * P1 * P2 - c23 * P2 * P3;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a>[x].P3[t] = P3 + r3 * P3 * (1 - P3 / K3) + b31 * P1 * P3 - c32 * P2 * P3;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        }</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    }</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="comment">// Post treatment</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    std::cout &lt;&lt;  <span class="stringliteral">&quot;Time series:\n&quot;</span>; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordflow">for</span>(<span class="keyword">auto</span> x : <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a>.vertices()){</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;         std::cout &lt;&lt; <span class="stringliteral">&quot;at vertex &quot;</span> &lt;&lt; x &lt;&lt; <span class="stringliteral">&quot; : &quot;</span>;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;         std::cout &lt;&lt; <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a>[x] &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    }</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;}</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        os &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    };</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    format(vertex.P1, <span class="stringliteral">&quot;P1&quot;</span>);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    format(vertex.P2, <span class="stringliteral">&quot;P2&quot;</span>);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    format(vertex.P3, <span class="stringliteral">&quot;P3&quot;</span>);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordflow">return</span> os;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;}</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keywordtype">int</span> main()</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">auto</span> file = std::filesystem::current_path() / <span class="stringliteral">&quot;data/bio1.tif&quot;</span>;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="comment">// The raster have 10 bands that we will assign to 2001 ... 2010.</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    std::vector&lt;int&gt; times(10);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    std::iota(times.begin(), times.end(), 2001);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="comment">// Landscape construction injecting times information</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">auto</span> land = <a class="code" href="classquetzal_1_1geography_1_1raster.html#a0ff840b704392f9ef3e63d4b74a83385">geo::raster&lt;&gt;::from_file</a>(file, times);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="comment">// Graph construction with vertex and edge info</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">using</span> <a class="code" href="structedge__info.html">edge_info</a> = <a class="code" href="namespacequetzal_1_1geography.html#a4f58e84393fe29b5af798ef6213a2be7">geo::no_property</a>;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">auto</span> <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a> = <a class="code" href="namespacequetzal_1_1geography.html#aefd1b77745ebec6627cd0b29ac101afd">geo::from_grid</a>(land, <a class="code" href="structvertex__info.html">vertex_info</a>(times.size()), <a class="code" href="structedge__info.html">edge_info</a>(), <a class="code" href="structquetzal_1_1geography_1_1connect__fully.html">geo::connect_fully</a>(), <a class="code" href="namespacequetzal_1_1geography.html#af6da7867d1c7f8864a04f8b003a4fabd">geo::isotropy</a>(), <a class="code" href="classquetzal_1_1geography_1_1mirror.html">geo::mirror</a>());</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="comment">// Let&#39;s initialize population sizes for a single vertex for demonstration</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a>[0].P1[0] = 200;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a>[0].P2[0] = 1;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a>[0].P3[0] = 1;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="comment">// Declare a random number generator</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    std::mt19937 rng{std::random_device{}()};</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">auto</span> random_double = [&amp;](<span class="keywordtype">double</span> min, <span class="keywordtype">double</span> max){ <span class="keywordflow">return</span> std::uniform_real_distribution&lt;double&gt;(min, max)(rng);};</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">double</span> r1 = random_double(0.0, 1.0);  <span class="comment">// Intrinsic growth rate for species 1</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">double</span> r2 = random_double(0.0, 1.0);  <span class="comment">// Intrinsic growth rate for species 2</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">double</span> r3 = random_double(0.0, 1.0);  <span class="comment">// Intrinsic growth rate for species 3</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">double</span> K1 = random_double(50.0, 100.0);  <span class="comment">// Carrying capacity for species 1</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">double</span> K2 = random_double(50.0, 100.0);  <span class="comment">// Carrying capacity for species 2</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">double</span> K3 = random_double(50.0, 100.0);  <span class="comment">// Carrying capacity for species 3</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">double</span> a12 = random_double(0.0, 0.1);  <span class="comment">// Predation rate of species 2 on species 1</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">double</span> a13 = random_double(0.0, 0.1);  <span class="comment">// Predation rate of species 3 on species 1</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">double</span> b21 = random_double(0.0, 0.1);  <span class="comment">// Benefit species 2 gets from preying on species 1</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordtype">double</span> c23 = random_double(0.0, 0.1);  <span class="comment">// Competition rate between species 2 and 3</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">double</span> b31 = random_double(0.0, 0.1);  <span class="comment">// Benefit species 3 gets from preying on species 1</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">double</span> c32 = random_double(0.0, 0.1);  <span class="comment">// Competition rate between species 3 and 2</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="comment">// Part of what could happen in a demographic simulator:</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordflow">for</span>( <span class="keywordtype">size_t</span> t = 1; t &lt; times.size(); ++t){</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordflow">for</span>( <span class="keyword">auto</span> x : <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a>.vertices() ){</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keyword">auto</span> P1 = <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a>[x].P1[t-1];</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keyword">auto</span> P2 = <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a>[x].P2[t-1];</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keyword">auto</span> P3 = <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a>[x].P3[t-1];</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a>[x].P1[t] = std::max(P1 + r1 * P1 * (1 - P1 / K1) - a12 * P1 * P2 - a13 * P1 * P3, 0.);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a>[x].P2[t] = std::max(P2 + r2 * P2 * (1 - P2 / K2) + b21 * P1 * P2 - c23 * P2 * P3, 0.);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a>[x].P3[t] = std::max(P3 + r3 * P3 * (1 - P3 / K3) + b31 * P1 * P3 - c32 * P2 * P3, 0.);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        }</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    }</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="comment">// Post treatment</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    std::cout &lt;&lt;  <span class="stringliteral">&quot;Time series:\n&quot;</span>; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordflow">for</span>(<span class="keyword">auto</span> x : <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a>.vertices()){</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;         std::cout &lt;&lt; <span class="stringliteral">&quot;at vertex &quot;</span> &lt;&lt; x &lt;&lt; <span class="stringliteral">&quot; : \n&quot;</span>;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;         std::cout &lt;&lt; <a class="code" href="namespacequetzal_1_1geography.html#aadfe5745b336d30d919a91a10c6dfe7a">graph</a>[x] &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    }</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;}</div>
 </div><!-- fragment --><p><b>Output</b></p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;Time series:</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;at vertex 0 : P1 : 100 -1538.55 25821.3 9.79176e+07 1.5873e+15 4.48704e+29 3.66874e+58 2.44502e+116 1.07358e+232 -nan P2 : 100 235.148 -30018.7 -1.02206e+08 -1.51426e+15 -3.96267e+29 -3.04717e+58 -1.94038e+116 -8.25027e+231 -inf P3 : 100 116.278 -19287.8 -1.03585e+08 -2.023e+15 -6.19423e+29 -5.2031e+58 -3.48649e+116 -1.52833e+232 -inf </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;at vertex 1 : P1 : 0 0 0 0 0 0 0 0 0 0 P2 : 0 0 0 0 0 0 0 0 0 0 P3 : 0 0 0 0 0 0 0 0 0 0 </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;at vertex 2 : P1 : 0 0 0 0 0 0 0 0 0 0 P2 : 0 0 0 0 0 0 0 0 0 0 P3 : 0 0 0 0 0 0 0 0 0 0 </div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;at vertex 3 : P1 : 0 0 0 0 0 0 0 0 0 0 P2 : 0 0 0 0 0 0 0 0 0 0 P3 : 0 0 0 0 0 0 0 0 0 0 </div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;at vertex 4 : P1 : 0 0 0 0 0 0 0 0 0 0 P2 : 0 0 0 0 0 0 0 0 0 0 P3 : 0 0 0 0 0 0 0 0 0 0 </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;at vertex 5 : P1 : 0 0 0 0 0 0 0 0 0 0 P2 : 0 0 0 0 0 0 0 0 0 0 P3 : 0 0 0 0 0 0 0 0 0 0 </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;at vertex 6 : P1 : 0 0 0 0 0 0 0 0 0 0 P2 : 0 0 0 0 0 0 0 0 0 0 P3 : 0 0 0 0 0 0 0 0 0 0 </div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;at vertex 7 : P1 : 0 0 0 0 0 0 0 0 0 0 P2 : 0 0 0 0 0 0 0 0 0 0 P3 : 0 0 0 0 0 0 0 0 0 0 </div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;at vertex 8 : P1 : 0 0 0 0 0 0 0 0 0 0 P2 : 0 0 0 0 0 0 0 0 0 0 P3 : 0 0 0 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;at vertex 0 : </div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;    P1 : 200 123.991 54.2807 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;    P2 : 1 17.4102 191.166 838.304 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;    P3 : 1 4.74017 11.4407 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;at vertex 1 : </div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    P1 : 0 0 0 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    P2 : 0 0 0 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    P3 : 0 0 0 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;at vertex 2 : </div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    P1 : 0 0 0 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    P2 : 0 0 0 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    P3 : 0 0 0 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;at vertex 3 : </div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    P1 : 0 0 0 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    P2 : 0 0 0 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    P3 : 0 0 0 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;at vertex 4 : </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    P1 : 0 0 0 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    P2 : 0 0 0 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    P3 : 0 0 0 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;at vertex 5 : </div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    P1 : 0 0 0 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    P2 : 0 0 0 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    P3 : 0 0 0 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;at vertex 6 : </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    P1 : 0 0 0 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    P2 : 0 0 0 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    P3 : 0 0 0 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;at vertex 7 : </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    P1 : 0 0 0 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    P2 : 0 0 0 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    P3 : 0 0 0 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;at vertex 8 : </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    P1 : 0 0 0 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    P2 : 0 0 0 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    P3 : 0 0 0 0 0 0 0 0 0 0 </div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
 </div><!-- fragment --><hr  />
  </div></div><!-- contents -->
 </div><!-- PageDoc -->
