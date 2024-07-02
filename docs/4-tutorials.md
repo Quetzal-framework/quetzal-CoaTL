@@ -1045,6 +1045,8 @@ We build up on the previous example by adding some stochasticity in the process.
 
 Environmental niche models focus on how environmental factors influence the distribution and abundance of species within specific habitats. These models integrate ecological niche theory and environmental data to predict species' occurrence probabilities and population densities across spatial gradients. By quantifying the relationships between environmental variables (e.g., temperature, precipitation, habitat quality) and species' ecological requirements, environmental niche models help elucidate how environmental factors shape local population growth and species distributions.
 
+In this example, we store a time-series vector at each vertex of the graph to monitor the population dynamics. After initializing one vertex with a non-zero value, we iterate through time to update the series conditionally to the local contemporary environmental data. It's important to note that, since we defined no migration along the graph's edges, all time-series except one remain at zero.
+
 **Input**
 
 @include{lineno} geography_graph_local_process_3.cpp
