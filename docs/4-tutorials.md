@@ -1066,27 +1066,27 @@ Species competition models explore how interspecific interactions, such as compe
 A discrete-time model for a three-species predator-prey competition can be complex, but here's a basic version using a system of difference equations. Let's denote the populations of the three species at time \f$t\f$ as 
 \f$𝑃_1(t)\f$, \f$P_2(t)\f$ and \f$P_3(t)\f$. Assume that \f$P_1\f$ is a prey species, \f$P_2\f$ is a predator of \f$P_1\f$ and \f$P_3\f$ is a competing species that preys on \f$P_1\f$ and competes with \f$P_2\f$.
 
-\[
+\f$$
 P_1(t+1) = P_1(t) + r_1 P_1(t) \left(1 - \frac{P_1(t)}{K_1}\right) - a_{12} P_1(t) P_2(t) - a_{13} P_1(t) P_3(t)
-\]
+\f$$
 
-\[
+\f$$
 P_2(t+1) = P_2(t) + r_2 P_2(t) \left(1 - \frac{P_2(t)}{K_2}\right) + b_{21} P_1(t) P_2(t) - c_{23} P_2(t) P_3(t)
-\]
+\f$$
 
-\[
+\f$$
 P_3(t+1) = P_3(t) + r_3 P_3(t) \left(1 - \frac{P_3(t)}{K_3}\right) + b_{31} P_1(t) P_3(t) - c_{32} P_2(t) P_3(t)
-\]
+\f$$
 
 Where:
-- \( r_1, r_2, r_3 \) are the intrinsic growth rates of species 1, 2, and 3, respectively.
-- \( K_1, K_2, K_3 \) are the carrying capacities for species 1, 2, and 3, respectively.
-- \( a_{12} \) is the predation rate of species 2 on species 1.
-- \( a_{13} \) is the predation rate of species 3 on species 1.
-- \( b_{21} \) is the benefit species 2 gets from preying on species 1.
-- \( c_{23} \) is the competition rate between species 2 and 3.
-- \( b_{31} \) is the benefit species 3 gets from preying on species 1.
-- \( c_{32} \) is the competition rate between species 3 and 2.
+- \f$ r_1, r_2, r_3 \f$ are the intrinsic growth rates of species 1, 2, and 3, respectively.
+- \f$ K_1, K_2, K_3 \f$ are the carrying capacities for species 1, 2, and 3, respectively.
+- \f$ a_{12} \f$ is the predation rate of species 2 on species 1.
+- \f$ a_{13} \f$ is the predation rate of species 3 on species 1.
+- \f$ b_{21} \f$ is the benefit species 2 gets from preying on species 1.
+- \f$ c_{23} \f$ is the competition rate between species 2 and 3.
+- \f$ b_{31} \f$ is the benefit species 3 gets from preying on species 1.
+- \f$ c_{32} \f$ is the competition rate between species 3 and 2.
 
 **Input**
 
