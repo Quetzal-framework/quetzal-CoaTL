@@ -94,15 +94,15 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"",
-"classquetzal_1_1coalescence_1_1container_1_1Network.html#a55ebf715f5584f9d0bfcf95d6c11545c",
-"classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrum.html#a856ae4aff0c2adb1c49a063ca6bb31f7",
-"classquetzal_1_1geography_1_1detail_1_1graph__common.html#ad4ce8465d7680b99b2e7be465fb796a8",
-"classquetzal_1_1polymorphism_1_1fuzzy__transfer__distance_1_1Matrix.html#a389f2a649f221a51077d5350bff6cdcd",
-"functions_func_r.html",
-"namespacequetzal_1_1format_1_1newick.html#a69e768f1b8318cdb8f179d4bae159515",
-"structquetzal_1_1coalescence_1_1detail_1_1VertexManager.html#af49c60c6a5d5e77209901db7ace9cd40",
-"structquetzal_1_1geography_1_1gdalcpp_1_1detail_1_1Options.html#a72ee73d98ee8a5a2ea4500e2005a27fa"
+"Allele_8hpp_source.html",
+"classquetzal_1_1coalescence_1_1container_1_1Tree.html#a4fe6a06de0a46e276079faafd3d9ea00",
+"classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1ProbabilityDistribution.html#aa640f4535ce8bf4b12c934942c18ae03",
+"classquetzal_1_1geography_1_1extent.html#adfc319440d2dd9a96e7a13eac8b6f812",
+"classquetzal_1_1polymorphism_1_1fuzzy__transfer__distance_1_1Partitioner.html#a4903e40a369232107f8e77c773b4cc45",
+"functions_v.html",
+"namespacequetzal_1_1geography.html#a4a56ffca730d2e50f78bc049619bdff3",
+"structquetzal_1_1coalescence_1_1occupancy__spectrum_1_1filter__policy_1_1return__always__true.html",
+"structquetzal_1_1geography_1_1rowcol.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
