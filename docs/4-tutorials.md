@@ -971,7 +971,7 @@ The general idea is to define lambda expressions that embed stochastic aspects o
 ---
 
 [//]: # (----------------------------------------------------------------------)
-@page spatial_graph_local_process Local autoregressive processes
+@page spatial_graph_local_process Defining autoregressive processes on 
 @tableofcontents
 
 ## Background 
@@ -1099,7 +1099,7 @@ Where:
 ---
 
 [//]: # (----------------------------------------------------------------------)
-@page dispersal_kernels Spatial Interactions
+@page spatial_graph_dispersal_kernels Dispersal on a spatial graph
 @tableofcontents
 
 ## Distance-Based Kernels
