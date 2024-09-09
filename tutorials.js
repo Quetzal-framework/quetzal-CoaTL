@@ -79,7 +79,8 @@ var tutorials =
       ] ],
       [ "Defining a friction model for trans-oceanic dispersal events", "spatial_graph_local_parameters.html#autotoc_md123", null ]
     ] ],
-    [ "Local autoregressive processes", "spatial_graph_local_process.html", null ],
+    [ "Defining autoregressive processes on", "spatial_graph_local_process.html", null ],
+    [ "Dispersal on a spatial graph", "spatial_graph_dispersal_kernels.html", null ],
     [ "Graphs in Quetzal", "graphs_in_quetzal.html", null ],
     [ "Binary Trees", "coalescence_binary_tree.html", [
       [ "Introduction", "coalescence_binary_tree.html#autotoc_md76", null ],

@@ -1,5 +1,21 @@
 var namespaceboost =
 [
+    [ "Background", "spatial_graph_local_process.html#autotoc_md125", null ],
+    [ "Autoregressive Models", "spatial_graph_local_process.html#autotoc_md126", null ],
+    [ "Deterministic Models", "spatial_graph_local_process.html#autotoc_md128", null ],
+    [ "Stochastic Models", "spatial_graph_local_process.html#autotoc_md130", null ],
+    [ "Environmental Niche Models", "spatial_graph_local_process.html#autotoc_md132", null ],
+    [ "Species Competition Models", "spatial_graph_local_process.html#autotoc_md134", null ],
+    [ "Distance-Based Kernels", "spatial_graph_dispersal_kernels.html#autotoc_md136", [
+      [ "Basics", "spatial_graph_dispersal_kernels.html#autotoc_md137", null ],
+      [ "Using Kernels with Spatial Graphs", "spatial_graph_dispersal_kernels.html#autotoc_md139", null ]
+    ] ],
+    [ "@include{lineno} geography_dispersal_kernel_2.txt", "spatial_graph_dispersal_kernels.html#autotoc_md140", null ],
+    [ "Invariants Guarantee", "graphs_in_quetzal.html#autotoc_md71", null ],
+    [ "Edge and Vertices descriptors", "graphs_in_quetzal.html#autotoc_md72", null ],
+    [ "Edge and Vertices Information (Property Classes)", "graphs_in_quetzal.html#autotoc_md73", null ],
+    [ "Depth First Search (DFS)  Algorithms", "graphs_in_quetzal.html#autotoc_md74", null ],
+    [ "DFS on trees", "graphs_in_quetzal.html#autotoc_md75", null ],
     [ "accumulators", null, [
       [ "extract", null, [
         [ "tajima", "accumulator_8hpp.html#a546c9fcb7963ce0b708bb38573235d15", null ]
