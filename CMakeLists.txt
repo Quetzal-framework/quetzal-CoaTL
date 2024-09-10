@@ -20,6 +20,9 @@ add_subdirectory(src)
 # generate project documentation
 add_subdirectory(docs)
 
+# generate project documentation
+add_subdirectory(mrdox)
+
 # add template project
 add_subdirectory(template)
 
