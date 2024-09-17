@@ -38,10 +38,10 @@ jobs:
         ca-certificates
         doxygen
         graphviz
-        python3-pip
+        pipx
 
     - name: Conan installation
-      run: pip install conan==2.0.13
+      run: pipx install conan
 
     - name: Conan version
       run: echo "${{ steps.conan.outputs.version }}"
