@@ -12,9 +12,8 @@
 #include <cmath> // tgamma pow
 #include <numbers> // pi 
 
-#include <mp-units/math.h>            // mp_units::tgamma, exp etc
-#include <mp-units/systems/isq/isq.h> // QuantityOf<isq::length>
-#include <mp-units/systems/si/si.h>
+#include <mp-units/math.h>
+#include <mp-units/systems/si.h>
 
 namespace quetzal
 {
@@ -34,6 +33,8 @@ using std::numbers::pi;
 template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::metre>> 
 struct gaussian
 {
+    /// @brief Probability density function value type
+    using pdf_result_type = quantity<inverse(pow<2>(Distance::reference)), typename Distance::rep>;
 
     /// @brief Dispersal location kernel parameter
     struct param_type
@@ -46,7 +47,7 @@ struct gaussian
     /// @param r The distance radius from the source to the target
     /// @param p Parameters of the distribution
     /// @return The value of the expression \f$ \frac{1}{\pi a^2}.exp(-\frac{r^2}{a^2}) \f$
-    static constexpr auto pdf(Distance r, param_type const &p)
+    static constexpr pdf_result_type pdf(Distance r, param_type const &p)
     {
         assert(p.a > 0. * m && r >= 0. * m);
         return (1. / (pi * p.a * p.a)) * exp(-(r * r) / (p.a * p.a));
@@ -68,6 +69,8 @@ struct gaussian
 /// @details Suitable for frequent long-distance dispersal events and weak effect of distance close to the source.
 template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::metre>> struct logistic
 {
+    /// @brief Probability density function value type
+    using pdf_result_type = quantity<inverse(pow<2>(Distance::reference)), typename Distance::rep>;
 
     /// @brief Dispersal location kernel parameter
     struct param_type
@@ -84,7 +87,7 @@ template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::me
     /// @param p Parameters of the distribution
     /// @return The value of the expression \f$ \frac{b}{(2\pi a^2 \Gamma(\frac{2}{b}) \Gamma(1-\frac{2}{b}))} (1 +
     /// \frac{r^b}{a^b} )^{-1} \f$
-    static constexpr auto pdf(Distance r, param_type const &p)
+    static constexpr pdf_result_type pdf(Distance r, param_type const &p)
     {
         using std::exp;
         using std::log;
@@ -119,6 +122,9 @@ template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::me
 template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::metre>> 
 struct negative_exponential
 {
+    /// @brief Probability density function value type
+    using pdf_result_type = quantity<inverse(pow<2>(Distance::reference)), typename Distance::rep>;
+
     /// @brief Dispersal location kernel parameter
     struct param_type
     {
@@ -130,7 +136,7 @@ struct negative_exponential
     /// @param r The distance radius from the source to the target
     /// @param p Parameters of the distribution
     /// @return The value of the expression \f$ \frac{1}{2 \pi a^2} exp(-\frac{r}{a}) \f$
-    static constexpr auto pdf(Distance r, param_type const &p)
+    static constexpr pdf_result_type pdf(Distance r, param_type const &p)
     {
         using std::exp;
         Distance a = p.a;
@@ -156,6 +162,9 @@ struct negative_exponential
 /// comparisons.
 template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::metre>> struct exponential_power
 {
+    /// @brief Probability density function value type
+    using pdf_result_type = quantity<inverse(pow<2>(Distance::reference)), typename Distance::rep>;
+
     /// @brief Dispersal location kernel parameter
     struct param_type
     {
@@ -170,7 +179,7 @@ template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::me
     /// @param r The distance radius from the source to the target
     /// @param p Parameters of the distribution
     /// @return The value of the expression \f$ \frac{b}{2 \pi a^2 \Gamma(\frac{2}{b})} exp(-\frac{r^b}{a^b}) \f$
-    static constexpr auto pdf(Distance r, param_type const &p)
+    static constexpr pdf_result_type pdf(Distance r, param_type const &p)
     {
         //using std::pow;
         //using std::tgamma;
@@ -199,6 +208,9 @@ template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::me
 ///          parameters distributed as the inverse of a Gamma distribution.
 template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::metre>> struct two_dt
 {
+    /// @brief Probability density function value type
+    using pdf_result_type = quantity<inverse(pow<2>(Distance::reference)), typename Distance::rep>;
+
     /// @brief Dispersal location kernel parameter
     struct param_type
     {
@@ -213,7 +225,7 @@ template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::me
     /// @param r The distance radius from the source to the target
     /// @param p Parameters of the distribution
     /// @return The value of the expression \f$ \frac{b-1}{\pi a^2} (1+\frac{r^2}{a^2})^{-b} \f$
-    static constexpr auto pdf(Distance r, param_type const &p)
+    static constexpr pdf_result_type pdf(Distance r, param_type const &p)
     {
         using std::pow;
         Distance a = p.a;
@@ -246,6 +258,9 @@ template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::me
 /// @details Suitable for very fat tails.
 template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::metre>> struct inverse_power_law
 {
+    /// @brief Probability density function value type
+    using pdf_result_type = quantity<inverse(pow<2>(Distance::reference)), typename Distance::rep>;
+
     /// @brief Dispersal location kernel parameter
     struct param_type
     {
@@ -260,7 +275,7 @@ template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::me
     /// @param r The distance radius from the source to the target
     /// @param p Parameters of the distribution
     /// @return The value of the expression \f$ \frac{(b-2)(b-1)}{2 \pi a^2} (1+\frac{r}{a})^{-b} \f$
-    static constexpr auto pdf(Distance r, param_type const &p)
+    static constexpr pdf_result_type pdf(Distance r, param_type const &p)
     {
         using std::pow;
         Distance a = p.a;
@@ -292,6 +307,9 @@ template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::me
 /// the source.
 template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::metre>> struct lognormal
 {
+    /// @brief Probability density function value type
+    using pdf_result_type = quantity<inverse(pow<2>(Distance::reference)), typename Distance::rep>;
+
     /// @brief Dispersal location kernel parameter
     struct param_type
     {
@@ -306,7 +324,7 @@ template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::me
     /// @param r The distance radius from the source to the target
     /// @param p Parameters of the distribution
     /// @return The value of the expression \f$ \frac{1}{ (2\pi)^{3/2}br^2} exp( - \frac{log(r/a)^2}{2b^2} ) \f$
-    // static constexpr auto pdf(Distance r, param_type const& p)
+    // static constexpr pdf_result_type pdf(Distance r, param_type const& p)
     // {
     //   Distance a = p.a;
     //   double b = p.b;
@@ -332,6 +350,9 @@ template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::me
 /// @details Used in theoretical studies.
 template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::metre>> struct gaussian_mixture
 {
+    /// @brief Probability density function value type
+    using pdf_result_type = quantity<inverse(pow<2>(Distance::reference)), typename Distance::rep>;
+
     /// @brief Dispersal location kernel parameter
     struct param_type
     {
@@ -350,7 +371,7 @@ template <QuantityOf<isq::length> Distance = mp_units::quantity<mp_units::si::me
     /// @param p Parameters of the distribution
     /// @return The value of the expression \f$ \frac{p}{\pi a_1^2} exp(- \frac{r^2}{a_1^2}) + \frac{1-p}{\pi a_2^2}
     /// exp(\frac{r^2}{a_2^2}) \f$
-    static constexpr auto pdf(Distance r, param_type const &param)
+    static constexpr pdf_result_type pdf(Distance r, param_type const &param)
     {
         using std::exp;
         Distance a1 = param.a1;

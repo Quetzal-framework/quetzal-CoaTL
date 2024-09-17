@@ -29,10 +29,24 @@ concept is_any_of = (std::same_as<T, U> || ...);
 template<typename T>
 struct edge_construction
 {
-    static inline constexpr void delegate(auto s, auto t, auto& graph, auto const& grid)
+    template<typename Graph, typename Grid>
+    requires 
+    std::same_as<T, typename Graph::edge_property> and 
+    std::default_initializable<T> and 
+    ( ! std::constructible_from<T, typename Graph::vertex_descriptor, typename Graph::vertex_descriptor, Grid> )
+    static inline constexpr void delegate(Graph::vertex_descriptor s, Graph::vertex_descriptor t, Graph& graph, Grid const& grid)
+    {
+        graph.add_edge(s, t, T{});
+    }
+
+    template<typename Graph, typename Grid>
+    requires std::same_as<T, typename Graph::edge_property> and 
+    std::constructible_from<T, typename Graph::vertex_descriptor, typename Graph::vertex_descriptor, Grid>
+    static inline constexpr void delegate(Graph::vertex_descriptor s, Graph::vertex_descriptor t, Graph& graph, Grid const& grid)
     {
         graph.add_edge(s, t, T(s,t, grid));
     }
+
 };
 
 template<>

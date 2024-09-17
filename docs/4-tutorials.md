@@ -821,7 +821,7 @@ dynamically adding vertices and edges based on user-defined conditions, resultin
 ---
 
 [//]: # (----------------------------------------------------------------------)
-@page spatial_graph_information Embedding information along Vertices and Edges
+@page spatial_graph_information Embedding vertex/edge information
 @tableofcontents
 
 The focal point of the provided code snippet revolves around the process of constructing a spatial graph from raster data. This spatial graph serves as a powerful tool for visualizing and analyzing spatial relationships and patterns present within the underlying geographic data.
@@ -971,7 +971,7 @@ The general idea is to define lambda expressions that embed stochastic aspects o
 ---
 
 [//]: # (----------------------------------------------------------------------)
-@page spatial_graph_local_process Defining autoregressive processes on 
+@page spatial_graph_local_process Autoregressive processes and time series
 @tableofcontents
 
 ## Background 
@@ -1130,6 +1130,8 @@ Quetzal incorporates various kernel types available in the `quetzal::demography:
 
 Users can create a spatial graph from landscape data, customizing assumptions about connectivity and topology. By defining a dispersal kernel and calculating dispersal probabilities for each edge based on distance metrics, users can uncover insights into potential dispersal patterns within the spatial graph. This approach offers a powerful means for exploring and understanding spatial dynamics and connectivity, facilitating deeper analysis of ecological or geographic phenomena.
 
+Here we show how to simply print out the probabilities computed at each edge of the spatial graph.
+
 **Input**
 
 @include{lineno} geography_dispersal_kernel_2.cpp
@@ -1137,5 +1139,20 @@ Users can create a spatial graph from landscape data, customizing assumptions ab
 **Output**
 
 @include{lineno} geography_dispersal_kernel_2.txt
+
 ---
 
+### Using Kernels with Spatial Graphs
+
+In the simulation context, it can be a better alternative to compute the dispersal probabilities along the edges
+of the graph once for all - especially if those are constant through time.
+
+Here we show how to modify the edge property in order to conserve the probabilities computed at each edge of the spatial graph.
+
+**Input**
+
+@include{lineno} geography_dispersal_kernel_3.cpp
+
+**Output**
+
+@include{lineno} geography_dispersal_kernel_3.txt

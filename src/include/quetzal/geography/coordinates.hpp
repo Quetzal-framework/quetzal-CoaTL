@@ -14,8 +14,7 @@
 #include <tuple>
 #include <numbers>
 
-#include <mp-units/systems/isq/isq.h> // QuantityOf<isq::length>
-#include <mp-units/systems/si/si.h>
+#include <mp-units/systems/si.h>
 #include <mp-units/ostream.h>
 
 namespace quetzal::geography
