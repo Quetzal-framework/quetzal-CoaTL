@@ -7,14 +7,10 @@ on:
     branches: [ master ]
 
 env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Debug
 
 jobs:
   build:
-    # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
-    # You can convert this to a matrix build if you need cross-platform coverage.
-    # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     runs-on: ubuntu-24.04
 
     steps:
@@ -46,20 +42,21 @@ jobs:
     - name: Conan version
       run: echo "${{ steps.conan.outputs.version }}"
 
-    # - name: Conan profile configuration
-    #   run: |
-    #        conan profile detect --name profile
-    #        conan profile update settings.compiler="gcc" profile
-    #        conan profile update settings.build_type="Release" profile
-    #        conan profile update settings.compiler.version=12 profile
-    #        conan profile update settings.compiler.cppstd=20 profile
-    #        conan profile update settings.compiler.libcxx="libstdc++11" profile
-    #        conan profile update env.CC=[/usr/bin/gcc-12] profile
-    #        conan profile update env.CXX=[/usr/bin/g++-12] profile
+    - name: Cache Conan
+      uses: actions/cache@v4
+      with:
+        path: ~/.conan2/p
+        key: ${{ runner.os }}-conan-${{ hashFiles('conanfile.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-conan-
 
     - name: Conan install dependencies
       run: >
-        conan install conanfile.py --profile:build=conan/profiles/linux-x86-gcc12-debug --profile:host=conan/profiles/linux-x86-gcc12-debug --build=missing --output-folder=build
+        conan install conanfile.py 
+        --profile:build=conan/profiles/linux-x86-gcc13-debug 
+        --profile:host=conan/profiles/linux-x86-gcc13-debug 
+        --build=missing
+        --output-folder=build
 
     - name: CMake configuration
       run:  >
@@ -83,10 +80,6 @@ jobs:
     - name: Doxygen documentation generation
       working-directory: ${{github.workspace}}/build
       run: make docs
-
-    # - name: Moving Files
-    #   run: |
-    #     mv ${{github.workspace}}/build/docs/html ./docs/api
 
     - name: Deploy to Github Pages
       uses: peaceiris/actions-gh-pages@v3
