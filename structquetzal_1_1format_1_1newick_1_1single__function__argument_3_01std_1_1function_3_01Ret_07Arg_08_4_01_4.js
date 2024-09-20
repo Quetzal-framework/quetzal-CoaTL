@@ -1,4 +1,0 @@
-var structquetzal_1_1format_1_1newick_1_1single__function__argument_3_01std_1_1function_3_01Ret_07Arg_08_4_01_4 =
-[
-    [ "type", "structquetzal_1_1format_1_1newick_1_1single__function__argument_3_01std_1_1function_3_01Ret_07Arg_08_4_01_4.html#a79f949b1bcc547e9fb0edcdd0fca3a00", null ]
-];

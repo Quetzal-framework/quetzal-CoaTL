@@ -6,10 +6,10 @@ var classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1ProbabilityDistributio
     [ "ProbabilityDistribution", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1ProbabilityDistribution.html#acb37212014eb492d2848716400b675f1", null ],
     [ "m", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1ProbabilityDistribution.html#a0cc5045d3ba252b8f74004f24157dc70", null ],
     [ "n", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1ProbabilityDistribution.html#a5e0e935f75f28bfb14480ad1d20a549c", null ],
-    [ "operator()", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1ProbabilityDistribution.html#a7463bdf80bdecde566cf8963e7a4c07d", null ],
-    [ "operator=", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1ProbabilityDistribution.html#a97bb99ba93be637fec5c0532e8ef6107", null ],
-    [ "operator=", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1ProbabilityDistribution.html#aa640f4535ce8bf4b12c934942c18ae03", null ],
-    [ "support", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1ProbabilityDistribution.html#a9e4b443826de6240fecb48b412d878f9", null ],
-    [ "weights", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1ProbabilityDistribution.html#a3c9787b14e02522e20c3f64cf96e144d", null ],
-    [ "operator<<", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1ProbabilityDistribution.html#a4c003be17db13c23a92d28d0a5c58c21", null ]
+    [ "operator()", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1ProbabilityDistribution.html#a92569eb43b2b8891e9c1ff06ed01cfba", null ],
+    [ "operator=", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1ProbabilityDistribution.html#aef0d513512c9fbc0a521fdc335993c59", null ],
+    [ "operator=", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1ProbabilityDistribution.html#ab73643dbdcc6f8330a78c646ee86813a", null ],
+    [ "support", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1ProbabilityDistribution.html#a30c2366e8098e795a946be56cd46cd23", null ],
+    [ "weights", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1ProbabilityDistribution.html#afc55188ca67d488d2490d9e871305d3a", null ],
+    [ "operator<<", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1ProbabilityDistribution.html#ab9d775749f90ad41690f314cc3fb8071", null ]
 ];

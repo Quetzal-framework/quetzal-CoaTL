@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['generating_20a_20newick_20string_1036',['Generating a Newick string',['../newick_generator.html',1,'tutorials']]],
-  ['generating_20an_20extended_20newick_20string_1037',['Generating an Extended Newick string',['../extended_newick_generator.html',1,'tutorials']]],
-  ['graphs_20in_20quetzal_1038',['Graphs in Quetzal',['../graphs_in_quetzal.html',1,'tutorials']]]
+  ['from_20rasters_0',['Reading spatial variables from rasters',['../geotiff_parser.html',1,'tutorials']]]
 ];

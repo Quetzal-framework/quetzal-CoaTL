@@ -1,12 +1,24 @@
 <map id="/home/runner/work/quetzal&#45;CoaTL/quetzal&#45;CoaTL/src/include/quetzal/coalescence/algorithm/merge.hpp" name="/home/runner/work/quetzal&#45;CoaTL/quetzal&#45;CoaTL/src/include/quetzal/coalescence/algorithm/merge.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="195,5,405,76"/>
-<area shape="rect" id="node2" href="$merger__policy_8hpp_source.html" title=" " alt="" coords="195,124,405,195"/>
-<area shape="rect" id="node3" href="$coalescence_8hpp_source.html" title=" " alt="" coords="48,480,285,536"/>
-<area shape="rect" id="node6" href="$DiscreteTimeWrightFisher_8hpp_source.html" title=" " alt="" coords="53,243,275,313"/>
-<area shape="rect" id="node9" href="$ForwardBackwardSpatiallyExplicit_8hpp_source.html" title=" " alt="" coords="300,243,575,313"/>
-<area shape="rect" id="node10" href="$simulator_2utils_8hpp_source.html" title=" " alt="" coords="599,243,796,313"/>
-<area shape="rect" id="node4" href="$quetzal_8hpp_source.html" title=" " alt="" coords="141,584,347,640"/>
-<area shape="rect" id="node5" href="$kingman_8hpp_source.html" title=" " alt="" coords="145,688,343,759"/>
-<area shape="rect" id="node7" href="$distance__to__parent_8hpp_source.html" title=" " alt="" coords="51,361,283,432"/>
-<area shape="rect" id="node8" href="$simulator_8hpp_source.html" title=" " alt="" coords="307,369,525,425"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="195,5,404,75"/>
+<area shape="rect" id="Node000002" href="$merger__policy_8hpp_source.html" title=" " alt="" coords="195,123,404,192"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="302,89,302,122,297,122,297,89"/>
+<area shape="rect" id="Node000003" href="$coalescence_8hpp_source.html" title=" " alt="" coords="48,475,285,529"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="182,169,143,178,105,193,71,214,43,242,16,288,10,310,8,331,17,376,41,425,64,452,94,472,91,477,60,456,36,428,12,377,3,331,5,309,11,286,39,238,68,209,103,188,141,173,181,163"/>
+<area shape="rect" id="Node000006" href="$DiscreteTimeWrightFisher_8hpp_source.html" title=" " alt="" coords="52,240,275,309"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="251,203,205,242,202,238,248,199"/>
+<area shape="rect" id="Node000009" href="$ForwardBackwardSpatiallyExplicit_8hpp_source.html" title=" " alt="" coords="300,240,574,309"/>
+<area shape="poly" id="edge10_Node000002_Node000009" title=" " alt="" coords="352,199,398,238,395,242,348,203"/>
+<area shape="rect" id="Node000010" href="$simulator_2utils_8hpp_source.html" title=" " alt="" coords="598,240,796,309"/>
+<area shape="poly" id="edge12_Node000002_Node000010" title=" " alt="" coords="418,189,587,237,599,241,597,246,586,243,417,194"/>
+<area shape="rect" id="Node000004" href="$quetzal_8hpp_source.html" title=" " alt="" coords="141,577,346,632"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="197,539,226,576,221,579,193,542"/>
+<area shape="rect" id="Node000005" href="$kingman_8hpp_source.html" title=" " alt="" coords="145,680,342,749"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="246,646,246,680,241,680,241,646"/>
+<area shape="rect" id="Node000007" href="$distance__to__parent_8hpp_source.html" title=" " alt="" coords="50,357,282,427"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="167,323,168,357,163,357,162,323"/>
+<area shape="rect" id="Node000008" href="$simulator_8hpp_source.html" title=" " alt="" coords="306,365,525,419"/>
+<area shape="poly" id="edge8_Node000006_Node000008" title=" " alt="" coords="251,313,360,362,357,367,249,318"/>
+<area shape="poly" id="edge7_Node000007_Node000003" title=" " alt="" coords="169,440,169,474,164,474,164,440"/>
+<area shape="poly" id="edge9_Node000008_Node000004" title=" " alt="" coords="388,432,267,579,263,575,383,428"/>
+<area shape="poly" id="edge11_Node000009_Node000008" title=" " alt="" coords="431,323,423,365,418,364,426,322"/>
 </map>

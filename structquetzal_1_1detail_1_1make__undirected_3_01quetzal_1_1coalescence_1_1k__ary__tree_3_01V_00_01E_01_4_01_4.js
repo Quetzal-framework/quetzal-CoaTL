@@ -1,4 +1,0 @@
-var structquetzal_1_1detail_1_1make__undirected_3_01quetzal_1_1coalescence_1_1k__ary__tree_3_01V_00_01E_01_4_01_4 =
-[
-    [ "type", "structquetzal_1_1detail_1_1make__undirected_3_01quetzal_1_1coalescence_1_1k__ary__tree_3_01V_00_01E_01_4_01_4.html#ad43523b2b1d873bebcdc184e0b8912df", null ]
-];

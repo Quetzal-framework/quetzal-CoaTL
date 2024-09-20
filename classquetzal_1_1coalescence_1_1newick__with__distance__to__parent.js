@@ -1,7 +1,7 @@
 var classquetzal_1_1coalescence_1_1newick__with__distance__to__parent =
 [
     [ "cell_type", "classquetzal_1_1coalescence_1_1newick__with__distance__to__parent_1_1cell__type.html", "classquetzal_1_1coalescence_1_1newick__with__distance__to__parent_1_1cell__type" ],
-    [ "treatment", "structquetzal_1_1coalescence_1_1newick__with__distance__to__parent_1_1treatment.html", "structquetzal_1_1coalescence_1_1newick__with__distance__to__parent_1_1treatment" ],
+    [ "treatment", "structquetzal_1_1coalescence_1_1newick__with__distance__to__parent_1_1treatment.html", null ],
     [ "coord_type", "classquetzal_1_1coalescence_1_1newick__with__distance__to__parent.html#adee0faa30658c89a38e58a1cf90cc903", null ],
     [ "forest_type", "classquetzal_1_1coalescence_1_1newick__with__distance__to__parent.html#a3fdacf4d654170e39408ff555a4b8093", null ],
     [ "time_type", "classquetzal_1_1coalescence_1_1newick__with__distance__to__parent.html#a14f5420f82a01ff9b47ef8631836906d", null ],

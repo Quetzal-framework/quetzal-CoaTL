@@ -4,7 +4,6 @@ var classquetzal_1_1coalescence_1_1detail_1_1network__common =
     [ "degree_size_type", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a385fba6e22b1aca6cd46b02df84ee37f", null ],
     [ "directed_category", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#af0a8f377a9c00c831e268b4d04fb48d8", null ],
     [ "edge_descriptor", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#aa917a2b35a91e6468c7b33c493d1bfcf", null ],
-    [ "edge_parallel_category", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a2449606f6c61d640abde6d6e5386f97b", null ],
     [ "edge_property", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#afbb62e768e2a8b8f0dde6ab7e388b6e5", null ],
     [ "in_edge_iterator", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#ae1939b623dcac920b8a0feaf6e042d0e", null ],
     [ "out_edge_iterator", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#ad28a1f9f38559753db7bf4467c489c00", null ],
@@ -14,12 +13,11 @@ var classquetzal_1_1coalescence_1_1detail_1_1network__common =
     [ "network_common", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a5662dc0e4ec41fee5898e7f5e646e48d", null ],
     [ "network_common", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#af83b69797ec8c1f616c33d50606855b5", null ],
     [ "add_edge", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a67ca1a4f7a304861956f0e8d58466518", null ],
-    [ "add_vertex", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a4a077d274810d8a19dbc5598e5abe94d", null ],
     [ "clear_vertex", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#ae707be543a101910007a00668ed1c8f3", null ],
     [ "degree", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a536efc2e3c7cc4e7e4ab135ebf721b53", null ],
     [ "depth_first_search", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a9446725163077487447b906f49192a04", null ],
     [ "depth_first_search", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#aa938c17c729082479d5407c9a7d1570f", null ],
-    [ "edge", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#af2fac629ebc84e4b487c87aaa8bbd5cd", null ],
+    [ "edge", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#ae3dbfc43a4ba254414271d893e252c69", null ],
     [ "find_root_from", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#ada7ec5a8c75039445125595531676964", null ],
     [ "has_predecessor", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a7250ab69d8553d64fa45fee12f9efd5a", null ],
     [ "has_successors", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a11c0172236e6c5a1af10ab2fb0151d94", null ],
@@ -36,6 +34,5 @@ var classquetzal_1_1coalescence_1_1detail_1_1network__common =
     [ "successors", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a218e5c98ca317d93290466bb3f00bbfa", null ],
     [ "target", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#ab54bdf4ec7379dff6138c029898406c7", null ],
     [ "to_graphviz", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a3de2c9545ab315ef6269ae3e4f625d18", null ],
-    [ "vertices", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a1a4e460b716e53a24dfe171d46fa91fe", null ],
-    [ "_graph", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a738cb77c97b4a011b6bb959f132e5bb7", null ]
+    [ "vertices", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html#a1a4e460b716e53a24dfe171d46fa91fe", null ]
 ];

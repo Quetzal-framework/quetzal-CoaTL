@@ -1,10 +1,5 @@
 var classquetzal_1_1simulator_1_1ForwardBackwardSpatiallyExplicit =
 [
-    [ "coord_type", "classquetzal_1_1simulator_1_1ForwardBackwardSpatiallyExplicit.html#a31a07f283abcfe1d6d176dae1415d50d", null ],
-    [ "dispersal_policy_type", "classquetzal_1_1simulator_1_1ForwardBackwardSpatiallyExplicit.html#a1a2ad02d46d077678b59f978dfde04c0", null ],
-    [ "forest_type", "classquetzal_1_1simulator_1_1ForwardBackwardSpatiallyExplicit.html#ae85a438213710393043fcf72116be7f5", null ],
-    [ "memory_policy", "classquetzal_1_1simulator_1_1ForwardBackwardSpatiallyExplicit.html#a194943a2918c32dd9e2866fe60c47140", null ],
-    [ "N_value_type", "classquetzal_1_1simulator_1_1ForwardBackwardSpatiallyExplicit.html#aa60e07eddd11a3b42ed971fa66b06b82", null ],
     [ "ForwardBackwardSpatiallyExplicit", "classquetzal_1_1simulator_1_1ForwardBackwardSpatiallyExplicit.html#a79075a71f8baca3d1d998ef9d0ed8a59", null ],
     [ "coalesce_along_spatial_history", "classquetzal_1_1simulator_1_1ForwardBackwardSpatiallyExplicit.html#ab6ce2c449fb1f8821ed0e7a228df5f7d", null ],
     [ "coalesce_to_mrca", "classquetzal_1_1simulator_1_1ForwardBackwardSpatiallyExplicit.html#a3f502e1072122256e3a5dfc2eae5a8ab", null ],

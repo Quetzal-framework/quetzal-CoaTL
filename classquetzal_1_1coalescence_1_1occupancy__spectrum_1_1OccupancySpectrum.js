@@ -1,8 +1,5 @@
 var classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrum =
 [
-    [ "const_iterator", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrum.html#a8680dec847452500887853d5302393b2", null ],
-    [ "iterator", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrum.html#a731e7c86d39e8086b349ed2bae07552e", null ],
-    [ "value_type", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrum.html#a4b06eb997dc19aa3738f03640825cde2", null ],
     [ "OccupancySpectrum", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrum.html#a58524f588e82cd062c128a14c01572f0", null ],
     [ "OccupancySpectrum", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrum.html#aa76ef0a966be38c7c7a67e53c704a816", null ],
     [ "OccupancySpectrum", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrum.html#af61b0fdf003e146ab17da58330106264", null ],
@@ -16,6 +13,6 @@ var classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrum =
     [ "end", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrum.html#a1fc94f60381a4f410a80f30430268629", null ],
     [ "end", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrum.html#aceb2b4788e480d563b3881e68fbec101", null ],
     [ "erase", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrum.html#ac96e90cbc35224c33580fab6c295d868", null ],
-    [ "operator=", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrum.html#a4a20ec319fceba9cf52f383a7286878d", null ],
-    [ "operator=", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrum.html#ac1b7d509423fcbfafc0eb3f0e6d3bab0", null ]
+    [ "operator=", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrum.html#aef73836cf48c8fd179b0b2cd7be81407", null ],
+    [ "operator=", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1OccupancySpectrum.html#a1e4c01e496c48250bf85655f5719164b", null ]
 ];

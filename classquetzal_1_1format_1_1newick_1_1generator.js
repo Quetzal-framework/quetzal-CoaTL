@@ -9,5 +9,5 @@ var classquetzal_1_1format_1_1newick_1_1generator =
     [ "in_order", "classquetzal_1_1format_1_1newick_1_1generator.html#a39eec7c2cebe179c092ecebd2d854f3a", null ],
     [ "post_order", "classquetzal_1_1format_1_1newick_1_1generator.html#aa6b8535659fa1c9edd8def32a9284a01", null ],
     [ "pre_order", "classquetzal_1_1format_1_1newick_1_1generator.html#ac4dde399b08592d560e3c02709ea63db", null ],
-    [ "take_result", "classquetzal_1_1format_1_1newick_1_1generator.html#a629c33b281a9fb9b0e091817c910b7bf", null ]
+    [ "take_result", "classquetzal_1_1format_1_1newick_1_1generator.html#a225ccb957054481b4be87481b1da9e74", null ]
 ];

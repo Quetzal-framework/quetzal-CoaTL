@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['k_2dary_20trees_1042',['K-ary Trees',['../coalescence_k_ary_tree.html',1,'tutorials']]]
+  ['histories_20in_20quetzal_0',['Demographic Histories in Quetzal',['../demographic_histories_in_quetzal.html',1,'tutorials']]]
 ];

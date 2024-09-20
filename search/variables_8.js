@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['p_976',['p',['../structquetzal_1_1demography_1_1dispersal__kernel_1_1gaussian__mixture_1_1param__type.html#ad60bb4d943eae5016e0f6a4101acadeb',1,'quetzal::demography::dispersal_kernel::gaussian_mixture::param_type']]]
+  ['row_0',['row',['../structquetzal_1_1geography_1_1rowcol.html#af7ae38a0f224fa6df810697ebcd065de',1,'quetzal::geography::rowcol::row'],['../structquetzal_1_1geography_1_1colrow.html#ab6d36fce2994c7f37332d8a4e2f98317',1,'quetzal::geography::colrow::row']]]
 ];

@@ -1,19 +1,10 @@
 var classquetzal_1_1geography_1_1landscape =
 [
-    [ "colrow", "classquetzal_1_1geography_1_1landscape.html#a80eb0b721e052fc83109943e57886ab4", null ],
-    [ "decimal_degree", "classquetzal_1_1geography_1_1landscape.html#ac9baf4983a1ae6e35217767c85abcafd", null ],
-    [ "key_type", "classquetzal_1_1geography_1_1landscape.html#ab0d4ce1a22acad722c6a15822d9a0a17", null ],
-    [ "latlon", "classquetzal_1_1geography_1_1landscape.html#abacf944e67543c5876ce4a6232008467", null ],
-    [ "location_descriptor", "classquetzal_1_1geography_1_1landscape.html#a976b9ac093845d0950eef406b19f2b07", null ],
-    [ "lonlat", "classquetzal_1_1geography_1_1landscape.html#a907d65e48565eaf0702dfd5eaa46a215", null ],
-    [ "rowcol", "classquetzal_1_1geography_1_1landscape.html#a4a5a020d0dd49c438f9270fc09d486d1", null ],
-    [ "time_descriptor", "classquetzal_1_1geography_1_1landscape.html#a67bc86fc3926ac43eaf6afe69d6dde5d", null ],
-    [ "time_type", "classquetzal_1_1geography_1_1landscape.html#a9efd7928a74776999cdcf7d459453a6c", null ],
     [ "contains", "classquetzal_1_1geography_1_1landscape.html#ab3479445ee6eea58e4e6e530b17442e5", null ],
     [ "contains", "classquetzal_1_1geography_1_1landscape.html#a99a338c731efec06f0bcb2a91f3a2f8b", null ],
     [ "depth", "classquetzal_1_1geography_1_1landscape.html#aa370bcb74a697431ae62627f46453667", null ],
-    [ "get_extent", "classquetzal_1_1geography_1_1landscape.html#a620d187056eeb0eed2b8f6cf78979b11", null ],
-    [ "get_resolution", "classquetzal_1_1geography_1_1landscape.html#a6926256dc8861ad507410c19fac23c5e", null ],
+    [ "get_extent", "classquetzal_1_1geography_1_1landscape.html#ab16d32ead6c3d253325d706999182a13", null ],
+    [ "get_resolution", "classquetzal_1_1geography_1_1landscape.html#a66e22bed299399e0eb1aca97689a5286", null ],
     [ "height", "classquetzal_1_1geography_1_1landscape.html#a7d108433201ea92670500e9380908610", null ],
     [ "is_in_interval", "classquetzal_1_1geography_1_1landscape.html#ae7d2dd01c529000d13da2516a741e686", null ],
     [ "is_recorded", "classquetzal_1_1geography_1_1landscape.html#a4cf6d262482544b1a38daee8e51e7668", null ],
@@ -24,8 +15,8 @@ var classquetzal_1_1geography_1_1landscape =
     [ "locations", "classquetzal_1_1geography_1_1landscape.html#ab94a23956f297f6074a69588a4d48002", null ],
     [ "num_locations", "classquetzal_1_1geography_1_1landscape.html#a1324a19f40068b154090c75e79001899", null ],
     [ "num_variables", "classquetzal_1_1geography_1_1landscape.html#a7f2edd53cfd6bc60d4a9deb843cc7765", null ],
-    [ "operator[]", "classquetzal_1_1geography_1_1landscape.html#a6e4ef9b65443bb255c71ab21d43e53c7", null ],
-    [ "operator[]", "classquetzal_1_1geography_1_1landscape.html#ae727e6edb81b5c9a2d78e58cf7a2d92c", null ],
+    [ "operator[]", "classquetzal_1_1geography_1_1landscape.html#a89c73140d95be397f9ce3b2990a8a603", null ],
+    [ "operator[]", "classquetzal_1_1geography_1_1landscape.html#a10d774abf70ccf3f879ed973828b9a39", null ],
     [ "origin", "classquetzal_1_1geography_1_1landscape.html#a1e61da288b158072d126fbf1986d4333", null ],
     [ "times", "classquetzal_1_1geography_1_1landscape.html#a3bd2fef74ff43831f98de5138522cc98", null ],
     [ "to_centroid", "classquetzal_1_1geography_1_1landscape.html#a9dfd95704c08353e7ea05b3d5974680e", null ],
@@ -33,7 +24,7 @@ var classquetzal_1_1geography_1_1landscape =
     [ "to_colrow", "classquetzal_1_1geography_1_1landscape.html#a0901b86db4340b573d269f4317775c0c", null ],
     [ "to_descriptor", "classquetzal_1_1geography_1_1landscape.html#ab2ab5a400e7b1a1ba11a757f7bb1f840", null ],
     [ "to_descriptor", "classquetzal_1_1geography_1_1landscape.html#a912d0555798e06b6b950dbb106cefe4a", null ],
-    [ "to_geotiff", "classquetzal_1_1geography_1_1landscape.html#a6e2250dca4776f4cd5a6f57a653b651a", null ],
+    [ "to_geotiff", "classquetzal_1_1geography_1_1landscape.html#a745c4b43d034b0dfafde00955cd14a9b", null ],
     [ "to_latlon", "classquetzal_1_1geography_1_1landscape.html#ae61d099b94ce1ee303d23570ed1da169", null ],
     [ "to_latlon", "classquetzal_1_1geography_1_1landscape.html#a6006fcee91733c22b87d6e2d6e61108e", null ],
     [ "to_lonlat", "classquetzal_1_1geography_1_1landscape.html#ab3d71385903ab2659e028a5058dbe550", null ],
@@ -42,5 +33,5 @@ var classquetzal_1_1geography_1_1landscape =
     [ "to_shapefile", "classquetzal_1_1geography_1_1landscape.html#acd8a09f4adb4464563f0537873dcf1fd", null ],
     [ "to_shapefile", "classquetzal_1_1geography_1_1landscape.html#ac3df6d37cb4eca1eb2ace7014f3fd51b", null ],
     [ "width", "classquetzal_1_1geography_1_1landscape.html#aed4754bc3e79f19b6a59e75bf3bfcd5c", null ],
-    [ "write", "classquetzal_1_1geography_1_1landscape.html#a0a99d533fdb83dd349f73e69dbe94395", null ]
+    [ "write", "classquetzal_1_1geography_1_1landscape.html#a5276e3b0df6b3be62b1c35e3e5927a29", null ]
 ];

@@ -18,9 +18,17 @@ var hierarchy =
     [ "boost::detail::binary_tree_base< Vertex, detail::binary_tree_forward_node< binary_tree< false, Vertex > > >", "classboost_1_1detail_1_1binary__tree__base.html", [
       [ "boost::binary_tree< false, Vertex >", "classboost_1_1binary__tree_3_01false_00_01Vertex_01_4.html", null ]
     ] ],
-    [ "quetzal::coalescence::detail::binary_tree_common< VertexProperty, EdgeProperty >", "classquetzal_1_1coalescence_1_1detail_1_1binary__tree__common.html", null ],
+    [ "quetzal::coalescence::detail::binary_tree_common< VertexProperty, EdgeProperty >", "classquetzal_1_1coalescence_1_1detail_1_1binary__tree__common.html", [
+      [ "quetzal::coalescence::binary_tree< VertexProperty, EdgeProperty >", "classquetzal_1_1coalescence_1_1binary__tree_3_01VertexProperty_00_01EdgeProperty_01_4.html", null ]
+    ] ],
+    [ "quetzal::coalescence::detail::binary_tree_common< no_property, EdgeProperty >", "classquetzal_1_1coalescence_1_1detail_1_1binary__tree__common.html", [
+      [ "quetzal::coalescence::binary_tree< no_property, EdgeProperty >", "classquetzal_1_1coalescence_1_1binary__tree_3_01no__property_00_01EdgeProperty_01_4.html", null ]
+    ] ],
     [ "quetzal::coalescence::detail::binary_tree_common< no_property, no_property >", "classquetzal_1_1coalescence_1_1detail_1_1binary__tree__common.html", [
       [ "quetzal::coalescence::binary_tree< no_property, no_property >", "classquetzal_1_1coalescence_1_1binary__tree_3_01no__property_00_01no__property_01_4.html", null ]
+    ] ],
+    [ "quetzal::coalescence::detail::binary_tree_common< VertexProperty, no_property >", "classquetzal_1_1coalescence_1_1detail_1_1binary__tree__common.html", [
+      [ "quetzal::coalescence::binary_tree< VertexProperty, no_property >", "classquetzal_1_1coalescence_1_1binary__tree_3_01VertexProperty_00_01no__property_01_4.html", null ]
     ] ],
     [ "boost::detail::binary_tree_forward_node< BinaryTree >", "structboost_1_1detail_1_1binary__tree__forward__node.html", [
       [ "boost::detail::binary_tree_bidirectional_node< BinaryTree >", "structboost_1_1detail_1_1binary__tree__bidirectional__node.html", null ]
@@ -84,6 +92,7 @@ var hierarchy =
     [ "edge_info", "structedge__info.html", null ],
     [ "edge_t", "structedge__t.html", null ],
     [ "quetzal::coalescence::detail::EdgeManager< EdgeDescriptor, EdgeProperty >", "structquetzal_1_1coalescence_1_1detail_1_1EdgeManager.html", null ],
+    [ "quetzal::coalescence::detail::EdgeManager< typename base::edge_descriptor, EdgeProperty >", "structquetzal_1_1coalescence_1_1detail_1_1EdgeManager.html", null ],
     [ "quetzal::demography::dispersal_kernel::exponential_power< Distance >", "structquetzal_1_1demography_1_1dispersal__kernel_1_1exponential__power.html", null ],
     [ "quetzal::geography::extent< T >", "classquetzal_1_1geography_1_1extent.html", null ],
     [ "quetzal::geography::extent< double >", "classquetzal_1_1geography_1_1extent.html", null ],
@@ -98,13 +107,23 @@ var hierarchy =
     [ "quetzal::demography::dispersal_kernel::gaussian_mixture< Distance >", "structquetzal_1_1demography_1_1dispersal__kernel_1_1gaussian__mixture.html", null ],
     [ "quetzal::geography::graph< VertexProperty, EdgeProperty, Representation, Directed >", "classquetzal_1_1geography_1_1graph.html", null ],
     [ "quetzal::geography::detail::graph_common< CRTP, VertexProperty, EdgeProperty, Representation, Directed >", "classquetzal_1_1geography_1_1detail_1_1graph__common.html", null ],
+    [ "quetzal::geography::detail::graph_common< graph< no_property, EdgeProperty, Representation, Directed >, no_property, EdgeProperty, Representation, Directed >", "classquetzal_1_1geography_1_1detail_1_1graph__common.html", [
+      [ "quetzal::geography::graph< no_property, EdgeProperty, Representation, Directed >", "classquetzal_1_1geography_1_1graph_3_01no__property_00_01EdgeProperty_00_01Representation_00_01Directed_01_4.html", null ]
+    ] ],
     [ "quetzal::geography::detail::graph_common< graph< no_property, no_property, Representation, Directed >, no_property, no_property, Representation, Directed >", "classquetzal_1_1geography_1_1detail_1_1graph__common.html", [
       [ "quetzal::geography::graph< no_property, no_property, Representation, Directed >", "classquetzal_1_1geography_1_1graph_3_01no__property_00_01no__property_00_01Representation_00_01Directed_01_4.html", null ]
+    ] ],
+    [ "quetzal::geography::detail::graph_common< graph< VertexProperty, EdgeProperty, Representation, Directed >, VertexProperty, EdgeProperty, Representation, Directed >", "classquetzal_1_1geography_1_1detail_1_1graph__common.html", [
+      [ "quetzal::geography::graph< VertexProperty, EdgeProperty, Representation, Directed >", "classquetzal_1_1geography_1_1graph_3_01VertexProperty_00_01EdgeProperty_00_01Representation_00_01Directed_01_4.html", null ]
+    ] ],
+    [ "quetzal::geography::detail::graph_common< graph< VertexProperty, no_property, Representation, Directed >, VertexProperty, no_property, Representation, Directed >", "classquetzal_1_1geography_1_1detail_1_1graph__common.html", [
+      [ "quetzal::geography::graph< VertexProperty, no_property, Representation, Directed >", "classquetzal_1_1geography_1_1graph_3_01VertexProperty_00_01no__property_00_01Representation_00_01Directed_01_4.html", null ]
     ] ],
     [ "quetzal::coalescence::occupancy_spectrum::memoize::hash_parameters", "structquetzal_1_1coalescence_1_1occupancy__spectrum_1_1memoize_1_1hash__parameters.html", null ],
     [ "quetzal::demography::HistoryBase< Space, DemographicPolicy, MemoryPolicy >", "classquetzal_1_1demography_1_1HistoryBase.html", [
       [ "quetzal::demography::History< coord_type, DispersalPolicy, memory_policy >", "classquetzal_1_1demography_1_1History.html", null ]
     ] ],
+    [ "quetzal::demography::HistoryBase< coord_type, DispersalPolicy, memory_policy >", "classquetzal_1_1demography_1_1HistoryBase.html", null ],
     [ "quetzal::demography::HistoryBase< Space, demographic_policy::individual_based, Memory >", "classquetzal_1_1demography_1_1HistoryBase.html", [
       [ "quetzal::demography::History< Space, demographic_policy::individual_based, Memory >", "classquetzal_1_1demography_1_1History_3_01Space_00_01demographic__policy_1_1individual__based_00_01Memory_01_4.html", null ]
     ] ],
@@ -148,9 +167,19 @@ var hierarchy =
     [ "quetzal::mutation::JC69::JC69", "classquetzal_1_1mutation_1_1JC69_1_1JC69.html", null ],
     [ "quetzal::coalescence::k_ary_tree< VertexProperty, EdgeProperty >", "classquetzal_1_1coalescence_1_1k__ary__tree.html", null ],
     [ "quetzal::coalescence::detail::k_ary_tree_common< VertexProperty, EdgeProperty, CRTP >", "classquetzal_1_1coalescence_1_1detail_1_1k__ary__tree__common.html", null ],
+    [ "quetzal::coalescence::detail::k_ary_tree_common< no_property, EdgeProperty, k_ary_tree< no_property, EdgeProperty > >", "classquetzal_1_1coalescence_1_1detail_1_1k__ary__tree__common.html", [
+      [ "quetzal::coalescence::k_ary_tree< no_property, EdgeProperty >", "classquetzal_1_1coalescence_1_1k__ary__tree_3_01no__property_00_01EdgeProperty_01_4.html", null ]
+    ] ],
     [ "quetzal::coalescence::detail::k_ary_tree_common< no_property, no_property, k_ary_tree< no_property, no_property > >", "classquetzal_1_1coalescence_1_1detail_1_1k__ary__tree__common.html", [
       [ "quetzal::coalescence::k_ary_tree< no_property, no_property >", "classquetzal_1_1coalescence_1_1k__ary__tree_3_01no__property_00_01no__property_01_4.html", null ]
     ] ],
+    [ "quetzal::coalescence::detail::k_ary_tree_common< VertexProperty, EdgeProperty, k_ary_tree< no_property, EdgeProperty > >", "classquetzal_1_1coalescence_1_1detail_1_1k__ary__tree__common.html", [
+      [ "quetzal::coalescence::k_ary_tree< VertexProperty, EdgeProperty >", "classquetzal_1_1coalescence_1_1k__ary__tree_3_01VertexProperty_00_01EdgeProperty_01_4.html", null ]
+    ] ],
+    [ "quetzal::coalescence::detail::k_ary_tree_common< VertexProperty, no_property, k_ary_tree< VertexProperty, no_property > >", "classquetzal_1_1coalescence_1_1detail_1_1k__ary__tree__common.html", [
+      [ "quetzal::coalescence::k_ary_tree< VertexProperty, no_property >", "classquetzal_1_1coalescence_1_1k__ary__tree_3_01VertexProperty_00_01no__property_01_4.html", null ]
+    ] ],
+    [ "quetzal::demography::FlowOnDiskImplementation< Space, Time, Value >::key_hash", "structquetzal_1_1demography_1_1FlowOnDiskImplementation_1_1key__hash.html", null ],
     [ "quetzal::demography::FlowHashMapImplementation< Space, Time, Value >::key_type", "structquetzal_1_1demography_1_1FlowHashMapImplementation_1_1key__type.html", null ],
     [ "quetzal::demography::FlowOnDiskImplementation< Space, Time, Value >::key_type", "structquetzal_1_1demography_1_1FlowOnDiskImplementation_1_1key__type.html", null ],
     [ "quetzal::geography::landscape< Key, Time >", "classquetzal_1_1geography_1_1landscape.html", null ],
@@ -185,8 +214,17 @@ var hierarchy =
     [ "quetzal::coalescence::container::Network< CellT >", "classquetzal_1_1coalescence_1_1container_1_1Network.html", null ],
     [ "quetzal::coalescence::network< VertexProperty, EdgeProperty >", "classquetzal_1_1coalescence_1_1network.html", null ],
     [ "quetzal::coalescence::detail::network_common< VertexProperty, EdgeProperty, CRTP >", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html", null ],
+    [ "quetzal::coalescence::detail::network_common< no_property, EdgeProperty, network< no_property, EdgeProperty > >", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html", [
+      [ "quetzal::coalescence::network< no_property, EdgeProperty >", "classquetzal_1_1coalescence_1_1network_3_01no__property_00_01EdgeProperty_01_4.html", null ]
+    ] ],
     [ "quetzal::coalescence::detail::network_common< no_property, no_property, network< no_property, no_property > >", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html", [
       [ "quetzal::coalescence::network< no_property, no_property >", "classquetzal_1_1coalescence_1_1network_3_01no__property_00_01no__property_01_4.html", null ]
+    ] ],
+    [ "quetzal::coalescence::detail::network_common< VertexProperty, EdgeProperty, network< no_property, EdgeProperty > >", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html", [
+      [ "quetzal::coalescence::network< VertexProperty, EdgeProperty >", "classquetzal_1_1coalescence_1_1network_3_01VertexProperty_00_01EdgeProperty_01_4.html", null ]
+    ] ],
+    [ "quetzal::coalescence::detail::network_common< VertexProperty, no_property, network< VertexProperty, no_property > >", "classquetzal_1_1coalescence_1_1detail_1_1network__common.html", [
+      [ "quetzal::coalescence::network< VertexProperty, no_property >", "classquetzal_1_1coalescence_1_1network_3_01VertexProperty_00_01no__property_01_4.html", null ]
     ] ],
     [ "quetzal::coalescence::newick_with_distance_to_parent< Space, Time >", "classquetzal_1_1coalescence_1_1newick__with__distance__to__parent.html", null ],
     [ "quetzal::coalescence::newick_with_distance_to_parent_and_leaf_name< Space, Time >", "classquetzal_1_1coalescence_1_1newick__with__distance__to__parent__and__leaf__name.html", null ],
@@ -269,14 +307,12 @@ var hierarchy =
     [ "quetzal::format::newick::detail::TreeVisitorWrapper< Gen >", "structquetzal_1_1format_1_1newick_1_1detail_1_1TreeVisitorWrapper.html", null ],
     [ "quetzal::coalescence::occupancy_spectrum::editor_policy::truncate_tail", "structquetzal_1_1coalescence_1_1occupancy__spectrum_1_1editor__policy_1_1truncate__tail.html", null ],
     [ "quetzal::demography::dispersal_kernel::two_dt< Distance >", "structquetzal_1_1demography_1_1dispersal__kernel_1_1two__dt.html", null ],
-    [ "std::unary_function", null, [
-      [ "quetzal::demography::FlowOnDiskImplementation< Space, Time, Value >::key_hash", "structquetzal_1_1demography_1_1FlowOnDiskImplementation_1_1key__hash.html", null ]
-    ] ],
     [ "vertex_info", "structvertex__info.html", null ],
     [ "vertex_list_graph_tag", null, [
       [ "boost::binary_tree< false, Vertex >::traversal_category", "classboost_1_1binary__tree_3_01false_00_01Vertex_01_4_1_1traversal__category.html", null ],
       [ "boost::binary_tree< true, Vertex >::traversal_category", "classboost_1_1binary__tree_3_01true_00_01Vertex_01_4_1_1traversal__category.html", null ]
     ] ],
     [ "vertex_t", "structvertex__t.html", null ],
-    [ "quetzal::coalescence::detail::VertexManager< VertexDescriptor, VertexProperty >", "structquetzal_1_1coalescence_1_1detail_1_1VertexManager.html", null ]
+    [ "quetzal::coalescence::detail::VertexManager< VertexDescriptor, VertexProperty >", "structquetzal_1_1coalescence_1_1detail_1_1VertexManager.html", null ],
+    [ "quetzal::coalescence::detail::VertexManager< typename base::vertex_descriptor, VertexProperty >", "structquetzal_1_1coalescence_1_1detail_1_1VertexManager.html", null ]
 ];

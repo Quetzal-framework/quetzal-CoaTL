@@ -11,5 +11,5 @@ var namespacequetzal_1_1demography =
     [ "HistoryBase", "classquetzal_1_1demography_1_1HistoryBase.html", "classquetzal_1_1demography_1_1HistoryBase" ],
     [ "PopulationSizeHashMapImplementation", "classquetzal_1_1demography_1_1PopulationSizeHashMapImplementation.html", "classquetzal_1_1demography_1_1PopulationSizeHashMapImplementation" ],
     [ "PopulationSizeOnDiskImplementation", "classquetzal_1_1demography_1_1PopulationSizeOnDiskImplementation.html", "classquetzal_1_1demography_1_1PopulationSizeOnDiskImplementation" ],
-    [ "operator<<", "namespacequetzal_1_1demography.html#a1d9919bc738eed56d179b9801fa69ecb", null ]
+    [ "operator<<", "namespacequetzal_1_1demography.html#a7faf4ddf53f83b54bb455a834e54a805", null ]
 ];

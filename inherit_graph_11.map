@@ -1,4 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structboost_1_1detail_1_1binary__tree__forward__node.html" title=" " alt="" coords="5,13,256,54"/>
-<area shape="rect" id="node2" href="$structboost_1_1detail_1_1binary__tree__bidirectional__node.html" title=" " alt="" coords="304,5,487,61"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,27,148,53"/>
+<area shape="rect" id="Node000001" href="$classquetzal_1_1simulator_1_1ForwardBackwardSpatiallyExplicit.html" title="Discrete&#45;time coalescence simulator in a discrete spatially explicit landscape." alt="" coords="196,5,432,75"/>
+<area shape="poly" id="edge12_Node000000_Node000001" title=" " alt="" coords="162,37,196,37,196,43,162,43"/>
 </map>

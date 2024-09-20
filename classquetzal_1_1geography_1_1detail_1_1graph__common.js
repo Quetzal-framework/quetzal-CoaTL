@@ -4,7 +4,6 @@ var classquetzal_1_1geography_1_1detail_1_1graph__common =
     [ "degree_size_type", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#a7354a36365639a2a6f1feb5d419e47ff", null ],
     [ "directed_category", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#a0daa0dbbeadd5076bcbfad8e393e65e0", null ],
     [ "edge_descriptor", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#ab49a428cbd67b81d959a2056761c2014", null ],
-    [ "edge_parallel_category", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#adee21e10763a051e7a2055fba363e716", null ],
     [ "edge_property", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#ad4ce8465d7680b99b2e7be465fb796a8", null ],
     [ "in_edge_iterator", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#a796f62314eea85ab16dfb1d6c195a591", null ],
     [ "out_edge_iterator", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#a3e7f76b545480ffeecd25e153999252e", null ],
@@ -14,10 +13,9 @@ var classquetzal_1_1geography_1_1detail_1_1graph__common =
     [ "graph_common", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#acbb4b5b103bbd2a5146ef69f40463824", null ],
     [ "graph_common", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#a9b558027e32f62e5cdf4eb9e91679379", null ],
     [ "add_edge", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#af99ef41a492ede624b6cb37ae57d7bbf", null ],
-    [ "add_vertex", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#af39f0281b6143e5b41ff5bfafb42c354", null ],
     [ "clear_vertex", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#aa401c7cf6736c07756333b1fd250d3de", null ],
     [ "degree", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#a0d8b2476f76562d0209e35bcf41acd4d", null ],
-    [ "edge", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#a3525bfff45fa66126dc13ab3bd6066e0", null ],
+    [ "edge", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#aae5d67e72018fa0c69eaa8bef3ddb109", null ],
     [ "edges", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#adae5ecb0869c8fe08bedc8533371aa44", null ],
     [ "in_degree", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#a30eb051aec5fb6d7b0a7c866819018fa", null ],
     [ "in_edges", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#a9a636758af6f08a4f10c766a0384751a", null ],
@@ -31,6 +29,5 @@ var classquetzal_1_1geography_1_1detail_1_1graph__common =
     [ "remove_vertex", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#afa636edc1f001c7511b83a539c5f1c62", null ],
     [ "source", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#a0ffc38e492b0faf0b63509c5bf09f398", null ],
     [ "target", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#ab680bafb89dda967f119538ff58f1bd5", null ],
-    [ "vertices", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#a4a490b4bc4f0d2f89e0a1212ff81f10f", null ],
-    [ "_graph", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#a8c8094aaa1552603b986cd4768d316ce", null ]
+    [ "vertices", "classquetzal_1_1geography_1_1detail_1_1graph__common.html#a4a490b4bc4f0d2f89e0a1212ff81f10f", null ]
 ];
