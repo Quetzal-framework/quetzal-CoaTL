@@ -148,7 +148,7 @@ template <typename Space, typename Time, typename Value> class FlowHashMapImplem
     /**
      * \brief Makes reverse_key_type hashable (can be stored in hash maps)
      */
-    struct reverse_key_hash : public std::unary_function<reverse_key_type, std::size_t>
+    struct reverse_key_hash
     {
         std::size_t operator()(const reverse_key_type &k) const
         {
@@ -161,7 +161,7 @@ template <typename Space, typename Time, typename Value> class FlowHashMapImplem
     /**
      * \brief Makes key_type hashable (can be stored in hash maps)
      */
-    struct key_hash : public std::unary_function<key_type, std::size_t>
+    struct key_hash
     {
         std::size_t operator()(const key_type &k) const
         {

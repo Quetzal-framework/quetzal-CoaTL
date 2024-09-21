@@ -72,7 +72,7 @@ template <typename Space, typename Time, typename Value> class FlowOnDiskImpleme
     /**
      * \brief Makes key_type hashable in unordered_map
      */
-    struct key_hash : public std::unary_function<key_type, std::size_t>
+    struct key_hash
     {
         std::size_t operator()(const key_type &k) const
         {

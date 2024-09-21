@@ -37,20 +37,24 @@ class QuetzalCoaTLConan(ConanFile):
         self.info.clear()
 
     def requirements(self):
-       if self.settings.os == "Macos":
-            if self.settings.compiler == "apple-clang":
-                self.requires("boost/[>1.75 <1.80]")
-                self.requires("gdal/[>=3.4.0]")
-                self.requires("range-v3/0.12.0")
-                self.requires("mp-units/2.0.0")
-       if self.settings.os == "Linux":
-            if self.settings.compiler == "gcc":
-                self.requires("boost/[>1.75 <1.80]")
-                self.requires("gdal/[>=3.4.0 <3.5.1]")
-                self.requires("mp-units/2.0.0")
-                self.requires("range-v3/0.12.0")
-                self.requires("libtiff/4.5.1", override=True) # Version conflict: libgeotiff/1.7.1->libtiff/4.6.0, gdal/3.4.3->libtiff/4.5.1.
-                self.requires("libdeflate/1.18", override=True) # Version conflict: libtiff/4.6.0->libdeflate/1.19, gdal/3.4.3->libdeflate/1.18.
-                self.requires("proj/9.2.1", override=True) # Version conflict: libgeotiff/1.7.1->proj/9.3.0, gdal/3.4.3->proj/9.2.1.
-                self.requires("sqlite3/3.42.0", override=True) # Version conflict: proj/9.3.0->sqlite3/3.43.2, gdal/3.4.3->sqlite3/3.42.0.
-                self.requires("zlib/1.2.13", override=True) # Version conflict: gdal/3.4.3->zlib/1.2.13, quetzal-CoaTL/3.1.0->zlib/1.3.
+        self.requires("boost/1.86.0")
+        self.requires("gdal/3.8.3")
+        self.requires("range-v3/0.12.0")
+        self.requires("mp-units/2.2.1")        
+    #    if self.settings.os == "Macos":
+    #         if self.settings.compiler == "apple-clang":
+    #             self.requires("boost/[>1.75 <1.80]")
+    #             self.requires("gdal/[>=3.4.0]")
+    #             self.requires("range-v3/0.12.0")
+    #             self.requires("mp-units/2.2.1")
+    #    if self.settings.os == "Linux":
+    #         if self.settings.compiler == "gcc":
+    #             self.requires("boost/[>1.75 <1.80]")
+    #             self.requires("gdal/[>=3.4.0 <3.5.1]")
+    #             self.requires("mp-units/2.2.1")
+    #             self.requires("range-v3/0.12.0")
+    #             self.requires("libtiff/4.5.1", override=True) # Version conflict: libgeotiff/1.7.1->libtiff/4.6.0, gdal/3.4.3->libtiff/4.5.1.
+    #             self.requires("libdeflate/1.18", override=True) # Version conflict: libtiff/4.6.0->libdeflate/1.19, gdal/3.4.3->libdeflate/1.18.
+    #             self.requires("proj/9.2.1", override=True) # Version conflict: libgeotiff/1.7.1->proj/9.3.0, gdal/3.4.3->proj/9.2.1.
+    #             self.requires("sqlite3/3.42.0", override=True) # Version conflict: proj/9.3.0->sqlite3/3.43.2, gdal/3.4.3->sqlite3/3.42.0.
+    #             self.requires("zlib/1.2.13", override=True) # Version conflict: gdal/3.4.3->zlib/1.2.13, quetzal-CoaTL/3.1.0->zlib/1.3.

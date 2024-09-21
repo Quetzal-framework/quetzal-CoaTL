@@ -47,5 +47,8 @@ foreach(testSrc ${SRCS})
   add_test(
     NAME ${testName}
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/example
-  COMMAND sh -c "$<TARGET_FILE:${testName}> > output/${testName}.txt" )
+    COMMAND sh -c "$<TARGET_FILE:${testName}> > output/${testName}.txt" )
+
+  set_tests_properties(${testName} PROPERTIES LABELS "documentation example")
+
 endforeach(testSrc)
