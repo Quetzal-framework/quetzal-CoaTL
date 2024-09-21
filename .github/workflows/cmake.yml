@@ -11,8 +11,38 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
-
+    name: "C++${{ matrix.std }} ${{ matrix.config.name }} ${{ matrix.build_type }}"
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        build_type: ["Release", "Debug"]
+        std: [20, 23]
+        config:
+          - {
+              name: "GCC-12",
+              os: ubuntu-24.04,
+              compiler:
+                {
+                  type: GCC,
+                  version: 12,
+                  cc: "gcc-12",
+                  cxx: "g++-12",
+                },
+              conan-config: "",
+            }
+          - {
+              name: "GCC-13",
+              os: ubuntu-24.04,
+              compiler:
+                {
+                  type: GCC,
+                  version: 13,
+                  cc: "gcc-13",
+                  cxx: "g++-13",
+                },
+              conan-config: "",
+            }
     steps:
     - uses: actions/checkout@v4
       with:
@@ -23,39 +53,41 @@ jobs:
       run: >
         sudo apt-get update -y &&
         sudo apt-get install -y --no-install-recommends
-        vim
-        git
-        gcc-13
-        g++-13
         build-essential
         cmake
-        unzip
-        tar
-        ca-certificates
-        doxygen
-        graphviz
-        pipx
+
+    - name: Set Up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.x
 
     - name: Conan installation
-      run: pipx install conan
-
-    - name: Conan version
-      run: echo "${{ steps.conan.outputs.version }}"
+      run: |
+        pip install -U conan
 
     - name: Cache Conan
       uses: actions/cache@v4
+      if: always()
+      env:
+        cache-name: cache-conan-data
       with:
         path: ~/.conan2/p
-        key: ${{ runner.os }}-conan-${{ hashFiles('conanfile.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-conan-
+        key: ${{ matrix.config.os }}-{{ matrix.std }}-${{ matrix.config.name }}-${{ matrix.build_type }}-${{ hashFiles('conanfile.txt') }}
+    
+    - name: Conan Configure
+      shell: bash
+      run: |
+        conan profile detect --force
+        sed -i.backup '/^\[settings\]$/,/^\[/ s/^compiler.cppstd=.*/compiler.cppstd=${{ matrix.std }}/' ~/.conan2/profiles/default
+        sed -i.backup '/^\[settings\]$/,/^\[/ s/^build_type=.*/build_type=${{ matrix.build_type }}/' ~/.conan2/profiles/default
+        conan profile show -pr default
 
-    - name: Conan install dependencies
+    - name: Conan Install
       run: >
         conan install conanfile.py 
-        --profile:build=conan/profiles/linux-x86-gcc13-debug 
-        --profile:host=conan/profiles/linux-x86-gcc13-debug 
-        --build=missing
+        --profile:build=~/.conan2/profiles/default 
+        --profile:host=~/.conan2/profiles/default 
+        --build=missing 
         --output-folder=build
 
     - name: CMake configuration
@@ -63,7 +95,7 @@ jobs:
         cmake 
         -B ${{github.workspace}}/build 
         -S .
-        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
         -DBUILD_TESTS=ON
         --toolchain ${{github.workspace}}/build/conan_toolchain.cmake
 
@@ -71,18 +103,12 @@ jobs:
       run:  >
         cmake 
         --build ${{github.workspace}}/build 
-        --config ${{env.BUILD_TYPE}}
+        --config ${{ matrix.build_type }}
 
     - name: CMake test
       working-directory: ${{github.workspace}}/build
-      run: ctest -C ${{env.BUILD_TYPE}} --rerun-failed --output-on-failure
-
-    - name: Doxygen documentation generation
-      working-directory: ${{github.workspace}}/build
-      run: make docs
-
-    - name: Deploy to Github Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ${{github.workspace}}/build/docs/html
+      run: > 
+        ctest 
+        -C ${{ matrix.build_type }} 
+        --rerun-failed 
+        --output-on-failure
