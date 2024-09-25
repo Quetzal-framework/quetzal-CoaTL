@@ -102,17 +102,17 @@ var NAVTREE =
       ] ]
     ] ],
     [ "Developer's notes", "md_99-developers-notes.html", [
-      [ "Conventions", "md_99-developers-notes.html#autotoc_md143", null ],
-      [ "Build process", "md_99-developers-notes.html#autotoc_md144", null ],
-      [ "Packaging", "md_99-developers-notes.html#autotoc_md145", null ],
-      [ "Documentation", "md_99-developers-notes.html#autotoc_md146", null ]
+      [ "Conventions", "md_99-developers-notes.html#autotoc_md145", null ],
+      [ "Build process", "md_99-developers-notes.html#autotoc_md146", null ],
+      [ "Packaging", "md_99-developers-notes.html#autotoc_md147", null ],
+      [ "Documentation", "md_99-developers-notes.html#autotoc_md148", null ]
     ] ],
     [ "Abstract", "md_drafts_22-abstract.html", [
-      [ "Input/Output", "md_drafts_22-abstract.html#autotoc_md148", null ],
-      [ "Algorithms", "md_drafts_22-abstract.html#autotoc_md149", null ],
-      [ "Graphs", "md_drafts_22-abstract.html#autotoc_md150", null ],
-      [ "Compile-time units system", "md_drafts_22-abstract.html#autotoc_md151", null ],
-      [ "Data Structures", "md_drafts_22-abstract.html#autotoc_md152", null ]
+      [ "Input/Output", "md_drafts_22-abstract.html#autotoc_md150", null ],
+      [ "Algorithms", "md_drafts_22-abstract.html#autotoc_md151", null ],
+      [ "Graphs", "md_drafts_22-abstract.html#autotoc_md152", null ],
+      [ "Compile-time units system", "md_drafts_22-abstract.html#autotoc_md153", null ],
+      [ "Data Structures", "md_drafts_22-abstract.html#autotoc_md154", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],

@@ -30,13 +30,14 @@ var searchData=
   ['mirror_27',['mirror',['../classquetzal_1_1geography_1_1mirror.html',1,'quetzal::geography']]],
   ['model_28',['model',['../spatial_graph_local_parameters.html#autotoc_md120',1,'Adjusting a suitability map using a Digital Elevation Model'],['../structquetzal_1_1coalescence_1_1detail_1_1tree__traits.html#aa4ce6bf8924d7db90412289fd1a3cdaf',1,'quetzal::coalescence::detail::tree_traits::model']]],
   ['model_20for_20trans_20oceanic_20dispersal_20events_29',['Defining a friction model for trans-oceanic dispersal events',['../spatial_graph_local_parameters.html#autotoc_md123',1,'']]],
-  ['models_30',['models',['../spatial_graph_local_process.html#autotoc_md126',1,'Autoregressive Models'],['../spatial_graph_local_process.html#autotoc_md128',1,'Deterministic Models'],['../spatial_graph_local_process.html#autotoc_md132',1,'Environmental Niche Models'],['../spatial_graph_local_parameters.html#autotoc_md113',1,'Environmental Niche Models'],['../spatial_graph_local_process.html#autotoc_md134',1,'Species Competition Models'],['../spatial_graph_local_process.html#autotoc_md130',1,'Stochastic Models']]],
-  ['models_20as_20mathematical_20expressions_31',['Niche models as mathematical expressions',['../spatial_graph_local_parameters.html#autotoc_md114',1,'']]],
-  ['multiple_20variables_32',['Reading multiple variables',['../geotiff_parser.html#autotoc_md82',1,'']]],
-  ['munkres_33',['Munkres',['../classquetzal_1_1polymorphism_1_1fuzzy__transfer__distance_1_1Munkres.html',1,'quetzal::polymorphism::fuzzy_transfer_distance']]],
-  ['myedgeinfo_34',['MyEdgeInfo',['../structMyEdgeInfo.html',1,'']]],
-  ['mynode_35',['MyNode',['../structMyNode.html',1,'']]],
-  ['myspatialgrid_36',['MySpatialGrid',['../structMySpatialGrid.html',1,'']]],
-  ['myvertexinfo_37',['MyVertexInfo',['../structMyVertexInfo.html',1,'']]],
-  ['myvisitor_38',['MyVisitor',['../structMyVisitor.html',1,'']]]
+  ['model_20s_20basics_30',['Model&apos;s Basics',['../spatial_graph_dispersal_kernels.html#autotoc_md137',1,'']]],
+  ['models_31',['models',['../spatial_graph_local_process.html#autotoc_md126',1,'Autoregressive Models'],['../spatial_graph_local_process.html#autotoc_md128',1,'Deterministic Models'],['../spatial_graph_local_parameters.html#autotoc_md113',1,'Environmental Niche Models'],['../spatial_graph_local_process.html#autotoc_md132',1,'Environmental Niche Models'],['../spatial_graph_local_process.html#autotoc_md134',1,'Species Competition Models'],['../spatial_graph_local_process.html#autotoc_md130',1,'Stochastic Models']]],
+  ['models_20as_20mathematical_20expressions_32',['Niche models as mathematical expressions',['../spatial_graph_local_parameters.html#autotoc_md114',1,'']]],
+  ['multiple_20variables_33',['Reading multiple variables',['../geotiff_parser.html#autotoc_md82',1,'']]],
+  ['munkres_34',['Munkres',['../classquetzal_1_1polymorphism_1_1fuzzy__transfer__distance_1_1Munkres.html',1,'quetzal::polymorphism::fuzzy_transfer_distance']]],
+  ['myedgeinfo_35',['MyEdgeInfo',['../structMyEdgeInfo.html',1,'']]],
+  ['mynode_36',['MyNode',['../structMyNode.html',1,'']]],
+  ['myspatialgrid_37',['MySpatialGrid',['../structMySpatialGrid.html',1,'']]],
+  ['myvertexinfo_38',['MyVertexInfo',['../structMyVertexInfo.html',1,'']]],
+  ['myvisitor_39',['MyVisitor',['../structMyVisitor.html',1,'']]]
 ];

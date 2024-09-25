@@ -239,9 +239,9 @@ Deterministic Models</h2>
 <div class="ttc" id="aclassquetzal_1_1geography_1_1raster_html"><div class="ttname"><a href="classquetzal_1_1geography_1_1raster.html">quetzal::geography::raster</a></div><div class="ttdoc">Discrete spatio-temporal variations of an environmental variable.</div><div class="ttdef"><b>Definition</b> raster.hpp:38</div></div>
 <div class="ttc" id="anamespacequetzal_1_1geography_html"><div class="ttname"><a href="namespacequetzal_1_1geography.html">quetzal::geography</a></div><div class="ttdoc">Geospatial data formatting and processing.</div><div class="ttdef"><b>Definition</b> geography.hpp:17</div></div>
 <div class="ttc" id="anamespacequetzal_1_1geography_html_a9d63ec53811cfaeae6dd04b11f950a97"><div class="ttname"><a href="namespacequetzal_1_1geography.html#a9d63ec53811cfaeae6dd04b11f950a97">quetzal::geography::no_property</a></div><div class="ttdeci">boost::no_property no_property</div><div class="ttdoc">Represents no information carried by vertices or edges of a graph.</div><div class="ttdef"><b>Definition</b> concepts.hpp:71</div></div>
-<div class="ttc" id="anamespacequetzal_1_1geography_html_aefd1b77745ebec6627cd0b29ac101afd"><div class="ttname"><a href="namespacequetzal_1_1geography.html#aefd1b77745ebec6627cd0b29ac101afd">quetzal::geography::from_grid</a></div><div class="ttdeci">auto from_grid(SpatialGrid const &amp;grid, VertexProperty const &amp;v, EdgeProperty const &amp;e, Vicinity const &amp;vicinity, Directionality dir, Policy const &amp;bounding_policy)</div><div class="ttdoc">Spatial graph construction method.</div><div class="ttdef"><b>Definition</b> from_grid.hpp:30</div></div>
+<div class="ttc" id="anamespacequetzal_1_1geography_html_aefd1b77745ebec6627cd0b29ac101afd"><div class="ttname"><a href="namespacequetzal_1_1geography.html#aefd1b77745ebec6627cd0b29ac101afd">quetzal::geography::from_grid</a></div><div class="ttdeci">auto from_grid(SpatialGrid const &amp;grid, VertexProperty const &amp;v, EdgeProperty const &amp;e, Vicinity const &amp;vicinity, Directionality dir, Policy const &amp;bounding_policy)</div><div class="ttdoc">Spatial graph construction method.</div><div class="ttdef"><b>Definition</b> from_grid.hpp:36</div></div>
 <div class="ttc" id="anamespacequetzal_1_1geography_html_af6da7867d1c7f8864a04f8b003a4fabd"><div class="ttname"><a href="namespacequetzal_1_1geography.html#af6da7867d1c7f8864a04f8b003a4fabd">quetzal::geography::isotropy</a></div><div class="ttdeci">boost::undirectedS isotropy</div><div class="ttdoc">Property of a process independent of the direction of movement.</div><div class="ttdef"><b>Definition</b> directionality.hpp:18</div></div>
-<div class="ttc" id="astructedge__info_html"><div class="ttname"><a href="structedge__info.html">edge_info</a></div><div class="ttdef"><b>Definition</b> newick_parser_2.cpp:12</div></div>
+<div class="ttc" id="astructedge__info_html"><div class="ttname"><a href="structedge__info.html">edge_info</a></div><div class="ttdef"><b>Definition</b> geography_dispersal_kernel_4.cpp:13</div></div>
 <div class="ttc" id="astructquetzal_1_1geography_1_1connect__fully_html"><div class="ttname"><a href="structquetzal_1_1geography_1_1connect__fully.html">quetzal::geography::connect_fully</a></div><div class="ttdef"><b>Definition</b> vicinity.hpp:53</div></div>
 <div class="ttc" id="astructvertex__info_html"><div class="ttname"><a href="structvertex__info.html">vertex_info</a></div><div class="ttdef"><b>Definition</b> coalescence_binary_tree_2.cpp:5</div></div>
 </div><!-- fragment --><p><b>Output</b></p>
@@ -313,9 +313,9 @@ Stochastic Models</h2>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>}</div>
 </div><!-- fragment --><p><b>Output</b></p>
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span>Time series:</div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span>at vertex 0 : 1 1 2 4 5 5 9 16 23 26 </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span>at vertex 1 : 1 1 1 2 4 5 6 8 10 10 </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span>at vertex 2 : 1 1 1 2 4 5 9 12 21 41 </div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span>at vertex 0 : 1 1 1 2 5 8 12 20 24 43 </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span>at vertex 1 : 1 1 2 3 5 9 18 21 38 58 </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span>at vertex 2 : 1 1 1 3 4 7 8 12 17 19 </div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>at vertex 3 : 0 0 0 0 0 0 0 0 0 0 </div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>at vertex 4 : 0 0 0 0 0 0 0 0 0 0 </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>at vertex 5 : 0 0 0 0 0 0 0 0 0 0 </div>
@@ -383,9 +383,9 @@ Environmental Niche Models</h2>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>}</div>
 </div><!-- fragment --><p><b>Output</b></p>
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span>Time series:</div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span>at vertex 0 : 1 4 9 19 46 212 710 1963 0 0 </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span>at vertex 1 : 1 4 23 83 376 853 1075 1257 856 1533 </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span>at vertex 2 : 1 4 24 128 562 880 1071 904 1208 390 </div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span>at vertex 0 : 1 4 24 64 152 535 915 1511 907 1182 </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span>at vertex 1 : 1 2 9 38 116 427 1463 425 1216 1180 </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span>at vertex 2 : 1 5 32 109 577 1735 0 0 0 0 </div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>at vertex 3 : 0 0 0 0 0 0 0 0 0 0 </div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>at vertex 4 : 0 0 0 0 0 0 0 0 0 0 </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>at vertex 5 : 0 0 0 0 0 0 0 0 0 0 </div>
@@ -517,9 +517,9 @@ P_3(t+1) = P_3(t) + r_3 P_3(t) \left(1 - \frac{P_3(t)}{K_3}\right) + b_{31} P_1(
 </div><!-- fragment --><p><b>Output</b></p>
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span>Time series:</div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span>at vertex 0 : </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span>    P1 : 200 146.76 0 0 0 0 0 0 0 0 </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span>    P2 : 1 8.97175 51.3938 0 0 0 0 0 0 0 </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>    P3 : 1 19.6842 282.82 0 0 0 0 0 0 0 </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span>    P1 : 200 76.2316 17.9021 0 0 0 0 0 0 0 </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span>    P2 : 1 7.00237 20.2119 0 0 0 0 0 0 0 </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>    P3 : 1 9.58295 37.3321 7.12539 9.7864 13.3237 17.927 23.7485 30.8368 39.0549 </div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>at vertex 1 : </div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    P1 : 0 0 0 0 0 0 0 0 0 0 </div>
