@@ -420,7 +420,7 @@ Default Initialization and Later Update</h4>
 </div><!-- fragment --><h4><a class="anchor" id="autotoc_md143"></a>
 Direct Initialization</h4>
 <p>Here, we demonstrate how to directly initialize the edge properties during graph creation. This approach is particularly useful when working with large graphs, where manually updating each edge later would be inefficient. By initializing the properties in place, you can ensure that each edge has the correct values from the start.</p>
-<p>This method requires defining a user-specific Edge Property class, which includes a default constructor to allow for proper instantiation. Doing so enables you to efficiently assign properties such as dispersal probabilities or weights directly to the graph’s edges during the initial setup, streamlining the overall process.</p>
+<p>This method requires defining a user-specific Edge Property class, which includes a constructor to allow for proper instantiation. Doing so enables you to efficiently assign properties such as dispersal probabilities or weights directly to the graph’s edges during the initial setup, streamlining the overall process.</p>
 <p><b>Input</b></p>
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;quetzal/quetzal.hpp&quot;</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>

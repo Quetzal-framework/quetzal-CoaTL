@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classquetzal_1_1coalescence_1_1detail_1_1k__ary__tree__common.html" title=" " alt="" coords="5,5,236,89"/>
-<area shape="rect" id="Node000001" href="$classquetzal_1_1coalescence_1_1k__ary__tree_3_01no__property_00_01no__property_01_4.html" title="A k&#45;ary tree class with no information attached to either vertices nor edges." alt="" coords="284,20,480,75"/>
-<area shape="poly" id="edge21_Node000000_Node000001" title=" " alt="" coords="250,45,284,45,284,50,250,50"/>
+<area shape="rect" id="Node000000" href="$classquetzal_1_1coalescence_1_1detail_1_1k__ary__tree__common.html" title=" " alt="" coords="5,5,256,89"/>
+<area shape="rect" id="Node000001" href="$classquetzal_1_1coalescence_1_1k__ary__tree_3_01VertexProperty_00_01no__property_01_4.html" title="A k&#45;ary tree class with information attached to vertices." alt="" coords="304,20,519,75"/>
+<area shape="poly" id="edge23_Node000000_Node000001" title=" " alt="" coords="270,45,304,45,304,50,270,50"/>
 </map>

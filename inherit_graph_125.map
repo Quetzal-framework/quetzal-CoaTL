@@ -1,3 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structquetzal_1_1format_1_1genetics_1_1Marker__Descriptor.html" title=" " alt="" coords="5,5,192,45"/>
+<area shape="rect" id="Node000000" href="$structquetzal_1_1format_1_1identity.html" title="Do not change anything." alt="" coords="5,5,185,31"/>
+<area shape="rect" id="Node000001" href="$structquetzal_1_1format_1_1newick_1_1remove__comments__of__depth_3_010_01_4.html" title="Do not remove anything." alt="" coords="233,27,492,67"/>
+<area shape="poly" id="edge40_Node000000_Node000001" title=" " alt="" coords="199,27,233,30,233,36,199,32"/>
+<area shape="rect" id="Node000002" href="$structquetzal_1_1format_1_1newick_1_1detail_1_1identity.html" title="Default comment removal policy: do not change anything." alt="" coords="7,55,183,95"/>
+<area shape="poly" id="edge41_Node000002_Node000001" title=" " alt="" coords="197,62,233,58,233,64,198,67"/>
 </map>

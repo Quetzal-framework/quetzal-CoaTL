@@ -1,17 +1,19 @@
 var NAVTREEINDEX9 =
 {
-"conceptquetzal_1_1geography_1_1GridCoordinate.html":[8,0,1,1],
+"conceptquetzal_1_1geography_1_1Coordinate.html":[7,0,1,4,23],
+"conceptquetzal_1_1geography_1_1Coordinate.html":[8,0,1,2],
 "conceptquetzal_1_1geography_1_1GridCoordinate.html":[7,0,1,4,22],
+"conceptquetzal_1_1geography_1_1GridCoordinate.html":[8,0,1,1],
 "conceptquetzal_1_1geography_1_1bounding.html":[8,0,1,6],
 "conceptquetzal_1_1geography_1_1bounding.html":[7,0,1,4,27],
-"conceptquetzal_1_1geography_1_1connectedness.html":[7,0,1,4,25],
 "conceptquetzal_1_1geography_1_1connectedness.html":[8,0,1,4],
+"conceptquetzal_1_1geography_1_1connectedness.html":[7,0,1,4,25],
 "conceptquetzal_1_1geography_1_1detail_1_1is__any__of.html":[8,0,1,0,0],
 "conceptquetzal_1_1geography_1_1detail_1_1is__any__of.html":[7,0,1,4,0,3],
-"conceptquetzal_1_1geography_1_1directional.html":[7,0,1,4,24],
 "conceptquetzal_1_1geography_1_1directional.html":[8,0,1,3],
-"conceptquetzal_1_1geography_1_1two__dimensional.html":[7,0,1,4,26],
+"conceptquetzal_1_1geography_1_1directional.html":[7,0,1,4,24],
 "conceptquetzal_1_1geography_1_1two__dimensional.html":[8,0,1,5],
+"conceptquetzal_1_1geography_1_1two__dimensional.html":[7,0,1,4,26],
 "concepts.html":[8],
 "coordinates_8hpp_source.html":[10,0,0,0,0,3,1],
 "demographic__policy_8hpp_source.html":[10,0,0,0,0,1,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX9 =
 "namespacequetzal_1_1utils_1_1random.html":[7,0,1,10,0],
 "namespaces.html":[7,0],
 "neighbors_8hpp_source.html":[10,0,0,0,0,9,4],
-"network_8hpp_source.html":[10,0,0,0,0,0,2,3],
-"newick_generator.html":[4,1],
-"newick_parser.html":[4,0]
+"network_8hpp_source.html":[10,0,0,0,0,0,2,3]
 };

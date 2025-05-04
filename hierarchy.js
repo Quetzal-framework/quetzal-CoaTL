@@ -90,15 +90,12 @@ var hierarchy =
     [ "quetzal::geography::detail::edge_construction< T >", "structquetzal_1_1geography_1_1detail_1_1edge__construction.html", null ],
     [ "quetzal::geography::detail::edge_construction< boost::no_property >", "structquetzal_1_1geography_1_1detail_1_1edge__construction_3_01boost_1_1no__property_01_4.html", null ],
     [ "edge_info", "structedge__info.html", null ],
-    [ "edge_t", "structedge__t.html", null ],
     [ "quetzal::coalescence::detail::EdgeManager< EdgeDescriptor, EdgeProperty >", "structquetzal_1_1coalescence_1_1detail_1_1EdgeManager.html", null ],
     [ "quetzal::coalescence::detail::EdgeManager< typename base::edge_descriptor, EdgeProperty >", "structquetzal_1_1coalescence_1_1detail_1_1EdgeManager.html", null ],
     [ "quetzal::demography::dispersal_kernel::exponential_power< Distance >", "structquetzal_1_1demography_1_1dispersal__kernel_1_1exponential__power.html", null ],
     [ "quetzal::geography::extent< T >", "classquetzal_1_1geography_1_1extent.html", null ],
     [ "quetzal::geography::extent< double >", "classquetzal_1_1geography_1_1extent.html", null ],
     [ "quetzal::geography::gdalcpp::Feature", "classquetzal_1_1geography_1_1gdalcpp_1_1Feature.html", null ],
-    [ "Fixture_simple_tree", "structFixture__simple__tree.html", null ],
-    [ "FixtureCases", "structFixtureCases.html", null ],
     [ "quetzal::demography::FlowHashMapImplementation< Space, Time, Value >", "classquetzal_1_1demography_1_1FlowHashMapImplementation.html", null ],
     [ "quetzal::demography::FlowOnDiskImplementation< Space, Time, Value >", "classquetzal_1_1demography_1_1FlowOnDiskImplementation.html", null ],
     [ "quetzal::coalescence::container::Forest< Position, Tree >", "classquetzal_1_1coalescence_1_1container_1_1Forest.html", null ],
@@ -292,6 +289,10 @@ var hierarchy =
     [ "quetzal::coalescence::occupancy_spectrum::Support", "classquetzal_1_1coalescence_1_1occupancy__spectrum_1_1Support.html", null ],
     [ "quetzal::coalescence::detail::tag< T >", "structquetzal_1_1coalescence_1_1detail_1_1tag.html", null ],
     [ "quetzal::polymorphism::statistics::tajimasD< T >", "classquetzal_1_1polymorphism_1_1statistics_1_1tajimasD.html", null ],
+    [ "testing::Test", null, [
+      [ "FixtureCases", "classFixtureCases.html", null ],
+      [ "NewickParserTest", "classNewickParserTest.html", null ]
+    ] ],
     [ "quetzal::utils::details::to_helper< C >", "structquetzal_1_1utils_1_1details_1_1to__helper.html", null ],
     [ "quetzal::geography::torus", "classquetzal_1_1geography_1_1torus.html", null ],
     [ "transition_matrix", "structtransition__matrix.html", null ],
@@ -312,7 +313,6 @@ var hierarchy =
       [ "boost::binary_tree< false, Vertex >::traversal_category", "classboost_1_1binary__tree_3_01false_00_01Vertex_01_4_1_1traversal__category.html", null ],
       [ "boost::binary_tree< true, Vertex >::traversal_category", "classboost_1_1binary__tree_3_01true_00_01Vertex_01_4_1_1traversal__category.html", null ]
     ] ],
-    [ "vertex_t", "structvertex__t.html", null ],
     [ "quetzal::coalescence::detail::VertexManager< VertexDescriptor, VertexProperty >", "structquetzal_1_1coalescence_1_1detail_1_1VertexManager.html", null ],
     [ "quetzal::coalescence::detail::VertexManager< typename base::vertex_descriptor, VertexProperty >", "structquetzal_1_1coalescence_1_1detail_1_1VertexManager.html", null ]
 ];

@@ -216,7 +216,7 @@ $(document).ready(function(){initNavTree('random__tree_8hpp_source.html',''); in
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="namespacequetzal.html#a20c15bf1480e708a6637207e0c821b3b">   57</a></span><span class="keyword">auto</span> <a class="code hl_function" href="namespacequetzal.html#a20c15bf1480e708a6637207e0c821b3b">get_random_spanning_tree</a>(<span class="keywordtype">int</span> n_vertices, <span class="keywordtype">int</span> n_edges, Generator &amp;rng)</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>{</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keyword">using </span>UG = detail::Undirect&lt;Graph&gt;;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keyword">using </span><a class="code hl_struct" href="structvertex__t.html">vertex_t</a> = <span class="keyword">typename</span> UG::vertex_descriptor;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keyword">using </span>vertex_t = <span class="keyword">typename</span> UG::vertex_descriptor;</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="comment">// assuming integral vertex index for simplicity</span></div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keyword">static_assert</span>(std::is_same_v&lt;vertex_t, size_t&gt;);</div>
@@ -225,7 +225,7 @@ $(document).ready(function(){initNavTree('random__tree_8hpp_source.html',''); in
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="comment">// Initialize a random undirected graph</span></div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    UG ug;</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    generate_random_graph(ug, n_vertices, n_edges, rng);</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <a class="code hl_struct" href="structvertex__t.html">vertex_t</a> <span class="keyword">const</span> root = random_vertex(ug, rng);</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    vertex_t <span class="keyword">const</span> root = random_vertex(ug, rng);</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="comment">// make the graph fully connected</span></div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    {</div>
@@ -270,7 +270,6 @@ $(document).ready(function(){initNavTree('random__tree_8hpp_source.html',''); in
 <div class="ttc" id="anamespacequetzal_html"><div class="ttname"><a href="namespacequetzal.html">quetzal</a></div><div class="ttdoc">Simulation of coalescence-based models of molecular evolution.</div><div class="ttdef"><b>Definition</b> coalescence.hpp:21</div></div>
 <div class="ttc" id="anamespacequetzal_html_a20c15bf1480e708a6637207e0c821b3b"><div class="ttname"><a href="namespacequetzal.html#a20c15bf1480e708a6637207e0c821b3b">quetzal::get_random_spanning_tree</a></div><div class="ttdeci">auto get_random_spanning_tree(int n_vertices, int n_edges, Generator &amp;rng)</div><div class="ttdoc">Generates a random directed tree.</div><div class="ttdef"><b>Definition</b> random_tree.hpp:57</div></div>
 <div class="ttc" id="astructquetzal_1_1detail_1_1make__undirected_html"><div class="ttname"><a href="structquetzal_1_1detail_1_1make__undirected.html">quetzal::detail::make_undirected</a></div><div class="ttdef"><b>Definition</b> random_tree.hpp:33</div></div>
-<div class="ttc" id="astructvertex__t_html"><div class="ttname"><a href="structvertex__t.html">vertex_t</a></div><div class="ttdef"><b>Definition</b> newick_generator_test.cpp:259</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

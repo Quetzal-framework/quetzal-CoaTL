@@ -226,8 +226,9 @@ Example</h1>
 <div class="line">    assert(tree.has_predecessor(root) == <span class="keyword">false</span>);</div>
 <div class="line">    assert(tree.predecessor(c) == root);</div>
 <div class="line">    assert(tree.has_successors(root) == <span class="keyword">true</span>);</div>
-<div class="line">    assert(std::ranges::none_of(tree.successors(c), [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span> &amp;v) { return tree.has_successors(v); }));</div>
-<div class="line"> </div>
+<div class="line">    <span class="keywordflow">for</span> (<span class="keyword">auto</span> v : tree.<a class="code hl_function" href="classquetzal_1_1coalescence_1_1detail_1_1binary__tree__common.html#a17e972a3d4d35efca8cf65cb884ea38e">successors</a>(c)) {</div>
+<div class="line">        assert(! tree.has_successors(v));</div>
+<div class="line">    }</div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Degree of inner vertex c is &quot;</span> &lt;&lt; tree.degree(c) &lt;&lt; std::endl;</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Root vertex field values were assigned</span></div>
@@ -237,7 +238,8 @@ Example</h1>
 <div class="line">    <span class="comment">// Other vertices fields values were left default initialized</span></div>
 <div class="line">    assert(tree[b].field1.size() == tree[b].field2);</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassquetzal_1_1coalescence_1_1binary__tree_html"><div class="ttname"><a href="classquetzal_1_1coalescence_1_1binary__tree.html">quetzal::coalescence::binary_tree</a></div><div class="ttdef"><b>Definition</b> binary_tree.hpp:328</div></div>
+<div class="ttc" id="aclassquetzal_1_1coalescence_1_1binary__tree_html"><div class="ttname"><a href="classquetzal_1_1coalescence_1_1binary__tree.html">quetzal::coalescence::binary_tree</a></div><div class="ttdef"><b>Definition</b> binary_tree.hpp:330</div></div>
+<div class="ttc" id="aclassquetzal_1_1coalescence_1_1detail_1_1binary__tree__common_html_a17e972a3d4d35efca8cf65cb884ea38e"><div class="ttname"><a href="classquetzal_1_1coalescence_1_1detail_1_1binary__tree__common.html#a17e972a3d4d35efca8cf65cb884ea38e">quetzal::coalescence::detail::binary_tree_common&lt; VertexProperty, no_property &gt;::successors</a></div><div class="ttdeci">auto successors(vertex_descriptor u) const</div><div class="ttdoc">The successors of vertex .</div><div class="ttdef"><b>Definition</b> binary_tree.hpp:239</div></div>
 <div class="ttc" id="astructedge__info_html"><div class="ttname"><a href="structedge__info.html">edge_info</a></div><div class="ttdef"><b>Definition</b> geography_dispersal_kernel_4.cpp:13</div></div>
 <div class="ttc" id="astructvertex__info_html"><div class="ttname"><a href="structvertex__info.html">vertex_info</a></div><div class="ttdef"><b>Definition</b> coalescence_binary_tree_2.cpp:5</div></div>
 </div><!-- fragment --> <h1><a class="anchor" id="ex2"></a>

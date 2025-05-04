@@ -265,18 +265,16 @@ var annotated_dup =
     ] ],
     [ "BIT", "classBIT.html", null ],
     [ "edge_info", "structedge__info.html", null ],
-    [ "edge_t", "structedge__t.html", null ],
-    [ "Fixture_simple_tree", "structFixture__simple__tree.html", null ],
-    [ "FixtureCases", "structFixtureCases.html", null ],
+    [ "FixtureCases", "classFixtureCases.html", null ],
     [ "HudsonAlgorithm", "classHudsonAlgorithm.html", "classHudsonAlgorithm" ],
     [ "MyEdgeInfo", "structMyEdgeInfo.html", null ],
     [ "MyNode", "structMyNode.html", null ],
     [ "MySpatialGrid", "structMySpatialGrid.html", null ],
     [ "MyVertexInfo", "structMyVertexInfo.html", null ],
     [ "MyVisitor", "structMyVisitor.html", null ],
+    [ "NewickParserTest", "classNewickParserTest.html", null ],
     [ "Node", "structNode.html", null ],
     [ "transition_matrix", "structtransition__matrix.html", null ],
     [ "tree_visitor", "structtree__visitor.html", null ],
-    [ "vertex_info", "structvertex__info.html", null ],
-    [ "vertex_t", "structvertex__t.html", null ]
+    [ "vertex_info", "structvertex__info.html", null ]
 ];

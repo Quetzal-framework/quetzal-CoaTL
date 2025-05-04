@@ -1,7 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$structquetzal_1_1expressive_1_1composite__functor.html" title=" " alt="" coords="5,5,156,60"/>
-<area shape="rect" id="Node000001" href="$structquetzal_1_1expressive_1_1symetric__binop__t.html" title=" " alt="" coords="204,37,357,92"/>
-<area shape="poly" id="edge35_Node000000_Node000001" title=" " alt="" coords="170,44,204,50,203,55,169,49"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="41,84,120,109"/>
-<area shape="poly" id="edge36_Node000002_Node000001" title=" " alt="" coords="133,86,203,74,204,80,134,91"/>
+<area shape="rect" id="Node000001" href="$structquetzal_1_1expressive_1_1compose__t.html" title=" " alt="" coords="204,5,360,60"/>
+<area shape="poly" id="edge38_Node000000_Node000001" title=" " alt="" coords="170,30,204,30,204,35,170,35"/>
 </map>

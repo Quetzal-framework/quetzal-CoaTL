@@ -400,7 +400,7 @@ Defining a friction model for trans-oceanic dispersal events</h1>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="comment">// We need to make choices here concerning how NA are handled</span></div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keyword">auto</span> suit = expressive::use([&amp;](location_type x, time_type t) { <span class="keywordflow">return</span> s_view(x, t).value_or(0.0); });</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keyword">auto</span> elev = expressive::use([&amp;](location_type x, time_type t) { <span class="keywordflow">return</span> s_view(x, t).value_or(0.0); });</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keyword">auto</span> elev = expressive::use([&amp;](location_type x, time_type t) { <span class="keywordflow">return</span> e_view(x, t).value_or(0.0); });</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    std::random_device rd;  <span class="comment">// a seed source for the random number engine</span></div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    std::mt19937 gen(rd()); <span class="comment">// mersenne_twister_engine seeded with rd()</span></div>

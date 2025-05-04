@@ -216,7 +216,7 @@ Graph from raster</h2>
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span>Graph has 9 vertices, 36 edges.</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md106"></a>
 Graph from landscape</h2>
-<p>The provided code snippet contains the logic for constructing a spatial graph from a <code><a class="el" href="classquetzal_1_1geography_1_1landscape.html" title="Discrete spatio-temporal variations of a set of environmental variables.">quetzal::geography::landscape</a></code>.</p>
+<p>In the parlance of quetzal, a <code><a class="el" href="classquetzal_1_1geography_1_1landscape.html" title="Discrete spatio-temporal variations of a set of environmental variables.">quetzal::geography::landscape</a></code> is just multiple aligned <code><a class="el" href="classquetzal_1_1geography_1_1raster.html" title="Discrete spatio-temporal variations of an environmental variable.">quetzal::geography::raster</a></code> defined for different spatial quantities: since their grid structure are identical, the logic relating to spatial graph construction is unchanged. The provided code snippet contains the logic for constructing a spatial graph from a <code><a class="el" href="classquetzal_1_1geography_1_1landscape.html" title="Discrete spatio-temporal variations of a set of environmental variables.">quetzal::geography::landscape</a></code>.</p>
 <p>This involves identifying the cells of the landscape to map <code>location_type</code> values to the vertices, and defining edges based on the desired connectivity.</p>
 <p><b>Input</b></p>
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;quetzal/geography.hpp&quot;</span></div>
@@ -253,7 +253,7 @@ Graph from landscape</h2>
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span>Graph has 9 vertices, 36 edges.</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md107"></a>
 Graph from abstract grid</h2>
-<p>The provided code snippet contains the logic for constructing a spatial graph from a user-defined abstract grid.</p>
+<p>The provided code snippet demonstrates how to construct a spatial graph from a user-defined abstract grid. This approach is useful when you either don't have or prefer not to use a geospatial file alongside your code, for example if you don't care about spatial quantities.</p>
 <p>This involves identifying the height and width of the space to define linearly-indexed vertices, and defining edges based on the desired connectivity.</p>
 <p><b>Input</b></p>
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;quetzal/geography.hpp&quot;</span></div>

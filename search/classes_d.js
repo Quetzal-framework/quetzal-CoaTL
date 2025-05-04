@@ -14,6 +14,7 @@ var searchData=
   ['network_5fcommon_3c_20vertexproperty_2c_20no_5fproperty_2c_20network_3c_20vertexproperty_2c_20no_5fproperty_20_3e_20_3e_11',['network_common&lt; VertexProperty, no_property, network&lt; VertexProperty, no_property &gt; &gt;',['../classquetzal_1_1coalescence_1_1detail_1_1network__common.html',1,'quetzal::coalescence::detail']]],
   ['newick_5fwith_5fdistance_5fto_5fparent_12',['newick_with_distance_to_parent',['../classquetzal_1_1coalescence_1_1newick__with__distance__to__parent.html',1,'quetzal::coalescence']]],
   ['newick_5fwith_5fdistance_5fto_5fparent_5fand_5fleaf_5fname_13',['newick_with_distance_to_parent_and_leaf_name',['../classquetzal_1_1coalescence_1_1newick__with__distance__to__parent__and__leaf__name.html',1,'quetzal::coalescence']]],
-  ['node_14',['node',['../structNode.html',1,'Node'],['../structquetzal_1_1format_1_1newick_1_1ast_1_1node.html',1,'quetzal::format::newick::ast::node']]],
-  ['null_5foutput_5fiterator_15',['null_output_iterator',['../classquetzal_1_1utils_1_1null__output__iterator.html',1,'quetzal::utils']]]
+  ['newickparsertest_14',['NewickParserTest',['../classNewickParserTest.html',1,'']]],
+  ['node_15',['node',['../structNode.html',1,'Node'],['../structquetzal_1_1format_1_1newick_1_1ast_1_1node.html',1,'quetzal::format::newick::ast::node']]],
+  ['null_5foutput_5fiterator_16',['null_output_iterator',['../classquetzal_1_1utils_1_1null__output__iterator.html',1,'quetzal::utils']]]
 ];
