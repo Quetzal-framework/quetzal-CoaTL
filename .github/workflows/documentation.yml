@@ -1,0 +1,89 @@
+name: Documentation and Examples
+
+on:
+  push:
+    branches: [ master ]
+
+env:
+  BUILD_TYPE: Debug
+  STD: 23
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        submodules: recursive
+
+    - name: Get Apt packages
+      run: >
+        sudo apt-get update -y &&
+        sudo apt-get install -y --no-install-recommends
+        build-essential
+        cmake
+        doxygen
+        graphviz
+
+    - name: Set Up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.x
+
+    - name: Conan installation
+      run: |
+        pip install -U conan
+
+    - name: Cache Conan
+      uses: actions/cache@v4
+      if: always()
+      env:
+        cache-name: cache-conan-data
+      with:
+        path: ~/.conan2/p
+        key: documentation-${{ hashFiles('conanfile.txt') }}
+
+    - name: Conan Configure
+      shell: bash
+      run: |
+        conan profile detect --force
+        sed -i.backup '/^\[settings\]$/,/^\[/ s/^compiler.cppstd=.*/compiler.cppstd=${{env.STD}}/' ~/.conan2/profiles/default
+        sed -i.backup '/^\[settings\]$/,/^\[/ s/^build_type=.*/build_type=${{env.BUILD_TYPE}}/' ~/.conan2/profiles/default
+        conan profile show -pr default
+
+    - name: Conan Install
+      run: >
+        conan install conanfile.py 
+        --build=missing 
+        --output-folder=build
+
+    - name: CMake Configure
+      run:  >
+        cmake 
+        -B ${{github.workspace}}/build 
+        -S .
+        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        -DBUILD_TESTS=ON
+        --toolchain ${{github.workspace}}/build/conan_toolchain.cmake
+
+    - name: CMake Build
+      run:  >
+        cmake 
+        --build ${{github.workspace}}/build 
+        --config ${{env.BUILD_TYPE}}
+
+    - name: CMake Test
+      working-directory: ${{github.workspace}}/build
+      run: ctest -L "example"
+
+    - name: Doxygen Generation
+      working-directory: ${{github.workspace}}/build
+      run: make docs
+
+    - name: Deploy to Github Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ${{github.workspace}}/build/docs/html

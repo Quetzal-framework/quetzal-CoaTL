@@ -1,0 +1,19 @@
+{
+  "default-registry": {
+    "kind": "git",
+    "repository": "https://github.com/Microsoft/vcpkg",
+    "baseline": "3265c187c74914aa5569b75355badebfdbab7987"
+  },
+  "registries": [
+    {
+      "kind": "git",
+      "repository": "https://github.com/Microsoft/vcpkg",
+      "baseline": "ce613c41372b23b1f51333815feb3edd87ef8a8b",
+      "packages": [ "boost*", "boost-*" ]
+    }
+  ],
+  "build-settings": {
+    "default-library-linkage": "dynamic",
+    "allow-compiler-and-linker-flags": true
+  }
+}

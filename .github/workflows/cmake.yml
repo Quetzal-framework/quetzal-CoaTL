@@ -1,0 +1,113 @@
+name: CMake
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  BUILD_TYPE: Debug
+
+jobs:
+  build:
+    name: "C++${{ matrix.std }} ${{ matrix.config.name }} ${{ matrix.build_type }}"
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        build_type: ["Release", "Debug"]
+        std: [20, 23]
+        config:
+          - {
+              name: "GCC-12",
+              os: ubuntu-24.04,
+              compiler:
+                {
+                  type: GCC,
+                  version: 12,
+                  cc: "gcc-12",
+                  cxx: "g++-12",
+                },
+              conan-config: "",
+            }
+          - {
+              name: "GCC-13",
+              os: ubuntu-24.04,
+              compiler:
+                {
+                  type: GCC,
+                  version: 13,
+                  cc: "gcc-13",
+                  cxx: "g++-13",
+                },
+              conan-config: "",
+            }
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        submodules: recursive
+
+    - name: Get Apt packages
+      run: >
+        sudo apt-get update -y &&
+        sudo apt-get install -y --no-install-recommends
+        build-essential
+        cmake
+
+    - name: Set Up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.x
+
+    - name: Conan installation
+      run: |
+        pip install -U conan
+
+    - run: echo "cache_id=$(/bin/date -u "+%Y%m%d")" >> $GITHUB_ENV
+    - name: Cache Conan
+      uses: actions/cache@v4
+      if: always()
+      env:
+        cache-name: cache-conan-data
+      with:
+        path: ~/.conan2/p
+        key: ${{ matrix.config.os }}-${{ matrix.build_type }}-${{ matrix.config.compiler.version }}-{{ matrix.std }}-${{ env.cache_id }}
+    
+    - name: Conan Configure
+      shell: bash
+      run: |
+        conan profile detect --force
+        sed -i.backup '/^\[settings\]$/,/^\[/ s/^compiler.cppstd=.*/compiler.cppstd=${{ matrix.std }}/' ~/.conan2/profiles/default
+        sed -i.backup '/^\[settings\]$/,/^\[/ s/^build_type=.*/build_type=${{ matrix.build_type }}/' ~/.conan2/profiles/default
+        conan profile show -pr default
+
+    - name: Conan Install
+      run: >
+        conan install conanfile.py
+        --build=missing 
+        --output-folder=build
+
+    - name: CMake configuration
+      run:  >
+        cmake 
+        -B ${{github.workspace}}/build 
+        -S .
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -DBUILD_TESTS=ON
+        --toolchain ${{github.workspace}}/build/conan_toolchain.cmake
+
+    - name: CMake build
+      run:  >
+        cmake 
+        --build ${{github.workspace}}/build 
+        --config ${{ matrix.build_type }}
+
+    - name: CMake test
+      working-directory: ${{github.workspace}}/build
+      run: > 
+        ctest 
+        -C ${{ matrix.build_type }} 
+        --rerun-failed 
+        --output-on-failure

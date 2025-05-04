@@ -1,0 +1,181 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run All Tests",
+      "type": "shell",
+      "command": "cd ${workspaceFolder}/build/${input:packager} && ctest -C ${input:build_mode} --rerun-failed --output-on-failure",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "dependsOn": [
+        "Build All Tests"
+      ],
+    },
+    {
+      "label": "Make Docs",
+      "type": "shell",
+      "command": "cd ${workspaceFolder}/build/${input:packager} && ninja docs ",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "dependsOn": [
+        "Run All Tests"
+      ],
+    },
+    {
+      "label": "Clean Project",
+      "type": "shell",
+      "command": "rm -rf ${workspaceFolder}/build ${workspaceFolder}/CMakeUserPresets.json",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build All Tests",
+      "type": "shell",
+      "command": "cmake --build --preset ${input:packager}-${input:build_mode} -- -j1",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "dependsOn": [
+        "Configure CMake"
+      ],
+    },
+    {
+      "label": "Setup Compiler Environment",
+      "type": "shell",
+      "command": "${workspaceFolder}/.vscode/setup_compiler_env.sh",
+      "group": "none",
+      "hidden": true,
+      "args": [
+        "${input:compiler}",
+        "${input:build_mode}"
+      ],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "echo": false,
+        "focus": true,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "Setup Package Manager",
+      "type": "shell",
+      "command": "${workspaceFolder}/.vscode/setup_packager.sh",
+      "args": [
+        "${input:compiler}",
+        "${input:build_mode}",
+        "${input:std_version}",
+        "${input:packager}"
+      ],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "dependsOn": [
+        "Setup Compiler Environment"
+      ]
+    },
+    {
+      "label": "Configure CMake",
+      "type": "shell",
+      "command": "cmake --preset ${input:packager} -D CMAKE_BUILD_TYPE=${input:build_mode} -DCMAKE_CXX_STANDARD=${input:std_version}",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "dependsOn": [
+        "Setup Package Manager"
+      ],
+    }
+  ],
+  "inputs": [
+    {
+      "id": "compiler",
+      "type": "command",
+      "command": "extension.commandvariable.pickStringRemember",
+      "args": {
+        "variable": "compiler_remembered",
+        "options": [
+          "gcc-14",
+          "gcc-13",
+          "clang-18"
+        ],
+        "description": "Pick a compiler",
+        "default": "clang-18"
+      }
+    },
+    {
+      "id": "build_mode",
+      "type": "command",
+      "command": "extension.commandvariable.pickStringRemember",
+      "args": {
+        "variable": "build_mode_remembered",
+        "options": [
+          "Debug",
+          "Release"
+        ],
+        "description": "Pick a build mode",
+        "default": "Debug"
+      }
+    },
+    {
+      "id": "std_version",
+      "type": "command",
+      "command": "extension.commandvariable.pickStringRemember",
+      "args": {
+        "variable": "std_version_remembered",
+        "options": [
+          "20",
+          "23"
+        ],
+        "description": "Pick a C++ Standard version",
+        "default": "23"
+      }
+    },
+    {
+      "id": "packager",
+      "type": "command",
+      "command": "extension.commandvariable.pickStringRemember",
+      "args": {
+        "key": "packager",
+        "options": [
+          [
+            "vcpkg",
+            {
+              "packager": "vcpkg",
+              "pmcommand": "/opt/vcpkg/vcpkg --version"
+            }
+          ],
+          [
+            "conan",
+            {
+              "packager": "conan",
+              "pmcommand": "conan install . -b missing -of build/conan -s compiler=$BASE -s compiler.version=$VERSION -s build_type=${input:build_type} -s compiler.cppstd=${input:std_version}"
+            }
+          ]
+        ],
+        "description": "Pick a Package Manager",
+        "default": "vcpkg"
+      }
+    },
+    {
+      "id": "pmcommand",
+      "description": "Package Manager Command",
+      "type": "command",
+      "command": "extension.commandvariable.pickStringRemember",
+      "args": {
+        "key": "pmcommand"
+      }
+    },
+  ]
+}

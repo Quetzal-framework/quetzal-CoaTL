@@ -1,0 +1,29 @@
+// For format details, see https://aka.ms/devcontainer.json. 
+// For config options, see the README at: https://github.com/devcontainers/templates/tree/main/src/cpp
+{
+	"name": "C++",
+	"workspaceMount": "source=${localWorkspaceFolder},target=/app,type=bind",
+	"workspaceFolder": "/app",
+	"build": {
+		"context": "..",
+		"dockerfile": "docker-ubuntu"
+	},
+	"remoteUser": "root",
+	"features": {},
+	"customizations": {
+		"vscode":
+		{
+			"extensions": [
+				"Codeium.codeium",
+				// Extension for command variables in tasks.json.
+				"rioj7.command-variable",
+				// Adds a "Task Runner" view to run project tasks.
+				"SanaAjani.taskrunnercode",
+				// Bundle extensions
+				"ms-vscode.cpptools-extension-pack"
+			],
+		}
+	},
+	"postCreateCommand": "chmod +x ${containerWorkspaceFolder}/.vscode/*.sh"
+
+}
