@@ -1,0 +1,45 @@
+FROM ubuntu:24.04
+
+WORKDIR /opt
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update -y
+RUN apt-get install -y --no-install-recommends\
+                    gcc-14 \
+                    g++-14 \
+                    clang-18 \
+                    clang-tools-18 \
+                    vim \
+                    git \
+                    curl \
+                    bash \
+                    clangd \
+                    build-essential \
+                    pkg-config \
+                    ninja-build \
+                    zip \
+                    unzip \
+                    tar \
+                    ca-certificates \
+                    doxygen \
+                    graphviz \
+                    mscgen \
+                    dia \
+                    pipx && \ 
+                    rm -rf /var/lib/apt/lists/*.
+
+# Install a modern CMake (≥3.20) via pip, which bundles the Ninja Multi-Config support
+RUN pipx ensurepath && pipx install cmake conan
+
+# Install vcpkg package manager
+
+ENV VCPKG_FORCE_SYSTEM_BINARIES=1
+
+RUN git clone --depth 1 https://github.com/microsoft/vcpkg.git && \
+    cd vcpkg && \
+    ./bootstrap-vcpkg.sh -disableMetrics -useSystemBinaries
+
+RUN apt-get update && apt-get install -y \
+    autoconf autoconf-archive bison flex automake libtool pkg-config && \
+    rm -rf /var/lib/apt/lists/*

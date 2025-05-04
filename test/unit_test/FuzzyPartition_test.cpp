@@ -6,37 +6,53 @@
  *                                                                      *
  ***************************************************************************/
 
-// g++ -o FuzzyPartition_test FuzzyPartition_test.cpp -std=c++14 -Wall
+#include <gtest/gtest.h>
 
 #include "quetzal/polymorphism/fuzzy_transfer_distance.hpp"
 
-#include "assert.h"
-#include <iostream>
-#include <map>
-#include <set>
-#include <vector>
+using quetzal::polymorphism::fuzzy_transfer_distance::FuzzyPartition;
+using quetzal::polymorphism::fuzzy_transfer_distance::RestrictedGrowthString;
 
-int main()
+TEST(FuzzyPartitionTest, construction)
 {
-    using quetzal::polymorphism::fuzzy_transfer_distance::FuzzyPartition;
-    using quetzal::polymorphism::fuzzy_transfer_distance::RestrictedGrowthString;
-
     std::map<int, std::vector<double>> coeffs = {
         {0, {0.0, 0.1, 0.9, 0.0}}, {1, {0.4, 0.1, 0.2, 0.3}}, {2, {0.0, 0.3, 0.6, 0.1}}};
 
     FuzzyPartition<int> A(coeffs);
-    assert(A.elements() == std::set<int>({0, 1, 2}));
-    assert(A.clusters() == std::set<unsigned int>({0, 1, 2, 3}));
-    assert(A.nElements() == 3);
-    assert(A.nClusters() == 4);
+    EXPECT_EQ(A.elements(), std::set<int>({0, 1, 2}));
+    EXPECT_EQ(A.clusters(), std::set<unsigned int>({0, 1, 2, 3}));
+    EXPECT_EQ(A.nElements(), 3);
+    EXPECT_EQ(A.nClusters(), 4);
+}
 
-    auto B = A;
+TEST(FuzzyPartitionTest, merging_clusters)
+{
+    std::map<int, std::vector<double>> coeffs = {
+        {0, {0.0, 0.1, 0.9, 0.0}}, {1, {0.4, 0.1, 0.2, 0.3}}, {2, {0.0, 0.3, 0.6, 0.1}}};
+
+    FuzzyPartition<int> A(coeffs);
     RestrictedGrowthString RGS({0, 0, 1, 2});
-    B.merge_clusters(RGS); // merging cluster 1 and 2, summing membership coefficients
-    assert(B == FuzzyPartition<int>({{0, {0.1, 0.9, 0.0}}, {1, {0.5, 0.2, 0.3}}, {2, {0.3, 0.6, 0.1}}}));
+    A.merge_clusters(RGS); // merging cluster 1 and 2, summing membership coefficients
+    EXPECT_EQ(A, FuzzyPartition<int>({{0, {0.1, 0.9, 0.0}}, {1, {0.5, 0.2, 0.3}}, {2, {0.3, 0.6, 0.1}}}));
+}
+
+TEST(FuzzyPartitionTest, fuzzy_transfer_distance)
+{
+    std::map<int, std::vector<double>> coeffs1 = {
+        {0, {0.0, 0.1, 0.9, 0.0}}, {1, {0.4, 0.1, 0.2, 0.3}}, {2, {0.0, 0.3, 0.6, 0.1}}};
+    std::map<int, std::vector<double>> coeffs2 = {
+        {0, {0.1, 0.9, 0.0}}, {1, {0.5, 0.2, 0.3}}, {2, {0.3, 0.6, 0.1}}};
+
+    FuzzyPartition<int> A(coeffs1);
+    FuzzyPartition<int> B(coeffs2);
 
     double d = A.fuzzy_transfer_distance(B);
-    assert(d == 0.4);
-
-    return 0;
+    EXPECT_DOUBLE_EQ(d, 0.4);
 }
+
+int main(int argc, char **argv)
+{
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}
+

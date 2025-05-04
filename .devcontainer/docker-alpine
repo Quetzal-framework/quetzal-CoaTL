@@ -1,0 +1,38 @@
+FROM alpine:3.20
+
+WORKDIR /opt
+
+# Install necessary packages and dependencies
+RUN apk update && apk add --no-cache \
+    ninja-build \
+    cmake \
+    musl-dev \
+    linux-headers \
+    bash \
+    gcc \
+    g++ \
+    clang \
+    clang-extra-tools \
+    vim \
+    git \
+    build-base \
+    cmake \
+    pkgconfig \
+    ninja \
+    curl \
+    zip \
+    unzip \
+    tar \
+    ca-certificates \
+    doxygen \
+    graphviz
+
+RUN apk add --no-cache python3 py3-pip  && \
+    pip install --no-cache-dir --break-system-packages pipx && \
+    pipx ensurepath && \
+    pipx install conan
+
+ENV PATH="/opt/vcpkg:$PATH"
+
+ # Clean up
+RUN rm -rf /var/cache/apk/*

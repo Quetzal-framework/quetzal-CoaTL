@@ -767,7 +767,7 @@ This involves identifying the cells of the raster to map `location_type` values 
 
 ## Graph from landscape
 
-The provided code snippet contains the logic for constructing a spatial graph from a `quetzal::geography::landscape`. 
+In the parlance of quetzal, a `quetzal::geography::landscape` is just multiple aligned `quetzal::geography::raster` defined for different spatial quantities: since their grid structure are identical, the logic relating to spatial graph construction is unchanged. The provided code snippet contains the logic for constructing a spatial graph from a `quetzal::geography::landscape`. 
 
 This involves identifying the cells of the landscape to map `location_type` values to the vertices, and defining edges based on the desired connectivity.
 
@@ -781,7 +781,7 @@ This involves identifying the cells of the landscape to map `location_type` valu
 
 ## Graph from abstract grid
 
-The provided code snippet contains the logic for constructing a spatial graph from a user-defined abstract grid.
+The provided code snippet demonstrates how to construct a spatial graph from a user-defined abstract grid. This approach is useful when you either don't have or prefer not to use a geospatial file alongside your code, for example if you don't care about spatial quantities.
 
 This involves identifying the height and width of the space to define linearly-indexed vertices, and defining edges based on the desired connectivity.
 
@@ -1174,7 +1174,7 @@ By initializing the graph with default values, you maintain flexibility, allowin
 
 Here, we demonstrate how to directly initialize the edge properties during graph creation. This approach is particularly useful when working with large graphs, where manually updating each edge later would be inefficient. By initializing the properties in place, you can ensure that each edge has the correct values from the start. 
 
-This method requires defining a user-specific Edge Property class, which includes a default constructor to allow for proper instantiation. Doing so enables you to efficiently assign properties such as dispersal probabilities or weights directly to the graph’s edges during the initial setup, streamlining the overall process.
+This method requires defining a user-specific Edge Property class, which includes a constructor to allow for proper instantiation. Doing so enables you to efficiently assign properties such as dispersal probabilities or weights directly to the graph’s edges during the initial setup, streamlining the overall process.
 
 **Input**
 

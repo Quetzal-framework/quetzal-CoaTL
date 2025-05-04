@@ -14,6 +14,7 @@
 
 #include <boost/range/iterator_range.hpp>
 #include <range/v3/all.hpp>
+#include <ranges>
 
 #include <boost/graph/graphviz.hpp>
 
@@ -29,6 +30,7 @@
 
 namespace quetzal::coalescence
 {
+
 using no_property = boost::no_property;
 
 namespace detail
@@ -239,7 +241,7 @@ template <class VertexProperty, class EdgeProperty> class binary_tree_common
         return boost::make_iterator_range(out_edges(u, _graph)) |
                boost::adaptors::transformed([this](auto it) { return target(it, _graph); });
     }
-
+    
     /// @brief Evaluate if vertex \f$u\f$ is a left successor.
     /// @param u The vertex to be evaluated
     /// @return True if u is a left successoir, false otherwise.

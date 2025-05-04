@@ -5,41 +5,38 @@
  *Software Foundation; either version 2 of the License, or    * (at your option) any later version. *
  *                                                                      *
  ***************************************************************************/
-#define BOOST_TEST_MODULE expressive_test
-
-#include <boost/test/unit_test.hpp>
-namespace utf = boost::unit_test;
+#include <gtest/gtest.h>
 
 #include <quetzal/expressive.hpp>
 
-BOOST_AUTO_TEST_SUITE(expressive)
+using namespace quetzal::expressive;
 
-BOOST_AUTO_TEST_CASE(using_lambdas_and_literals)
+TEST(Expressive, UsingLambdasAndLiterals)
 {
     using quetzal::expressive::use;
+    using quetzal::expressive::literal_factory;
 
-    quetzal::expressive::literal_factory<int, int> lit;
+    literal_factory<int, int> lit;
     auto g = lit(5);
 
     auto f = [](int a, int b) { return a + b; };
 
     auto h = use(f) + g;
-    assert(h(2, 3) == 10);
-
-    BOOST_CHECK_EQUAL(h(2, 3), 10);
+    EXPECT_EQ(h(2, 3), 10);
 }
 
-BOOST_AUTO_TEST_CASE(composing_functors)
+TEST(Expressive, ComposingFunctors)
 {
     using quetzal::expressive::use;
+    using quetzal::expressive::compose;
 
     // NxN -> N -> string
     auto inner = use([](int a, int b) { return a + b; });
     auto outer = use([](int) { return "c"; });
 
-    auto composed = quetzal::expressive::compose(outer, inner);
+    auto composed = compose(outer, inner);
 
-    BOOST_CHECK_EQUAL(composed(1, 2), "c");
+    EXPECT_EQ(composed(1, 2), "c");
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+

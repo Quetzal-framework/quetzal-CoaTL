@@ -1,4 +1,0 @@
-concurrency: 1      # number of threads to use
-source-root: ../    # source files relative to the mrdox.yml file
-multipage: false    # generate multiple pages
-verbose: true       # print verbose output

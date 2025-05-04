@@ -37,7 +37,7 @@ class QuetzalCoaTLConan(ConanFile):
         self.info.clear()
 
     def requirements(self):
-        self.requires("boost/1.86.0")
+        self.requires("boost/1.85.0")
         self.requires("gdal/3.8.3")
         self.requires("range-v3/0.12.0")
         self.requires("mp-units/2.2.1")        

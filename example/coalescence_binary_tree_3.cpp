@@ -38,8 +38,9 @@ int main()
     assert(tree.has_predecessor(root) == false);
     assert(tree.predecessor(c) == root);
     assert(tree.has_successors(root) == true);
-    assert(std::ranges::none_of(tree.successors(c), [&](const auto &v) { return tree.has_successors(v); }));
-
+    for (auto v : tree.successors(c)) {
+        assert(! tree.has_successors(v));
+    }
     std::cout << "Degree of inner vertex c is " << tree.degree(c) << std::endl;
 
     // Edges from the root were assigned at construction

@@ -1,13 +1,4 @@
-// Copyright 2018 Arnaud Becheler    <abechele@umich.edu>
-
-/*********************************************************************** * This program is free software; you can
- *redistribute it and/or modify * it under the terms of the GNU General Public License as published by * the Free
- *Software Foundation; either version 2 of the License, or    * (at your option) any later version. *
- *                                                                      *
- ***************************************************************************/
-
-#define BOOST_TEST_MODULE geography_test
-#include <boost/test/unit_test.hpp>
+#include <gtest/gtest.h>
 
 #include <quetzal/geography.hpp>
 
@@ -15,11 +6,9 @@
 #include <iostream>
 #include <mp-units/ostream.h>
 
-namespace utf = boost::unit_test;
+namespace utf = ::testing;
 
-BOOST_AUTO_TEST_SUITE(geography)
-
-BOOST_AUTO_TEST_CASE(gdalcppTest)
+TEST(GeographyTest, gdalcppTest)
 {
     auto file = std::filesystem::current_path() / "data/bio1.tif";
 
@@ -35,20 +24,20 @@ BOOST_AUTO_TEST_CASE(gdalcppTest)
     auto v = data.affine_transformation_coefficients();
 }
 
-BOOST_AUTO_TEST_CASE(resolution)
+TEST(GeographyTest, resolution)
 {
     using decimal_degree = double;
     decimal_degree lat_resolution = 2.0;
     decimal_degree lon_resolution = 1.0;
     quetzal::geography::resolution<decimal_degree> res(lat_resolution, lon_resolution);
-    BOOST_TEST(res.lat() == lat_resolution);
-    BOOST_TEST(res.lon() == lon_resolution);
+    EXPECT_EQ(res.lat(), lat_resolution);
+    EXPECT_EQ(res.lon(), lon_resolution);
     auto copy = res;
     copy.lon(2.0);
-    assert(copy != res);
+    EXPECT_NE(copy, res);
 }
 
-BOOST_AUTO_TEST_CASE(coordinates)
+TEST(GeographyTest, coordinates)
 {
     using namespace mp_units;
     using namespace mp_units::si::unit_symbols;
@@ -56,16 +45,16 @@ BOOST_AUTO_TEST_CASE(coordinates)
     coord_type paris(48.856614, 2.3522219000000177);
     coord_type moscow(55.7522200, 37.6155600);
     bool b = paris < moscow;
-    BOOST_TEST(b);
+    EXPECT_TRUE(b);
     auto computed = paris.great_circle_distance_to(moscow);
     auto expected = 2486.22 * km ;
     auto EPSILON = 1.0 * km; // a 1-km error is acceptable.
     auto diff = expected - computed;
-    BOOST_TEST(diff < EPSILON);
-    BOOST_TEST(-diff < EPSILON);
+    EXPECT_LT(diff, EPSILON);
+    EXPECT_LT(-diff, EPSILON);
 }
 
-BOOST_AUTO_TEST_CASE(extent)
+TEST(GeographyTest, extent)
 {
     using decimal_degree = double;
     using extent_type = quetzal::geography::extent<decimal_degree>;
@@ -74,16 +63,16 @@ BOOST_AUTO_TEST_CASE(extent)
     decimal_degree moscow_lat = 55.7522;
     decimal_degree moscow_lon = 37.6155;
     extent_type extent(paris_lat, moscow_lat, paris_lon, moscow_lon);
-    BOOST_CHECK_EQUAL(extent.lat_min(), paris_lat);
-    BOOST_CHECK_EQUAL(extent.lat_max(), moscow_lat);
-    BOOST_CHECK_EQUAL(extent.lon_min(), paris_lon);
-    BOOST_CHECK_EQUAL(extent.lon_max(), moscow_lon);
+    EXPECT_EQ(extent.lat_min(), paris_lat);
+    EXPECT_EQ(extent.lat_max(), moscow_lat);
+    EXPECT_EQ(extent.lon_min(), paris_lon);
+    EXPECT_EQ(extent.lon_max(), moscow_lon);
     auto copy = extent;
     copy.lat_min(0.0);
-    assert(copy != extent);
+    EXPECT_NE(copy, extent);
 }
 
-BOOST_AUTO_TEST_CASE(raster)
+TEST(GeographyTest, raster)
 {
     using time_type = unsigned int;
     using raster_type = quetzal::geography::raster<time_type>;
@@ -93,14 +82,14 @@ BOOST_AUTO_TEST_CASE(raster)
 
     auto bio1 = raster_type::from_file(file, {2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010});
 
-    BOOST_CHECK_EQUAL(bio1.times().size(), 10);
-    BOOST_CHECK_EQUAL(bio1.locations().size(), 9);
-    BOOST_CHECK_EQUAL(bio1.origin(), raster_type::latlon(52., -5.));
+    EXPECT_EQ(bio1.times().size(), 10);
+    EXPECT_EQ(bio1.locations().size(), 9);
+    EXPECT_EQ(bio1.origin(), raster_type::latlon(52., -5.));
 
     auto f = bio1.to_view();
     auto x = bio1.to_descriptor( bio1.origin() );
     auto t = bio1.times().front();
-    // BOOST_TEST( f( x, t ).has_value() );
+    // EXPECT_TRUE( f( x, t ).has_value() );
 
     auto space = bio1.locations() |
                  ranges::views::transform([&](auto i) { return bio1.to_latlon(i); }) |
@@ -153,8 +142,8 @@ BOOST_AUTO_TEST_CASE(raster)
     // Corners
     latlon expected_top_left(52., -5.);
     latlon expected_bottom_right(37., 10.);
-    BOOST_TEST(bio1.contains(expected_top_left));
-    BOOST_TEST(!bio1.contains(expected_bottom_right));
+    EXPECT_TRUE(bio1.contains(expected_top_left));
+    EXPECT_FALSE(bio1.contains(expected_bottom_right));
 
     // In boxes
     latlon in_box_0(51., -4.5);
@@ -174,24 +163,24 @@ BOOST_AUTO_TEST_CASE(raster)
     latlon E_c2_c5_limit(47., 10.);
 
     // In boxes
-    BOOST_TEST(bio1.to_centroid(in_box_0) == c0);
-    BOOST_TEST(bio1.to_centroid(in_box_1) == c1);
-    BOOST_TEST(bio1.to_centroid(in_box_6) == c6);
-    BOOST_TEST(bio1.to_centroid(in_box_8) == c8);
+    EXPECT_EQ(bio1.to_centroid(in_box_0), c0);
+    EXPECT_EQ(bio1.to_centroid(in_box_1), c1);
+    EXPECT_EQ(bio1.to_centroid(in_box_6), c6);
+    EXPECT_EQ(bio1.to_centroid(in_box_8), c8);
 
     // At boxes limits
-    BOOST_TEST(bio1.to_centroid(W_c0_limit) == c0);
-    BOOST_TEST(bio1.to_centroid(N_c0_limit) == c0);
-    BOOST_TEST(bio1.to_centroid(c0_c3_limit) == c3);
-    BOOST_TEST(bio1.to_centroid(W_c0_c3_limit) == c3);
-    BOOST_TEST(bio1.to_centroid(c0_c1_c3_c4_limit) == c4);
+    EXPECT_EQ(bio1.to_centroid(W_c0_limit), c0);
+    EXPECT_EQ(bio1.to_centroid(N_c0_limit), c0);
+    EXPECT_EQ(bio1.to_centroid(c0_c3_limit), c3);
+    EXPECT_EQ(bio1.to_centroid(W_c0_c3_limit), c3);
+    EXPECT_EQ(bio1.to_centroid(c0_c1_c3_c4_limit), c4);
 
     // Out of all boxes
     // bio1.to_centroid(out_north); // assertion raised
     // bio1.to_centroid(E_c2_c5_limit); // assertion raised
 }
 
-BOOST_AUTO_TEST_CASE(landscape)
+TEST(GeographyTest, landscape)
 {
     using time_type = int;
     using landscape_type = quetzal::geography::landscape<std::string, time_type>;
@@ -205,33 +194,22 @@ BOOST_AUTO_TEST_CASE(landscape)
         auto env = landscape_type::from_file({{"bio1", file1}, {"bio12", file2}},
                                               {2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010});
 
-        BOOST_CHECK_EQUAL(env.num_variables(), 2);
+        EXPECT_EQ(env.num_variables(), 2);
 
         landscape_type::latlon Bordeaux(44.5, 0.34);
 
-        BOOST_TEST(env.contains(Bordeaux));
-        BOOST_TEST(env.contains(env.to_centroid(Bordeaux)));
+        EXPECT_TRUE(env.contains(Bordeaux));
+        EXPECT_TRUE(env.contains(env.to_centroid(Bordeaux)));
 
         const auto &f = env["bio1"].to_view();
         const auto &g = env["bio12"].to_view();
 
-        BOOST_CHECK_EQUAL(env.times().size(), 10);
-        BOOST_TEST(env.locations().size() < 100);
+        EXPECT_EQ(env.times().size(), 10);
+        EXPECT_LT(env.locations().size(), 100);
 
         for (auto t : env.times())
         {
             for (auto x : env.locations())
             {
-                f(x, t).has_value();
-                // g(x, t).has_value();
-            }
-        }
-    }
+                EXPECT_TRUE(f(x, t).has_value());
 
-    catch (const std::exception &ex)
-    {
-        BOOST_ERROR(ex.what());
-    }
-}
-
-BOOST_AUTO_TEST_SUITE_END()

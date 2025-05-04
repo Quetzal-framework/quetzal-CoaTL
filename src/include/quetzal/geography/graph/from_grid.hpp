@@ -54,7 +54,7 @@ auto from_grid(SpatialGrid const &grid, VertexProperty const &v, EdgeProperty co
         for(auto edge : graph.edges()){
             if constexpr (std::constructible_from<VertexProperty, vertex_t, vertex_t, SpatialGrid>){
                 graph[edge] = EdgeProperty(edge.source(), edge.target(), grid);
-            } else {
+            } else { 
                 static_assert(std::is_default_constructible_v<EdgeProperty>);
                 graph[edge] = e;
             }

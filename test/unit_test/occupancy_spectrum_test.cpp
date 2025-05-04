@@ -5,16 +5,10 @@
  *Software Foundation; either version 2 of the License, or    * (at your option) any later version. *
  *                                                                      *
  ***************************************************************************/
-#define BOOST_TEST_MODULE occupancy_spectrum_test
-
-#include <boost/test/unit_test.hpp>
-namespace utf = boost::unit_test;
-
+#include <gtest/gtest.h>
 #include <quetzal/coalescence/occupancy_spectrum.hpp>
 
-BOOST_AUTO_TEST_SUITE(occupancy_spectrum)
-
-BOOST_AUTO_TEST_CASE(occupancy_spectrum_support)
+TEST(occupancy_spectrum, support)
 {
     // Type declaration
     using quetzal::coalescence::occupancy_spectrum::OccupancySpectrum;
@@ -28,7 +22,7 @@ BOOST_AUTO_TEST_CASE(occupancy_spectrum_support)
     support.generate(editor);
 }
 
-BOOST_AUTO_TEST_CASE(occupancy_spectrum__distribution_init)
+TEST(occupancy_spectrum, distribution_init)
 {
     using quetzal::coalescence::occupancy_spectrum::ProbabilityDistribution;
     // initialization by default constructor
@@ -45,7 +39,7 @@ BOOST_AUTO_TEST_CASE(occupancy_spectrum__distribution_init)
     ProbabilityDistribution<> e = std::move(c); // c should not be used anymore !
 }
 
-BOOST_AUTO_TEST_CASE(occupancy_spectrum_distribution)
+TEST(occupancy_spectrum, distribution)
 {
     using quetzal::coalescence::occupancy_spectrum::ProbabilityDistribution;
     int n = 5;
@@ -86,7 +80,7 @@ BOOST_AUTO_TEST_CASE(occupancy_spectrum_distribution)
     std::cout << "Combined strategies:\n" << dist4 << "\n" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(memoize)
+TEST(occupancy_spectrum, memoize)
 {
     std::mt19937 g;
     // build and copy sample
@@ -96,7 +90,7 @@ BOOST_AUTO_TEST_CASE(memoize)
     (void)spectrum_b;
 }
 
-BOOST_AUTO_TEST_CASE(spectrum_creation_policy)
+TEST(occupancy_spectrum, spectrum_creation_policy)
 {
     std::mt19937 g;
 
@@ -114,4 +108,4 @@ BOOST_AUTO_TEST_CASE(spectrum_creation_policy)
         std::cout << it << " ";
     }
 }
-BOOST_AUTO_TEST_SUITE_END()
+

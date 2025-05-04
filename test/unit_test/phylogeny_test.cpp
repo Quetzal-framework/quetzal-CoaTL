@@ -6,16 +6,11 @@
  *                                                                      *
  ***************************************************************************/
 
-#define BOOST_TEST_MODULE coalescence_test
-
-#include <boost/test/unit_test.hpp>
-namespace utf = boost::unit_test;
+#include <gtest/gtest.h>
 
 #include <quetzal/coalescence/container/Network.hpp>
 
-BOOST_AUTO_TEST_SUITE(phylogenetics)
-
-BOOST_AUTO_TEST_CASE(network)
+TEST(Phylogenetics, Network)
 {
     using quetzal::coalescence::container::Network;
     using std::string;
@@ -62,9 +57,8 @@ BOOST_AUTO_TEST_CASE(network)
     std::vector<string> v;
     auto functor = [&v](string s) { v.push_back(s); };
     // root.visit_cells_by_pre_order_DFS(functor);
-    // BOOST_TEST(v == expected);
+    // EXPECT_EQ(v, expected);
 
     // root.to_newick();
 }
 
-BOOST_AUTO_TEST_SUITE_END()

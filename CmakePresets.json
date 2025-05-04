@@ -1,0 +1,81 @@
+{
+    "version": 4,
+    "cmakeMinimumRequired": {
+      "major": 3,
+      "minor": 21,
+      "patch": 0
+    },
+    "configurePresets": [
+      {
+        "name": "default",
+        "displayName": "Default Config",
+        "generator": "Ninja Multi-Config",
+        "binaryDir": "${sourceDir}/build/${presetName}"
+      },
+      {
+        "name": "vcpkg",
+        "inherits": ["default"],
+        "description": "Build using vcpkg toolchain",
+        "cacheVariables": {
+          "CMAKE_TOOLCHAIN_FILE": "/opt/vcpkg/scripts/buildsystems/vcpkg.cmake"
+        }
+      },
+      {
+        "name": "conan",
+        "inherits": ["default"],
+        "description": "Build using Conan toolchain",
+        "cacheVariables": {
+          "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/build/conan/conan_toolchain.cmake"
+        }
+      }
+    ],
+    "buildPresets": [
+      {
+        "name": "vcpkg-Debug",
+        "configurePreset": "vcpkg",
+        "description": "Build with vcpkg in Debug mode",
+        "configuration": "Debug"
+      },
+      {
+        "name": "vcpkg-Release",
+        "configurePreset": "vcpkg",
+        "description": "Build with vcpkg in Release mode",
+        "configuration": "Release"
+      },
+      {
+        "name": "conan-Debug",
+        "configurePreset": "conan",
+        "description": "Build with Conan in Debug mode",
+        "configuration": "Debug"
+      },
+      {
+        "name": "conan-Release",
+        "configurePreset": "conan",
+        "description": "Build with Conan in Release mode",
+        "configuration": "Release"
+      }
+    ],
+    "testPresets": [
+      {
+        "name": "vcpkg-Debug-test",
+        "configurePreset": "vcpkg",
+        "configuration": "Debug"
+      },
+      {
+        "name": "vcpkg-Release-test",
+        "configurePreset": "vcpkg",
+        "configuration": "Release"
+      },
+      {
+        "name": "conan-Debug-test",
+        "configurePreset": "conan",
+        "configuration": "Debug"
+      },
+      {
+        "name": "conan-Release-test",
+        "configurePreset": "conan",
+        "configuration": "Release"
+      }
+    ]
+  }
+  

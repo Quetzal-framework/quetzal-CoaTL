@@ -1,0 +1,19 @@
+{
+    "name": "my-project",
+    "version": "0.1.0",
+    "dependencies": [
+      "libkml",
+      {
+        "name": "gdal",
+        "default-features": false,
+        "features": ["recommended-features"]
+      },
+      "gtest",
+      "boost-graph",
+      "boost-serialization",
+      "boost-filesystem",
+      "boost-ublas",
+      "mp-units",
+      "range-v3"
+    ]
+  }

@@ -6,8 +6,7 @@
  *                                                                      *
  ***************************************************************************/
 
-#define BOOST_TEST_MODULE geography_test
-#include <boost/test/unit_test.hpp>
+#include <gtest/gtest.h>
 
 #include <quetzal/geography.hpp>
 
@@ -16,9 +15,7 @@
 
 namespace geo = quetzal::geography;
 
-BOOST_AUTO_TEST_SUITE(geography_graph)
-
-BOOST_AUTO_TEST_CASE(expected_number_edges)
+TEST(geography_graph, expected_number_edges)
 {
     auto file1 = std::filesystem::current_path() / "data/bio1.tif";
     auto file2 = std::filesystem::current_path() / "data/bio12.tif";
@@ -53,46 +50,43 @@ BOOST_AUTO_TEST_CASE(expected_number_edges)
     int n1 = graph1.num_vertices();
     int e1 = n1 * ( n1 - 1 ) / 2  ;      // typical undirected complete graph
 
-    BOOST_CHECK_EQUAL( n1 , land.num_locations() );
-    BOOST_CHECK_EQUAL( e1 , graph1.num_edges() );
+    EXPECT_EQ( n1 , land.num_locations() );
+    EXPECT_EQ( e1 , graph1.num_edges() );
 
     int n2 = graph2.num_vertices();
     int e2 = e1 + 2 * ( w + h - 2 ) ;    // border vertices connected to the outland - a sink vertex
-    BOOST_CHECK_EQUAL( n2 , n1 + 1 );              // sink vertex added
-    BOOST_CHECK_EQUAL( e2 , graph2.num_edges() ); 
+    EXPECT_EQ( n2 , n1 + 1 );              // sink vertex added
+    EXPECT_EQ( e2 , graph2.num_edges() ); 
     
     int n3 = graph3.num_vertices();
     int e3 = 2 * e1 + 2 * ( w + h - 2 ); // number of land edges are doubled with anisotropy
-    BOOST_CHECK_EQUAL( n3 , n2 );                  // sink vertex added
-    BOOST_CHECK_EQUAL( e3 , graph3.num_edges() );
+    EXPECT_EQ( n3 , n2 );                  // sink vertex added
+    EXPECT_EQ( e3 , graph3.num_edges() );
                 
     int n4 = graph4.num_vertices();
     int e4 = h * ( w - 1 )               // horizontal edges
         + w * ( h - 1 )                  // vertical edges
         + h                              // torus joining West to East
         + w - 2 ;                        // torus joining North to South
-    BOOST_CHECK_EQUAL( n4 , n1 );                  // no vertex added
-    BOOST_CHECK_EQUAL( e4 , graph4.num_edges() );
+    EXPECT_EQ( n4 , n1 );                  // no vertex added
+    EXPECT_EQ( e4 , graph4.num_edges() );
 
     int n5 = graph5.num_vertices();
     int e5 = h * ( w - 1 )               // horizontal edges
         + w * ( h - 1 )                  // vertical edges
         + 2 * ( w - 1 ) * ( h - 1 ) ;    // intercardinal for internal vertices only
-    BOOST_CHECK_EQUAL( n5 , n1 );                      // no vertex added
-    BOOST_CHECK_EQUAL( e5 , graph5.num_edges() );
+    EXPECT_EQ( n5 , n1 );                      // no vertex added
+    EXPECT_EQ( e5 , graph5.num_edges() );
 
     int n6 = graph6.num_vertices();
     int e6 = 2* e5;
-    BOOST_CHECK_EQUAL( n5 , n1 );                      // no vertex added
-    BOOST_CHECK_EQUAL( e6 , graph6.num_edges() );
+    EXPECT_EQ( n5 , n1 );                      // no vertex added
+    EXPECT_EQ( e6 , graph6.num_edges() );
 
     int n7 = graph7.num_vertices();
     int e7 = 2 * e5 + 2 * (w + h - 2);
-    std::cout << n7 << " " << e7 << " " <<  graph7.num_edges() << std::endl;
-
-    BOOST_CHECK_EQUAL( n7 , n1 );                      // no vertex added
-    BOOST_CHECK_EQUAL( e7 , graph7.num_edges() );
+    EXPECT_EQ( n7 , n1 );                      // no vertex added
+    EXPECT_EQ( e7 , graph7.num_edges() );
 
 }
 
-BOOST_AUTO_TEST_SUITE_END()

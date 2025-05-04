@@ -5,17 +5,12 @@
  *Software Foundation; either version 2 of the License, or    * (at your option) any later version. *
  *                                                                      *
  ***************************************************************************/
-#define BOOST_TEST_MODULE random_test
+#include <gtest/gtest.h>
+#include <unordered_map>
 
-#include <boost/test/unit_test.hpp>
-namespace utf = boost::unit_test;
-
-#include <iostream>
 #include <quetzal/utils/random.hpp>
 
-BOOST_AUTO_TEST_SUITE(random_suite)
-
-BOOST_AUTO_TEST_CASE(discrete_distribution)
+TEST(RandomTest, DiscreteDistribution)
 {
     using quetzal::utils::random::DiscreteDistribution;
     std::mt19937 gen;
@@ -31,7 +26,7 @@ BOOST_AUTO_TEST_CASE(discrete_distribution)
     }
 }
 
-BOOST_AUTO_TEST_CASE(discrete_distribution_init)
+TEST(RandomTest, DiscreteDistributionInit)
 {
     std::mt19937 gen;
     using quetzal::utils::random::DiscreteDistribution;
@@ -60,7 +55,7 @@ BOOST_AUTO_TEST_CASE(discrete_distribution_init)
     std::cout << fourth(gen) << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(time_transition_kernel_init)
+TEST(RandomTest, TimeTransitionKernelInit)
 {
 
     using State = int;
@@ -95,7 +90,7 @@ BOOST_AUTO_TEST_CASE(time_transition_kernel_init)
     std::cout << B(gen, x, t) << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(time_transition_kernel)
+TEST(RandomTest, TimeTransitionKernel)
 {
     using deme_ID_type = int;
     using time_type = int;
@@ -120,7 +115,7 @@ BOOST_AUTO_TEST_CASE(time_transition_kernel)
     }
 }
 
-BOOST_AUTO_TEST_CASE(transition_kernel_init)
+TEST(RandomTest, TransitionKernelInit)
 {
     using state_type = int;
     using distribution_type = std::discrete_distribution<state_type>;
@@ -149,7 +144,7 @@ BOOST_AUTO_TEST_CASE(transition_kernel_init)
     kernel_type B(1, std::move(d));
 }
 
-BOOST_AUTO_TEST_CASE(transition_kernel)
+TEST(RandomTest, TransitionKernel)
 {
     using deme_ID_type = int;
     using law_type = std::discrete_distribution<deme_ID_type>;
@@ -173,4 +168,9 @@ BOOST_AUTO_TEST_CASE(transition_kernel)
     }
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+int main(int argc, char **argv)
+{
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}
+

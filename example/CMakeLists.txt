@@ -5,6 +5,7 @@ cmake_minimum_required(VERSION 3.12)
 set(CMAKE_FIND_PACKAGE_PREFER_CONFIG TRUE)
 
 # Global approach Gdal
+find_package(LIBKML)
 find_package(GDAL REQUIRED)
 
 # range-v3
@@ -14,7 +15,7 @@ find_package(range-v3)
 find_package(mp-units CONFIG REQUIRED)
 
 # Include Boost as an imported target: 1.73 important for compilation with gcc 10 and C++20
-find_package(Boost 1.79 REQUIRED COMPONENTS unit_test_framework filesystem serialization)
+find_package(Boost 1.79 REQUIRED COMPONENTS filesystem serialization)
 if(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS}) # Find Boost headers only
 ENDIF()
@@ -36,7 +37,7 @@ foreach(testSrc ${SRCS})
   # Ignore warnings about subtle ABI change
   target_compile_options(${testName} PUBLIC "-Wno-psabi")
   # Link to Boost libraries AND other targets and dependencies
-  target_link_libraries(${testName} quetzal::quetzal boost::boost GDAL::GDAL range-v3::range-v3 mp-units::mp-units)
+  target_link_libraries(${testName} quetzal::quetzal Boost::boost GDAL::GDAL range-v3::range-v3 mp-units::mp-units)
   # Specifies include directories to use when compiling a given target
   target_include_directories(
     ${testName} PRIVATE

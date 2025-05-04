@@ -5,17 +5,13 @@
  *Software Foundation; either version 2 of the License, or    * (at your option) any later version. *
  *                                                                      *
  ***************************************************************************/
-#define BOOST_TEST_MODULE merger_test
 
-#include <boost/test/unit_test.hpp>
-namespace utf = boost::unit_test;
+#include <gtest/gtest.h>
 
 #include <quetzal/coalescence/merger_policy.hpp>
 #include <quetzal/coalescence/occupancy_spectrum.hpp>
 
-BOOST_AUTO_TEST_SUITE(mergers)
-
-BOOST_AUTO_TEST_CASE(binary_merger_with_strings)
+TEST(BinaryMerger, WithStrings)
 {
     // will produce binary trees
     using quetzal::coalescence::merger_policy::BinaryMerger;
@@ -38,10 +34,10 @@ BOOST_AUTO_TEST_CASE(binary_merger_with_strings)
     // print the remaining lineages
     std::copy(nodes.begin(), last, std::ostream_iterator<node_type>(std::cout, "\t"));
     std::cout << std::endl;
-    BOOST_CHECK_EQUAL(std::distance(nodes.begin(), last), total_number_of_tips - 1);
+    ASSERT_EQ(std::distance(nodes.begin(), last), total_number_of_tips - 1);
 }
 
-BOOST_AUTO_TEST_CASE(simultaneous_multiple_merger_on_the_fly_number_of_tips)
+TEST(SimultaneousMultipleMerger, OnTheFlyNumberOfTips)
 {
     // nodes data are integers counting the number of tips of the subtrees
     using node_type = int;
@@ -66,10 +62,10 @@ BOOST_AUTO_TEST_CASE(simultaneous_multiple_merger_on_the_fly_number_of_tips)
         std::cout << std::endl;
         last = SMM::merge(nodes.begin(), last, N, gen);
     }
-    BOOST_CHECK_EQUAL(*first, total_number_of_tips);
+    ASSERT_EQ(*first, total_number_of_tips);
 }
 
-BOOST_AUTO_TEST_CASE(simultaneous_multiple_merger_on_the_fly_with_strings)
+TEST(SimultaneousMultipleMerger, OnTheFlyWithStrings)
 {
     // let's play with strings as node data
     using node_type = std::string;
@@ -99,4 +95,9 @@ BOOST_AUTO_TEST_CASE(simultaneous_multiple_merger_on_the_fly_with_strings)
     }
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+int main(int argc, char **argv)
+{
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}
+

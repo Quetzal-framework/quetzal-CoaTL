@@ -6,15 +6,15 @@
  *                                                                      *
  ***************************************************************************/
 
-// g++ -o Partitioner_test Partitioner_test.cpp -std=c++14 -Wall
-
-#include "quetzal/polymorphism/fuzzy_transfer_distance.hpp"
+#include "gtest/gtest.h"
 
 #include "assert.h"
 #include <iostream>
 #include <vector>
 
-int main()
+#include "quetzal/polymorphism/fuzzy_transfer_distance.hpp"
+
+TEST(PartitionerTest, construct_all_m_blocks_partitions_of_the_set_by_algorithm_u)
 {
     using quetzal::polymorphism::fuzzy_transfer_distance::Partitioner;
     using quetzal::polymorphism::fuzzy_transfer_distance::RestrictedGrowthString;
@@ -24,11 +24,11 @@ int main()
     Partitioner partitioner(set);
 
     auto const &three_blocks_partitions = partitioner.construct_all_m_blocks_partitions_of_the_set_by_algorithm_u(3);
-    assert(three_blocks_partitions.size() == 25);
+    ASSERT_EQ(three_blocks_partitions.size(), 25);
 
     for (auto const &it : three_blocks_partitions)
     {
-        assert(it.size() == 5);
+        ASSERT_EQ(it.size(), 5);
     }
 
     // http://www.computing-wisdom.com/computingreadings/fasc3b.pdf : page 28, 7.2.1.5
@@ -45,7 +45,13 @@ int main()
         expected_three_blocks_partitions.emplace_back(it);
     }
 
-    assert(three_blocks_partitions == expected_three_blocks_partitions);
+    ASSERT_EQ(three_blocks_partitions, expected_three_blocks_partitions);
+}
+
+TEST(PartitionerTest, construct_all_m_blocks_partitions_of_the_set_by_algorithm_u_set_size_4)
+{
+    using quetzal::polymorphism::fuzzy_transfer_distance::Partitioner;
+    using quetzal::polymorphism::fuzzy_transfer_distance::RestrictedGrowthString;
 
     std::vector<unsigned int> other = {1, 2, 3, 4};
     Partitioner partitioner2(other);
@@ -58,19 +64,39 @@ int main()
     [0, 1, 2, 1]
     [0, 1, 2, 0]
     */
-    assert(ps.size() == 6);
-
-    // Test cause of weird results...
-    Partitioner partitioner3(std::set<int>({1, 2, 3, 4}));
-    auto all = partitioner3.construct_all_m_blocks_partitions_of_the_set_by_algorithm_u(3);
-    assert(all.size() == 6);
-
-    // limit cases
-    Partitioner partitioner4(std::set<int>({1, 2, 3}));
-    auto all2 = partitioner4.construct_all_m_blocks_partitions_of_the_set_by_algorithm_u(3);
-    assert(all2.size() == 1);
-
-    Partitioner partitioner5(std::set<int>({1, 2, 3, 4}));
-    auto all3 = partitioner5.construct_all_m_blocks_partitions_of_the_set_by_algorithm_u(4);
-    assert(all3.size() == 1);
+    ASSERT_EQ(ps.size(), 6);
 }
+
+TEST(PartitionerTest, construct_all_m_blocks_partitions_of_the_set_by_algorithm_u_set_size_4_sorted)
+{
+    using quetzal::polymorphism::fuzzy_transfer_distance::Partitioner;
+    using quetzal::polymorphism::fuzzy_transfer_distance::RestrictedGrowthString;
+
+    std::set<int> other = {1, 2, 3, 4};
+    Partitioner partitioner3(other);
+    auto all = partitioner3.construct_all_m_blocks_partitions_of_the_set_by_algorithm_u(3);
+    ASSERT_EQ(all.size(), 6);
+}
+
+TEST(PartitionerTest, construct_all_m_blocks_partitions_of_the_set_by_algorithm_u_set_size_3)
+{
+    using quetzal::polymorphism::fuzzy_transfer_distance::Partitioner;
+    using quetzal::polymorphism::fuzzy_transfer_distance::RestrictedGrowthString;
+
+    std::set<int> other = {1, 2, 3};
+    Partitioner partitioner4(other);
+    auto all2 = partitioner4.construct_all_m_blocks_partitions_of_the_set_by_algorithm_u(3);
+    ASSERT_EQ(all2.size(), 1);
+}
+
+TEST(PartitionerTest, construct_all_m_blocks_partitions_of_the_set_by_algorithm_u_set_size_4_nb_blocks_4)
+{
+    using quetzal::polymorphism::fuzzy_transfer_distance::Partitioner;
+    using quetzal::polymorphism::fuzzy_transfer_distance::RestrictedGrowthString;
+
+    std::set<int> other = {1, 2, 3, 4};
+    Partitioner partitioner5(other);
+    auto all3 = partitioner5.construct_all_m_blocks_partitions_of_the_set_by_algorithm_u(4);
+    ASSERT_EQ(all3.size(), 1);
+}
+

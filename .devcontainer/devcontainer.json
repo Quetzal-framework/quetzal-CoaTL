@@ -6,41 +6,24 @@
 	"workspaceFolder": "/app",
 	"build": {
 		"context": "..",
-		"dockerfile": "Dockerfile-ubuntu"
+		"dockerfile": "docker-ubuntu"
 	},
-	"onCreateCommand": "chmod +x .devcontainer/onCreateCommand.sh && ./.devcontainer/onCreateCommand.sh",
 	"remoteUser": "root",
 	"features": {},
 	"customizations": {
-		"vscode": {
+		"vscode":
+		{
 			"extensions": [
-				// Clangd: code complete, compile error, clang-format etc
-				"llvm-vs-code-extensions.vscode-clangd",
-				// Format all files in the workspace
-				"jbockle.jbockle-format-files",
-				// Cmake syntax highlighting
-				"twxs.cmake",
-				// Check grammar in text and Markdown
-				"znck.grammarly",
-				// Spelling check in code
-				"streetsidesoftware.code-spell-checker"
+				"Codeium.codeium",
+				// Extension for command variables in tasks.json.
+				"rioj7.command-variable",
+				// Adds a "Task Runner" view to run project tasks.
+				"SanaAjani.taskrunnercode",
+				// Bundle extensions
+				"ms-vscode.cpptools-extension-pack"
 			],
-			"settings": {
-				"clangd.path": "/usr/bin/clangd",
-				"clangd.arguments": [
-					"--compile-commands-dir=${workspaceFolder}/build",
-					"-std=c++23"
-				],
-				"clang-format.executable": "clang-format",
-				"clang-format.style": "file",
-				"clang-format.fallbackStyle": "Microsoft",
-				"clang-format.formatOnSave": true,
-				"clang-format.formatOnType": true,
-				"clang-format.arguments": [
-					"-assume-filename=${workspaceFolder}/.clang-format"
-				],
-				"formatFiles.excludedFolders": [ "node_modules", ".vscode", ".git", "dist", ".chrome", ".cache", "build"]
-			}
 		}
-	}
+	},
+	"postCreateCommand": "chmod +x ${containerWorkspaceFolder}/.vscode/*.sh"
+
 }

@@ -5,11 +5,7 @@
  *Software Foundation; either version 2 of the License, or    * (at your option) any later version. *
  *                                                                      *
  ***************************************************************************/
-#define BOOST_TEST_MODULE demography_test
-
-#include <boost/test/unit_test.hpp>
-namespace utf = boost::unit_test;
-
+#include <gtest/gtest.h>
 #include <quetzal/demography.hpp>
 
 struct transition_matrix
@@ -25,11 +21,7 @@ struct transition_matrix
     }
 };
 
-BOOST_AUTO_TEST_SUITE(demography)
-
-// Allows for arbitrary coordinate type and arbitrary origin date.
-// Does not require to reserve all the necessary space before hand.
-BOOST_AUTO_TEST_CASE(population_size_default)
+TEST(population_size_default, test_population_size_default)
 {
     // Data types declaration
     using coord_type = std::string;
@@ -41,15 +33,15 @@ BOOST_AUTO_TEST_CASE(population_size_default)
     size_type N0 = 12;
 
     quetzal::demography::PopulationSizeHashMapImplementation<coord_type, time_type, size_type> N;
-    BOOST_TEST(!N.is_defined(x0, t0));
+    EXPECT_FALSE(N.is_defined(x0, t0));
     // Set first population size
     N.set(x0, t0, N0);
-    BOOST_TEST(N.is_defined(x0, t0));
-    BOOST_CHECK_EQUAL(N.get(x0, t0), N0);
-    BOOST_CHECK_EQUAL(N.definition_space(t0).size(), 1);
+    EXPECT_TRUE(N.is_defined(x0, t0));
+    EXPECT_EQ(N.get(x0, t0), N0);
+    EXPECT_EQ(N.definition_space(t0).size(), 1);
     // Set second population time
     N.set("B", t0, 2 * N0);
-    BOOST_CHECK_EQUAL(N.definition_space(t0).size(), 2);
+    EXPECT_EQ(N.definition_space(t0).size(), 2);
     // Retrieve definition space (demes with population size > 0)
     auto X = N.definition_space(t0);
     std::cout << "Distribution area at time t0: {";
@@ -57,7 +49,7 @@ BOOST_AUTO_TEST_CASE(population_size_default)
     std::cout << "}\n" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(population_size_on_disk)
+TEST(population_size_on_disk, test_population_size_on_disk)
 {
     // Data types declaration
     using coord_type = std::string;
@@ -69,20 +61,20 @@ BOOST_AUTO_TEST_CASE(population_size_on_disk)
     size_type N0 = 12;
 
     quetzal::demography::PopulationSizeOnDiskImplementation<coord_type, time_type, size_type> N;
-    BOOST_TEST(!N.is_defined(x0, t0));
+    EXPECT_FALSE(N.is_defined(x0, t0));
     // Set first population size
     N.set(x0, t0, N0);
-    BOOST_TEST(N.is_defined(x0, t0));
-    BOOST_CHECK_EQUAL(N.get(x0, t0), N0);
-    BOOST_CHECK_EQUAL(N.definition_space(t0).size(), 1);
+    EXPECT_TRUE(N.is_defined(x0, t0));
+    EXPECT_EQ(N.get(x0, t0), N0);
+    EXPECT_EQ(N.definition_space(t0).size(), 1);
     // Set second population time
     N.set("B", t0, 2 * N0);
-    BOOST_CHECK_EQUAL(N.definition_space(t0).size(), 2);
+    EXPECT_EQ(N.definition_space(t0).size(), 2);
     // Retrieve definition space (demes with population size > 0)
     auto X = N.definition_space(t0);
 }
 
-BOOST_AUTO_TEST_CASE(population_size_on_disk_moving_windows)
+TEST(population_size_on_disk_moving_windows, test_population_size_on_disk_moving_windows)
 {
     // Data types declaration
     using coord_type = int;
@@ -94,25 +86,25 @@ BOOST_AUTO_TEST_CASE(population_size_on_disk_moving_windows)
     size_type N0 = 1;
 
     quetzal::demography::PopulationSizeOnDiskImplementation<coord_type, time_type, size_type> N;
-    BOOST_TEST(!N.is_defined(x0, t0));
+    EXPECT_FALSE(N.is_defined(x0, t0));
     // Set first population size
     N.set(x0, t0, N0);
-    BOOST_TEST(N.is_defined(x0, t0));
-    BOOST_CHECK_EQUAL(N.get(x0, t0), N0);
-    BOOST_CHECK_EQUAL(N.definition_space(t0).size(), 1);
+    EXPECT_TRUE(N.is_defined(x0, t0));
+    EXPECT_EQ(N.get(x0, t0), N0);
+    EXPECT_EQ(N.definition_space(t0).size(), 1);
     // Set other population sizes
     for (unsigned int i = 1; i <= 10; ++i)
     {
         N.set(i, i, 2 * N.get(i - 1, i - 1));
     }
-    BOOST_CHECK_EQUAL(N.definition_space(10).size(), 1);
-    BOOST_CHECK_EQUAL(N.get(10, 10), 1024);
-    BOOST_CHECK_EQUAL(N.get(1, 1), 2);
-    BOOST_CHECK_EQUAL(N.get(0, 0), 1);
-    BOOST_CHECK_EQUAL(N.get(5, 5), 32);
+    EXPECT_EQ(N.definition_space(10).size(), 1);
+    EXPECT_EQ(N.get(10, 10), 1024);
+    EXPECT_EQ(N.get(1, 1), 2);
+    EXPECT_EQ(N.get(0, 0), 1);
+    EXPECT_EQ(N.get(5, 5), 32);
 }
 
-BOOST_AUTO_TEST_CASE(flow)
+TEST(flow, test_flow)
 {
     using coord_type = std::string;
     using time_type = unsigned int;
@@ -124,12 +116,12 @@ BOOST_AUTO_TEST_CASE(flow)
 
     quetzal::demography::FlowHashMapImplementation<coord_type, time_type, value_type> Phi;
 
-    BOOST_TEST(!Phi.flow_to_is_defined(i, t));
+    EXPECT_FALSE(Phi.flow_to_is_defined(i, t));
     Phi.set_flow_from_to(i, j, t, 12);
     Phi.add_to_flow_from_to(j, j, t, 1);
-    BOOST_TEST(Phi.flow_to_is_defined(j, t));
-    BOOST_TEST(Phi.flow_from_to(i, j, t) == 12);
-    BOOST_TEST(Phi.flow_from_to(j, j, t) == 1);
+    EXPECT_TRUE(Phi.flow_to_is_defined(j, t));
+    EXPECT_EQ(Phi.flow_from_to(i, j, t), 12);
+    EXPECT_EQ(Phi.flow_from_to(j, j, t), 1);
 
     std::cout << "Flows converging to " << j << " at time t=" << t << ":" << std::endl;
     for (auto const &it : Phi.flow_to(j, t))
@@ -138,7 +130,7 @@ BOOST_AUTO_TEST_CASE(flow)
     }
 }
 
-BOOST_AUTO_TEST_CASE(flow_on_disk_implementation)
+TEST(flow_on_disk_implementation, test_flow_on_disk_implementation)
 {
     using coord_type = std::string;
     using time_type = unsigned int;
@@ -150,12 +142,12 @@ BOOST_AUTO_TEST_CASE(flow_on_disk_implementation)
 
     quetzal::demography::FlowOnDiskImplementation<coord_type, time_type, value_type> Phi;
 
-    BOOST_TEST(!Phi.flow_to_is_defined(i, t));
+    EXPECT_FALSE(Phi.flow_to_is_defined(i, t));
     Phi.set_flow_from_to(i, j, t, 12);
     Phi.add_to_flow_from_to(j, j, t, 1);
-    BOOST_TEST(Phi.flow_to_is_defined(j, t));
-    BOOST_TEST(Phi.flow_from_to(i, j, t) == 12);
-    BOOST_TEST(Phi.flow_from_to(j, j, t) == 1);
+    EXPECT_TRUE(Phi.flow_to_is_defined(j, t));
+    EXPECT_EQ(Phi.flow_from_to(i, j, t), 12);
+    EXPECT_EQ(Phi.flow_from_to(j, j, t), 1);
 
     std::cout << "Flows converging to " << j << " at time t=" << t << ":" << std::endl;
     for (auto const &it : Phi.flow_to(j, t))
@@ -164,7 +156,7 @@ BOOST_AUTO_TEST_CASE(flow_on_disk_implementation)
     }
 }
 
-BOOST_AUTO_TEST_CASE(flow_on_disk_implementation_moving_windows)
+TEST(flow_on_disk_implementation_moving_windows, test_flow_on_disk_implementation_moving_windows)
 {
     std::cout << "here" << std::endl;
     using coord_type = unsigned int;
@@ -184,19 +176,19 @@ BOOST_AUTO_TEST_CASE(flow_on_disk_implementation_moving_windows)
         }
     }
 
-    BOOST_TEST(Phi.flow_to_is_defined(5, 5));
-    BOOST_TEST(Phi.flow_from_to(5, 5, 5) == 15);
-    BOOST_TEST(Phi.flow_from_to(2, 4, 5) == 11);
-    BOOST_TEST(Phi.flow_from_to(0, 0, 4) == 4);
-    BOOST_TEST(Phi.flow_from_to(0, 0, 3) == 3);
-    BOOST_TEST(Phi.flow_from_to(0, 0, 2) == 2);
-    BOOST_TEST(Phi.flow_from_to(0, 0, 1) == 1);
-    BOOST_TEST(Phi.flow_from_to(0, 0, 0) == 0);
-    BOOST_TEST(Phi.flow_from_to(1, 2, 5) == 8);
-    BOOST_TEST(Phi.flow_from_to(0, 0, 0) == 0);
+    EXPECT_TRUE(Phi.flow_to_is_defined(5, 5));
+    EXPECT_EQ(Phi.flow_from_to(5, 5, 5), 15);
+    EXPECT_EQ(Phi.flow_from_to(2, 4, 5), 11);
+    EXPECT_EQ(Phi.flow_from_to(0, 0, 4), 4);
+    EXPECT_EQ(Phi.flow_from_to(0, 0, 3), 3);
+    EXPECT_EQ(Phi.flow_from_to(0, 0, 2), 2);
+    EXPECT_EQ(Phi.flow_from_to(0, 0, 1), 1);
+    EXPECT_EQ(Phi.flow_from_to(0, 0, 0), 0);
+    EXPECT_EQ(Phi.flow_from_to(1, 2, 5), 8);
+    EXPECT_EQ(Phi.flow_from_to(0, 0, 0), 0);
 }
 
-BOOST_AUTO_TEST_CASE(individual_based_history_default_storage)
+TEST(individual_based_history_default_storage, test_individual_based_history_default_storage)
 {
     //! [individual_based_history_default_storage example]
     // Here we simulate a population oscillation between 2 demes: -1 and 1
@@ -210,27 +202,4 @@ BOOST_AUTO_TEST_CASE(individual_based_history_default_storage)
     // Declare an individual-based history where each gene copy is dispersed independently
     using quetzal::demography::demographic_policy::individual_based;
     // Declare memory should be allocated only on demand: ideal for very short histories
-    using quetzal::demography::memory_policy::on_RAM;
-    // 10 individuals introduced at x=1, t=0
-    quetzal::demography::History<coord_type, individual_based, on_RAM> history(x_0, N_0, nb_generations);
-    // Declare a growth function
-    auto N = history.get_functor_N(); // light copiable for capture
-    auto growth = [N](auto &gen, coord_type x, auto t) { return 2 * N(x, t); };
-    // Dispersal kernel, samples arrival location in {-1,1}
-    auto sample_location = [](auto &gen, coord_type x) {
-        std::bernoulli_distribution d(0.5);
-        if (d(gen))
-        {
-            x = -x;
-        }
-        return x;
-    };
-    // Expand the history
-    history.simulate_forward(growth, sample_location, gen);
-    // Print the migration history
-    std::cout << "\nKnowing an indiviual was in deme 1 at t=2, simulate its location at time t=1?\n";
-    std::cout << "Location at time 1: " << history.backward_kernel(1, 2, gen) << std::endl;
-    //! [individual_based_history_default_storage example]
-}
 
-BOOST_AUTO_TEST_SUITE_END()

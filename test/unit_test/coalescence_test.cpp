@@ -1,21 +1,7 @@
-// Copyright 2021 Arnaud Becheler    <abechele@umich.edu>
-
-/*********************************************************************** * This program is free software; you can
- *redistribute it and/or modify * it under the terms of the GNU General Public License as published by * the Free
- *Software Foundation; either version 2 of the License, or    * (at your option) any later version. *
- *                                                                      *
- ***************************************************************************/
-
-#define BOOST_TEST_MODULE coalescence_test
-
-#include <boost/test/unit_test.hpp>
+#include <gtest/gtest.h>
 #include <quetzal/coalescence.hpp>
 
-namespace utf = boost::unit_test;
-
-BOOST_AUTO_TEST_SUITE(coalescence_algorithms)
-
-BOOST_AUTO_TEST_CASE(binary_merge)
+TEST(coalescence_algorithms, binary_merge)
 {
     using node_type = int;
     std::vector<node_type> nodes = {1, 1, 1, 1};
@@ -30,7 +16,7 @@ BOOST_AUTO_TEST_CASE(binary_merge)
     std::copy(nodes.begin(), last, std::ostream_iterator<node_type>(std::cout, " "));
 }
 
-BOOST_AUTO_TEST_CASE(simultaneous_multiple_merge)
+TEST(coalescence_algorithms, simultaneous_multiple_merge)
 {
     using node_type = int;
     std::vector<node_type> nodes = {1, 1, 1, 1, 1};
@@ -42,11 +28,7 @@ BOOST_AUTO_TEST_CASE(simultaneous_multiple_merge)
     std::copy(nodes.begin(), last, std::ostream_iterator<node_type>(std::cout, " "));
 }
 
-BOOST_AUTO_TEST_SUITE_END()
-
-BOOST_AUTO_TEST_SUITE(coalescence_containers)
-
-BOOST_AUTO_TEST_CASE(forest)
+TEST(coalescence_containers, forest)
 {
     using position_type = int;
     using tree_type = std::string;
@@ -76,7 +58,7 @@ BOOST_AUTO_TEST_CASE(forest)
     print(forest);
 }
 
-BOOST_AUTO_TEST_CASE(forest_init)
+TEST(coalescence_containers, forest_init)
 {
     using position_type = int;
     using tree_type = int;
@@ -95,7 +77,7 @@ BOOST_AUTO_TEST_CASE(forest_init)
     d = std::move(c);
 }
 
-BOOST_AUTO_TEST_CASE(forest_insert)
+TEST(coalescence_containers, forest_insert)
 {
     // \remark These are very basic types sufficient for testing, but have little to see with coalescence.
     using position_type = int;
@@ -110,16 +92,16 @@ BOOST_AUTO_TEST_CASE(forest_insert)
     std::vector<string> v{"quercus_robur", "salix_nigra"};
     forest.insert(3, std::move(v));
     auto it = forest.insert(4, string("salix_nigra"));
-    BOOST_CHECK_EQUAL(it->first, 4);
-    BOOST_CHECK_EQUAL(forest.nb_trees(), 6);
-    BOOST_CHECK_EQUAL(forest.nb_trees(3), 2);
+    EXPECT_EQ(it->first, 4);
+    EXPECT_EQ(forest.nb_trees(), 6);
+    EXPECT_EQ(forest.nb_trees(3), 2);
     for (auto const &it : forest)
     {
         std::cout << "Position " << it.first << " : " << it.second << std::endl;
     }
 }
 
-BOOST_AUTO_TEST_CASE(tree_init)
+TEST(coalescence_containers, tree_init)
 {
     using quetzal::coalescence::container::Tree;
     using std::string;
@@ -138,7 +120,7 @@ BOOST_AUTO_TEST_CASE(tree_init)
     Tree<int> e(std::move(cell)); // cell should not be used anymore !
 }
 
-BOOST_AUTO_TEST_CASE(tree_DFS)
+TEST(coalescence_containers, tree_DFS)
 {
     using quetzal::coalescence::container::Tree;
     using std::string;
@@ -161,10 +143,10 @@ BOOST_AUTO_TEST_CASE(tree_DFS)
     std::vector<string> v;
     auto f = [&v](string s) { v.push_back(s); };
     root.visit_leaves_cells_by_DFS(f);
-    BOOST_TEST(v == expected);
+    EXPECT_EQ(v, expected);
 }
 
-BOOST_AUTO_TEST_CASE(tree_preorder_DFS)
+TEST(coalescence_containers, tree_preorder_DFS)
 {
     using quetzal::coalescence::container::Tree;
     using std::string;
@@ -186,7 +168,6 @@ BOOST_AUTO_TEST_CASE(tree_preorder_DFS)
     std::vector<string> v;
     auto f = [&v](string s) { v.push_back(s); };
     root.visit_cells_by_pre_order_DFS(f);
-    BOOST_TEST(v == expected);
+    EXPECT_EQ(v, expected);
 }
 
-BOOST_AUTO_TEST_SUITE_END()

@@ -20,19 +20,13 @@ add_subdirectory(src)
 # generate project documentation
 add_subdirectory(docs)
 
-# generate project documentation
-add_subdirectory(mrdox)
-
-# add template project
-add_subdirectory(template)
-
 # We default to build tests if option -D CMAKE_BUILD_TESTS=ON not provided (no FORCE, so the previous value, if set, stays)
-set(BUILD_TESTS OFF CACHE STRING "Build module test")
+# set(BUILD_TESTS ON CACHE STRING "Build module test")
 
-if(BUILD_TESTS)
+# if(BUILD_TESTS)
     enable_testing()
     # add unit tests
     add_subdirectory(test)
     # add usage example
     add_subdirectory(example)
-endif()
+# endif()
